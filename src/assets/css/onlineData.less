@@ -1,0 +1,129 @@
+#onlineData{
+  .is-active{
+    /*background: #ffffff;*/
+  }
+  .el-tabs__header{
+    background: #ffffff!important;
+    border-bottom: none;
+  }
+  .el-tabs{
+    .el-tabs__content{
+      display: none;
+    }
+  }
+  .el-table{
+    border:none;
+    &::before,&::after{
+      height: 0;
+      width:0;
+    }
+    th{
+      height: 50px;
+    }
+    td{
+      height: 64px;
+    }
+  }
+  .el-table .cell, .el-table th>div{
+    padding-right: 0px;
+  }
+  .el-table--striped .el-table__body tr:hover{
+    background: #eef1f6;
+  }
+  .el-table--striped .el-table__body tr:nth-child(2n){
+    background: #f9fafc !important;
+  }
+  .top-lists{
+
+    thead{
+      th{
+        font-size: 12px;
+        font-weight: 100;
+        border:none;
+        &:nth-child(1){
+          .cell{
+            width: 90px!important;
+          }
+
+        }
+      }
+      th:nth-last-child(2){
+        .cell{
+          cursor: pointer;
+        }
+      }
+    }
+    tbody{
+
+      td{
+        border:none;
+        .cell{
+          font-size: 12px;
+          div{
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+
+      .edits-btn{
+
+        margin-left: 0;
+        color:#c0ccda;
+
+      }
+      .btn-cur{
+        color:#20a0ff !important;
+
+      }
+      .flow-btn,.send-btn{
+        color:#c0ccda;
+        margin-left: 5px;
+
+      }
+      .more{
+        width: 12px;
+        display: inline-block;
+
+        vertical-align: middle;
+        //margin-left: 8px;
+        margin-top: -4px;
+        cursor: pointer;
+      }
+
+    }
+    .el-table {
+      .cell{
+        //padding-right:1px;
+        padding-left: 0;
+        .el-tag{
+          padding:0 10px;
+        }
+        .el-tag--gray{
+          background: transparent;
+          border:none;
+        }
+        .el-table__column-filter-trigger{
+          margin-left: 2px;
+        }
+        .caret-wrapper{
+          margin-left: 0;
+          width:15px;
+        }
+      }
+    }
+  }
+  .pagenav{
+    text-align: right;
+    height: 45px;
+    padding-top: 10px;
+    background: #f3f4f8;
+    button,.number{
+      background: transparent;
+    }
+    .active{
+      background: #20a0ff;
+    }
+  }
+}

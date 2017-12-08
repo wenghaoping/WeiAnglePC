@@ -1,0 +1,151 @@
+/*reset*/
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div,
+input,
+img,
+a,
+b,
+ul,
+li,
+span,
+dl,
+dd,
+dt,
+form,
+table,
+tr,
+td,
+th {
+  padding: 0 ;
+  margin: 0;
+}
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+img,
+input,
+textarea,
+a,
+button {
+  border: none;
+  outline: none;
+  background: none;
+}
+i {
+  font-style: normal;
+}
+textarea {
+  resize: none;
+}
+table {
+  border-collapse: collapse;
+}
+html {
+
+}
+/*base*/
+
+/*清浮动*/
+.clearfix:after {
+  content: '200B';
+  display: block;
+  height: 0;
+  font-size: 0;
+  clear: both;
+  *zoom: 1;
+}
+.clear {
+  clear: both;
+}
+.flex{
+  display: flex;
+}
+/*添加左右浮动*/
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+/*ul内部的li添加浮动*/
+.ulfl li {
+  float: left;
+}
+/*粗体*/
+.fweight {
+  font-weight: normal;
+}
+
+/*文字剧中*/
+.tc {
+  text-align: center;
+}
+.tr {
+  text-align: right;
+}
+
+/*鼠标变成手型*/
+.cursor{
+  cursor: pointer;
+}
+
+.inlineBlock {
+  display: inline-block;
+}
+/*输入框中时的边框颜色*/
+input:focus{
+  border-color:#40587A !important;
+}
+textarea:focus{
+  border-color: #40587A !important;
+}
+textarea{
+  border-radius: 2px !important;
+}
+input[type='text']{
+  border-radius: 2px !important;
+}
+button{
+  border-radius: 2px !important;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.positionFixed{
+  position: fixed;
+}
+
+.m_auto {
+  margin: auto;
+}
+
+.width_100 {
+  width: 100%;
+}
+
+.height_100 {
+  height: 100%;
+}
+
+.nowrap {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

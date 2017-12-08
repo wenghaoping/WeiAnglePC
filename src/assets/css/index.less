@@ -1,0 +1,389 @@
+@charset "utf-8";
+#index {
+  .Infooter {
+    background:#444444;
+    font-size: 12px;
+    color:#a1a1a1;
+    line-height: 12px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+    p:first-child{
+      margin-bottom: 10px;
+    }
+  }
+
+  background:#f9fafc;
+  width: 100%;
+  position: relative;
+  .banner {
+    background: url("https://www.weitianshi.cn/assets/images/banner.jpg") no-repeat center;
+    background-size:cover;
+    width: 100%;
+    height: 691px;
+    @media screen and(max-width: 1500px){
+      height: 491px;
+    }
+    .opactButton{
+      border:1px solid #ffffff;
+      border-radius:4px;
+      width:130px;
+      font-size:20px;
+      color:#ffffff;
+      line-height: 56px;
+      text-align: center;
+      cursor: pointer;
+      @media screen and (max-width: 1500px){
+        line-height: 40px;
+      }
+    }
+    position: relative;
+    .button{
+      position: absolute;
+      z-index: 999;
+      top: 458px;
+      width: 133px;
+      height: 56px;
+      border-radius:4px;
+      font-size: 18px;
+      @media screen and (max-width: 1500px){
+        width: 94px;
+        height: 40px;
+        top: 326px;
+        font-size: 14px;
+      }
+    }
+    .button:first-child {
+      left: 18.75%;
+    }
+    .button:nth-child(2) {
+      left: 28.6%;
+    }
+    .qrShow{
+      background: white;
+      width: 226px;
+      height: 241px;
+      padding: 32px;
+      position: absolute;
+      left: 18.75%;
+      top: 203px;
+      transform: translateX(-25%);
+      img{
+        width: 100%;
+        height: 100%;
+      }
+      @media screen and (max-width: 1500px){
+        width: 162px;
+        height: 162px;
+        padding: 23px;
+        top: 151px;
+      }
+    }
+    .showQr:hover + .qrShow{
+      display: block !important;
+    }
+    .qrBlock{
+      display:block;
+    }
+  }
+  h1 {
+    font-size: 36px;
+    text-align: center;
+    padding-top: 77px;
+    font-weight: normal;
+    //background: white;
+    @media screen and(max-width: 1500px){
+      padding-top: 61px;
+      font-size: 24px;
+    }
+  }
+  .content {
+    width: 85%;
+    margin: 0 auto;
+    height: 691px;
+    position: relative;
+    background:  #f9fafc;
+    @media screen and(max-width: 1500px){
+      font-size: 12px !important;
+      //height: 490px;
+    }
+    .indentityPic{
+      width: 25%;
+      color: #8492a6;
+      @media screen and(max-width: 1500px){
+        font-size: 12px;
+      }
+      img{
+        width: 65px;
+        height: 104px;
+        margin-bottom: 15px;
+        margin-top: 155px;
+        @media screen and(max-width: 1500px){
+          width: 46px;
+          height: 74px;
+          margin-top: 115px;
+          margin-bottom: 12px;
+        }
+      }
+      div{
+        margin-bottom: 5px;
+        @media screen and(max-width: 1500px){
+          margin-bottom: 5px;
+        }
+      }
+      div:nth-child(2){
+        font-size:24px;
+        color:#1f2d3d;
+        margin-bottom: 6px;
+        }
+      }
+    .fullPageText{
+      //position: absolute;
+      float: left;
+      font-size: 16px;
+      color: #8492a6;
+      @media screen and(max-width: 1500px){
+        font-size: 12px !important;
+        div:first-child{
+          font-size: 16px !important;
+        }
+      }
+    }
+    .fullPageText div{
+      margin-bottom: 4px;
+    }
+    .fullPageText div:first-child{
+      font-size: 24px;
+      color: #1f2d3d;
+      margin-bottom: 8px;
+    }
+    .fullPagePic{
+      float: right!important;
+      //position: absolute;
+      width: 600px;
+      height: auto;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+  .content0 {
+    width: 85%;
+    height: 565px !important;
+    margin: 0 auto;
+    background: white ;
+    //@media screen and(max-width: 1500px) {
+    //  width: 760px !important;
+    //  height: 490px !important;
+    //}
+    .indentityPic {
+      div:nth-child(2) {
+        @media screen and(max-width: 1500px) {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+  .content1{
+    .fullPageText1{
+      width: 424px;
+      //left: 21.5%;
+      float: left;
+      margin-left: 12%;
+      text-align: right;
+      margin-top: 104px;
+      //@media screen and(max-width: 1500px){
+      //  width: 424px;
+      //  //left: 20%;
+      //}
+    }
+    .fullPagePic1{
+      //left: 50%;
+      float: left;
+      margin-left: 9%;
+      width: 600px;
+      height: 315px;
+      margin-top: 104px;
+      //@media screen and(max-width: 1500px){
+      //  //width: 426px;
+      //  width: 50%;
+      //  height: auto;
+      //}
+    }
+  }
+  .content2{
+    .fullPageText2{
+      width: 450px;
+      //left: 58.3%;
+      float: left;
+      margin-left:6%;
+      top: 136px;
+      //@media screen and(max-width: 1500px){
+      //  width: 321px;
+      //}
+    }
+    .fullPagePic2{
+      width: 600px;
+      height: 400px;
+      float: right;
+      margin-left: 11%;
+      //left: 20%;
+      top: 140px;
+      //@media screen and(max-width: 1500px){
+      //  //width: 426px;
+      //  width: 50%;
+      //  height: auto;
+      //}
+    }
+  }
+  .content3{
+    .fullPagePic3{
+      width: 600px;
+      height: 400px;
+      //left: 50%;
+      float: left;
+      margin-left:11%;
+      top:145px;
+      //@media screen and(max-width: 1500px){
+      //  //width: 426px;
+      //  width: 50%;
+      //  height: auto;
+      //}
+    }
+    .fullPageText3{
+      width: 427px;
+      //left: 21.5%;
+      float: left;
+      margin-left: 9%;
+      top:145px;
+      text-align: right;
+      //@media screen and(max-width: 1500px){
+      //  width: 424px;
+      //  //width: 50%;
+      //  left: 22.4%;
+      //}
+    }
+  }
+  .qrCode {
+    position: fixed;
+    right: 20px;
+    top: 80%;
+    width:40px;
+    height:40px;
+    background: white;
+    cursor: pointer;
+
+    img {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top:0;
+      bottom: 0;
+      margin: auto;
+    }
+  }
+  .qrCode-large{
+    display: none;
+    position: fixed;
+    right: 68px;
+    top: 71%;
+    width: 200px;
+    height: 207px;
+    padding: 28px 35px;
+    background: white;
+    font-size:12px;
+    color:#1f2d3d;
+    border:1px solid #e0e6ed;
+    img{
+      width: 100%;
+      margin-bottom: 11px;
+    }
+    .add2{
+      margin-bottom: 10px;
+    }
+    @media screen and(max-width: 1500px){
+      width: 161px;
+      height: 190px;
+      font-size: 12px;
+      padding: 0;
+      img{
+        //height: 89px;
+        padding: 10px 10px 0px 10px;
+      }
+      .add2{
+        margin-bottom: 10px;
+      }
+    }
+  }
+  .qrCode:hover + .qrCode-large{
+    display: block;
+  }
+  .megagame{
+    position: fixed;
+    width:169px;
+    height:52px;
+    background: url("../../../static/images/Rectangle.png") no-repeat center;
+    background-size: cover;
+    top: 34%;
+    right: -89px;
+    text-align: center;
+    transition: all 1s ease;
+  }
+  .megagame:hover{
+    right:0;
+    transition: all 1s ease;
+  }
+  .megagame1{
+    position: fixed;
+    width:98px;
+    height:123px;
+    background:#ffffff;
+    top: 43%;
+    right:20px;
+    text-align: center;
+    transition: all 1s ease;
+    border:0 solid #e0e6ed;
+    box-shadow:0 0 2px 0 rgba(64,88,122,0.10);
+    img{
+      width:78px;
+      margin-bottom: 8px;
+      margin-top: 5px;
+    }
+    span{
+      height:12px;
+      display: inline-block;
+      margin-top: -8px;
+      font-size:12px;
+      color:#475669;
+      line-height: 17px;
+    }
+  }
+  .megagame11:hover + .er-box{
+    display: block;
+  }
+  .er-box{
+    display: none;
+    position: fixed;
+    right: 10px;
+    top: 49%;
+    width: 138px;
+    height: 145px;
+    padding: 30px 22px 25px 25px;
+    background: url("../../../static/images/Combined.png") no-repeat center;
+    background-size: cover;
+    font-size:12px;
+    color:#1f2d3d;
+    transition: all 1s ease;
+
+    img{
+      width: 90px;
+      height: 90px;
+      display: inline-block;
+    }
+  }
+
+}
+
