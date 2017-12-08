@@ -318,9 +318,9 @@
           data.forEach(x => {
             let obj = {};
             obj.name = x.index_name.length > 4 ? x.index_name.substring(0, 4) : x.index_name;
-            obj.max = 100;
+            obj.max = Number.parseInt(x.index_score);
             indicator.push(obj);
-            innerValue.push(Number.parseInt(x.index_score));
+            innerValue.push(Number.parseInt(x.average_score));
           });
           this.indicator = indicator;
           this.innerValue = innerValue;
