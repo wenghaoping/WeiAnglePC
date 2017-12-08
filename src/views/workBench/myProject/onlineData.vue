@@ -109,6 +109,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { getTop } from '@/utils';
   export default {
     props: ['proid'],
     data () {
@@ -198,7 +199,7 @@
             let data = res.data.data;
             this.tableData = this.getList(data);
             this.totalData = res.data.count;
-            this.$tool.getTop();
+            getTop();
           })
           .catch(err => {
             this.loading = false;

@@ -1179,6 +1179,7 @@
   import { getCity } from '@/utils/setSelect';
   import { error, success, warning } from '@/utils/notification';
   import * as formatData from '@/utils/formatData';
+  import { getTop } from '@/utils';
   export default {
     data () {
       var checkPhoneNumber = (rule, value, callback) => {
@@ -2871,7 +2872,7 @@
     },
     // 当dom一创建时
     created () {
-      this.$tool.getTop();
+      getTop();
       this.loading = true;
       this.getprojectId();
       this.$global.func.getWxProjectCategory()

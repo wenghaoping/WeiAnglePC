@@ -341,6 +341,7 @@
   import { getTitleSift, getTagsPro } from '@/utils/setSelect';
   import * as formatData from '@/utils/formatData';
   import { isArray } from '@/utils/validata';
+  import { getTop } from '@/utils';
   export default {
     data () {
       return {
@@ -592,7 +593,7 @@
             this.tableData = this.setProjectList(data);
             this.totalData = res.data.count;
             this.loading = false;
-            this.$tool.getTop();
+            getTop();
           })
           .catch(err => {
             this.loading = false;
@@ -722,7 +723,7 @@
       }
     },
     created () {
-      this.$tool.getTop();
+      getTop();
       this.getRouterData();
       this.loading = true;
       this.is_competition = localStorage.is_competition;

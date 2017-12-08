@@ -306,6 +306,7 @@
   import downloadechart from '../workBench/myProject/onkeyresearch/downloadEchart.vue';
   import { error } from '@/utils/notification';
   import * as formatData from '@/utils/formatData';
+  import { getTop } from '@/utils';
   export default {
     data () {
       return {
@@ -813,7 +814,7 @@
         });
       }, // 买家图谱列表
       filterChangeInvestors (page) {
-        this.$tool.getTop();
+        getTop();
         this.loading = true;
         this.currentPageInvestors = page;
         this.getInvestors.id = this.id;
@@ -860,7 +861,7 @@
       }, // 跳转到新的一键尽调
       getRouter () {
         return new Promise((resolve, reject) => {
-          this.$tool.getTop();
+          getTop();
           this.loading = true;
           const routerCompany = decodeURI(this.$route.query.company) || '';
           this.includeInvestorMap = decodeURI(this.$route.query.includeInvestorMap) || '';
@@ -915,35 +916,8 @@
       downloadechart
     },
     created () {
-      this.$tool.getTop();
+      getTop();
       this.getRouter();
-//        .then((data)=>{
-//          return this.getCrawlerProject();
-//        })
-//        .then((data)=>{
-//          return this.getCrawlerCompany();
-//        })
-//        .then((data)=>{
-//          return this.getCrawlerBrand();
-//        })
-//        .then((data)=>{
-//          return this.getCrawlerHistoryFinance();
-//        })
-//        .then((data)=>{
-//          return this.getCrawlerMilestone();
-//        })
-//        .then((data)=>{
-//          return this.getCrawlerNews();
-//        })
-//        .then((data)=>{
-//          return this.getCrawlerTeam();
-//        })
-//        .then((data)=>{
-//          return this.getCrawlerCompeting();
-//        })
-//        .then((data)=>{
-//          return this.getInvestorMatch();
-//        })
     },
     watch: {}
   };

@@ -194,6 +194,7 @@
 <script type="text/ecmascript-6">
   import cirIcon from '../../../../static/images/circle.png';
   import { success } from '@/utils/notification';
+  import { getTop } from '@/utils';
   export default {
     components: {
     },
@@ -300,7 +301,7 @@
       } // 点击写跟近按钮
     },
     created () {
-      this.$tool.getTop();
+      getTop();
       this.getProjectFollowList(1);
     },
     watch: {

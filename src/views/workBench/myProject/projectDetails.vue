@@ -673,6 +673,7 @@
   import projectpush from '@/views/components/projectPush.vue';
   import { error, success, warning } from '@/utils/notification';
   import * as formatData from '@/utils/formatData';
+  import { getTop } from '@/utils';
   export default {
     data () {
       return {
@@ -1382,7 +1383,7 @@
         this.scheduleIndex = index;
       }, // 获取意向投资人索引
       filterChangeCurrent (page) {
-        this.$tool.getTop();
+        getTop();
         this.loading = true;
         this.getConCon.user_id = localStorage.user_id;
         this.getConCon.project_id = this.project.project_id;
@@ -1542,7 +1543,7 @@
         });
       }, // 买家图谱列表
       filterChangeInvestors (page) {
-        this.$tool.getTop();
+        getTop();
         this.loading = true;
         this.getInvestors.user_id = localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
@@ -1700,7 +1701,7 @@
       }// 获取二维码
     },
     created () {
-      this.$tool.getTop();
+      getTop();
       this.getprojectId();
       this.getAllData();
     },

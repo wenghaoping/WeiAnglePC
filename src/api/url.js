@@ -4,7 +4,7 @@
 
 /* const URL ='https://dev.weitianshi.cn/' */
 
-/* 项目详情URL */
+/* URL汇总 */
 
 export default
 {

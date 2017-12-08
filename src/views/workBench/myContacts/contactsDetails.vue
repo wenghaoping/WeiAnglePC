@@ -377,6 +377,7 @@
   import { checkEmail } from '@/utils/validata';
   import * as formatData from '@/utils/formatData';
   import { getTagsPro } from '@/utils/setSelect';
+  import { getTop } from '@/utils';
   export default {
     data () {
       return {
@@ -1222,7 +1223,7 @@
       }// 推送
     },
     created () {
-      this.$tool.getTop();
+      getTop();
       this.loading = true;
       this.getUserId();
       this.getpushCount();

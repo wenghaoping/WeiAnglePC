@@ -3,7 +3,7 @@
  */
 /* eslint-disable */
 import Vue from 'vue';
-
+import { getIntervalTime, srtIntervalClearTime } from '@/utils';
 let int = null;// 时间设置
 let time = '';
 // 时间控制数据
@@ -55,7 +55,7 @@ Vue.mixin({
 
     // 路由进入计时
     zgTimeIn () {
-      int = setInterval(() => { time = this.$tool.getIntervalTime(); /* console.log(time) */; }, 2000);
+      int = setInterval(() => { time = getIntervalTime(); /* console.log(time) */; }, 2000);
     },
 
     // 路由出去时停止计时
@@ -66,7 +66,7 @@ Vue.mixin({
         this.zgClick(ReallyName, {time: time});
       }
       time = '';
-      this.$tool.srtIntervalClearTime();
+      srtIntervalClearTime();
     },
 
     zgChangeString (name) {

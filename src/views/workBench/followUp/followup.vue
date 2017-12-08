@@ -239,7 +239,7 @@
   import alertcontactsdetail from '@/views/components/alertContactsDetail.vue';
   import { error, success } from '@/utils/notification';
   import { getTitleSift } from '@/utils/setSelect';
-
+  import { getTop } from '@/utils';
   export default {
     components: {
       addfollow,
@@ -399,7 +399,7 @@
           });
       }, // 筛选 ascending升/descending降/
       filterChangeCurrent (page) {
-        this.$tool.getTop();
+        getTop();
         delete this.getFollow.page;
         this.loading = true;
         this.getFollow.user_id = localStorage.user_id;
@@ -495,7 +495,7 @@
     },
     created () {
       this.getRouterData();
-      this.$tool.getTop();
+      getTop();
       this.titleSift();
       this.filterChangeCurrent(this.currentPage || 1);
     },

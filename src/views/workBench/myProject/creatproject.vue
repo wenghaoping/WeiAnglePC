@@ -131,7 +131,7 @@
                     label="所属省级"
                     prop="pro_area.pid"
                     :rules="[{required: true, message: '所属省级不能为空', trigger: 'change',type: 'number'}]">
-                    <el-select v-model="project.pro_area.pid" placeholder="请选择" @change="area1Change">
+                    <el-select v-model="project.pro_area.pid" placeholder="请选择" @change="area1Change2">
                       <el-option
                         v-for="item in area"
                         :key="item.value"
@@ -413,6 +413,7 @@
   import * as validata from '@/utils/validata';
   import { setIdToArr } from '@/utils/formatData';
   import { error, success, warning } from '@/utils/notification';
+  import { getTop } from '@/utils';
   export default {
     data () {
       var checkHundred = (rule, value, callback) => {
@@ -576,8 +577,7 @@
       },
       // 设置二级城市下拉列表
       area1Change (data) {
-        this.project.pro_area_city = '';
-        this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})
+        this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})// pid省
           .then(res => {
             let data = res.data.data;
             this.area2 = getCity(data);
@@ -585,7 +585,25 @@
           .catch(err => {
             console.log(err);
           });
-      },
+      }, // 设置二级城市下拉列表
+      area1Change2 (data) {
+        let newData = data;
+        if (data !== '') {
+          let pid = localStorage.pid;
+          this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})// pid省
+            .then(res => {
+              let data = res.data.data;
+              this.area2 = getCity(data);
+              if (parseInt(newData) === parseInt(pid)) {
+              } else {
+                this.project.pro_area.area_id = '';
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
+      }, // 设置二级城市下拉列表2
       // 判断是不是数字
       checkNumber (theObj) {
         let reg = /^[0-9]+.?[0-9]*$/;
@@ -998,6 +1016,10 @@
             this.$http.post(this.URL.getWxosProjectData, {credential: localStorage.credential})
               .then(res => {
                 let data = res.data.project;
+                this.project.pro_area.pid = data.pro_area_province;
+                localStorage.pid = data.pro_area_province;
+                this.area1Change(data.pro_area_province);// 取到省级设置市级
+                this.project.pro_area.area_id = data.pro_area_city;
                 if (data.length !== 0) {
                   for (let i = 0; i < data.industry.length; i++) {
                     data.industry[i] = Number.parseInt(data.industry[i]);
@@ -1006,8 +1028,7 @@
                   if (data.is_exclusive === 4) data.is_exclusive = 0;
                   this.project.is_exclusive = Number.parseInt(data.is_exclusive);
                   if (data.pro_finance_scale === 0) this.project.pro_finance_scale = '';
-                  else this.project.pro_scale.scale_id = Number.parseInt(data.pro_finance_scale);
-
+                  else this.project.pro_scale.scale_id = data.pro_finance_scale;
                   if (data.pro_finance_stage === 0) this.project.pro_stage = {stage_id: ''};
                   else this.project.pro_stage.stage_id = Number.parseInt(data.pro_finance_stage);
                   this.project.goodness = {
@@ -1022,7 +1043,6 @@
                   this.project.pro_finance_stock_after = data.pro_finance_stock_after || '';
                   localStorage.credential = '';
                 }
-
                 resolve(1);
               })
               .catch(err => {
@@ -1035,7 +1055,7 @@
       }
     },
     created () {
-      this.$tool.getTop();
+      getTop();
       this.loading = true;
       this.getprojectId();
       this.$global.func.getWxProjectCategory()

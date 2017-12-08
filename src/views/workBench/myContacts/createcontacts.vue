@@ -293,6 +293,7 @@
   import * as validata from '@/utils/validata';
   import { error, success, warning } from '@/utils/notification';
   import * as formatData from '@/utils/formatData';
+  import { getTop } from '@/utils';
   export default {
     data () {
       var checkNull = (rule, value, callback) => {
@@ -632,7 +633,7 @@
       cardUpload
     },
     created () {
-      this.$tool.getTop();
+      getTop();
       this.getContactsId();
       this.$global.func.getWxProjectCategory()
         .then((data) => {

@@ -338,6 +338,7 @@
   import * as formatData from '@/utils/formatData';
   import { getTitleSift } from '@/utils/setSelect';
   import { error, success, warning } from '@/utils/notification';
+  import { getTop } from '@/utils';
   export default {
     components: {
       alertUpload,
@@ -503,7 +504,7 @@
       // 请求函数
       // 搜索===首次进入页面加载的数据
       handleIconClick () {
-        this.$tool.getTop();
+        getTop();
         this.loading = true;
         this.getPra.user_id = localStorage.user_id;
         this.getPra.search = this.searchinput;
@@ -586,7 +587,7 @@
             this.tableData = this.getProjectList(data);
             this.totalData = res.data.count;
             this.column = res.data.column === '' ? this.columns : res.data.column;
-            this.$tool.getTop();
+            getTop();
           })
           .catch(err => {
             this.loading = false;

@@ -142,6 +142,7 @@
   import deleteIcon from '../../../../static/images/delete.png';
   import { error, success } from '@/utils/notification';
   import * as validata from '@/utils/validata';
+  import { getTop } from '@/utils';
   export default {
     props: ['proid'],
     data () {
@@ -564,7 +565,7 @@
     },
     created () {
       this.project_id = this.proid;
-      this.$tool.getTop();
+      getTop();
       this.initData();
     },
     watch: {}

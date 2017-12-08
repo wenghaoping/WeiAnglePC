@@ -20,7 +20,6 @@
   export default {
     data () {
       return {
-        input2: '',
         activeName: 'first'
       };
     },
