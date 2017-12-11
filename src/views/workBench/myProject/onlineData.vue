@@ -165,6 +165,7 @@
         this.currentPage = 1;
         this.filterChangeCurrent(1);
       },
+      // ascending升/descending降/
       filterChange (filters) {
         this.loading = true;
         this.currentPage = 1;
@@ -186,7 +187,8 @@
             this.loading = false;
             console.log(err, 2);
           });
-      }, // ascending升/descending降/
+      },
+      // 控制页码
       filterChangeCurrent (page) {
         delete this.getPra.page;
         this.loading = true;
@@ -205,7 +207,8 @@
             this.loading = false;
             console.log(err);
           });
-      }, // 控制页码
+      },
+      // 总设置列表的数据处理
       getList (list) {
         let arr = [];
         for (let i = 0; i < list.length; i++) {
@@ -218,7 +221,7 @@
           arr.push(obj);
         }
         return arr;
-      }// 总设置列表的数据处理
+      }
     },
     // 当dom一创建时
     created () {

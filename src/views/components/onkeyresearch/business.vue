@@ -1,10 +1,6 @@
 <template>
   <div>
-      <!--<div class="mark">
-        <img src="../../../../assets/images/mark.png">
-      </div>-->
     <el-tabs v-model="bussinessName">
-
       <el-tab-pane label="工商信息" name="1" style="margin-top: -30px;">
         <div class="block"  style="display: block">
           <div class="rz-details" style="width: 795px;">
@@ -118,47 +114,6 @@
 
         </div>
       </el-tab-pane>
-      <!--专利信息-->
-      <!--<el-tab-pane :label="patentMessage" name="4">
-        <div class="block patent">
-          <el-table
-            :data="patentData"
-            stripe
-            border
-            style="width: 100%">
-            <el-table-column
-              prop="name"
-              label="专利名称"
-              width="280">
-            </el-table-column>
-            <el-table-column
-              prop="publishNubmer"
-              label="申请公布号"
-              min-width="110"
-              >
-            </el-table-column>
-            <el-table-column
-              prop="publishdate"
-              label="申请公布日"
-              min-width="100"
-            >
-            </el-table-column>
-            <el-table-column
-              prop="applyNumber"
-              label="申请号"
-              min-width="120"
-            >
-            </el-table-column>
-            <el-table-column
-              prop="classify"
-              label="分类号"
-              min-width="145"
-              >
-            </el-table-column>
-          </el-table>
-
-        </div>
-      </el-tab-pane>-->
     </el-tabs>
   </div>
 </template>
@@ -229,9 +184,7 @@
         this.trademarkMessage = '知识产权-商标信息' + '(' + data.brand.length + ')';
       }// 获取商标信息
     },
-    created () {
-
-    },
+    created () {},
     watch: {
       busData: function () {
         this.getCrawlerBrand();
@@ -269,6 +222,4 @@
       color:#1f2d3d;
     }
   }
-
-
 </style>

@@ -48,7 +48,4 @@
     }
 
   }
-  #app main{
-      min-height: 710px!important;
-  }
 </style>

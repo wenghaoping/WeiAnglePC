@@ -10,7 +10,6 @@ const checkone = r => require.ensure([], () => r(require('@/test/checkone.vue'))
 /* 配置路由 */
 export default new Router({
   routes: [
-
     {
       path: '/workBench',
       component: _import('workBench/index'),

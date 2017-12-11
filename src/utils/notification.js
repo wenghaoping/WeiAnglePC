@@ -3,28 +3,32 @@
  */
 import { Notification } from 'element-ui';
 
-//* 弹框类
+// 弹框类
+// 错误弹窗(所有的错误调用,红色叉)
 export function error (text) {
   Notification.error({
     message: text,
     offset: 300,
     duration: 1500
   });
-} // 错误弹窗(所有的错误调用,红色叉)
+}
+// 成功弹窗(绿钩)
 export function success (text) {
   Notification.success({
     message: text,
     offset: 300,
     duration: 1500
   });
-} // 成功弹窗(绿钩)
+}
+// 警告弹窗,(黄色叹号)
 export function warning (text) {
   Notification.warning({
     message: text,
     offset: 300,
     duration: 3000
   });
-} // 警告弹窗,(黄色叹号)
+}
+// 判断是不是IE(所有版本)
 export function IEVersion () {
   var userAgent = navigator.userAgent; // 取得浏览器的userAgent字符串
   var isIE = userAgent.indexOf('compatible') > -1 && userAgent.indexOf('MSIE') > -1; // 判断是否IE<11浏览器
@@ -52,4 +56,4 @@ export function IEVersion () {
   } else {
     return -1;// 不是ie浏览器
   }
-} // 判断是不是IE(所有版本)
+}

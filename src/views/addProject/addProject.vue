@@ -1,7 +1,5 @@
 <template>
-    <div id="addproject" v-loading.fullscreen="loading" element-loading-text="正在加入项目库中">
-
-    </div>
+    <div id="addproject" v-loading.fullscreen="loading" element-loading-text="正在加入项目库中"></div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -10,17 +8,12 @@
     data () {
       return {
         loading: true
-
       };
     },
     computed: {},
-    mounted () {
-
-    },
+    mounted () {},
     // 组件
-    components: {
-
-    },
+    components: {},
     methods: {},
     // 当dom一创建时
     created () {
@@ -58,12 +51,6 @@
         setTimeout(() => { this.$router.push({name: 'myProject', query: {activeTo: 0}}); }, 50);
       }
     },
-    watch: {
-
-    }
+    watch: {}
   };
 </script>
-
-<style>
-
-</style>

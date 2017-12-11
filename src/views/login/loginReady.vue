@@ -11,9 +11,7 @@
         loading: false
       };
     },
-    methods: {
-
-    },
+    methods: {},
     created () {
       this.loading = true;
       var a = '';

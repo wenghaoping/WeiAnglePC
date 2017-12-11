@@ -11,17 +11,12 @@
         loading: true,
         project_id: '',
         show: ''
-
       };
     },
     computed: {},
-    mounted () {
-
-    },
+    mounted () {},
     // 组件
-    components: {
-
-    },
+    components: {},
     methods: {},
     // 当dom一创建时
     created () {
@@ -52,9 +47,7 @@
           });
       }
     },
-    watch: {
-
-    }
+    watch: {}
   };
 </script>
 

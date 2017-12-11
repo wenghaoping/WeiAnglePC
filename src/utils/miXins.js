@@ -1,6 +1,7 @@
 /**
  * Created by Admin on 2017/9/25.
  */
+// 全局函数
 /* eslint-disable */
 import Vue from 'vue';
 import { getIntervalTime, srtIntervalClearTime } from '@/utils';

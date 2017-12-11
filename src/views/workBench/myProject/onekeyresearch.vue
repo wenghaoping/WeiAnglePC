@@ -34,9 +34,6 @@
                 <div class="tag" style="padding-top: 20px;    display: inline-block;">
                   <span class="tag-bottom" style="margin-right: 11px;" v-if="project1.project_label!=''"><img src="../../../assets/images/tag2.png"></span>
                   <span class="tag-bottom" v-if="project1.project_label!=''">{{project1.project_label}}</span>
-                  <!--                  <span class="tag-bottom">创业</span>
-                                    <span class="tag-bottom">大数据</span>
-                                    <span class="tag-bottom">人工智能</span>-->
                   <span class="url fr" v-if="project1.project_website!=''"><img src="../../../assets/images/tag3.png" >
                     <a :href="project1.project_website" target="_Blank">{{project1.project_website}}</a>
                   </span>
@@ -189,9 +186,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import companyMessage from './onkeyresearch/companyMessage.vue';
-  import business from './onkeyresearch/business.vue';
-  import downloadechart from './onkeyresearch/downloadEchart.vue';
+  import companyMessage from '@/views/components/onkeyresearch/companyMessage.vue';
+  import business from '@/views/components/onkeyresearch/business.vue';
+  import downloadechart from '@/views/components/onkeyresearch/downloadEchart.vue';
   import { setTime } from '@/utils/formatData';
   import { error } from '@/utils/notification';
   export default {

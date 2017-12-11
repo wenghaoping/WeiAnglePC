@@ -369,6 +369,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import echarts from 'echarts';
   import alertprojectdetail from '@/views/components/alertProjectDetail.vue';
   import addfollow from '@/views/components/addFollow.vue';
   import projectpush from '@/views/components/projectPush.vue';
@@ -916,7 +917,7 @@
         this.scheduleIndex = index;
       },
       eChart (going, hold, reject) {
-        if (this.chartCheck) this.chart = this.$echart.init(document.getElementById('echart'));
+        if (this.chartCheck) this.chart = echarts.init(document.getElementById('echart'));
         let option = {
           color: ['#13CE66', '#009eff', '#F44C4C'],
           tooltip: {

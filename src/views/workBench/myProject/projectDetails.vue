@@ -12,11 +12,11 @@
                 <div slot="content">1. 私密项目仅自己/团队成员可见,项目数据安全不泄露　<br/>2. 公开项目投资人可申请查看,并参与市场融资对接</div>
                 <span class="icon"><img src="../../../assets/images/why.png"/></span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_name.length > 4 ? false:true">
+              <el-tooltip class="item" effect="dark"  placement="top" :disabled="project.pro_name.length > 8 ? false:true">
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_name}}</div>
                 </div>
-                <span class="title" style="width: 86px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_name}}</span>
+                <span class="title" style="width: 180px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_name}}</span>
               </el-tooltip>
               <el-tooltip class="item" effect="dark"  placement="top-start" :disabled="project.pro_company_name.length > 13? false:true">
                 <div slot="content">
@@ -24,7 +24,6 @@
                 </div>
                 <span class="company"  style="width: 220px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_company_name}}</span>
               </el-tooltip>
-
             </div>
             <div class="item height" style="margin-top: 14px;">
               <el-tooltip class="item" effect="dark"  placement="top-start" :disabled="project.pro_intro.length > 40 ? false:true">
@@ -35,7 +34,6 @@
               </el-tooltip>
 
             </div>
-
             <div class="item height" style="margin-top:6px;">
               <span class="mid-tag" v-for="industry in project.pro_industry">{{industry.industry_name}}</span>
             </div>
@@ -661,6 +659,7 @@
   import pinpai from '../../../../static/images/icon-pinpa.png';
   import yunying from '../../../../static/images/icon-yunying.png';
   import cirIcon from '../../../../static/images/circle.png';
+  import echarts from 'echarts';
   import research from './onekeyresearch.vue';
   import folowup from './followUpDetail.vue';
   import filemanagement from './fileManagement.vue';
@@ -953,26 +952,30 @@
 //      this.eChart();
     },
     methods: {
+      // 点击写跟近按钮
       addFollow () {
         this.zgClick('添加跟进');
         this.followid = '';
         this.followDisplay = true;
         this.projecmessage.project_id = this.project.project_id;
         this.projecmessage.pro_intro = this.project.pro_intro;
-      }, // 点击写跟近按钮
+      },
+      // 关闭添加跟进
       closeFollow (msg) {
         this.followDisplay = msg;
         this.getEnjoyedInvestors();
         this.getFollowData = true;
-      }, // 关闭添加跟进
+      },
+      // 关闭添加跟进重置
       changefollowdata () {
         this.getFollowData = false;
         this.getAllData();
-      }, // 关闭添加跟进重置
+      },
+      // 下载文件
       download (e) {
         const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + e;
         window.location.href = url;
-      }, // 下载文件
+      },
       // 远程数据模拟
       loadData (arr) {
         let newArr = [];
@@ -985,7 +988,7 @@
         }
         return newArr;
       },
-
+      // 搜索公司
       searchChange (queryString) {
         this.loadingSmall = true;
         this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
@@ -999,7 +1002,8 @@
           .catch(err => {
             console.log(err);
           });
-      }, // 搜索公司
+      },
+      // 一键尽调按钮
       goOnkey () {
         if (this.project.pro_company_name === '') {
           this.companySearchDisplay = true;
@@ -1026,7 +1030,8 @@
               console.log(err);
             });
         }
-      }, // 一键尽调按钮
+      },
+      // 点击下拉选择公司后
       search (data) {
         if (data.com_id === -2) {
           error('匹配不到你要搜索的公司,请重新继续输入');
@@ -1058,13 +1063,15 @@
             this.companySearchDisplay = false;
           });
         }
-      }, // 点击下拉选择公司后
+      },
+      // 关闭搜索弹框
       dialogVisibleTo () {
         this.companySearchDisplay = false;
-      }, // 关闭搜索弹框
+      },
+      // 输入搜索
       handleIconClick () {
         this.searchChange(this.searchName);
-      }, // 输入搜索
+      },
       handleClick (tab, event) {
         this.show = tab.name;
         if (tab.name === 'detail') { this.zgClick('查看项目详情'); }
@@ -1073,37 +1080,44 @@
         if (tab.name === 'onlinedata') { this.zgClick('查看上线后数据'); }
         if (tab.name === 'scoreStatistics') { this.zgClick('查看评分统计'); }
       },
+      // 返回上一层
       goBack () {
         if (this.activeFrom === 0) this.$router.push({name: 'myProject', query: {activeTo: 0}});
         else if (this.activeFrom === 2) this.$router.push({name: 'followUp', query: {activeTo: 2}});// 路由传参
-      }, // 返回上一层
+      },
+      // 传递给一键尽调窗口
       closeSearchDisplay (msg) {
         this.searchDisplay = msg;
         if (!msg) {
           this.getProjectDetail();
         }
-      }, // 传递给一键尽调窗口
+      },
+      // 传递给一键尽调搜索窗口
       closeCompanySearchDisplay (msg) {
         this.companySearchDisplay = msg;
-      }, // 传递给一键尽调搜索窗口
+      },
+      // 人脉详情弹窗关闭
       closeContact (msg) {
         this.contactDisplay = msg;
-      }, // 人脉详情弹窗关闭
-
+      },
+      // 关闭项目推送弹框(人脉入口)
       closeProjectPush (msg) {
         this.projectPushDisplay = msg;
         this.getAllData();
-      }, // 关闭项目推送弹框(人脉入口)
+      },
+      // 关闭项目推送弹框(项目入口)
       closeProjectPush2 (msg) {
         this.projectPushDisplay2 = msg;
         this.getAllData();
-      }, // 关闭项目推送弹框(项目入口)
+      },
+      // 关闭预览AND关闭项目推送1,关闭项目推送2
       closePreviewANDProjectPush (msg) {
         this.projectPushDisplay = false;
         this.projectPushDisplay2 = false;
         this.previewDisplay = false;
         this.getAllData();
-      }, // 关闭预览AND关闭项目推送1,关闭项目推送2
+      },
+      // 项目来源编辑
       getProjectTag (arr) {
         let str = '';
         for (let i = 0; i < arr.length; i++) {
@@ -1112,7 +1126,8 @@
           }
         }
         return str;
-      }, // 项目来源编辑
+      },
+      // 项目来源编辑
       getteam_tag (arr) {
         let str = [];
         for (let i = 0; i < arr.length; i++) {
@@ -1121,7 +1136,8 @@
           }
         }
         return str;
-      }, // 项目来源编辑
+      },
+      // 链接跳转
       urlOpen (url) {
         let url1 = '';
         if ((!url.indexOf('https://')) || (!url.indexOf('http://'))) {
@@ -1130,7 +1146,8 @@
           url1 = 'http://' + url;
         }
         window.open(url1);
-      }, // 链接跳转
+      },
+      // 获取项目详情数据
       getProjectDetail () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -1186,7 +1203,8 @@
               console.log(err);
             });
         });
-      }, // 获取项目详情数据
+      },
+      // 获取所有下拉框的数据
       getWxProjectCategory () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -1197,25 +1215,30 @@
           this.follow_scheduleAll.unshift({label: '全部', value: 0});// 设置项目状态
           resolve(2);
         });
-      }, // 获取所有下拉框的数据
+      },
+      // 项目推送入口,项目入口
       projectPush2 () {
         this.projectPushDisplay2 = true;
         this.zgClick('推送项目');
-      }, // 项目推送入口,项目入口
+      },
+      // 获取id
       getprojectId () {
         this.project.project_id = this.$route.query.project_id;
         this.activeFrom = this.$route.query.activeTo || 0;
         this.show = this.$route.query.show || 'detail';
-      }, // 获取id
+      },
+      // 编辑项目
       toEdit () {
         this.zgClick('编辑项目');
         this.$router.push({name: 'editproject', query: {project_id: this.project.project_id}});
-      }, // 编辑项目
+      },
+      // 打开人脉详情弹窗
       toDetail (data) {
         this.cardid = data.card_id;
         this.userid = data.user_id;
         this.contactDisplay = true;
-      }, // 打开人脉详情弹窗
+      },
+      // hold切换后
       selectChange2 (e) {
         if (this.takechange) {
           let getData = {
@@ -1239,15 +1262,16 @@
             });
         }
         this.takechange = true;
-      }, // hold切换后
+      },
+      // 点击标签
       handleClick2 (tab, event) {
         if (tab.name === '1') this.zgClick('意向投资人');
         if (tab.name === '2') this.zgClick('买家图谱');
         if (tab.name === '1') this.tabs = true;
         else this.tabs = false;
-      }, // 点击标签
-
-      //* 设置意向投资人右边
+      },
+      // 设置意向投资人右边
+      // 获取意向项目数据(图表)
       getEchartData () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -1265,7 +1289,8 @@
               error('加载超时');
             });
         });
-      }, // 获取意向项目数据(图表)
+      },
+      // 获取意向投资人列表
       getEnjoyedInvestors () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -1293,7 +1318,8 @@
               error('加载超时');
             });
         });
-      }, // 获取意向投资人列表
+      },
+      // 设置意向投资人列表
       setEnjoyInvestor (arr) {
         let newArr = [];
         arr.forEach((x) => {
@@ -1319,9 +1345,10 @@
           newArr.push(obj);
         });
         return newArr;
-      }, // 设置意向投资人列表
+      },
+      // 图表
       eChart (going, hold, reject) {
-        if (this.chartCheck) this.chart = this.$echart.init(document.getElementById('echart'));
+        if (this.chartCheck) this.chart = echarts.init(document.getElementById('echart'));
         let option = {
           color: ['#13CE66', '#009eff', '#F44C4C'],
           tooltip: {
@@ -1378,10 +1405,12 @@
         };
         this.chart.setOption(option);
         this.chartCheck = false;
-      }, // 图表
+      },
+      // 获取意向投资人索引
       getIndex (index) {
         this.scheduleIndex = index;
-      }, // 获取意向投资人索引
+      },
+      // 控制意向投资人页码
       filterChangeCurrent (page) {
         getTop();
         this.loading = true;
@@ -1402,7 +1431,8 @@
             this.loading = false;
             error('加载超时');
           });
-      }, // 控制意向投资人页码
+      },
+      // 设置项目跟进进度
       selectChange (e) {
         let width = 0;
         switch (e) {
@@ -1463,7 +1493,8 @@
             });
         }
         return width;
-      }, // 设置项目跟进进度
+      },
+      // 筛选意向项目
       selectSearch (e) {
         this.loading = true;
         this.getConCon.schedule_id = e;
@@ -1491,9 +1522,9 @@
             this.loading = false;
             error('加载超时');
           });
-      }, // 筛选意向项目
-
-      //* 买家图谱
+      },
+      // 买家图谱
+      // 设置买家图谱列表
       setProjectMatchInvestors (arr) {
         let newArr = [];
         arr.forEach((x) => {
@@ -1518,7 +1549,8 @@
           newArr.push(obj);
         });
         return newArr;
-      }, // 设置买家图谱列表
+      },
+      // 买家图谱列表
       getProjectMatchInvestors () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -1541,7 +1573,8 @@
               error('加载超时');
             });
         });
-      }, // 买家图谱列表
+      },
+      // 控制买家图谱页码
       filterChangeInvestors (page) {
         getTop();
         this.loading = true;
@@ -1564,7 +1597,8 @@
             this.loading = false;
             error('加载超时');
           });
-      }, // 控制买家图谱页码
+      },
+      // 买家图谱推送
       industryPush (data) {
         if (data === 0) {
           warning('已推送过');
@@ -1585,7 +1619,8 @@
           this.pushData.email = data.user_eamil;
           this.pushData.project_id = this.project.project_id;
         }
-      }, // 买家图谱推送
+      },
+      // 买家图谱人脉删除
       industryDelete (data) {
         let delData = {};
         console.log(data.investor_id);
@@ -1618,7 +1653,8 @@
             message: '已取消删除'
           });
         });
-      }, // 买家图谱人脉删除
+      },
+      // 筛选买家图谱
       selectFollow (e) {
         this.getInvestors.user_id = localStorage.user_id;
 //      this.getPra.user_id="2rzyz5vp";
@@ -1638,23 +1674,28 @@
             console.log(err);
             error('加载超时');
           });
-      }, // 筛选买家图谱
-      //* 编辑跟进记录
+      },
+      // 编辑跟进记录
+      // 拿到跟进记录id
       getFollowId (id) {
         this.followDisplay = true;
         this.followid = id;
         this.getFollowData = false;
-      }, // 拿到跟进记录id
+      },
       // 项目推送
+      // 打开项目预览
       openPreview (msg) {
         this.previewDisplay = msg;
-      }, // 打开项目预览
+      },
+      // 项目推送预览隐藏
       previewPush (x) {
         this.emitPush = x;
-      }, // 项目推送预览隐藏
+      },
+      // 关闭项目预览
       closePreview (msg) {
         this.previewDisplay = msg;
-      }, // 关闭项目预览
+      },
+      // 重新获取所有数据
       getAllData () {
         this.loading = true;
         this.$global.func.getWxProjectCategory()
@@ -1677,8 +1718,8 @@
             this.loading = false;
             return this.getEnjoyedInvestors();
           });
-      }, // 重新获取所有数据
-
+      },
+      // 获取二维码
       getWX () {
         return new Promise((resolve, reject) => {
           this.$http.post(this.URL.getProjectQrOur, {
@@ -1698,7 +1739,7 @@
             });// 请求函数
           resolve(6);
         });
-      }// 获取二维码
+      }
     },
     created () {
       getTop();

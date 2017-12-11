@@ -3,8 +3,6 @@
     <el-tabs v-model="downloadEchartName" @tab-click="handleClick">
       <!--App下载量-->
       <el-tab-pane label="App下载量" name="1"></el-tab-pane>
-      <!--活跃用户-->
-<!--      <el-tab-pane label="活跃用户" name="2"></el-tab-pane>-->
       <!--浏览页面-->
       <el-tab-pane label="浏览页面" name="2"></el-tab-pane>
       <!--访问用户-->
@@ -15,13 +13,12 @@
     </el-tabs>
     <div id="pieBox" style="width:803px;height:432px;diplay:block"></div>
     <p class="sec"><i>{{title}}：</i>{{main}}</p>
-    <div class="op">
-
-    </div>
+    <div class="op"></div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import echarts from 'echarts';
   export default {
     props: ['comid', 'compName', 'chartData'],
     data () {
@@ -83,14 +80,10 @@
       }, // 获取爬来的数据
       handleClick (tab, event) {
         let index = tab.index;
-//      console.log(tab.index);
         switch (index) {
           case '0':
             this.getdownload();
             break;
-          /*        case '1':
-           this.getdau();
-           break; */
           case '1':
             this.getpv();
             break;
@@ -107,7 +100,7 @@
       },
       eChart (xdata, ydata1, ydata2) {
         if (this.chartCheck) {
-          this.chart = this.$echart.init(document.getElementById('pieBox'));
+          this.chart = echarts.init(document.getElementById('pieBox'));
         }
         let option = {
           title: {},
@@ -170,11 +163,6 @@
         this.main = '综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。';
         this.eChart(this.xdata, this.download.ydataTotal, this.download.ydataAverage);
       }, // 累计下载量
-      getdau () {
-        this.title = '累计用户';
-        this.main = '日活跃用户量';
-        this.eChart(this.xdata, this.dau.ydataTotal, this.dau.ydataAverage);
-      }, // 累计用户
       getpv () {
         this.title = '浏览页面数(PV)';
         this.main = '对目标公司网站在全网的日均访问量加总,并经过加权计算的值,值越高,访问量越大.该指标反映了用户对目标公司官方网站的访问情况,是可以表明目标公司网站内容受访问热度的指标.';
@@ -197,9 +185,6 @@
           this.xdata = data.three_month;
           this.download.ydataTotal = this.getAverage(data.total_download_mid);
           this.download.ydataAverage = this.getTotal(data.total_download[0].value);
-
-          /*            this.dau.ydataTotal=this.getAverage(data.dau_mid);
-           this.dau.ydataAverage=this.getTotal(data.dau[0].value); */
 
           this.pv.ydataTotal = this.getAverage(data.pv_mid);
           this.pv.ydataAverage = this.getTotal(data.pv[0].value);
@@ -228,11 +213,7 @@
 
     },
     // Echart组件
-    mounted () {
-      /*    setTimeout(() =>{
-       this.getdownload();
-       },100) */
-    },
+    mounted () {},
     watch: {
       comid: function (e) {
 

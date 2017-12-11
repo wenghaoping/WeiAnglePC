@@ -301,9 +301,9 @@
 
 <script type="text/ecmascript-6">
   import img from '../../../static/images/img-fageerweima.png';
-  import companyMessage from '../workBench/myProject/onkeyresearch/companyMessage.vue';
-  import business from '../workBench/myProject/onkeyresearch/business.vue';
-  import downloadechart from '../workBench/myProject/onkeyresearch/downloadEchart.vue';
+  import companyMessage from '@/views/components/onkeyresearch/companyMessage.vue';
+  import business from '@/views/components/onkeyresearch/business.vue';
+  import downloadechart from '@/views/components/onkeyresearch/downloadEchart.vue';
   import { error } from '@/utils/notification';
   import * as formatData from '@/utils/formatData';
   import { getTop } from '@/utils';

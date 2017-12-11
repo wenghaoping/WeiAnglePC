@@ -4,8 +4,8 @@
     <ul class="select ulfl tc" style="position: relative">
       <li style="width: 150px;margin-right: 100px;vertical-align: middle;display: table-cell;height: 60px;"><img
         src="../assets/images/logoing.png" style="vertical-align:middle;"></li>
-      <li @click="toggle(index)" v-for="(tab,index) in tabs">
-        <router-link :to=" tab.jump " :class="{border:active===index}">
+      <li @click="toggle(index)" v-for="(tab,index) in tabs" :key="index">
+        <router-link :to="tab.jump" :class="{ border:active === index}">
           {{tab.type}}
         </router-link>
       </li>
@@ -100,8 +100,6 @@
           localStorage.entrance = 'myProject';
           if (localStorage.user_id) {
             this.$router.push({name: 'myProject', query: {activeTo: 0}});
-
-//            setTimeout(()=>{ window.location.reload()},1000);
           } else {
             this.$router.push({name: 'telephoneLogin'});
           }
@@ -212,9 +210,7 @@
       }
     },
     // 当dom一创建时
-    created () {
-
-    },
+    created () {},
     watch: {}
   };
 </script>

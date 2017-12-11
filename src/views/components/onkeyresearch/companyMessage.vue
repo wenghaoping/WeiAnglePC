@@ -38,7 +38,7 @@
       <el-tab-pane :label="productMessage" name="2">
         <div class="block"  style="display: block">
           <div class="inner fl" v-for="project in company.company_project">
-            <div class="img fl"><img src="../../../../assets/images/logo.png"/></div>
+            <div class="img fl"><img src="../../../assets/images/logo.png"/></div>
             <p class="type fl" style="margin-bottom: 7px;">{{project.company_project_name}}<span>{{project.company_project_type}}</span></p>
             <p class="sec">{{project.company_project_introduce}}</p>
           </div>
