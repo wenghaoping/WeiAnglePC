@@ -11,7 +11,7 @@ import syncData from './modules/syncData.js';
 Vue.use(Vuex);
 
 const state = {
-  // 初始化状态设定
+  // 全局初始化状态设定
 
 };
 
@@ -20,7 +20,7 @@ export default new Vuex.Store({
   getters,
   actions,
   mutations,
-  modules: {
+  modules: { // 用前面的去访问
     pushProject: pushProject,
     logining: login,
     pageANDSelect: pageAndSelect,

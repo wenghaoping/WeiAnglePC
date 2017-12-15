@@ -7,5 +7,7 @@ export default {
     user_real_name: '',
     routeName: '',
     group_name: ''
-  }
+  },
+  mutations: {},
+  actions: {}
 };

@@ -14,13 +14,11 @@ import axios from './api/api.js';// axios请求配置
 import URL_ from './api/url.js';// URL请求地址汇总
 import './otherUtil.js'; // 其他零碎工具
 import './filters';// 过滤器
-import Vuex from 'vuex';
 import global from './global/global.js';
 Vue.prototype.$http = axios;
 Vue.prototype.URL = URL_;
 Vue.prototype.$global = global;
 Vue.use(Element); // UI库
-Vue.use(Vuex);
 Vue.use(zhuge); // 诸葛io
 
 Vue.config.productionTip = false;

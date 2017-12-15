@@ -25,9 +25,9 @@
           </el-input>
         </div>
         <div class="btns-box">
-          <el-button type="primary" @click="closeScore(true)" v-if="is_competition == 'true'">大赛评分指标</el-button>
-          <el-button type="primary" @click="openLists(true)">自定义列表</el-button>
-          <el-button type="primary" @click="scoreDownload" v-if="is_competition == 'true'">评分下载</el-button>
+          <el-button @click="closeScore(true)" v-if="is_competition == 'true'">大赛评分指标</el-button>
+          <el-button @click="openLists(true)">自定义列表</el-button>
+          <el-button @click="scoreDownload" v-if="is_competition == 'true'">评分下载</el-button>
           <el-button type="primary" @click="uploadAll">批量上传项目</el-button>
           <el-button type="primary" @click="createProject">创建项目</el-button>
         </div>
