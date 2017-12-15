@@ -1,0 +1,161 @@
+<template>
+  <!--单个上传组件-->
+  <div class="singleUpload">
+    <span class="fl">
+      <span class="fl">
+        <el-upload class="planUpload"
+                   ref="upload"
+                   :name="fileName"
+                   :action="uploadAddress"
+                   :on-preview="planPreview"
+                   :on-change="planChange"
+                   :on-success="planuploadsuccess"
+                   :on-error="uploaderror"
+                   :on-remove="planRemove"
+                   :before-upload="beforeUpload"
+                   :file-list="planList"
+                   :auto-upload="autoUpload"
+                   accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
+                   :data="uploadDate">
+          <el-button slot="trigger" type="primary" v-show="planButton">
+            <slot></slot>
+          </el-button>
+        </el-upload>
+      </span>
+      <span class="uploadImg fl" style="margin: 15px 0px 0px 10px;" v-if="uploadLoading"><img src="../../assets/images/loading.gif"></span>
+      <span class="uploadImg fl" style="margin: 15px 0px 0px 10px;" v-else></span>
+    </span>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import { error, success } from '@/utils/notification';
+  export default {
+    props: {
+      uploadDate: {
+        type: Object
+      },
+      uploadAddress: {
+        type: String,
+        required: true
+      },
+      planList: {
+        type: Array,
+        default: []
+      },
+      autoUpload: {
+        type: Boolean,
+        default: true
+      },
+      fileName: {
+        type: String,
+        default: 'file'
+      }
+    },
+    data () {
+      return {
+        planButton: true, // 控制上传按钮的显示
+        uploadLoading: false // BP上传动画
+      };
+    },
+    computed: {},
+    mounted () {},
+    // 组件
+    components: {},
+    methods: {
+      // 点击下载
+      planPreview (file) {
+        this.$emit('planPreview', file);
+      },
+      // 上传前的验证
+      beforeUpload (file) {
+        this.$emit('changeUploadData', file);
+        let filetypes = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.zip', '.rar'];
+        let name = file.name;
+        let fileend = name.substring(name.lastIndexOf('.')).toLowerCase();
+        let isnext = false;
+        if (filetypes && filetypes.length > 0) {
+          for (var i = 0; i < filetypes.length; i++) {
+            if (filetypes[i] === fileend) {
+              isnext = true;
+              break;
+            }
+          }
+        }
+        this.loading = false;
+        if (!isnext) {
+          error(file.name + '是不支持的文件格式');
+          return false;
+        }
+        if (parseInt(file.size) > parseInt(52428810)) {
+          error('暂不支持超过50M文件上传哦');
+          return false;
+        };
+        this.uploadLoading = true;
+      },
+      // 上传名片======================================================
+      planChange (file, fileList) {
+        if (file.status === 'fail') this.planButton = true;
+        else this.planButton = false;
+      },
+      // 上传成功后添加字段
+      planuploadsuccess (response, file, fileList) {
+        this.$emit('success', response);
+        success('上传成功');
+        this.uploadLoading = false;
+        this.submitButton = false;
+      },
+      // 删除文件
+      planRemove (file, fileList) {
+        if (file) {
+          if (fileList.length === 0) this.planButton = true;
+          else this.planButton = true;
+          this.$emit('delete', file);
+        } else {
+          this.planButton = true;
+        }
+      },
+      // 上传失败
+      uploaderror (err, file, fileList) {
+        console.log(err);
+        error('上传失败,请联系管理员');
+        this.uploadLoading = false;
+        this.submitButton = false;
+      },
+      // 当不自动上传时，调用函数启用上传
+      submitUpload (e) {
+        this.$refs.upload.submit();
+      }
+    },
+    // 当dom一创建时
+    created () {},
+    watch: {}
+  };
+</script>
+
+<style lang="less">
+  .singleUpload{
+    .uploadImg{
+      width: 15px;
+      height: 15px;
+      display: inline-block;
+      img{
+        width: 100%;
+      }
+    }
+    .planUpload {
+      .el-upload {
+        display: block;
+      }
+      .el-upload-list__item {
+        /*    width: 200px;*/
+      }
+      .el-upload-list__item-name {
+        font-size: 14px;
+        color: #475669;
+        letter-spacing: 0;
+        text-decoration: underline
+      }
+    }
+  }
+</style>

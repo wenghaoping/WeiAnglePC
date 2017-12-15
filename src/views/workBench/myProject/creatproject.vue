@@ -12,8 +12,6 @@
             </div>
             <div class="block-info block-cc-file" style="margin-top: 48px;">
               <span class="f-title fl">商业计划书</span>
-              <!--<span class="f-name">微天使商业计划书</span>
-              <span class="del-btn"><i class="el-icon-delete"></i></span>-->
               <span style="margin-left: 20px;" class="fl">
                 <el-upload class="Upload"
                            ref="upload"

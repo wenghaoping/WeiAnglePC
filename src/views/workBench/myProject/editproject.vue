@@ -32,9 +32,7 @@
                                accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
                                :data="uploadDate">
                       <el-button slot="trigger" type="primary" v-show="planButton" @click="zgClick('上传BP')">计划书上传</el-button>
-
                     </el-upload>
-
                   </span>
                   <span class="f-tips fl" style="margin-left: 8px;" v-show="planButton"><i>BP私密保护，投资人可通过申请查看来了解项目价值</i><i>支持pdf、ppt、pptx、doc、docx、zip、rar文件格式，单个文件最大50M</i></span>
                 </div>
@@ -1664,6 +1662,7 @@
         this.tagShow = 0;
       },
       // 获取列表各种数据
+      // 获取运营状态
       getCompanyStatus (data) {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
@@ -1674,7 +1673,8 @@
         }
         arr.push({label: '自定义添加', value: '自定义添加'});
         return arr;
-      }, // 获取运营状态
+      },
+      // 获取项目分组信息
       getFileType (data) {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
@@ -1684,8 +1684,8 @@
           arr.push(obj);
         }
         return arr;
-      }, // 获取项目分组信息
-
+      },
+      // 设置文件分组标签
       setFileType () {
         return new Promise((resolve, reject) => {
           this.$http.post(this.URL.getFileType, {user_id: localStorage.user_id})
@@ -1698,7 +1698,8 @@
               console.log(err);
             });
         });
-      }, // 设置文件分组标签
+      },
+      // 获取所有下拉框的数据
       getWxProjectCategory () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -1719,7 +1720,8 @@
             resolve(2);
           }, 200);
         });
-      }, // 获取所有下拉框的数据
+      },
+      // 设置二级城市下拉列表
       area1Change (data) {
         this.$http.post(this.URL.getArea, {user_id: localStorage.user_id, pid: data})// pid省
           .then(res => {
@@ -1729,7 +1731,8 @@
           .catch(err => {
             console.log(err);
           });
-      }, // 设置二级城市下拉列表
+      },
+      // 设置二级城市下拉列表2
       area1Change2 (data) {
         let newData = data;
         if (data !== '') {
@@ -1747,9 +1750,9 @@
               console.log(err);
             });
         }
-      }, // 设置二级城市下拉列表2
-
-      //* 获取项目详情
+      },
+      // 获取项目详情
+      // 设置批量上传文件显示
       setUploadShow2 (data) {
         for (let i = 0; i < data.length; i++) {
           if (data[i].belongs_to_type == null) {
@@ -1757,8 +1760,8 @@
           };
           this.addDomain(data[i].belongs_to_type.type_name, data[i].file_title + '.' + data[i].file_ext, data[i].file_id, data[i].belongs_to_type.type_id);
         }
-      }, // 设置批量上传文件显示
-
+      },
+      // 获取项目详情数据
       getProjectDetail () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -1922,25 +1925,27 @@
               console.log(err);
             });
         });
-      }, // 获取项目详情数据
-
-      //* 商业计划书
+      },
+      // 商业计划书
       planChange (file, fileList) {
         this.planList = fileList;
         if (file.status === 'fail') this.planButton = true;
         else this.planButton = false;
       },
+      // 上传成功后添加字段
       planuploadsuccess (response, file, fileList) {
         success('上传成功');
         let data = response.data;
         this.addplan(data.bp_title, data.pro_intro, data.pro_name, data.project_id, data.file_id);
         this.uploadLoading = false;
         this.submitButton = false;
-      }, // 上传成功后添加字段
+      },
+      // 上传失败
       planuploaderror (err, file, fileList) {
         console.log(err);
         error('上传失败,请联系管理员');
-      }, // 上传失败
+      },
+      // 删除文件
       planRemove (file, fileList) {
         if (fileList.length === 0) this.planButton = true;
         else {
@@ -1958,7 +1963,8 @@
             console.log(err);
 //            this.alert("删除失败,请联系管理员")
           });
-      }, // 删除文件
+      },
+      // 添加上传文件时,保存返回的数据
       addplan (fileTitle, proIntro, proName, projectId, fileId) {
         let object = {};
         object.file_title = fileTitle;
@@ -1967,11 +1973,13 @@
         object.project_id = projectId;
         object.file_id = fileId;
         this.uploadShow = object;
-      }, // 添加上传文件时,保存返回的数据
+      },
+      // 点击下载
       planPreview (file) {
         const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + this.uploadShow.file_id;
         window.location.href = url;
-      }, // 点击下载
+      },
+      // 上传前的验证
       beforeUpload (file) {
         this.fileuploadDate.project_id = this.project_id;
         this.uploadDate.project_id = this.project_id;
@@ -1998,8 +2006,7 @@
         };
         this.uploadLoading = true;
         this.submitButton = true;
-      }, // 上传前的验证
-
+      },
       // 取消上传
       cancelUpload (file) {
         this.$refs.upload.abort(file);
@@ -2050,12 +2057,14 @@
         this.loadingcheck = true;
         this.subButtonCheck(this.uploadShow2.lists);
       },
+      // 上传失败
       uploaderror (err, file, fileList) {
         console.log(err);
         error('上传失败,请联系管理员');
         this.loadingcheck = false;
         this.loading = false;
-      }, // 上传失败
+      },
+      // 点击下载
       download (item) {
         let index = this.uploadShow2.lists.indexOf(item);
         if (index !== -1) {
@@ -2063,8 +2072,8 @@
           const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + fileId;
           window.location.href = url;
         }
-      }, // 点击下载
-
+      },
+      // 删除当前上传文件
       removeList (item) {
         var index = this.uploadShow2.lists.indexOf(item);
         if (index !== -1) {
@@ -2086,8 +2095,8 @@
               error('删除失败,请联系管理员');
             });
         }
-      }, // 删除当前上传文件
-
+      },
+      // 添加上传文件时,加入显示列表
       addDomain (typeName, fileTitle, fileId, type, load, uid) {
         let object = {};
         object.bp_type = typeName;
@@ -2097,7 +2106,8 @@
         object.load = load;// 是否在上传中
         object.uid = uid;// 文件唯一标识
         this.uploadShow2.lists.push(object);
-      }, // 添加上传文件时,加入显示列表
+      },
+      // 剔除Load
       deleteLoad (uid) {
         let lists = this.uploadShow2.lists;// 所有的文件的数组
         for (let i = 0; i < lists.length; i++) {
@@ -2105,7 +2115,8 @@
             lists.splice(i, 1);
           }
         }
-      }, // 剔除Load
+      },
+      // 当文件没有全部上传完时,不能提交
       subButtonCheck (arr) {
         if (arr.length === 0) {
           this.submitButton = false;
@@ -2119,8 +2130,8 @@
             this.submitButton = false;
           }
         }
-      }, // 当文件没有全部上传完时,不能提交
-
+      },
+      // 点击文件分组设置中的单选框
       groupchange (label) {
         let index = this.groups.index;
         let data = this.groups.group;
@@ -2130,7 +2141,8 @@
             this.uploadShow2.lists[index].type = label;
           }
         }
-      }, // 点击文件分组设置中的单选框
+      },
+      // 添加文件分组设置的分组选项
       addGroup (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -2156,7 +2168,8 @@
             return false;
           }
         });
-      }, // 添加文件分组设置的分组选项
+      },
+      // 发送文件分组设置请求
       saveGroupChange () { // file_id type_id user_id
         // let type = this.groups.bp_type;
         let index = this.groups.index;
@@ -2175,13 +2188,14 @@
           .catch(err => {
             console.log(err);
           });
-      }, // 发送文件分组设置请求
+      },
+      // 获取文件分组的位置
       toGroup (item) {
         this.groups.type = item.type;
         var index = this.uploadShow2.lists.indexOf(item);
         this.groups.index = index;
         this.setFileDisplay = true;
-      }, // 获取文件分组的位置
+      },
 
       openDiv (v) {
         this[v] = true;
@@ -2189,12 +2203,12 @@
       closeDiv (v) {
         this[v] = false;
       },
+      // 返回上一层
       goBack () {
         this.zgClick('退出编辑项目');
         this.$router.go(-1);
-      }, // 返回上一层
-
-      //* 获取远程数据模拟
+      },
+      // 获取远程数据模拟
       loadData (arr) {
         let newArr = [];
         for (let i = 0; i < arr.length; i++) {
@@ -2206,7 +2220,7 @@
         }
         return newArr;
       },
-      //* 自动搜索,接口写这里面
+      // 自动搜索,接口写这里面
       querySearchAsync (queryString, cb) {
         if (queryString.length > 2) {
           this.$http.post(this.URL.selectCompany, {user_id: localStorage.user_id, company_name: queryString})
@@ -2229,22 +2243,24 @@
           cb(callback);
         }
       },
+      // 选择了搜索出来的数据后
       handleSelect (item) {
         this.companyTitle = item.company_name;
         this.companyid = item.address;
         this.project.pro_company_name = item.company_name;
-      }, // 选择了搜索出来的数据后
-
+      },
       // 控制添加radio
       radiochange (label) {
         if (label === '自定义添加') {
           this.addStateDisplay = true;
         }
       },
+      // 取消后添加运营状态
       cancelGroupChange () {
         this.addStateDisplay = false;
         this.company.pro_status.status_id = this.statusLast;
-      }, // 取消后添加运营状态
+      },
+      // 添加运营状态
       addState () {
         this.$http.post(this.URL.createStatusPro, {user_id: localStorage.user_id, status_name: this.form.state})
           .then(res => {
@@ -2263,7 +2279,8 @@
             error('添加失败');
             console.log(err);
           });
-      }, // 添加运营状态
+      },
+      // 添加项目标签
       addChangepro (e) {
         let tagName = formatData.checkArr(e, this.tags_pro);
         if (tagName !== undefined) {
@@ -2279,7 +2296,8 @@
               console.log(err);
             });
         }
-      }, // 添加项目标签
+      },
+      // 添加团队标签
       addChangeTeam (e) {
         let tagName = formatData.checkArr(e, this.tags_team);
 
@@ -2301,7 +2319,8 @@
 //        else{
 //          this.tags.changeTeam=this.team.tags_team.slice(0);
 //        }
-      }, // 添加团队标签
+      },
+      // 添加项目来源
       addChangesource (e) {
         let tagName = formatData.checkArr(e, this.tags_source);
 
@@ -2323,9 +2342,8 @@
         /* else{
          this.tags.changesource=this.project.pro_source.slice(0);
          } */
-      }, // 添加项目来源
-
-//      添加投资亮点
+      },
+      // 添加投资亮点
       addgoodNess () {
         this.project.goodness.pro_goodness.push({
           goodness_desc: '',
@@ -2334,14 +2352,13 @@
           type: 'pro_goodness'
         });
       },
-//      删除投资亮点
+      // 删除投资亮点
       removegoodNess (item) {
         var index = this.project.goodness.pro_goodness.indexOf(item);
         if (index !== -1) {
           this.project.goodness.pro_goodness.splice(index, 1);
         }
       },
-
       // 添加市场概况
       addgoodNess1 () {
         this.project.goodness.pro_market_genera.push({
@@ -2351,14 +2368,13 @@
           type: 'pro_market_genera'
         });
       },
-//      删除市场概况
+      // 删除市场概况
       removegoodNess1 (item) {
         var index = this.project.goodness.pro_market_genera.indexOf(item);
         if (index !== -1) {
           this.project.goodness.pro_market_genera.splice(index, 1);
         }
       },
-
       // 添加产品概况pro_servicepro_business_model
       addgoodNess2 () {
         this.project.goodness.pro_service.push({
@@ -2368,14 +2384,13 @@
           type: 'pro_service'
         });
       },
-//      删除产品概况
+      // 删除产品概况
       removegoodNess2 (item) {
         var index = this.project.goodness.pro_service.indexOf(item);
         if (index !== -1) {
           this.project.goodness.pro_service.splice(index, 1);
         }
       },
-
       // 添加商业模式pro_business_model
       addgoodNess3 () {
         this.project.goodness.pro_business_model.push({
@@ -2385,7 +2400,7 @@
           type: 'pro_business_model'
         });
       },
-//      删除商业模式
+      // 删除商业模式
       removegoodNess3 (item) {
         var index = this.project.goodness.pro_business_model.indexOf(item);
         if (index !== -1) {
@@ -2426,8 +2441,7 @@
             });
         }
       },
-
-      //* 添加团队成员
+      // 添加团队成员
       addMember () {
         this.team.core_users.push({
           ct_member_name: '',
@@ -2462,8 +2476,7 @@
             });
         }
       },
-
-      //* 添加历史融资信息
+      // 添加历史融资信息
       addHistory () {
         this.financing.pro_history_finance.push({
           finance_time: '',
@@ -2498,8 +2511,7 @@
             });
         }
       },
-
-      //* 添加里程碑
+      // 添加里程碑
       addmilePost () {
         this.milepost.pro_develop.push({
           dh_start_time: '',
@@ -2533,7 +2545,6 @@
             });
         }
       },
-
       // 投资亮点循环一条必填
       oneCheck (item) {
         var check = true;
@@ -2547,15 +2558,15 @@
         }
         return check;
       },
-      //* 检查所有必填项目以及获取所有数据/true过.false不过
+      // 检查所有必填项目以及获取所有数据/true过.false不过
       submitForm (formName, checkName) {
         this.$refs[formName].validate((valid) => {
           this[checkName] = !valid;
         });
       },
-      //* 全部保存按钮
+      // 全部保存按钮
       allSave () {
-        var submit = () => {
+        const submit = () => {
           return new Promise((resolve, reject) => {
             // 做一些异步操作
             this.submitForm('project', 'projectMust');
@@ -2569,7 +2580,7 @@
           });
         };
 
-        var check = () => {
+        const check = () => {
           return new Promise((resolve, reject) => {
             // 做一些异步操作
             setTimeout(() => {
@@ -2641,8 +2652,7 @@
             }
           });
       },
-
-      //* 编辑成功弹窗
+      // 编辑成功弹窗
       open2 (title, main, confirm, cancel) {
         this.$confirm(main, title, {
           confirmButtonText: confirm,
@@ -2654,7 +2664,7 @@
           this.$router.push({name: 'myProject', query: {activeTo: 0}});
         });
       },
-      //* 锚点跳转
+      // 锚点跳转
       setNode (v) {
         this.node0 = false;
         this.node1 = false;
@@ -2735,8 +2745,8 @@
           }
         }
       },
-
-      //* 一键同步按钮
+      // 一键同步按钮
+      // 点击同步按钮
       syncOne () {
         this.companyTitle = this.project.pro_company_name;
         if (this.companyTitle === '') {
@@ -2760,16 +2770,18 @@
               this.loading = false;
             });
         }
-      }, // 点击同步按钮
-
+      },
+      // 项目详情弹窗关闭函数
       changeSyncProjectDetail (msg) {
         this.syncProjectDetailDisplay = msg;
         this.syncDialogDisplay = false;
-      }, // 项目详情弹窗关闭函数
+      },
+      // 获取id
       getprojectId () {
         this.project_id = this.$route.query.project_id || '';
         this.project.project_id = this.$route.query.project_id || '';
-      }, // 获取id
+      },
+      // 开始同步信息(是否覆盖信息)
       syncCompanyData (msg) {
         this.loading = true;
         this.syncDialogDisplay = false;
@@ -2868,7 +2880,7 @@
           }
           this.loading = false;
         };
-      }// 开始同步信息(是否覆盖信息)
+      }
     },
     // 当dom一创建时
     created () {

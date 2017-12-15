@@ -9,7 +9,7 @@
           {{tab.type}}
         </router-link>
       </li>
-      <li id="samllrou">小程序</li>
+      <li id="samllrou" class="relative">小程序</li>
       <div class="weixin">
         <p style="margin-top: 34px;">微信扫一扫</p>
         <p style="margin-bottom: 15px">发现更多精选资源</p>
@@ -60,7 +60,8 @@
         loading: false,
         tabs: [
           {type: '首页', jump: '/'},
-          {type: '工作站', jump: '/workBench'}
+          {type: '工作站', jump: '/workBench'},
+          {type: '超级BP', jump: '/superBP'}
         ],
         restaurants: [],
         companyTitle: '',
@@ -74,12 +75,10 @@
     computed: {
       userRealName () {
         let userRealName = this.$store.state.logining.user_real_name || localStorage.user_real_name;
-//        console.log(userRealName);
         return userRealName;
       },
       groupStatus () {
         let groupName = this.$store.state.logining.group_name || localStorage.group_name || '身份认证';
-//        console.log(groupName);
         return groupName;
       }
     },
@@ -216,5 +215,39 @@
 </script>
 
 <style lang="less">
+  #samllrou:hover + .weixin {
+    display: block;
+  }
+  .weixin {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    top: 53px;
+    left: 522px;
+    background: #ffffff;
+    box-shadow: 0 4px 4px 0 rgba(64, 88, 122, 0.10);
+    border-radius: 4px;
+    width: 227px;
+    height: 296px;
+    p {
+      font-size: 18px;
+      color: #1f2d3d;
+      line-height: 24px;
+      text-align: center;
 
+    }
+    .img {
+      margin: 0px 32px 32px;
+      width: 162px;
+      height: 162px;
+      img {
+        width: 100%;
+      }
+    }
+    .arrow {
+      position: absolute;
+      top: -14px;
+      right: 105px
+    }
+  }
 </style>

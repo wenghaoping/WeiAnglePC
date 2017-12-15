@@ -1,4 +1,5 @@
 <template>
+  <!--名片上传组件，显示图片-->
   <div class="cardUpload">
     <span style="margin-left: 20px;" class="fl">
       <el-upload class="uploadImg"
@@ -90,7 +91,6 @@
       CardPlanuploadsuccess (response, file, fileList) {
         this.$emit('success', response);
         success('上传成功');
-        this.submitButton = false;
       },
       // 删除文件
       CardPlanRemove (file, fileList) {

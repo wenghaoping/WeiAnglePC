@@ -249,41 +249,7 @@
     }
 
   }
-  #samllrou:hover + .weixin {
-    display: block;
-  }
-  .weixin {
-    display: none;
-    position: fixed;
-    z-index: 100;
-    top: 53px;
-    left: 400px;
-    background: #ffffff;
-    box-shadow: 0 4px 4px 0 rgba(64, 88, 122, 0.10);
-    border-radius: 4px;
-    width: 227px;
-    height: 296px;
-    p {
-      font-size: 18px;
-      color: #1f2d3d;
-      line-height: 24px;
-      text-align: center;
 
-    }
-    .img {
-      margin: 0px 32px 32px;
-      width: 162px;
-      height: 162px;
-      img {
-        width: 100%;
-      }
-    }
-    .arrow {
-      position: absolute;
-      top: -14px;
-      right: 105px
-    }
-  }
 
   /* 路由切换动效 */
   .fade-enter-active, .fade-leave-active {

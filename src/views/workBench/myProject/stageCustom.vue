@@ -204,14 +204,8 @@
         let oEv = ev || window.event;
         oEv.cancelBubble = true;
       },
-      getdata (evt) {
-//        console.log(evt.draggedContext.element.index);
-      },
-      datadragEnd (evt) {
-//        console.log('拖动前的索引 :' + evt.oldIndex);
-//        console.log('拖动后的索引 :' + evt.newIndex);
-//        console.log(this.tags);
-      }
+      getdata (evt) {},
+      datadragEnd (evt) {}
     },
     // 当dom一创建时
     created () {

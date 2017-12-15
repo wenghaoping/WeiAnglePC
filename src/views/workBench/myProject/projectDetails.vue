@@ -948,9 +948,7 @@
       scoreStatistics
     },
     // Echart组件
-    mounted () {
-//      this.eChart();
-    },
+    mounted () {},
     methods: {
       // 点击写跟近按钮
       addFollow () {
@@ -1148,7 +1146,7 @@
         window.open(url1);
       },
       // 获取项目详情数据
-      getProjectDetail () {
+      async getProjectDetail () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.project.project_id})
@@ -1205,7 +1203,7 @@
         });
       },
       // 获取所有下拉框的数据
-      getWxProjectCategory () {
+      async getWxProjectCategory () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.schedule = this.$global.data.schedule;// 设置项目跟进状态
@@ -1272,7 +1270,7 @@
       },
       // 设置意向投资人右边
       // 获取意向项目数据(图表)
-      getEchartData () {
+      async getEchartData () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.$http.post(this.URL.getEnjoyedInvestorsGroup, {user_id: localStorage.user_id, project_id: this.project.project_id})
@@ -1291,7 +1289,7 @@
         });
       },
       // 获取意向投资人列表
-      getEnjoyedInvestors () {
+      async getEnjoyedInvestors () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.getConCon.user_id = localStorage.user_id;
@@ -1551,7 +1549,7 @@
         return newArr;
       },
       // 买家图谱列表
-      getProjectMatchInvestors () {
+      async getProjectMatchInvestors () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.getInvestors.user_id = localStorage.user_id;
@@ -1696,9 +1694,22 @@
         this.previewDisplay = msg;
       },
       // 重新获取所有数据
-      getAllData () {
+      async getAllData (e) {
         this.loading = true;
-        this.$global.func.getWxProjectCategory()
+        try {
+          const global = await this.$global.func.getWxProjectCategory(e);
+          const getWxProjectCategory = await this.getWxProjectCategory(global);
+          const getProjectDetail = await this.getProjectDetail(getWxProjectCategory);
+          const getEchartData = await this.getEchartData(getProjectDetail);
+          const getProjectMatchInvestors = await this.getProjectMatchInvestors(getEchartData);
+          const getWX = await this.getWX(getProjectMatchInvestors);
+          const getEnjoyedInvestors = await this.getEnjoyedInvestors(getWX);
+          this.loading = false;
+          return getEnjoyedInvestors;
+        } catch (err) {
+          console.err('Error：' + err);
+        }
+         /* this.$global.func.getWxProjectCategory()
           .then((data) => {
             return this.getWxProjectCategory();
           })
@@ -1717,10 +1728,10 @@
           .then((data) => {
             this.loading = false;
             return this.getEnjoyedInvestors();
-          });
+          }); */
       },
       // 获取二维码
-      getWX () {
+      async getWX () {
         return new Promise((resolve, reject) => {
           this.$http.post(this.URL.getProjectQrOur, {
             user_id: localStorage.user_id,

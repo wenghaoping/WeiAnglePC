@@ -12,18 +12,27 @@
     </card-upload>
 
     <carousel></carousel>-->
-  <div style="height: 300px;">
+<!--  <div style="height: 300px;">
     <radar height='100%' width='100%' :indicator="indicator" :innerValue="innerValue"></radar>
-  </div>
+  </div>-->
 
   <!--</div>-->
+<!--<single-upload :uploadAddress="uploadAddress" :uploadDate="uploadDate"
+               :planList="planList"
+  @delete="planRemove" @planuploadsuccess="planuploadsuccess"></single-upload>-->
+
+
+  <bp-preview></bp-preview>
+
 </template>
 
 <script>
   import draggable from 'vuedraggable';
   import cardUpload from '@/components/upload/cardUpload.vue';
+  import singleUpload from '@/components/upload/singleUpload.vue';
   import radar from '@/components/Charts/radar.vue';
   import carousel from '@/views/components/carousel.vue';
+  import bpPreview from '@/views/components/superBp/bpPreview.vue';
   export default {
     data () {
       return {
@@ -35,13 +44,15 @@
           {id: 4, name: '5'}
         ],
         uploadCardAddress: this.URL.weitianshiLine + this.URL.uploadConnectCard + localStorage.token,
+        uploadAddress: this.URL.weitianshiLine + this.URL.projectUpload + localStorage.token, // 上传地址
         uploadDate: {user_id: localStorage.user_id},
         indicator: [
           {name: '竞争力', max: 100},
           {name: '商业前景', max: 100},
           {name: '发展战略', max: 100}
         ],
-        innerValue: [50, 60, 32]
+        innerValue: [50, 60, 32],
+        planList: []
       };
     },
     methods: {
@@ -58,16 +69,22 @@
       },
       success (e) {
         console.log(e);
+      },
+      planuploadsuccess (e) {
+        console.log(e);
+      },
+      planRemove (e) {
+        console.log(e);
       }
     },
-    mounted () {
-
-    },
+    mounted () {},
     components: {
       draggable,
       cardUpload,
       carousel,
-      radar
+      radar,
+      singleUpload,
+      bpPreview
     },
     watch: {
       '$route' (to, from) {

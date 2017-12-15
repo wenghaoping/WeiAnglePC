@@ -523,13 +523,15 @@
       };
     },
     methods: {
+      // 返回上一层
       goBack () {
         this.$router.push({name: 'myContacts', query: {activeTo: 1}});// 路由传参
-      }, // 返回上一层
+      },
+      // 跳转到编辑页
       goEdit () {
         this.zgClick('编辑人脉');
         this.$router.push({name: 'createContacts', query: {card_id: this.contacts.card_id}});// 路由传参
-      }, // 跳转到编辑页
+      },
       openDiv (v) {
         this[v] = true;
         this.projectLists = this.projectListsAll.slice(0);
@@ -538,12 +540,14 @@
         this[v] = false;
         this.projectLists = this.projectListsSmall.slice(0);
       },
+      // 获取userid/card_id
       getUserId () {
         this.contacts.user_id = this.$route.query.user_id;
         this.contacts.card_id = this.$route.query.card_id;
         this.contacts.investor_id = this.$route.query.investor_id;
         this.tags.card_id = this.$route.query.card_id;
-      }, // 获取userid/card_id
+      },
+      // 点击推送完整版,并且传送数据给推送弹框(右边)
       handlePush (data) {
         if (data === 0) {
           warning('已推送过');
@@ -561,7 +565,8 @@
           this.pushData.email = this.contacts.user_email;
           this.pushData.project_id = data.project_id;
         }
-      }, // 点击推送完整版,并且传送数据给推送弹框(右边)
+      },
+      // 点击推送完整版,并且传送数据给推送弹框
       handlePushComplete () {
         this.pushData.project_id = '';
         this.$store.state.pushProject.projectMessgae = {pro_id: '', pro_intro: ''};
@@ -573,10 +578,12 @@
         this.userMessage.type = this.contacts.type || '';
         this.userEmail = this.contacts.user_email;
         this.projectPushDisplay = true;
-      }, // 点击推送完整版,并且传送数据给推送弹框
+      },
+      // 打开预览弹框
       openPreview (msg) {
         this.previewDisplay = true;
-      }, // 打开预览弹框
+      },
+      // 项目预览
       preview () {
         if (this.pushCount !== 0) {
           if (!checkEmail(this.pushData.email)) error('请输入正确的邮箱');
@@ -597,8 +604,8 @@
         } else {
           warning('您今日的推送次数已用完,请明天再试');
         }
-      }, // 项目预览
-
+      },
+      // 关闭项目推送弹窗
       closeProjectPush (msg) {
         this.projectPushDisplay = msg;
         this.getpushCount();
@@ -612,10 +619,12 @@
           .then((data) => {
             return this.getEnjoyProjects();
           });
-      }, // 关闭项目推送弹窗
+      },
+      // 控制项目页码1
       filterChangeCurrent (page) {
         this.getProjectList(page);
-      }, // 控制项目页码1
+      },
+      // 控制意向项目页码
       filterChangeCurrent1 (page) {
         this.loading = true;
         this.getConpro.user_id = localStorage.user_id;
@@ -637,36 +646,42 @@
             console.log(err);
             this.loading = false;
           });
-      }, // 控制意向项目页码
+      },
+      // 点击切换标签
       handleClick (tab, event) {
         if (tab.name === '1') this.tabs = true;
         else this.tabs = false;
-      }, // 点击切换标签
+      },
+      // 项目详情弹窗
       toDetail (data) {
 //          console.log(data);
         this.pro_id = data.project_id;
         this.alertProjectDetailDisplay = true;
-      }, // 项目详情弹窗
+      },
+      // 点击添加意向项目按钮
       addFollow () {
         this.followDisplay = true;
-      }, // 点击添加意向项目按钮
+      },
+      // 关闭添加意向项目
       closeFollow (msg) {
         this.followDisplay = msg;
         this.getEnjoyProjects();
         this.getEchartData();
-      }, // 关闭添加意向项目
+      },
+      // 项目详情弹窗关闭函数
       changeAlertProjectDetail (msg) {
         this.alertProjectDetailDisplay = msg;
-      }, // 项目详情弹窗关闭函数
-
+      },
+      // 关闭项目预览AND关闭项目推送
       closePreviewANDProjectPush (msg) {
         this.projectPushDisplay = msg;
         this.previewDisplay = msg;
-      }, // 关闭项目预览AND关闭项目推送
+      },
+      // 关闭项目预览
       closePreview (msg) {
         this.previewDisplay = msg;
-      }, // 关闭项目预览
-
+      },
+      // 设置项目库函数
       setProjectList (data) {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
@@ -682,16 +697,18 @@
           arr.push(obj);
         }
         return arr;
-      }, // 设置项目库函数
+      },
+      // 设置项目库项目的标签
       setIndustry (data) {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
           arr.push(data[i].industry_name);
         }
         return arr;
-      }, // 设置项目库项目的标签
+      },
       // 请求函数
-      getProjectList (page) {
+      // 获取项目列表
+      async getProjectList (page) {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.getPra.user_id = this.contacts.user_id;
@@ -716,14 +733,16 @@
             });
           resolve(4);
         });
-      }, // 获取项目列表
+      },
+      // 设置标签的函数
       setTag (arr) {
         let newArr = [];
         arr.forEach((x) => {
           newArr.push(x.tag_id);
         });
         return newArr;
-      }, // 设置标签的函数
+      },
+      // 设置投资案例
       setProjectCase (arr) {
         let newArr = [];
         arr.forEach((x) => {
@@ -738,8 +757,9 @@
           newArr.push(obj);
         });
         return newArr;
-      }, // 设置投资案例
-      getOneUserInfo () {
+      },
+      // 获取个人详情
+      async getOneUserInfo () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id, card_id: this.contacts.card_id})
@@ -784,8 +804,9 @@
               this.loading = false;
             });
         });
-      }, // 获取个人详情
-      getWxProjectCategory () {
+      },
+      // 获取所有下拉框的数据
+      async getWxProjectCategory () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.addTags = this.$global.data.tags_user;// 设置人脉标签()
@@ -796,7 +817,8 @@
           this.follow_scheduleAll.unshift({label: '全部', value: 0});// 设置项目状态
           resolve(2);
         });
-      }, // 获取所有下拉框的数据
+      },
+      // 添加项目标签
       addChangeTag (e) {
         let tagName = formatData.checkArr(e, this.addTags);
         if (tagName !== undefined) {
@@ -817,7 +839,8 @@
               });
           }
         }
-      }, // 添加项目标签
+      },
+      // 保存标签选择
       addTag () {
         this.loading = true;
         formatData.setTag(this.tagsValue, this.tags.changecont);
@@ -835,7 +858,8 @@
             console.log(err);
             this.setTagDisplay = false;
           });
-      }, // 保存标签选择
+      },
+      // 设置人脉标签
       gettags_user () {
         this.$http.post(this.URL.getWxProjectCategory, {user_id: localStorage.user_id})
           .then(res => {
@@ -844,9 +868,10 @@
             this.$global.func.getWxProjectCategory();
             this.getWxProjectCategory();
           });
-      }, // 设置人脉标签
+      },
       // 设置意向项目右边
-      getEchartData () {
+      // 获取意向项目数据(图表)
+      async getEchartData () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.$http.post(this.URL.getEnjoyProjectsGroup, {user_id: localStorage.user_id, card_id: this.contacts.card_id, card_link_user_id: this.contacts.user_id})
@@ -864,8 +889,9 @@
               error('加载超时');
             });
         });
-      }, // 获取意向项目数据(图表)
-      getEnjoyProjects () {
+      },
+      // 获取意向项目列表
+      async getEnjoyProjects () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.getConpro.user_id = localStorage.user_id;
@@ -892,7 +918,8 @@
               console.log(err);
             });
         });
-      }, // 获取意向项目列表
+      },
+      // 设置意向项目列表
       setEnjoyProject (arr) {
         let newArr = [];
         arr.forEach((x) => {
@@ -912,10 +939,11 @@
           newArr.push(obj);
         });
         return newArr;
-      }, // 设置意向项目列表
+      },
       getIndex (index) {
         this.scheduleIndex = index;
       },
+      // 图表
       eChart (going, hold, reject) {
         if (this.chartCheck) this.chart = echarts.init(document.getElementById('echart'));
         let option = {
@@ -975,7 +1003,8 @@
         };
         this.chart.setOption(option);
         this.chartCheck = false;
-      }, // 图表
+      },
+      // 设置项目跟进进度
       selectChange (e) {
         let width = 0;
         switch (e) {
@@ -1036,7 +1065,8 @@
             });
         }
         return width;
-      }, // 设置项目跟进进度
+      },
+      // 筛选意向项目
       selectSearch (e) {
         this.loading = true;
         this.getConpro.schedule_id = e;
@@ -1063,9 +1093,10 @@
             this.loading = false;
             console.log(err);
           });
-      }, // 筛选意向项目
+      },
       // 设置匹配项目(右边)
-      getInvestorsMatchProjects () {
+      // 获取匹配项目列表
+      async getInvestorsMatchProjects () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.getMatchPro.user_id = localStorage.user_id;
@@ -1093,7 +1124,8 @@
               error('加载超时');
             });
         });
-      }, // 获取匹配项目列表
+      },
+      // 设置意向项目列表
       setMatchProject (arr) {
         let newArr = [];
         arr.forEach((x) => {
@@ -1112,7 +1144,8 @@
           newArr.push(obj);
         });
         return newArr;
-      }, // 设置意向项目列表
+      },
+      // 控制匹配项目页码
       filterChangeCurrent2 (page) {
         this.loading = true;
         this.getMatchPro.user_id = localStorage.user_id;
@@ -1136,7 +1169,8 @@
             this.loading = false;
             console.log(err);
           });
-      }, // 控制匹配项目页码
+      },
+      // 移除匹配
       delMatchAction (data) {
         let delData = {};
         delData.user_id = localStorage.user_id;
@@ -1167,8 +1201,9 @@
             message: '已取消删除'
           });
         });
-      }, // 移除匹配
+      },
       // 项目推送
+      // 获取剩余推送次数
       getpushCount () {
         this.$http.post(this.URL.pushCount, {
           user_id: localStorage.user_id})
@@ -1180,7 +1215,8 @@
             console.log(err);
             this.loading = false;
           });
-      }, // 获取剩余推送次数
+      },
+      // 弹框确定推送
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -1190,7 +1226,8 @@
             return false;
           }
         });
-      }, // 弹框确定推送
+      },
+      // 推送
       push () {
         if (this.pushCount !== 0) {
           let pushData = {};
@@ -1221,14 +1258,32 @@
         } else {
           warning('您今日的推送次数已用完');
         }
-      }// 推送
+      },
+      // 获取所有数据
+      async getAllData (e) {
+        try {
+          const global = await this.$global.func.getWxProjectCategory(e);
+          const getWxProjectCategory = await this.getWxProjectCategory(global);
+          const getOneUserInfo = await this.getOneUserInfo(getWxProjectCategory);
+          if (this.contacts.user_id !== 0) this.getProjectList(1);
+          else this.projectLists = [];
+          const getEchartData = await this.getEchartData(getOneUserInfo);
+          const getInvestorsMatchProjects = await this.getInvestorsMatchProjects(getEchartData);
+          const getEnjoyProjects = await this.getEnjoyProjects(getInvestorsMatchProjects);
+          this.loading = false;
+          return getEnjoyProjects;
+        } catch (err) {
+          console.err('Error：' + err);
+        }
+      }
     },
     created () {
       getTop();
       this.loading = true;
       this.getUserId();
       this.getpushCount();
-      this.$global.func.getWxProjectCategory()
+      this.getAllData();
+/*      this.$global.func.getWxProjectCategory()
         .then((data) => {
           return this.getWxProjectCategory();
         })
@@ -1247,7 +1302,7 @@
         .then((data) => {
           this.loading = false;
           return this.getEnjoyProjects();
-        });
+        }); */
     },
     // Echart组件
     mounted () {
@@ -1259,13 +1314,7 @@
       projectpush,
       projectpreview
     },
-    watch: {
-      setTagDisplay: function (e) {
-        if (e) {
-
-        }
-      }
-    }
+    watch: {}
   };
 </script>
 

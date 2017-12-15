@@ -197,5 +197,10 @@ export default
   getScoreStatistics: '/api/project/getScoreStatistics', // 项目得分统计(最终评分,投资指数)
   getScoreStatisticsGroup: '/api/project/getScoreStatisticsGroup', // 项目指标平均分统计(图表用)
   editScoreShow: '/api/project/editScoreShow', // 修改项目评分背书展示
-  exportProjectScoreByCompetition: 'api/competition/exportProjectScoreByCompetition' // 导出项目评分结果(下载)
+  exportProjectScoreByCompetition: 'api/competition/exportProjectScoreByCompetition', // 导出项目评分结果(下载)
+
+  // 超级BP
+  bpInquiry: 'api/superBp/bpInquiry?token=', // BP问诊
+  bpCustom: 'api/superBp/bpCustom', // bp定制
+  getBpFileSelected: 'api/superBp/getBpFileSelected' // 精选BP
 };

@@ -81,6 +81,12 @@ export default new Router({
       path: '/personalInformation', name: 'personalInformation', component: _import('personalInformation/personalInformation')
     },
     {
+      path: '/superBP', name: 'superBP', component: _import('superBp/index') // 超级BP
+    },
+    {
+      path: '/customBp', name: 'customBp', component: _import('superBp/customBp') // BP问诊/定制
+    },
+    {
       path: '/test', name: 'test', component: checkone
     }
   ]
