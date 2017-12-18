@@ -1,27 +1,27 @@
 <template>
   <!--BP预览组件-->
-  <div class="bpPreview" v-loading.body="loading" element-loading-text="拼命加载中">
-    <el-dialog :visible="bpPreviewDisplay" :before-close="handleClose" close-on-press-escape close-on-click-modal lock-scroll
+  <div class="bpPreview" >
+    <el-dialog :visible="bpPreviewDisplay" :before-close="prev" close-on-press-escape close-on-click-modal lock-scroll
                :close-on-click-modal="showList" :close-on-press-escape="showList" :show-close="showList" size="large">
-      <div class="preview_inner relative">
+      <div class="preview_inner relative" v-loading.body="loading" element-loading-text="拼命加载中">
         <el-carousel arrow="always" :autoplay="false" @change="carouselChange" ref="carousel" indicator-position="none">
-          <el-carousel-item v-for="(item, index) in items" :key="index" :name="item.name">
+          <el-carousel-item v-for="(item, index) in items" :key="index">
             <div class="bigImg">
-              <img :src="item.src">
+              <img v-lazy="item.image_src">
             </div>
           </el-carousel-item>
         </el-carousel>
         <div class="btn absolute">
           <div class="btn_inner absolute">
             <button class="opa_btn tc cursor" style="margin-right: 10px;" @click="prev">取消</button>
-            <el-button type="primary" @click="next">下载</el-button>
+            <el-button type="primary" @click="next()">下载</el-button>
           </div>
         </div>
         <div style="height: 20px;"></div>
-        <el-carousel type="card" height="200px" :autoplay="false" @change="carouselChange" ref="carousel2">
-          <el-carousel-item v-for="(item, index) in items" :key="index" :name="item.name">
+        <el-carousel type="card" height="270px" :autoplay="false" @change="carouselChange" ref="carousel2">
+          <el-carousel-item v-for="(item, index) in items" :key="index">
             <div class="smallImg">
-              <img :src="item.src">
+              <img v-lazy="item.image_src">
             </div>
           </el-carousel-item>
         </el-carousel>
@@ -31,57 +31,79 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import supueBPindex from '../../../assets/images/supueBPindex.jpg';
-  import supueBPindex2 from '../../../assets/images/supueBPindex2.png';
-  import supueBPindex3 from '../../../assets/images/supueBPindex3.png';
+  import { mapState } from 'vuex';
+  import { error, warning } from '@/utils/notification';
   export default {
-    props: {
-      bpPreviewDisplay: {
-        type: Boolean,
-        default: false,
-        required: true
-      }
-    },
+    props: {},
     data () {
       return {
         loading: false,
 //        bpPreviewDisplay: false,
         showList: false,
         items: [
-          {src: supueBPindex, name: '我是1'},
-          {src: supueBPindex2, name: '我是2'},
-          {src: supueBPindex2, name: '我是2'},
-          {src: supueBPindex2, name: '我是2'},
-          {src: supueBPindex3, name: '我是3'}
+          /* {image_src: '', bp_id: 0, image_id: 0} */
         ]
       };
     },
-    computed: {},
+    computed: {
+      ...mapState({
+        bpPreviewDisplay: state => state.superBp.bpPreviewDisplay,
+        bpId: state => state.superBp.bpId
+      }),
+      bannerSrc () {
+        return this.items[0].image_src;
+      }
+    },
     mounted () {},
     // 组件
     components: {},
     methods: {
-      // 关闭
-      handleClose (e) {
-        this.$emit('closeBpPreview', false);
-      },
       // 上一步
       prev () {
-        this.$emit('bpPreviewPrev', false);
+        this.$store.dispatch('bpPreviewControl', false);
       },
       // 下一步
       next () {
-        this.$emit('bpPreviewNext', true);
+        this.$store.dispatch('payBpControl', true);
+        this.$store.dispatch('setBpBannerUrl', this.bannerSrc);
       },
       // 切换状态
       carouselChange (e) {
         this.$refs.carousel.setActiveItem(e);
         this.$refs.carousel2.setActiveItem(e);
+      },
+      getBpPpt () {
+        this.loading = true;
+        this.$http.post(this.URL.getBpPpt, {user_id: localStorage.user_id, bp_id: this.bpId})
+          .then(res => {
+            this.loading = false;
+            if (res.data.status_code === 2000000) {
+              let data = res.data.data;
+              if (data.length === 0) {
+                warning('对不起，当前项目暂不支持预览');
+                this.$store.dispatch('bpPreviewControl', false);
+              } else {
+                this.items = data;
+              }
+            } else {
+              error(res.data.error_msg);
+            }
+          })
+          .catch(err => {
+            this.loading = false;
+            console.log(err);
+          });
       }
     },
     // 当dom一创建时
     created () {},
-    watch: {}
+    watch: {
+      bpPreviewDisplay: function (e) {
+        if (e) {
+          this.getBpPpt();
+        }
+      }
+    }
   };
 </script>
 
@@ -102,10 +124,11 @@
     }
   }
   .smallImg{
-    width: 559px;
-    height: 176px;
+    width: 481px;
+    height: 270px;
     img{
       width: 100%;
+      height: 100%;
     }
   }
   .btn{

@@ -1,24 +1,24 @@
 <template>
   <!--BP选择组件-->
-  <div class="choiceBp" v-loading.body="loading" element-loading-text="拼命加载中">
-    <div class="box inlineBlock relative">
+  <div class="choiceBp">
+    <div class="box inlineBlock relative" v-for="(bp, index) in bpData" :key="index">
       <div class="img">
-        <img src="../../../assets/images/demo_test.png">
+        <img v-lazy="bp.bp_cover_src">
       </div>
       <div class="img model absolute position_auto tc cursor">
-        <button class="cursor" @click="bpPreview">预览</button>
+        <button class="cursor" @click="bpPreview(bp.bp_id)">预览</button>
       </div>
       <div class="btn fr">
-        <el-button type="primary" size="mini">果蔬</el-button>
+        <el-button type="primary" size="mini">{{bp.industry | nullToZ}}</el-button>
       </div>
     </div>
-    <div v-if="totalData.length > 9">
+    <div v-if="totalData > 6">
       <el-pagination
         small
         class="fr"
         layout="prev, pager, next"
         @current-change="changeCurrent"
-        :current-page.sync="currentPage"
+        :current-page="currentPage"
         :page-size="pageSize"
         :total="totalData">
       </el-pagination>
@@ -29,20 +29,14 @@
 <script type="text/ecmascript-6">
     export default {
       props: {
-/*        choiceBpDate: {
+        bpData: {
           type: Array,
           required: true,
           default: []
-        }, */
+        },
         totalData: {
           type: [Number, String],
-          required: true,
           default: 0
-        },
-        currentPage: {
-          type: [Number, String],
-          required: true,
-          default: 1
         },
         pageSize: {
           type: [Number, String],
@@ -52,7 +46,8 @@
       },
       data () {
         return {
-          loading: false
+          loading: false,
+          currentPage: 1
         };
       },
       computed: {},
@@ -60,8 +55,10 @@
       // 组件
       components: {},
       methods: {
+        // 点击预览
         bpPreview (e) {
-          this.$emit('bpPreviewOn', e);
+          this.$store.dispatch('setBpId', e);
+          this.$store.dispatch('bpPreviewControl', true);
         },
         // 页码改变
         changeCurrent (e) {

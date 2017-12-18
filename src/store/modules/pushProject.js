@@ -28,5 +28,7 @@ export default {
       myCheckList: {},
       netCheckList: {}
     }
-  }
+  },
+  mutations: {},
+  actions: {}
 };

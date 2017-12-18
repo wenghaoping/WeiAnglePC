@@ -1,7 +1,7 @@
 <template>
   <!--BP支付弹框-->
   <div class="payBp popbox">
-    <el-dialog :visible="payBpDisplay" :before-close="handleClose" close-on-press-escape close-on-click-modal lock-scroll
+    <el-dialog :visible="payBpDisplay" :before-close="prev" close-on-press-escape close-on-click-modal lock-scroll
                :close-on-click-modal="showList" :close-on-press-escape="showList" size="large" :show-close="showList">
       <div slot="title" class="title">
         <span class="rander tc fl">3</span><span class="fl">支付</span>
@@ -11,12 +11,11 @@
         <div style="margin: 15px 0;border-top:1px solid #e0e6ed;width:1012px;"></div>
         <div class="demo_inner">
           <div class="img fl">
-            <img src="../../assets/images/demo_test.png">
+            <img v-lazy="bpBannerUrl">
           </div>
           <div class="txt fl">
             企业服务模板
           </div>
-
           <div class="txt fr">
             <i class="absolute">*优惠期间，模板免费下载</i>
             <s>RMB 199.00</s>
@@ -32,36 +31,38 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   export default {
-    props: {
-      payBpDisplay: {
-        type: Boolean,
-        default: false,
-        required: true
-      }
-    },
+    props: {},
     data () {
       return {
         loading: false,
         showList: false
       };
     },
-    computed: {},
+    computed: {
+      ...mapState({
+        payBpDisplay: state => state.superBp.payBpDisplay,
+        bpBannerUrl: state => state.superBp.bpBannerUrl,
+        bpId: state => state.superBp.bpId
+      })
+    },
     mounted () {},
     // 组件
     components: {},
     methods: {
-      // 关闭
-      handleClose (e) {
-        this.$emit('closePayBp', false);
-      },
       // 上一步
       prev () {
-        this.$emit('PayBpPrev', false);
+        this.$store.dispatch('payBpControl', false);
       },
       // 下一步
       next () {
-        this.$emit('PayBpNext', false);
+        this.$store.dispatch('AllControl', false);
+        this.downloadIng();
+      },
+      downloadIng () {
+        const url = this.URL.weitianshi + this.URL.superBpDownload + '?user_id=' + localStorage.user_id + '&bp_id=' + this.bpId;
+        window.open(url);
       }
     },
     // 当dom一创建时

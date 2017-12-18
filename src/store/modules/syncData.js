@@ -5,5 +5,7 @@ export default {
   state: {
     data: {},
     checkList: []
-  }
+  },
+  mutations: {},
+  actions: {}
 };

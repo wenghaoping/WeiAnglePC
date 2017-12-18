@@ -202,5 +202,9 @@ export default
   // 超级BP
   bpInquiry: 'api/superBp/bpInquiry?token=', // BP问诊
   bpCustom: 'api/superBp/bpCustom', // bp定制
-  getBpFileSelected: 'api/superBp/getBpFileSelected' // 精选BP
+  getBpFileSelected: 'api/superBp/getBpFileSelected', // 精选BP
+  getIndustryAndStage: 'api/category/getIndustryAndStage', // 领域和阶段标签
+  getBpPpt: 'api/superBp/getBpPpt', // bp预览
+  getBpByIndustryAndStage: 'api/superBp/getBpByIndustryAndStage', // 通过领域和阶段筛选BP模板
+  superBpDownload: 'api/superBp/superBpDownload' // 模板下载
 };

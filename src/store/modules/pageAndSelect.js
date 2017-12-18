@@ -13,5 +13,7 @@ export default {
     getFollow: {},
     folcurrentPage: 0,
     followSearchinput: ''
-  }
+  },
+  mutations: {},
+  actions: {}
 };

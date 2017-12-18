@@ -3,7 +3,7 @@
   <div class="indexBp">
     <div class="banner relative">
       <div class="absolute banner_button">
-        <el-button type="primary" size="large" @click="industryDisplay = true">下载BP</el-button>
+        <el-button type="primary" size="large" @click="closeIndustry">下载BP</el-button>
         <el-button type="primary" size="large" @click="goCustom('bpInquiry')">BP问诊</el-button>
         <el-button type="primary" size="large" @click="goCustom('bpCustom')">BP定制</el-button>
       </div>
@@ -11,11 +11,11 @@
 
     <div class="main_bp">
       <p class="big_title tc">精美模板</p>
-      <div class="choice_bp relative position_center_auto">
+      <div class="choice_bp relative position_center_auto" style="min-height: 512px;" v-loading.body="loading" element-loading-text="拼命加载中">
         <!--首页BP选择-->
-        <choice-bp :totalData="5" :currentPage="1" :pageSize="9" @bpPreviewOn="controlBpPreview(true)"></choice-bp>
+        <choice-bp :currentPage="currentPage" :bpData="bpData" :pageSize="9"></choice-bp>
       </div>
-      <div class="big_btn tc relative position_center_auto cursor" @click="industryDisplay = true">
+      <div class="big_btn tc relative position_center_auto cursor" @click="closeIndustry">
         <button class="cursor">下载BP</button>
       </div>
     </div>
@@ -32,16 +32,16 @@
 
 
     <!--选择行业弹框-->
-    <select-bp-industry :industryDisplay="industryDisplay" @closeIndustry="closeIndustry" @industryNext="controlChoiceBp"></select-bp-industry>
+    <select-bp-industry></select-bp-industry>
 
     <!--BP选择弹框-->
-    <alert-choice-bp :choiceBpDisplay="choiceBpDisplay" @closeChoiceBp="controlChoiceBp" @choiceBpPrev="controlChoiceBp" @choiceBpNext="controlBpPreview"></alert-choice-bp>
+    <alert-choice-bp></alert-choice-bp>
 
     <!--BP预览-->
-    <bp-preview :bpPreviewDisplay="bpPreviewDisplay" @closeBpPreview="controlBpPreview" @bpPreviewPrev="controlBpPreview" @bpPreviewNext="controlPayBp"></bp-preview>
+    <bp-preview></bp-preview>
 
     <!--BP支付弹框-->
-    <pay-bp :payBpDisplay="payBpDisplay" @closePayBp="controlPayBp" @PayBpPrev="controlPayBp" @PayBpNext="controlAllDisplay"></pay-bp>
+    <pay-bp></pay-bp>
   </div>
 </template>
 
@@ -58,10 +58,8 @@
     data () {
       return {
         loading: false,
-        industryDisplay: false,
-        choiceBpDisplay: false,
-        bpPreviewDisplay: false,
-        payBpDisplay: false
+        bpData: [],
+        currentPage: 1 // 当前第几页
       };
     },
     computed: {},
@@ -80,35 +78,17 @@
       },
       // 关闭选择行业
       closeIndustry (e) {
-        this.industryDisplay = e;
-      },
-      // 所有的关闭都为覆盖，因为关闭后数据会清空，除了按X关闭
-      // 打开或者关闭BP选择,选择完行业后,关闭选择行业
-      controlChoiceBp (e) {
-        this.choiceBpDisplay = e;
-      },
-      // 打开或者关闭预览
-      controlBpPreview (e) {
-        this.bpPreviewDisplay = e;
-      },
-      // 打开或者关闭支付
-      controlPayBp (e) {
-        this.payBpDisplay = e;
-      },
-      // 点击下载，关闭所有弹框
-      controlAllDisplay () {
-        this.closeIndustry(false);
-        this.controlChoiceBp(false);
-        this.controlBpPreview(false);
-        this.controlPayBp(false);
+        this.$store.dispatch('industryControl', true);
       },
       // 获取精选BP
       getBpFileSelected () {
+        this.loading = true;
         this.$http.post(this.URL.getBpFileSelected, {user_id: localStorage.user_id})
           .then(res => {
             this.loading = false;
             if (res.data.status_code === 2000000) {
-              console.log(res.data);
+              let data = res.data.data;
+              this.bpData = data;
             } else {
               error(res.data.error_msg);
             }

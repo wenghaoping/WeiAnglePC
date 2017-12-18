@@ -1,6 +1,6 @@
 <template>
   <!--BP选择行业弹框-->
-  <div class="selectBpIndustry popbox">
+  <div class="selectBpIndustry popbox" v-loading.body="loading" element-loading-text="拼命加载中">
     <el-dialog :visible="industryDisplay" :before-close="handleClose" close-on-press-escape close-on-click-modal lock-scroll
                :close-on-click-modal="showList" :close-on-press-escape="showList" size="large" :show-close="showList">
       <div slot="title" class="title">
@@ -8,64 +8,67 @@
       </div>
 
       <div class="choice">
-        <p class="choice_title">选择行业</p>
+        <p class="choice_title">选择行业（最多选择五个）</p>
         <div style="margin: 20px 0;"></div>
         <div class="check_box">
-          <el-checkbox-group v-model="checkboxGroup1" size="large" :max="5" @change="industryChange">
-            <el-checkbox-button v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox-button>
+          <el-checkbox-group v-model="industry" size="large" :max="5" @change="industryChange">
+            <el-checkbox-button v-for="industry in industrys" :label="industry.industry_id" :key="industry.industry_id">
+              {{industry.industry_name}}
+            </el-checkbox-button>
           </el-checkbox-group>
         </div>
       </div>
       <div style="margin: 50px 0;"></div>
       <div class="choice">
-        <p class="choice_title">选择阶段</p>
+        <p class="choice_title">选择阶段（单选）</p>
         <div style="margin: 20px 0;"></div>
         <div class="check_box">
-          <el-checkbox-group v-model="checkboxGroup2" size="large" :max="1" @change="stageChange">
-            <el-checkbox-button v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox-button>
+          <el-checkbox-group v-model="stage" size="large" :max="1" @change="stageChange">
+            <el-checkbox-button v-for="stage in stages" :label="stage.stage_id" :key="stage.stage_id">{{stage.stage_name}}</el-checkbox-button>
           </el-checkbox-group>
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="handleClose" size="large">取 消</el-button>
-        <el-button type="primary" @click="next" size="large">下一步</el-button>
+        <el-button type="primary" @click="saveIndustryAndStage" size="large">下一步</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-    const cityOptions = ['上海', '北京', '广州', '深圳', '上海', '北京', '广州', '深圳'];
+    import { mapState } from 'vuex';
+    import { error, warning } from '@/utils/notification';
     export default {
-      props: {
-        industryDisplay: {
-          type: Boolean,
-          default: false,
-          required: true
-        }
-      },
+      props: {},
       data () {
         return {
-          //  industryDisplay: false
+//          industryDisplay: false,
           showList: false,
           loading: false,
-          checkboxGroup1: ['上海'],
-          checkboxGroup2: ['上海'],
-          cities: cityOptions
+          industry: [],
+          stage: [],
+          industrys: [],
+          stages: []
         };
       },
-      computed: {},
+      computed: {
+        ...mapState({
+          industryDisplay: state => state.superBp.industryDisplay
+        })
+      },
       mounted () {},
       // 组件
       components: {},
       methods: {
         // 关闭
         handleClose (e) {
-          this.$emit('closeIndustry', false);
+          this.$store.dispatch('industryControl', false);
         },
         // 下一步
         next () {
-          this.$emit('industryNext', true);
+          this.$store.dispatch('setIndustryStageId', {industry: this.industry, stage: this.stage});
+          this.$store.dispatch('choiceBpControl', true);
         },
         // 行业改变
         industryChange (e) {
@@ -74,16 +77,46 @@
         // 阶段改变
         stageChange (e) {
           console.log(e);
+        },
+        getIndustryAndStage () {
+          this.loading = true;
+          this.$http.post(this.URL.getIndustryAndStage, {user_id: localStorage.user_id})
+            .then(res => {
+              if (res.data.status_code === 2000000) {
+                let data = res.data.data;
+                this.industrys = data.industry;
+                this.stages = data.stage;
+              } else {
+                error(res.data.error_msg);
+              }
+              this.loading = false;
+            })
+            .catch(err => {
+              this.loading = false;
+              console.log(err);
+            });
+        },
+        saveIndustryAndStage () {
+          if (this.industry.length === 0) {
+            warning('请选择行业标签');
+          } else if (this.stage.length === 0) {
+            warning('请选择阶段标签');
+          } else {
+            this.next();
+          }
         }
       },
       // 当dom一创建时
-      created () {},
+      created () {
+        this.getIndustryAndStage();
+      },
       watch: {
         industryDisplay: function (e) {
           if (e) {
 
           } else {
-
+            this.industry = [];
+            this.stage = [];
           }
         }// 清空数据
       }
