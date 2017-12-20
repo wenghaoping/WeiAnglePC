@@ -598,7 +598,6 @@
       </div>
     </div>
 
-
     <!--一键尽调弹窗-->
     <research :search-display="searchDisplay" :company-id="companyid" :comp-name="companyname"
               @closeSearchDisplay="closeSearchDisplay"

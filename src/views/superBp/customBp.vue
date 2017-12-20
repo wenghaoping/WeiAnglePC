@@ -25,7 +25,7 @@
             <single-upload :uploadAddress="uploadAddress" :uploadDate="uploadDate"
                            :planList="planList" :autoUpload="false" fileName="bp_file"
                            @delete="planRemove" @changeUploadData="changeUploadData"
-                           @planuploadsuccess="planuploadsuccess" ref="singleUpload">
+                           @success="planuploadsuccess" ref="singleUpload">
               <i class="el-icon-plus"></i>上传BP
             </single-upload>
           </el-col>
@@ -34,8 +34,8 @@
     </div>
 
     <div style="height: 76px;"></div>
-    <div class="big_btn tc relative position_center_auto cursor big_btn2">
-      <button class="cursor" @click="save">提交预约</button>
+    <div class="big_btn tc relative position_center_auto cursor big_btn2" @click="save">
+      <button class="cursor">提交预约</button>
     </div>
     <div style="height: 76px;"></div>
   </div>
@@ -118,7 +118,7 @@
       },
       planuploadsuccess (res) {
         success('上传成功');
-        this.addplan(res.image_id);
+        this.$router.push({name: 'superBP'});// 路由传参
       },
       addplan (imageId) {
         let object = {};
@@ -126,22 +126,8 @@
         this.uploadShow = object;
       }, // 添加上传文件时,保存返回的数据
       planRemove (file) {
-        if (file) {
-          this.$http.post(this.URL.deleteConnectCard, {user_id: localStorage.user_id, image_id: this.uploadShow.image_id})
-            .then(res => {
-              if (res.status === 200) {
-                this.planList = [];
-                this.loading = false;
-                success('删除成功');
-              }
-            })
-            .catch(err => {
-              console.log(err);
-              error('删除失败,请联系管理员');
-            });
-        } else {
-          this.planButton = true;
-        }
+        this.planList = [];
+        this.uploadShow = {};
       },
       changeUploadData (e) {
         this.uploadDate.user_name = this.customBp.user_name;

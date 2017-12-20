@@ -119,7 +119,7 @@
       uploaderror (err, file, fileList) {
         console.log(err);
         error('上传失败,请联系管理员');
-        this.uploadLoading = false;
+//        this.uploadLoading = false;
         this.submitButton = false;
       },
       // 当不自动上传时，调用函数启用上传

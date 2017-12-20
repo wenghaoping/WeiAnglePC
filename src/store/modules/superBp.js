@@ -67,8 +67,8 @@ export default {
     AllControl ({ commit }, dispaly) {
       commit(types.ALL_CHANGE, dispaly);
     },
-    setIndustryStageId ({ commit }, industryId, stageId) {
-      commit(types.SET_INDUSTRY_STAGE_ID, industryId, stageId);
+    setIndustryStageId ({ commit }, obj) {
+      commit(types.SET_INDUSTRY_STAGE_ID, obj);
     },
     setBpId ({ commit }, id) {
       commit(types.SET_BP_ID, id);
