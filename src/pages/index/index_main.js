@@ -2,19 +2,19 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
 import Vue from 'vue';
-import App from './App.vue';
-import router from './router'; // 路由设置
-import store from './store';
+import App from './Index';
+import router from '../../router'; // 路由设置
+import store from '../../store';
 import Element from 'element-ui'; // element
 import 'element-ui/lib/theme-default/index.css'; // element样式
-import zhuge from './global/zhuge.js'; // 诸葛io
-import './utils/miXins.js';  // 全局函数
-import './assets/css/base.css'; // 引入自己的CSS,格式化样式
-import axios from './api/api.js';// axios请求配置
-import URL_ from './api/url.js';// URL请求地址汇总
-import './otherUtil.js'; // 其他零碎工具
-import './filters';// 过滤器
-import global from './global/global.js';
+import zhuge from '../../global/zhuge.js'; // 诸葛io
+import '../../utils/miXins.js';  // 全局函数
+import '../../assets/css/base.css'; // 引入自己的CSS,格式化样式
+import axios from '../../api/api.js';// axios请求配置
+import URL_ from '../../api/url.js';// URL请求地址汇总
+import '../../otherUtil.js'; // 其他零碎工具
+import '../../filters';// 过滤器
+import global from '../../global/global.js';
 Vue.prototype.$http = axios;
 Vue.prototype.URL = URL_;
 Vue.prototype.$global = global;

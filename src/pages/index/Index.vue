@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <a href="mobileEntrance.html">login</a>
     <!--<el-row>-->
       <top-header @identityopen="closeIdentity"></top-header>
       <div style="height: 60px;"></div>
@@ -17,7 +18,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import alertIdentity from './views/identity/alertIdentity.vue';
+  import alertIdentity from '@/views/identity/alertIdentity.vue';
   import topHeader from '@/components/topHeader.vue';
   import { IEVersion } from '@/utils/notification';
   export default {

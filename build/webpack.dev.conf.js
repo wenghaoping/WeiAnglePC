@@ -10,6 +10,10 @@ const portfinder = require('portfinder')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
+//引入
+const glob = require('glob')
+const path = require('path')
+
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -52,6 +56,19 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     }),
   ]
 })
+
+const pages = getEntry('src/pages/**/*.html');
+function getEntry(globPath) {
+
+  let entries = {},basename;
+
+  glob.sync(globPath).forEach(function (entry) {
+    basename = path.basename(entry, path.extname(entry));
+    entries[basename] = entry;
+  });
+  return entries;
+}
+
 module.exports = new Promise((resolve, reject) => {
   portfinder.basePort = process.env.PORT || config.dev.port
   portfinder.getPort((err, port) => {
@@ -72,8 +89,18 @@ module.exports = new Promise((resolve, reject) => {
         ? utils.createNotifierCallback()
         : undefined
       }))
-
+      for (let pathname in pages) {
+        // 配置生成的html文件，定义路径等
+        let conf = {
+          filename: pathname + '.html',
+          template: pages[pathname],   // 模板路径
+          inject: true,              // js插入位置
+          chunks:[pathname]
+        };
+        devWebpackConfig.plugins.push(new HtmlWebpackPlugin(conf));
+      }
       resolve(devWebpackConfig)
     }
   })
 })
+

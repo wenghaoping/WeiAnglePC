@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path')
+const glob = require('glob')
 const utils = require('./utils')
 const webpack = require('webpack')
 const config = require('../config')
@@ -56,24 +57,6 @@ const webpackConfig = merge(baseWebpackConfig, {
         ? { safe: true, map: { inline: false } }
         : { safe: true }
     }),
-    // generate dist index.html with correct asset hash for caching.
-    // you can customize output by editing /index.html
-    // see https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      filename: config.build.index,
-      template: 'index.html',
-      inject: true,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeAttributeQuotes: true
-        // more options:
-        // https://github.com/kangax/html-minifier#options-quick-reference
-      },
-      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency'
-    }),
-    // keep module.id stable when vender modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting
     new webpack.optimize.ModuleConcatenationPlugin(),
@@ -117,6 +100,38 @@ const webpackConfig = merge(baseWebpackConfig, {
     ])
   ]
 })
+
+function getEntry(globPath) {
+  var entries = {},
+    basename;
+
+  glob.sync(globPath).forEach(function (entry) {
+
+    basename = path.basename(entry, path.extname(entry));
+    entries[basename] = entry;
+  });
+  return entries;
+}
+
+const pages = getEntry('src/pages/**/*.html');
+
+for (let pathname in pages) {
+  let oldArr = ['manifest', 'vendor', 'app'];
+  let conf = {
+    filename: process.env.NODE_ENV === 'testing'
+      ? pathname + '.html'
+      : config.build[pathname],
+    template: pages[pathname],
+    inject: true,
+    minify: {
+      removeComments: true,
+      collapseWhitespace: true,
+      removeAttributeQuotes: true
+    },
+    chunks:[...oldArr, pathname]
+  }
+  webpackConfig.plugins.push(new HtmlWebpackPlugin(conf));
+}
 
 if (config.build.productionGzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin')
