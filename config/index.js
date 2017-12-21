@@ -2,8 +2,8 @@
 // Template version: 1.2.5
 // see http://vuejs-templates.github.io/webpack for documentation.
 
-const path = require('path')
-const glob = require('glob')
+const path = require('path');
+const glob = require('glob');
 let build = {
   assetsRoot: path.resolve(__dirname, '../dist'),
   assetsSubDirectory: 'assets',
@@ -26,7 +26,8 @@ function getEntry(globPath) {
 
 var pages = getEntry('src/pages/**/*.html');
 
-for (var pathname in pages) {
+//每个入口页面生成一个入口添加到build中
+for (let pathname in pages) {
   build[pathname] = path.resolve(__dirname, '../dist/' + pathname + '.html')
 }
 module.exports = {

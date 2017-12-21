@@ -1,6 +1,8 @@
 /**
  * Created by Admin on 2017/12/14.
  */
+'use strict'
+// 其他小工具
 import Vue from 'vue';
 import VueLazyload from 'vue-lazyload';
 import router from './router';

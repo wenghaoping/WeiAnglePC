@@ -1,7 +1,7 @@
 <template>
   <!--手机入口，第二入口-->
   <div class="mobileEntrance">
-    <h1 style="background: white">我是H5页面,全新的入口</h1>
+    <h1>我是H5页面,全新的入口</h1>
   </div>
 </template>
 
