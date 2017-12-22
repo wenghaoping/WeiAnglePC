@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <a href="mobileEntrance.html">login</a>
     <!--<el-row>-->
       <top-header @identityopen="closeIdentity"></top-header>
       <div style="height: 60px;"></div>
@@ -11,7 +10,7 @@
           </router-view>
         </transition>
       </main>
-
+    <a href="mobileEntrance.html" style="display: none">login</a>
     <!--</el-row>-->
     <alert-identity :identityDisplay="identityDisplay" @closeIdentity="closeIdentity"></alert-identity>
   </div>
@@ -53,7 +52,7 @@
           this.$route.path !== '/API/DD' && this.$route.path !== '/aboutUs' &&
           this.$route.path !== '/onekeyResearch' && this.$route.path !== '/emailContact' &&
           this.$route.path !== '/addProject' && this.$route.path !== '/iosBanner' &&
-          this.$route.path !== '/skipToPc') {
+          this.$route.path !== '/skipToPc' && this.$route.path !== '/superBP') {
 //          this.$tool.error('请先登录');
 //          && this.$route.path!=='/workBench/'&& this.$route.path!=='/workBench'
           this.$router.push({name: 'index'});
@@ -109,7 +108,7 @@
       this.zgIdentify(localStorage.user_id, {name: localStorage.user_real_name});
       this.getCheckUserInfo(localStorage.user_id);
       this.getUserGroupByStatusName(localStorage.user_id);
-      if (IEVersion() !== -1) { alert('请不要使用IE浏览器,建议使用谷歌浏览器及其他浏览器,以获得更好体验'); };
+      if (IEVersion() !== -1) { alert('请不要使用IE浏览器，建议使用谷歌浏览器及其他浏览器，以获得更好体验'); };
     },
     computed: {
 
@@ -132,6 +131,7 @@
 </script>
 
 <style lang="less">
+  @import '../../assets/css/base.css'; // 引入自己的CSS,格式化样式
   .width350 .el-input{
     font-size: 12px!important;
   }

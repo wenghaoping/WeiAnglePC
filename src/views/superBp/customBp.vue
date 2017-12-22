@@ -23,9 +23,10 @@
           </el-col>
           <el-col :span="24" v-if="type === 'bpInquiry'">
             <single-upload :uploadAddress="uploadAddress" :uploadDate="uploadDate"
-                           :planList="planList" :autoUpload="false" fileName="bp_file"
+                           :planList="planList" fileName="bp_file"
                            @delete="planRemove" @changeUploadData="changeUploadData"
-                           @planuploadsuccess="planuploadsuccess" ref="singleUpload">
+                           @planChange="planChange" @cancelUpload="cancelUpload"
+                           @success="planuploadsuccess" ref="singleUpload">
               <i class="el-icon-plus"></i>上传BP
             </single-upload>
           </el-col>
@@ -42,10 +43,11 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   import * as validata from '@/utils/validata';
   import * as utils from '@/utils';
   import singleUpload from '@/components/upload/singleUpload.vue';
-  import { error, success } from '@/utils/notification';
+  import { error, success, warning } from '@/utils/notification';
   const checkPhoneNumber = (rule, value, callback) => {
     if (!validata.getNull(value)) {
       setTimeout(() => {
@@ -100,13 +102,20 @@
           ]
         },
         customBpMust: false,
-        uploadAddress: this.URL.weitianshiLine + this.URL.bpInquiry + localStorage.token, // 上传地址
+        uploadAddress: this.URL.weitianshiLine + this.URL.uploadInquiryFile + localStorage.token, // 上传地址
         uploadDate: {user_id: localStorage.user_id},
         planList: [], // 计划书上传展示列表
-        uploadShow: {} // 计划书上传列表,需要存数据啦
+        uploadShow: [], // 计划书上传列表,需要存数据啦
+        uploadShowid: {},
+        submitButton: true // 默认true
       };
     },
-    computed: {},
+    computed: {
+      ...mapState({
+        industryId: state => state.superBp.industryId,
+        stageId: state => state.superBp.stageId
+      })
+    },
     mounted () {},
     // 组件
     components: {
@@ -117,36 +126,43 @@
         this.type = this.$route.query.type || 'bpCustom';
       },
       planuploadsuccess (res) {
-        success('上传成功');
-        this.addplan(res.image_id);
+        this.submitButton = true;
+        this.addplan(res.inquiry_id);
       },
-      addplan (imageId) {
+      // 取消上传
+      cancelUpload (Boolean) {
+        this.submitButton = true;
+        this.uploadShow = [];
+        this.uploadShowid = {};
+      },
+      addplan (inquiryId) {
         let object = {};
-        object.image_id = imageId;
-        this.uploadShow = object;
+        object.inquiry_id = inquiryId;
+        this.uploadShowid = object;
       }, // 添加上传文件时,保存返回的数据
       planRemove (file) {
-        if (file) {
-          this.$http.post(this.URL.deleteConnectCard, {user_id: localStorage.user_id, image_id: this.uploadShow.image_id})
-            .then(res => {
-              if (res.status === 200) {
-                this.planList = [];
-                this.loading = false;
-                success('删除成功');
-              }
-            })
-            .catch(err => {
-              console.log(err);
-              error('删除失败,请联系管理员');
-            });
-        } else {
-          this.planButton = true;
-        }
+        this.$http.post(this.URL.deleteInquiryFile, {user_id: localStorage.user_id, inquiry_id: this.uploadShowid.inquiry_id})
+          .then(res => {
+            this.loading = false;
+            if (res.data.status_code === 2000000) {
+              success('删除成功');
+              this.uploadShow = [];
+              this.uploadShowid = {};
+            } else {
+              error(res.data.error_msg);
+            }
+          })
+          .catch(err => {
+            this.loading = false;
+            error('提交失败');
+            console.log(err);
+          });
+      },
+      planChange (file) {
+        this.uploadShow.push(file);
       },
       changeUploadData (e) {
-        this.uploadDate.user_name = this.customBp.user_name;
-        this.uploadDate.user_mobile = this.customBp.user_mobile;
-        this.uploadDate.user_wechat = this.customBp.user_wechat;
+        this.submitButton = false;
       },
       // 检查所有必填项目以及获取所有数据/true过.false不过
       submitForm (formName, checkName) {
@@ -172,44 +188,82 @@
             }, 200);
           });
         };
-        submit()
-          .then((data) => {
-            return check();
-          })
-          .then((data) => {
-            if (data) {
-              this.loading = true;
-              // bp定制
-              if (this.type === 'bpCustom') {
-                let allData = this.customBp;
-                allData.user_id = localStorage.user_id;
-                this.$http.post(this.URL.bpCustom, allData)
-                  .then(res => {
-                    this.loading = false;
-                    if (res.data.status_code === 2000000) {
-                      success('提交成功');
-                      this.$router.push({name: 'superBP'});// 路由传参
-                    } else {
-                      error(res.data.error_msg);
-                    }
-                  })
-                  .catch(err => {
-                    this.loading = false;
-                    error('提交失败');
-                    console.log(err);
-                  });
-              } else if (this.type === 'bpInquiry') {
-                this.$refs.singleUpload.submitUpload();
+        if (!this.submitButton) {
+          warning('请等待上传完毕再提交');
+        } else {
+          submit()
+            .then((data) => {
+              return check();
+            })
+            .then((data) => {
+              let allData = this.customBp;
+              allData.user_id = localStorage.user_id;
+              if (data) {
+                this.loading = true;
+                // bp定制
+                if (this.type === 'bpCustom') {
+                  this.getBpCustom(allData);
+                } else if (this.type === 'bpInquiry') {
+                  allData.inquiry_id = this.uploadShowid.inquiry_id;
+                  this.getBpInquiry(allData);
+                }
                 this.loading = false;
               }
+            });
+        }
+      },
+      // 提交BP问诊
+      getBpCustom (getData) {
+        this.$http.post(this.URL.bpCustom, getData)
+          .then(res => {
+            this.loading = false;
+            if (res.data.status_code === 2000000) {
+              success('提交成功');
+              this.$router.push({name: 'superBP'});// 路由传参
+            } else {
+              error(res.data.error_msg);
             }
+          })
+          .catch(err => {
+            this.loading = false;
+            error('提交失败');
+            console.log(err);
           });
+      },
+      // 提交BP问诊
+      getBpInquiry (getData) {
+        if (this.uploadShow.length === 0) {
+          warning('请上传BP');
+        } else {
+          this.$http.post(this.URL.bpInquiry, getData)
+            .then(res => {
+              this.loading = false;
+              if (res.data.status_code === 2000000) {
+                success('提交成功');
+                this.$router.push({name: 'superBP'});// 路由传参
+              } else {
+                error(res.data.error_msg);
+              }
+            })
+            .catch(err => {
+              this.loading = false;
+              error('提交失败');
+              console.log(err);
+            });
+        }
+      },
+      // 设置初始数据
+      setFirstData () {
+        this.customBp.user_name = localStorage.user_real_name;
+        this.customBp.user_mobile = localStorage.user_mobile;
+        this.customBp.user_wechat = localStorage.user_wechat;
       }
     },
     // 当dom一创建时
     created () {
       utils.getTop();
       this.getType();
+      this.setFirstData();
     },
     watch: {}
   };

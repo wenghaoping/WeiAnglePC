@@ -54,7 +54,9 @@
       },
       computed: {
         ...mapState({
-          industryDisplay: state => state.superBp.industryDisplay
+          industryDisplay: state => state.superBp.industryDisplay,
+          industryId: state => state.superBp.industryId,
+          stageId: state => state.superBp.stageId
         })
       },
       mounted () {},
@@ -63,38 +65,41 @@
       methods: {
         // 关闭
         handleClose (e) {
-          this.$store.dispatch('industryControl', false);
+          this.$store.dispatch('AllControl', false);
         },
         // 下一步
         next () {
           this.$store.dispatch('setIndustryStageId', {industry: this.industry, stage: this.stage});
           this.$store.dispatch('choiceBpControl', true);
+          this.$store.dispatch('industryControl', false);
         },
         // 行业改变
         industryChange (e) {
-          console.log(e);
+//          console.log(e);
         },
         // 阶段改变
         stageChange (e) {
-          console.log(e);
+//          console.log(e);
         },
         getIndustryAndStage () {
-          this.loading = true;
-          this.$http.post(this.URL.getIndustryAndStage, {user_id: localStorage.user_id})
-            .then(res => {
-              if (res.data.status_code === 2000000) {
-                let data = res.data.data;
-                this.industrys = data.industry;
-                this.stages = data.stage;
-              } else {
-                error(res.data.error_msg);
-              }
-              this.loading = false;
-            })
-            .catch(err => {
-              this.loading = false;
-              console.log(err);
-            });
+          if (localStorage.user_id) {
+            this.loading = true;
+            this.$http.post(this.URL.getIndustryAndStage, {user_id: localStorage.user_id})
+              .then(res => {
+                if (res.data.status_code === 2000000) {
+                  let data = res.data.data;
+                  this.industrys = data.industry;
+                  this.stages = data.stage;
+                } else {
+                  error(res.data.error_msg);
+                }
+                this.loading = false;
+              })
+              .catch(err => {
+                this.loading = false;
+                console.log(err);
+              });
+          }
         },
         saveIndustryAndStage () {
           if (this.industry.length === 0) {
@@ -113,7 +118,8 @@
       watch: {
         industryDisplay: function (e) {
           if (e) {
-
+            this.industry = this.industryId || [];
+            this.stage = this.stageId || [];
           } else {
             this.industry = [];
             this.stage = [];

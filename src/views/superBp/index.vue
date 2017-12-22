@@ -52,7 +52,7 @@
   import bpPreview from '@/views/components/superBp/bpPreview.vue';
   import alertChoiceBp from '@/views/superBp/alertChoiceBp.vue';
   import payBp from '@/views/superBp/payBp.vue';
-  import { error } from '@/utils/notification';
+  import { error, warning } from '@/utils/notification';
   export default {
     props: [],
     data () {
@@ -74,11 +74,24 @@
     },
     methods: {
       goCustom (e) {
-        this.$router.push({name: 'customBp', query: {type: e}});
+        localStorage.entrance = 'superBP'; // superBP
+        if (localStorage.user_id) {
+          this.$router.push({name: 'customBp', query: {type: e}});
+        } else {
+          warning('请登录后查看');
+          this.$router.push({name: 'telephoneLogin'});
+        }
       },
       // 关闭选择行业
       closeIndustry (e) {
-        this.$store.dispatch('industryControl', true);
+        localStorage.entrance = 'superBP'; // superBP
+        if (localStorage.user_id) {
+          this.$store.dispatch('industryControl', true);
+          this.$store.dispatch('setBpEnterType', true); // 说明是正常进入的
+        } else {
+          warning('请登录后查看');
+          this.$router.push({name: 'telephoneLogin'});
+        }
       },
       // 获取精选BP
       getBpFileSelected () {

@@ -120,36 +120,6 @@ letter-spacing:0;">团中央·青年APP大赛</span></a>
         msg: '',
         // 控制二维码显示
         showQr: false
-        /* identityPic: [
-         {
-         url: '/static/images/maifangFA.png',
-         text1: "卖方FA",
-         text2: "项目精准推荐",
-         text3:"微天使一手案源",
-         text4:"大数据一键尽调",
-         },
-         {
-         url:"/static/images/maifangFA.png",
-         text1:"买方FA",
-         text2:"推荐精准匹配投资人",
-         text3:"项目一键推送",
-         text4:"微天使一手案源",
-         text5:"大数据一键尽调",
-         },
-         {
-         url:"/static/images/touzifang.png",
-         text1:"投资方",
-         text2:"FA精选项目",
-         text3:"项目管理",
-         text4:"大数据一键尽调",
-         },
-         {
-         url:"/static/images/chuangyezhe.png",
-         text1:"创业者",
-         text2:"融资加速",
-         text3:"优质FA组团服务",
-         }
-         ], */
       };
     },
     methods: {

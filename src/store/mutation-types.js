@@ -9,4 +9,7 @@ export const PAY_BP_CHANGE = 'PAY_BP_CHANGE'; // 改变BP支付弹框
 export const ALL_CHANGE = 'ALL_CHANGE'; // 控制关闭所有
 export const SET_INDUSTRY_STAGE_ID = 'SET_INDUSTRY_STAGE_ID'; // 设置行业和阶段ID
 export const SET_BP_ID = 'SET_BP_ID'; // 设置BPid
+export const SET_BP_PAGE = 'SET_BP_PAGE'; // 设置SET_BP_PAGE
 export const GET_BP_BANNER = 'GET_BP_BANNER'; // 设置支付页面BPURL
+export const SET_TYPE = 'SET_TYPE'; // 搞一个参数控制是首页进入的，还是下载进入的
+export const SET_INDUSTRY = 'SET_INDUSTRY'; // 行业存储

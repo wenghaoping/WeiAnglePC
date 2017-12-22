@@ -446,8 +446,6 @@
         this.currentPage = this.$store.state.pageANDSelect.pracurrentPage || 1;
         this.getPra.page = this.$store.state.pageANDSelect.pracurrentPage || 1;
         let node = this.$store.state.pageANDSelect.node | 0;
-//        for (let i = 0; i < 9; i++) { this['node' + i] = false; };
-//        this['node' + node] = true;
         this.searchinput = this.$store.state.pageANDSelect.proSearchinput || '';
         this.pro_schedule = node;
         this.setNodeCss(node);

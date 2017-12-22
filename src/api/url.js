@@ -200,7 +200,9 @@ export default
   exportProjectScoreByCompetition: 'api/competition/exportProjectScoreByCompetition', // 导出项目评分结果(下载)
 
   // 超级BP
-  bpInquiry: 'api/superBp/bpInquiry?token=', // BP问诊
+  uploadInquiryFile: 'api/superBp/uploadInquiryFile?token=', // BP问诊上传
+  deleteInquiryFile: 'api/superBp/deleteInquiryFile', // bp问诊删除
+  bpInquiry: 'api/superBp/bpInquiry', // 提交BP问诊
   bpCustom: 'api/superBp/bpCustom', // bp定制
   getBpFileSelected: 'api/superBp/getBpFileSelected', // 精选BP
   getIndustryAndStage: 'api/category/getIndustryAndStage', // 领域和阶段标签

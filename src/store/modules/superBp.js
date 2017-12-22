@@ -11,7 +11,10 @@ export default {
     industryId: [], // 行业id
     stageId: [], // 阶段id
     bpId: '', // bpId存放
-    bpBannerUrl: '../../assets/images/demo_test.png' // 设置支付页面Bp图片
+    bpPage: 1, // Bp选择时候的当前页数
+    bpBannerUrl: '../../assets/images/demo_test.png', // 设置支付页面Bp图片
+    type: false, // 搞一个参数控制是首页进入的，还是下载进入的
+    industry: '' // 选择的行业
   },
   mutations: {
     // 改变行业弹框
@@ -30,12 +33,18 @@ export default {
     [types.PAY_BP_CHANGE] (state, dispaly) {
       state.payBpDisplay = dispaly;
     },
-    // 控制关闭所有
+    // 控制关闭所有,切清空函数
     [types.ALL_CHANGE] (state, dispaly) {
       state.industryDisplay = dispaly;
       state.choiceBpDisplay = dispaly;
       state.bpPreviewDisplay = dispaly;
       state.payBpDisplay = dispaly;
+      state.industryId = [];
+      state.stageId = [];
+      state.bpId = '';
+      state.bpPage = 1;
+      state.bpBannerUrl = '';
+      state.type = false;
     },
     // 设置行业和阶段ID
     [types.SET_INDUSTRY_STAGE_ID] (state, obj) {
@@ -46,9 +55,21 @@ export default {
     [types.SET_BP_ID] (state, id) {
       state.bpId = id;
     },
+    // 设置bp_Page
+    [types.SET_BP_PAGE] (state, page) {
+      state.bpPage = page;
+    },
     // 获取支付页面bp图片URL
     [types.GET_BP_BANNER] (state, url) {
       state.bpBannerUrl = url;
+    },
+    // 设置入口
+    [types.SET_TYPE] (state, boolean) {
+      state.type = boolean;
+    },
+    // 设置行业
+    [types.SET_INDUSTRY] (state, industry) {
+      state.industry = industry;
     }
   },
   actions: {
@@ -73,8 +94,17 @@ export default {
     setBpId ({ commit }, id) {
       commit(types.SET_BP_ID, id);
     },
+    setBpPage ({ commit }, page) {
+      commit(types.SET_BP_PAGE, page);
+    },
     setBpBannerUrl ({ commit }, url) {
       commit(types.GET_BP_BANNER, url);
+    },
+    setBpEnterType ({ commit }, boolean) {
+      commit(types.SET_TYPE, boolean);
+    },
+    setIndestry ({ commit }, industry) {
+      commit(types.SET_INDUSTRY, industry);
     }
   }
 };

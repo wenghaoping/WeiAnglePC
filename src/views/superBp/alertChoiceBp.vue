@@ -1,8 +1,8 @@
 <template>
   <!--BP选择弹框-->
   <div class="choiceBp popbox" >
-    <el-dialog :visible="choiceBpDisplay" :before-close="prev" close-on-press-escape close-on-click-modal lock-scroll
-               :close-on-click-modal="showList" :close-on-press-escape="showList" :show-close="showList" size="large">
+    <el-dialog :visible="choiceBpDisplay" :before-close="handleClose" close-on-press-escape close-on-click-modal lock-scroll
+               :close-on-click-modal="showList" :close-on-press-escape="showList" size="large">
       <div slot="title" class="title">
         <span class="rander tc fl">2</span><span class="fl">选择模板</span>
       </div>
@@ -34,7 +34,8 @@
       ...mapState({
         choiceBpDisplay: state => state.superBp.choiceBpDisplay,
         industryId: state => state.superBp.industryId,
-        stageId: state => state.superBp.stageId
+        stageId: state => state.superBp.stageId,
+        bpPage: state => state.superBp.bpPage
       })
     },
     mounted () {},
@@ -43,12 +44,19 @@
       choiceBp
     },
     methods: {
+      // 关闭
+      handleClose (e) {
+        this.$store.dispatch('AllControl', false);
+      },
       // 上一步
       prev () {
+        this.$store.dispatch('setBpPage', 1);
         this.$store.dispatch('choiceBpControl', false);
+        this.$store.dispatch('industryControl', true);
       },
       // 通过领域和阶段筛选BP模板
-      getBpByIndustryAndStage (e = 1) {
+      getBpByIndustryAndStage (e = this.bpPage || 1) {
+        this.$store.dispatch('setBpPage', e); // 设置页码
         this.loading = true;
         this.$http.post(this.URL.getBpByIndustryAndStage, {user_id: localStorage.user_id, industry: this.industryId, stage: this.stageId, page: e})
           .then(res => {

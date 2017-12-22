@@ -5,7 +5,7 @@
 const path = require('path');
 const glob = require('glob');
 let build = {
-  assetsRoot: path.resolve(__dirname, '../dist'),
+  assetsRoot: path.resolve(__dirname, '../'),
   assetsSubDirectory: 'assets',
   assetsPublicPath: '/',
   productionSourceMap: true,
@@ -28,7 +28,7 @@ var pages = getEntry('src/pages/**/*.html');
 
 //每个入口页面生成一个入口添加到build中
 for (let pathname in pages) {
-  build[pathname] = path.resolve(__dirname, '../dist/' + pathname + '.html')
+  build[pathname] = path.resolve(__dirname, '../assetsHTML/' + pathname + '2.html')
 }
 module.exports = {
   dev: {

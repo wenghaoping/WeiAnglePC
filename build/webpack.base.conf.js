@@ -98,7 +98,6 @@ module.exports = {
 function getEntry(globPath) {
   let entries = {},
     basename, tmp, pathname;
-
   glob.sync(globPath).forEach(function (entry) {
     basename = path.basename(entry, path.extname(entry));
     pathname = basename.split("_")[0];  //index_main.js得到index

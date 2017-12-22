@@ -1,10 +1,11 @@
 <template>
   <!--BP预览组件-->
   <div class="bpPreview" >
-    <el-dialog :visible="bpPreviewDisplay" :before-close="prev" close-on-press-escape close-on-click-modal lock-scroll
-               :close-on-click-modal="showList" :close-on-press-escape="showList" :show-close="showList" size="large">
+    <el-dialog :visible="bpPreviewDisplay" :before-close="handClose" close-on-press-escape close-on-click-modal lock-scroll
+               :close-on-click-modal="showList" :close-on-press-escape="showList" size="large">
       <div class="preview_inner relative" v-loading.body="loading" element-loading-text="拼命加载中">
-        <el-carousel arrow="always" :autoplay="false" @change="carouselChange" ref="carousel" indicator-position="none">
+        <el-carousel arrow="always" :autoplay="false" @change="carouselChange" ref="carousel"
+                     indicator-position="none" class="ca1_height">
           <el-carousel-item v-for="(item, index) in items" :key="index">
             <div class="bigImg">
               <img v-lazy="item.image_src">
@@ -18,7 +19,8 @@
           </div>
         </div>
         <div style="height: 20px;"></div>
-        <el-carousel type="card" height="270px" :autoplay="false" @change="carouselChange" ref="carousel2">
+        <el-carousel type="card" :autoplay="false" @change="carouselChange"
+                     ref="carousel2" class="ca2_height">
           <el-carousel-item v-for="(item, index) in items" :key="index">
             <div class="smallImg">
               <img v-lazy="item.image_src">
@@ -48,7 +50,8 @@
     computed: {
       ...mapState({
         bpPreviewDisplay: state => state.superBp.bpPreviewDisplay,
-        bpId: state => state.superBp.bpId
+        bpId: state => state.superBp.bpId,
+        type: state => state.superBp.type
       }),
       bannerSrc () {
         return this.items[0].image_src;
@@ -58,13 +61,22 @@
     // 组件
     components: {},
     methods: {
+      handClose () {
+        this.$store.dispatch('AllControl', false);
+      },
       // 上一步
       prev () {
-        this.$store.dispatch('bpPreviewControl', false);
+        if (this.type) { // 正常途径进入
+          this.$store.dispatch('bpPreviewControl', false);
+          this.$store.dispatch('choiceBpControl', true);
+        } else { // 首页预览
+          this.$store.dispatch('AllControl', false);
+        }
       },
       // 下一步
       next () {
         this.$store.dispatch('payBpControl', true);
+        this.$store.dispatch('bpPreviewControl', false);
         this.$store.dispatch('setBpBannerUrl', this.bannerSrc);
       },
       // 切换状态
@@ -73,26 +85,33 @@
         this.$refs.carousel2.setActiveItem(e);
       },
       getBpPpt () {
-        this.loading = true;
-        this.$http.post(this.URL.getBpPpt, {user_id: localStorage.user_id, bp_id: this.bpId})
-          .then(res => {
-            this.loading = false;
-            if (res.data.status_code === 2000000) {
-              let data = res.data.data;
-              if (data.length === 0) {
-                warning('对不起，当前项目暂不支持预览');
-                this.$store.dispatch('bpPreviewControl', false);
+        localStorage.entrance = 'superBP'; // superBP
+        if (localStorage.user_id) {
+          this.loading = true;
+          this.$http.post(this.URL.getBpPpt, {user_id: localStorage.user_id, bp_id: this.bpId})
+            .then(res => {
+              this.loading = false;
+              if (res.data.status_code === 2000000) {
+                let data = res.data.data;
+                if (data.length === 0) {
+                  warning('对不起，当前项目暂不支持预览');
+                  this.$store.dispatch('bpPreviewControl', false);
+                  setTimeout(() => { this.$store.dispatch('industryControl', true); }, 1000);
+                } else {
+                  this.items = data;
+                }
               } else {
-                this.items = data;
+                error(res.data.error_msg);
               }
-            } else {
-              error(res.data.error_msg);
-            }
-          })
-          .catch(err => {
-            this.loading = false;
-            console.log(err);
-          });
+            })
+            .catch(err => {
+              this.loading = false;
+              console.log(err);
+            });
+        } else {
+          warning('请登录后查看');
+          this.$router.push({name: 'telephoneLogin'});
+        }
       }
     },
     // 当dom一创建时
@@ -111,9 +130,17 @@
 .bpPreview{
   .el-dialog{
     width:1002px;
+    top: -15px!important;
   }
-  .el-carousel__container{
-    height: 540px;
+  .ca1_height{
+    .el-carousel__container{
+      height: 540px;
+    }
+  }
+  .ca2_height{
+    .el-carousel__container{
+      height: 270px;
+    }
   }
   .bigImg{
     width: 960px;
@@ -151,6 +178,61 @@
       border-radius: 4px;
       &:hover{
         background: rgba(255,255,255,0.3);
+      }
+    }
+  }
+  @media screen and(max-width: 1400px){
+    .el-dialog{
+      width:806px;
+      top: -15px!important;
+    }
+    .ca1_height{
+      .el-carousel__container{
+        height: 432px;
+      }
+    }
+    .ca2_height{
+      .el-carousel__container{
+        height: 225px;
+      }
+    }
+    .bigImg{
+      width: 768px;
+      height: 432px;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .smallImg{
+      width: 382px;
+      height: 216px;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .btn{
+      right: 0px;
+      top: 357px;
+      z-index: 123;
+      width: 766px;
+      height: 75px;
+      background: rgba(0,0,0,0.3);
+      .btn_inner{
+        right: 40px;
+        bottom: 17px;
+      }
+      .opa_btn{
+        width: 60px;
+        height: 36px;
+        line-height: 36px;
+        color: #ffffff;
+        border: 1px solid #ffffff;
+        border-radius: 4px;
+        &:hover{
+          background: rgba(255,255,255,0.3);
+        }
       }
     }
   }

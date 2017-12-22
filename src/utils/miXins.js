@@ -93,6 +93,8 @@ Vue.mixin({
               localStorage.user_company_career = res.data.user_company_career;
               localStorage.user_company_name = res.data.user_real_name === '' ? '暂无姓名' : res.data.user_real_name;
               localStorage.is_competition = res.data.is_competition;
+              localStorage.user_wechat = res.data.user_wechat; // 微信
+              localStorage.user_mobile = res.data.user_mobile; // 电话
               this.$store.state.logining.user_real_name = res.data.user_real_name === '' ? '暂无姓名' : res.data.user_real_name;;
             }
             resolve(1);

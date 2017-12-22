@@ -6,7 +6,7 @@
         <img v-lazy="bp.bp_cover_src">
       </div>
       <div class="img model absolute position_auto tc cursor">
-        <button class="cursor" @click="bpPreview(bp.bp_id)">预览</button>
+        <button class="cursor" @click="bpPreview(bp)">预览</button>
       </div>
       <div class="btn fr">
         <el-button type="primary" size="mini">{{bp.industry | nullToZ}}</el-button>
@@ -18,7 +18,7 @@
         class="fr"
         layout="prev, pager, next"
         @current-change="changeCurrent"
-        :current-page="currentPage"
+        :current-page="bpPage"
         :page-size="pageSize"
         :total="totalData">
       </el-pagination>
@@ -27,6 +27,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import { mapState } from 'vuex';
+    import { warning } from '@/utils/notification';
     export default {
       props: {
         bpData: {
@@ -50,15 +52,27 @@
           currentPage: 1
         };
       },
-      computed: {},
+      computed: {
+        ...mapState({
+          bpPage: state => state.superBp.bpPage
+        })
+      },
       mounted () {},
       // 组件
       components: {},
       methods: {
         // 点击预览
         bpPreview (e) {
-          this.$store.dispatch('setBpId', e);
-          this.$store.dispatch('bpPreviewControl', true);
+          localStorage.entrance = 'superBP'; // superBP
+          if (localStorage.user_id) {
+            this.$store.dispatch('setBpId', e.bp_id);
+            this.$store.dispatch('bpPreviewControl', true);
+            this.$store.dispatch('choiceBpControl', false);
+            this.$store.dispatch('setIndestry', e.industry);
+          } else {
+            warning('请登录后查看');
+            this.$router.push({name: 'telephoneLogin'});
+          }
         },
         // 页码改变
         changeCurrent (e) {

@@ -22,8 +22,8 @@
           </el-button>
         </el-upload>
       </span>
-      <span class="uploadImg fl" style="margin: 15px 0px 0px 10px;" v-if="uploadLoading"><img src="../../assets/images/loading.gif"></span>
-      <span class="uploadImg fl" style="margin: 15px 0px 0px 10px;" v-else></span>
+      <span class="uploadImg fl" style="margin: 15px 0px 0px 10px;" v-show="uploadLoading"><img src="../../assets/images/loading.gif"></span>
+      <span class="uploadImg fl" style="margin: 15px 0px 0px 10px;" v-show="!uploadLoading"></span>
     </span>
   </div>
 </template>
@@ -95,6 +95,7 @@
       },
       // 上传名片======================================================
       planChange (file, fileList) {
+        this.$emit('planChange', file);
         if (file.status === 'fail') this.planButton = true;
         else this.planButton = false;
       },
@@ -107,12 +108,20 @@
       },
       // 删除文件
       planRemove (file, fileList) {
-        if (file) {
-          if (fileList.length === 0) this.planButton = true;
-          else this.planButton = true;
-          this.$emit('delete', file);
-        } else {
+        console.log(file);
+        if (file.status === 'uploading') {
           this.planButton = true;
+          this.uploadLoading = false;
+          this.$refs.upload.abort(file); // 当没上传成功前，取消上传
+          this.$emit('cancelUpload', true);
+        } else {
+          if (file) {
+            if (fileList.length === 0) this.planButton = true;
+            else this.planButton = true;
+            this.$emit('delete', file);
+          } else {
+            this.planButton = true;
+          }
         }
       },
       // 上传失败

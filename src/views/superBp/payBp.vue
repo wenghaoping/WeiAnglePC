@@ -1,10 +1,10 @@
 <template>
   <!--BP支付弹框-->
   <div class="payBp popbox">
-    <el-dialog :visible="payBpDisplay" :before-close="prev" close-on-press-escape close-on-click-modal lock-scroll
-               :close-on-click-modal="showList" :close-on-press-escape="showList" size="large" :show-close="showList">
+    <el-dialog :visible="payBpDisplay" :before-close="handClose" close-on-press-escape close-on-click-modal lock-scroll
+               :close-on-click-modal="showList" :close-on-press-escape="showList" size="large">
       <div slot="title" class="title">
-        <span class="rander tc fl">3</span><span class="fl">支付</span>
+        <span class="rander tc fl">3</span><span class="fl">下载</span>
       </div>
       <div class="choice clearfix">
         <p class="choice_title">选择模板</p>
@@ -14,7 +14,7 @@
             <img v-lazy="bpBannerUrl">
           </div>
           <div class="txt fl">
-            企业服务模板
+            {{industry}}
           </div>
           <div class="txt fr">
             <i class="absolute">*优惠期间，模板免费下载</i>
@@ -44,24 +44,31 @@
       ...mapState({
         payBpDisplay: state => state.superBp.payBpDisplay,
         bpBannerUrl: state => state.superBp.bpBannerUrl,
-        bpId: state => state.superBp.bpId
+        bpId: state => state.superBp.bpId,
+        industryId: state => state.superBp.industryId,
+        stageId: state => state.superBp.stageId,
+        industry: state => state.superBp.industry
       })
     },
     mounted () {},
     // 组件
     components: {},
     methods: {
+      handClose () {
+        this.$store.dispatch('AllControl', false);
+      },
       // 上一步
       prev () {
         this.$store.dispatch('payBpControl', false);
+        this.$store.dispatch('bpPreviewControl', true);
       },
       // 下一步
       next () {
-        this.$store.dispatch('AllControl', false);
         this.downloadIng();
+        this.$store.dispatch('AllControl', false);
       },
       downloadIng () {
-        const url = this.URL.weitianshi + this.URL.superBpDownload + '?user_id=' + localStorage.user_id + '&bp_id=' + this.bpId;
+        const url = this.URL.weitianshi + this.URL.superBpDownload + '?user_id=' + localStorage.user_id + '&bp_id=' + this.bpId + '&industry=' + this.industryId + '&stage=' + this.stageId;
         window.open(url);
       }
     },
