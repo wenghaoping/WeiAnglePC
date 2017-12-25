@@ -69,7 +69,7 @@
       },
       downloadIng () {
         const url = this.URL.weitianshi + this.URL.superBpDownload + '?user_id=' + localStorage.user_id + '&bp_id=' + this.bpId + '&industry=' + this.industryId + '&stage=' + this.stageId;
-        window.open(url);
+        window.location.href = url;
       }
     },
     // 当dom一创建时

@@ -149,7 +149,9 @@
               this.uploadShow = [];
               this.uploadShowid = {};
             } else {
-              error(res.data.error_msg);
+              this.submitButton = true;
+              this.uploadShow = [];
+              this.uploadShowid = {};
             }
           })
           .catch(err => {

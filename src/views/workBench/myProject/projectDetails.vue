@@ -655,7 +655,7 @@
 
 <script type="text/ecmascript-6">
   import yichu from '../../../assets/images/icon-yichu.png';
-  import xiaochengxu from '../../../../static/images/xiaochengxu1.png';
+  import xiaochengxu from '../../../../static/images/xiaochengxu.png';
   import pinpai from '../../../../static/images/icon-pinpa.png';
   import yunying from '../../../../static/images/icon-yunying.png';
   import cirIcon from '../../../../static/images/circle.png';

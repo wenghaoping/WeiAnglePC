@@ -50,12 +50,12 @@
         <div>进入工作站,一目了然</div>
       </div>
       <div class="fullPagePic fullPagePic1">
-        <img src='../../assets/images/index1.png'/>
+        <img src='../../assets/images/index1.jpg'/>
       </div>
     </div>
     <div class="content flex content2">
       <div class="fullPagePic fullPagePic2">
-        <img src='../../assets/images/index2.png'/>
+        <img src='../../assets/images/index2.jpg'/>
       </div>
       <div class="fullPageText fullPageText2">
         <div>精准匹配投资场景--买家图谱</div>
@@ -72,7 +72,7 @@
         <div>等多维度一键即得，辅助项目判断</div>
       </div>
       <div class="fullPagePic fullPagePic3">
-        <img src='../../assets/images/index3.png'/>
+        <img src='../../assets/images/index3.jpg'/>
       </div>
     </div>
     <!--<div style="height: 300px;background:#f9fafc"></div>-->

@@ -629,20 +629,21 @@
       },
       // 删除文件
       planRemove (file, fileList) {
-        const deleteAtUpload = this.URL.deleteAtUpload;
-        if (fileList.length === 0) this.planButton = true;
-        else this.planButton = true;
-        this.$http.post(deleteAtUpload, {user_id: localStorage.user_id, project_id: this.uploadShow.project_id})
-          .then(res => {
-            if (res.status === 200) {
-              this.loading = false;
-              success('删除成功');
-            }
-          })
-          .catch(err => {
-            console.log(err);
-            error('删除失败,请联系管理员');
-          });
+        if (file) {
+          if (fileList.length === 0) this.planButton = true;
+          else this.planButton = true;
+          this.$http.post(this.URL.deleteAtUpload, {user_id: localStorage.user_id, project_id: this.uploadShow.project_id})
+            .then(res => {
+              if (res.data.status_code === 2000000) {
+                this.loading = false;
+                success('删除成功');
+              }
+            })
+            .catch(err => {
+              console.log(err);
+              error('删除失败,请联系管理员');
+            });
+        }
       },
       // 添加上传文件时,保存返回的数据
       addplan (fileTitle, proIntro, proName, projectId, fileId) {

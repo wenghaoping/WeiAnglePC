@@ -108,7 +108,6 @@
       },
       // 删除文件
       planRemove (file, fileList) {
-        console.log(file);
         if (file.status === 'uploading') {
           this.planButton = true;
           this.uploadLoading = false;

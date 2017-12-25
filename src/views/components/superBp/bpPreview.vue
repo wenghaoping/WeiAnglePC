@@ -109,7 +109,6 @@
               console.log(err);
             });
         } else {
-          warning('请登录后查看');
           this.$router.push({name: 'telephoneLogin'});
         }
       }

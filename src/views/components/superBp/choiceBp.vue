@@ -28,7 +28,6 @@
 
 <script type="text/ecmascript-6">
     import { mapState } from 'vuex';
-    import { warning } from '@/utils/notification';
     export default {
       props: {
         bpData: {
@@ -70,7 +69,6 @@
             this.$store.dispatch('choiceBpControl', false);
             this.$store.dispatch('setIndestry', e.industry);
           } else {
-            warning('请登录后查看');
             this.$router.push({name: 'telephoneLogin'});
           }
         },

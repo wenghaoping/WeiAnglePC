@@ -52,7 +52,7 @@
   import bpPreview from '@/views/components/superBp/bpPreview.vue';
   import alertChoiceBp from '@/views/superBp/alertChoiceBp.vue';
   import payBp from '@/views/superBp/payBp.vue';
-  import { error, warning } from '@/utils/notification';
+  import { error } from '@/utils/notification';
   export default {
     props: [],
     data () {
@@ -78,7 +78,6 @@
         if (localStorage.user_id) {
           this.$router.push({name: 'customBp', query: {type: e}});
         } else {
-          warning('请登录后查看');
           this.$router.push({name: 'telephoneLogin'});
         }
       },
@@ -89,7 +88,6 @@
           this.$store.dispatch('industryControl', true);
           this.$store.dispatch('setBpEnterType', true); // 说明是正常进入的
         } else {
-          warning('请登录后查看');
           this.$router.push({name: 'telephoneLogin'});
         }
       },

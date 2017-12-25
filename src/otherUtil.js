@@ -7,8 +7,7 @@ import VueLazyload from 'vue-lazyload';
 import router from './router';
 import NProgress from 'nprogress'; // Progress 进度条
 import 'nprogress/nprogress.css';// Progress 进度条样式
-import loading from '../static/images/loading_img.gif';
-import error from '../static/images/error.gif';
+import loading from '../static/images/logoloding.png';
 
 // 全局进度条
 router.beforeEach((to, from, next) => {
@@ -25,7 +24,7 @@ router.afterEach(() => {
 // 懒加载图片
 Vue.use(VueLazyload, {
   preLoad: 1.3,
-  error: error,
+  error: loading,
   loading: loading,
   try: 3 // default 1
 });

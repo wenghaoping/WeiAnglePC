@@ -141,7 +141,7 @@ export default
   setEnjoyProjectSchedule: 'api/v/project/setEnjoyProjectSchedule', // 设置意向项目的跟进进度
 
   /* 推荐项目(人脉详情右边) */
-  getInvestorsMatchProjects: 'api/v/investors/getInvestorsMatchProjects', // 推荐项目
+  getInvestorsMatchProjects: 'api/investors/getInvestorsMatchProjects', // 推荐项目
   exceptMatchAction: 'api/v/project/exceptMatchAction', // 移除匹配
   /* 意向投资人(项目详情右边) */
   getEnjoyedInvestors: 'api/project/getEnjoyedInvestors', // 意向投资人列表

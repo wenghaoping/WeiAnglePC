@@ -409,7 +409,7 @@
             })
             .catch(err => {
               console.log(err);
-              error('删除失败,请联系管理员');
+              this.loading = false;
             });
         } else {
           this.planButton = true;
