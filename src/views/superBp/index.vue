@@ -3,7 +3,7 @@
   <div class="indexBp">
     <div class="banner relative">
       <div class="absolute banner_button">
-        <el-button type="primary" size="large" @click="closeIndustry">下载BP</el-button>
+        <el-button type="primary" size="large" @click="closeIndustry">BP模板</el-button>
         <el-button type="primary" size="large" @click="goCustom('bpInquiry')">BP问诊</el-button>
         <el-button type="primary" size="large" @click="goCustom('bpCustom')">BP定制</el-button>
       </div>
@@ -16,7 +16,7 @@
         <choice-bp :currentPage="currentPage" :bpData="bpData" :pageSize="9"></choice-bp>
       </div>
       <div class="big_btn tc relative position_center_auto cursor" @click="closeIndustry">
-        <button class="cursor">下载BP</button>
+        <button class="cursor">BP模板</button>
       </div>
     </div>
     <div class="banner2 relative">

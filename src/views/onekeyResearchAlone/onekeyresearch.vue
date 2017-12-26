@@ -573,7 +573,7 @@
       }, // 请求项目库
       open1 () {
         this.dialogVisible1 = false;
-        this.$router.push('/workBench');
+        this.$router.push({name: 'myProject', query: {activeTo: 0}});// 路由传参
       }, //
       contact () {
         if (localStorage.user_id) {
