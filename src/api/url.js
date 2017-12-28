@@ -9,10 +9,10 @@
 export default
 {
   /* 总地址,下载用的 */
-  weitianshi: 'https://pc.dev.weitianshi.cn/', // 下载用
-  weitianshiLine: 'https://pc.dev.weitianshi.cn/', // 上传
-  // weitianshi: 'https://wts.weitianshi.cn/', // 上线接口下载用
-  // weitianshiLine: 'https://wts.weitianshi.cn/', // 上线接口上传
+  // weitianshi: 'https://pc.dev.weitianshi.cn/', // 下载用
+  // weitianshiLine: 'https://pc.dev.weitianshi.cn/', // 上传
+  weitianshi: 'https://wts.weitianshi.cn/', // 上线接口下载用
+  weitianshiLine: 'https://wts.weitianshi.cn/', // 上线接口上传
   openUrl: 'https://www.weitianshi.cn/workbench/#/API/DD', // 一键尽调对外接口
   oneUrl: 'https://www.weitianshi.cn/workbench/#/', // 一键尽调对内接口
   // 一键尽调跳转用接口
@@ -148,7 +148,7 @@ export default
   getEnjoyedInvestorsGroup: 'api/project/getEnjoyedInvestorsGroup', // 意向投资人归总(图表)
 
   /* 买家图谱*(项目详情右边) */
-  getProjectMatchInvestors: 'api/v/project/getProjectMatchInvestors', // 买家图谱列表
+  getProjectMatchInvestors: 'api/project/getProjectMatchInvestors', // 买家图谱列表
 
   /* 项目推送 */
   matchProject: 'api/v/project/matchProject', // 我的人脉-推送（模糊匹配我的项目）

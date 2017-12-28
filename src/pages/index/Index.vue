@@ -19,7 +19,7 @@
 <script type="text/ecmascript-6">
   import alertIdentity from '@/views/identity/alertIdentity.vue';
   import topHeader from '@/components/topHeader.vue';
-  import { IEVersion } from '@/utils/notification';
+  import { IEVersion, success, warning, error } from '@/utils/notification';
   export default {
     data () {
       return {
@@ -53,8 +53,6 @@
           this.$route.path !== '/onekeyResearch' && this.$route.path !== '/emailContact' &&
           this.$route.path !== '/addProject' && this.$route.path !== '/iosBanner' &&
           this.$route.path !== '/skipToPc' && this.$route.path !== '/superBP') {
-//          this.$tool.error('请先登录');
-//          && this.$route.path!=='/workBench/'&& this.$route.path!=='/workBench'
           this.$router.push({name: 'index'});
           this.$store.state.logining.user_id = '';
           this.$store.state.logining.user_real_name = '';
@@ -75,7 +73,7 @@
 
           } else if (sessionStorage.userId !== localStorage.user_id) {
             // 推送者和接受者是不是一人时
-            this.$tool.warning('此链接不是分享给您的,请进入正确的链接');
+            warning('此链接不是分享给您的,请进入正确的链接');
             sessionStorage.clear();// 把默认值清空;
             setTimeout(() => { this.$router.push({name: 'myProject', query: {activeTo: 0}}); }, 1000);
           } else if ((sessionStorage.userId === localStorage.user_id) && (sessionStorage.flog === 'mail') && (sessionStorage.type === 'user')) {
@@ -83,13 +81,13 @@
             this.$http.post(this.URL.importProject, {user_id: sessionStorage.userId, project_id: sessionStorage.projectId})
               .then(res => {
                 if (res.data.status_code === 2000000) {
-                  this.$tool.success('项目导入成功');
+                  success('项目导入成功');
                   sessionStorage.clear();// 把默认值清空;
                   setTimeout(() => { this.$router.push({name: 'myProject', query: {activeTo: 0}}); }, 1000);
                 }
               })
               .catch(err => {
-                this.$tool.error('项目导入失败');
+                error('项目导入失败');
                 console.log(err);
                 sessionStorage.clear();// 把默认值清空;
                 setTimeout(() => { this.$router.push({name: 'myProject', query: {activeTo: 0}}); }, 1000);
