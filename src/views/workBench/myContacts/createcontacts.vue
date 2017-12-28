@@ -378,7 +378,10 @@
           changecont: [], // 项目标签新增
           index: '', // 取数据保存的位置
           card_id: ''// 人脉id
-        }
+        },
+        contactsMust: false,
+        contacts1Must: false,
+        contacts2Must: false
       };
     },
     methods: {
@@ -482,31 +485,57 @@
         return check;
       }, // 邮箱验证高级版
       allSave () {
-        let contacts = this.submitForm('contacts');
-        let contacts1 = this.submitForm('contacts1');
-        let contacts2 = this.submitForm('contacts2');
-        if (validata.getNull(this.contacts.user_real_name)) { error('姓名不能为空'); } else if (this.$tool.checkLength(this.contacts.user_real_name)) { error('姓名不超过20字'); } else if (this.$tool.checkLength(this.contacts.user_nickname)) { error('昵称不超过20字'); } else if (!this.checkEmail(this.contacts.user_email)) { } else if (!this.checkPhoneNumber(this.contacts.user_mobile)) { } else if (this.$tool.checkLength1(this.contacts.user_company_name)) { error('公司不超过40字'); } else if (this.$tool.checkLength1(this.contacts.user_brand)) { error('品牌不超过40字'); } else if (this.$tool.checkLength1(this.contacts.user_company_career)) { error('职位不超过40字'); } else if (!contacts) {} else if (!contacts1) { error('投资需求不超过500字'); } else if (!contacts2) { error('资源需求不超过500字'); } else {
-          this.zgClick('提交人脉');
-          this.loading = true;
-          formatData.setTag(this.contacts.user_invest_tag, this.tags.changecont);
-          let allData = {};
-          allData = this.contacts;
-          allData.user_id = localStorage.user_id;
-          allData.card_id = this.contacts.card_id || '';
-          allData.image_id = this.uploadShow.image_id || '';
-          this.$http.post(this.URL.createUserCard, allData)
-            .then(res => {
-              this.card_id = res.data.card_id;
-              this.loading = false;
-              this.open2('名片编辑成功', '是否返回', '查看详情', '返回人脉列表');
+        const submit = () => {
+          return new Promise((resolve, reject) => {
+            // 做一些异步操作
+            this.submitForm('contacts', 'contactsMust');
+            this.submitForm('contacts1', 'contacts1Must');
+            this.submitForm('contacts2', 'contacts2Must');
+            resolve(true);
+          });
+        };
+
+        const check = () => {
+          return new Promise((resolve, reject) => {
+            // 做一些异步操作
+            setTimeout(() => {
+              if (this.contactsMust) {
+              } else if (this.contacts1Must) {
+              } else if (this.contacts2Must) {
+              } else {
+                resolve(true);
+              }
+            }, 200);
+          });
+        };
+        submit()
+          .then((data) => {
+            return check();
+          })
+          .then((data) => {
+            if (data) {
+              this.zgClick('提交人脉');
+              this.loading = true;
+              formatData.setTag(this.contacts.user_invest_tag, this.tags.changecont);
+              let allData = {};
+              allData = this.contacts;
+              allData.user_id = localStorage.user_id;
+              allData.card_id = this.contacts.card_id || '';
+              allData.image_id = this.uploadShow.image_id || '';
+              this.$http.post(this.URL.createUserCard, allData)
+                .then(res => {
+                  this.card_id = res.data.card_id;
+                  this.loading = false;
+                  this.open2('名片编辑成功', '是否返回', '查看详情', '返回人脉列表');
 //              //路由传参
-            })
-            .catch(err => {
-              error('编辑失败');
-              console.log(err);
-              this.loading = false;
-            });
-        }
+                })
+                .catch(err => {
+                  error('编辑失败');
+                  console.log(err);
+                  this.loading = false;
+                });
+            }
+          });
       }, // 保存人脉
       // 公司搜索
       // 获取远程数据模拟
@@ -557,13 +586,12 @@
           this.$router.push({name: 'myContacts', query: {activeTo: 1}});
         });
       },
-      submitForm (formName) {
-        let check = true;
+      // 检查所有必填项目以及获取所有数据/true过.false不过
+      submitForm (formName, checkName) {
         this.$refs[formName].validate((valid) => {
-          check = valid;
+          this[checkName] = !valid;
         });
-        return check;
-      }, // 提交用
+      },
       getWxProjectCategory () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
@@ -648,49 +676,49 @@
 
 <style lang="less">
   @import '../../../assets/css/edit.less';
-   #createcontacts{
-     .button{
-       background:#40587a;
-       border-radius:2px;
-       height:37px;
-       font-size:14px;
-       color:#ffffff;
-       cursor: pointer;
-     }
-     .save{
-       width:88px;
-       margin-bottom: 30px;
-     }
-     .bigTitle{
-       font-size:22px;
-       color:#1f2d3d;
-       margin-bottom: 32px;
-     }
+  #createcontacts{
+    .button{
+      background:#40587a;
+      border-radius:2px;
+      height:37px;
+      font-size:14px;
+      color:#ffffff;
+      cursor: pointer;
+    }
+    .save{
+      width:88px;
+      margin-bottom: 30px;
+    }
+    .bigTitle{
+      font-size:22px;
+      color:#1f2d3d;
+      margin-bottom: 32px;
+    }
     .el-upload__tip{
       margin-left: 16px;
       font-size:14px;
       color:#5e6d82;
       line-height: 18px;
     }
-     .Upload {
-       .el-upload-list__item {
-         line-height: 1.8;
-          margin-top: 0px;
+    .Upload {
+      .el-upload-list__item {
+        line-height: 1.8;
+        margin-top: 0px;
 
-       }
-       .el-upload-list__item-name {
-         font-size: 14px;
-         color: #475669;
-         letter-spacing: 0;
-         text-decoration: underline
-       }
-       .el-upload-list__item:first-child{
-          margin-top: 0px;
-       }
+      }
+      .el-upload-list__item-name {
+        font-size: 14px;
+        color: #475669;
+        letter-spacing: 0;
+        text-decoration: underline
+      }
+      .el-upload-list__item:first-child{
+        margin-top: 0px;
+      }
 
-     }
-     .edit-page{
-       background: none;
-     }
-   }
+    }
+    .edit-page{
+      background: none;
+    }
+  }
 </style>
