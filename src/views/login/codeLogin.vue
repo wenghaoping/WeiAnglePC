@@ -10,7 +10,6 @@
   </div>
 </template>
 
-
 <script type="text/ecmascript-6">
   import * as validata from '@/utils/validata';
   import { error } from '@/utils/notification';
@@ -48,11 +47,6 @@
               localStorage.user_brand = res.data.user_brand;
               localStorage.user_company_career = res.data.user_company_career;
               localStorage.user_company_name = res.data.user_company_name;
-              this.$store.state.logining.user_id = res.data.user_id;
-              this.$store.state.logining.user_real_name = res.data.user_real_name === '' ? '暂无姓名' : res.data.user_real_name;
-              this.$store.state.logining.user_brand = res.data.user_brand;
-              this.$store.state.logining.user_company_career = res.data.user_company_career;
-              this.$store.state.logining.user_company_name = res.data.user_company_name;
               this.getCheckUserInfo(localStorage.user_id);
               this.getUserGroupByStatusName(localStorage.user_id);
               localStorage.token = res.data.token;
@@ -72,6 +66,7 @@
         }
       }
     },
+    computed: {},
     watch: {
 
     }

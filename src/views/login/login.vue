@@ -16,8 +16,6 @@
         <div class="wx-title tc">
           <img src="../../assets/images/saoma.png"/>
         </div>
-        <!--<img class="qrCode" src="">-->
-        <!--<iframe class="qrCode" src="https://www.weitianshi.cn/auth/oauth" scrolling="no"></iframe>-->
         <div id="qrCode"></div>
       </div>
     </div>

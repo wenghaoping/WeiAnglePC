@@ -95,7 +95,14 @@ Vue.mixin({
               localStorage.is_competition = res.data.is_competition;
               localStorage.user_wechat = res.data.user_wechat; // 微信
               localStorage.user_mobile = res.data.user_mobile; // 电话
-              this.$store.state.logining.user_real_name = res.data.user_real_name === '' ? '暂无姓名' : res.data.user_real_name;;
+              let obj = {
+                user_id: res.data.user_id,
+                user_real_name: res.data.user_real_name === '' ? '暂无姓名' : res.data.user_real_name,
+                user_brand: res.data.user_brand,
+                user_company_career: res.data.user_company_career,
+                user_company_name: res.data.user_company_name
+              };
+              this.$store.dispatch('setLoginData', obj);
             }
             resolve(1);
           });
@@ -112,19 +119,15 @@ Vue.mixin({
           if (res.data.status_code === 2000000) {
             if (res.data.status === 0) {
               group_name = '身份认证';
-              this.$store.state.logining.group_name = '身份认证';
             } else if (res.data.status === 1) {
               group_name = '审核中';
-              this.$store.state.logining.group_name = '审核中';
             } else if (res.data.status === 3) {
               group_name = '审核未通过';
-              this.$store.state.logining.group_name = '审核未通过';
             } else if (res.data.status === 2) {
               group_name = res.data.group.group_title;
-              this.$store.state.logining.group_name = res.data.group.group_title;
             }
             localStorage.group_name = group_name;
-            this.$store.state.logining.group_name = group_name;
+            this.$store.dispatch('setGroupName', group_name);
           } else {
             this.$tool.error('核对身份接口调用失败');
           }

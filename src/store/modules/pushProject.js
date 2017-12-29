@@ -10,6 +10,7 @@ export default {
       user_company_name: ''
     }, // 展示用的数据
     pushMessage: {
+      investor_id: '',
       user_id: '',
       card_id: '',
       email: '',

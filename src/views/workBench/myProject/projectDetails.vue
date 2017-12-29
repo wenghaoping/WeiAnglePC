@@ -572,10 +572,7 @@
 
 
     <!--一键尽调弹窗-->
-    <research :search-display="searchDisplay" :company-id="companyid" :comp-name="companyname"
-              @closeSearchDisplay="closeSearchDisplay"
-              @closeCompanySearchDisplay="closeCompanySearchDisplay" lock-scroll>
-    </research>
+    <research></research>
 
     <!--尽调搜索弹窗-->
     <el-dialog title="一键尽调" :visible="companySearchDisplay" close-on-click-modal close-on-press-escape :before-close="dialogVisibleTo">
@@ -584,7 +581,7 @@
         <el-form-item :label="jindiaoTitle">
           <el-input v-model="searchName" @keyup.native.enter="handleIconClick" placeholder="帮助FA成交的项目管理工具">
             <el-button slot="append" icon="search" @click="handleIconClick"></el-button>
-          </el-input><!--@change="searchChange"-->
+          </el-input>
         </el-form-item>
       </el-form>
       <ul class="onsearch">
@@ -623,11 +620,12 @@
                     @previewPush="previewPush"></projectpreview>
 
     <!--帮我引荐-->
-    <recommend :recommendDisplay="recommendDisplay" :recomData="recomData"></recommend>
+    <recommend :recommendDisplay="recommendDisplay"></recommend>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   import yichu from '../../../assets/images/icon-yichu.png';
   import xiaochengxu from '../../../../static/images/xiaochengxu.png';
   import pinpai from '../../../../static/images/icon-pinpa.png';
@@ -658,8 +656,8 @@
         xiaochengxu: xiaochengxu,
         projectPushDisplay: false, // 项目推送弹框,人脉入口
         projectPushDisplay2: false, // 项目推送弹框,项目入口
-        searchDisplay: false, // 一键尽调弹框
-        companySearchDisplay: false, // 公司搜索弹框
+//        searchDisplay: false, // 一键尽调弹框
+//        companySearchDisplay: false, // 公司搜索弹框
         contactDisplay: false, // 人脉详情弹窗
         recommendDisplay: false, // 帮我引荐
         companyname: '', // 公司名称给一键尽调用的
@@ -881,9 +879,7 @@
         }, // 传递给推送的数据
         userEmail: '',
         scrolled: false,
-        qrImg: '', // 二维码地址
-        recomData: {} // 帮我引荐
-
+        qrImg: '' // 二维码地址
       };
     },
     computed: {
@@ -895,7 +891,10 @@
       },
       scheduleLast () {
         return this.schedule[this.schedule.length - 1].label;
-      }
+      },
+      ...mapState({
+        companySearchDisplay: state => state.dialogDisplay.companySearchDisplay
+      })
     },
     components: {
       research,
@@ -967,23 +966,27 @@
       // 一键尽调按钮
       goOnkey () {
         if (this.project.pro_company_name === '') {
-          this.companySearchDisplay = true;
+//          this.companySearchDisplay = true;
+          this.$store.dispatch('companySearchControl', true);
         } else {
           this.loading = true;
           this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.project.pro_company_name})
             .then(res => {
               let data = res.data.data;
               if (data.length === 0) { // 搜索不到信息
-                this.companySearchDisplay = true;
+//                this.companySearchDisplay = true;
+                this.$store.dispatch('companySearchControl', true);
                 this.searchName = this.project.pro_company_name;
                 this.companyname = this.project.pro_company_name;
                 this.seachCompanys = [{company_name: '匹配不到你要搜索的公司,请重新继续输入', com_id: -2}];
                 this.loading = false;
               } else { // 搜索到了
                 this.loading = false;
-                this.searchDisplay = true;
-                this.companyid = data.company.com_id;
-                this.companyname = this.project.pro_company_name;
+//                this.searchDisplay = true;
+                this.$store.dispatch('setSearchCompany', {companyId: data.company.com_id, companyName: this.project.pro_company_name});
+                this.$store.dispatch('searchControl', true);
+                /* this.companyid = data.company.com_id;
+                this.companyname = this.project.pro_company_name; */
               }
             })
             .catch(err => {
@@ -1008,12 +1011,16 @@
                 if (res.data.status_code === 2000000) {
                   success('修改成功');
                   if (data.com_id !== -1) {
-                    this.companySearchDisplay = false;
-                    this.companyid = data.com_id;
-                    this.companyname = data.newName;
-                    this.searchDisplay = true;
+//                    this.companySearchDisplay = false;
+                    this.$store.dispatch('companySearchControl', false);
+                    this.$store.dispatch('setSearchCompany', {companyId: data.com_id, companyName: data.newName});
+                    /* this.companyid = data.com_id;
+                    this.companyname = data.newName; */
+//                    this.searchDisplay = true;
+                    this.$store.dispatch('searchControl', true);
                   } else {
-                    this.companySearchDisplay = false;
+//                    this.companySearchDisplay = false;
+                    this.$store.dispatch('companySearchControl', false);
                   }
                 }
               })
@@ -1021,13 +1028,15 @@
                 console.log(err);
               });
           }).catch(() => {
-            this.companySearchDisplay = false;
+//            this.companySearchDisplay = false;
+            this.$store.dispatch('companySearchControl', false);
           });
         }
       },
       // 关闭搜索弹框
       dialogVisibleTo () {
-        this.companySearchDisplay = false;
+//        this.companySearchDisplay = false;
+        this.$store.dispatch('companySearchControl', false);
       },
       // 输入搜索
       handleIconClick () {
@@ -1491,7 +1500,7 @@
         arr.forEach((x) => {
           let obj = [];
           obj.user_avatar_url = x.user_avatar_url || '';
-          obj.user_avatar_txt = formatData.setUrlChange(x.user_avatar_url = '', x.investor_name);
+          obj.user_avatar_txt = formatData.setUrlChange(x.user_avatar_url, x.investor_name);
           obj.investor_career = x.investor_career;
           obj.investor_company = x.investor_company;
           obj.investor_id = x.investor_id;
@@ -1501,7 +1510,7 @@
           obj.original_id = x.original_id;
           obj.recommend_status = x.recommend_status;
           obj.wts_match_weight = x.wts_match_weight;
-          obj.push_statues = x.push_statues || 0;
+          obj.push_statues = x.push_statues;
           newArr.push(obj);
         });
         return newArr;
@@ -1612,8 +1621,8 @@
       },
       // 帮我引荐
       helpKnow (data) {
+        this.$store.dispatch('setMatchInvestorsData', data);
         console.log(data);
-        this.recomData = data;
         this.recommendDisplay = true;
       },
       // 编辑跟进记录

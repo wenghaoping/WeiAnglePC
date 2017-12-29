@@ -754,28 +754,10 @@
       },
       // 删除成功案例
       removeinvestCase (item) {
-//        if (item.case_id === '' || item.case_id == null) {
         let index = this.investCases.investCase.indexOf(item);
         if (index !== -1) {
           this.investCases.investCase.splice(index, 1);
         }
-//        } else {
-//          this.$http.post(this.URL.deleteDevelop, {
-//            user_id: localStorage.user_id,
-//            case_id: item.case_id
-//          })
-//            .then(res => {
-//              this.$tool.success('删除成功');
-//              let index = this.investCases.investCase.indexOf(item);
-//              if (index !== -1) {
-//                this.investCases.investCase.splice(index, 1);
-//              }
-//            })
-//            .catch(err => {
-//              this.$tool.error('删除失败');
-//              this.$tool.console(err);
-//            });
-//        }
       },
       // 设置图片
       setImage (obj, planList, uploadShow) {

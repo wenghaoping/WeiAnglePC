@@ -117,7 +117,6 @@
             </el-form>
             <span slot="footer" class="dialog-footer">
               <el-button @click="preview">预览</el-button>
-              <!--<el-button type="primary" @click="push(2)">继续推送</el-button>-->
               <el-button type="primary" @click="push(1)">推送</el-button>
             </span>
     </el-dialog>
@@ -266,7 +265,6 @@
               pushData.type = this.userMessage.type || '';
               pushData.project_ids = [];
               pushData.project_ids.push(this.projectRadio);
-//            alert("过")
               this.loading = true;
               this.$http.post(this.URL.pushUser, pushData)
                 .then(res => {
@@ -429,7 +427,6 @@
       projectPushShow: function (e) {
         if (e) {
           this.getCheckUserInfo(localStorage.user_id);
-
           setTimeout(() => { this.title(); this.email.title = this.pushTitle1; }, 1000);
           this.user = {};
           this.email2.nameEmai = '';
@@ -442,9 +439,6 @@
           this.firstInData.user = this.userMessage;
           this.firstInData.email2.nameEmail = this.userEmail;
           this.firstInData.project = this.$store.state.pushProject.projectMessgae || {};
-
-          /*    this.email.body=this.$store.state.pushProject.email.body || '';
-           this.projectRadio=this.$store.state.pushProject.project_id || ''; */
           if (this.firstInData.project.pro_id !== '') {
             this.remoteMethod(this.firstInData.project.pro_intro)
               .then((data) => {

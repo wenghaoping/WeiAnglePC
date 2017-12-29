@@ -1,14 +1,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import mutations from './mutations';
-import actions from './actions';
-import getters from './getters';
-import pushProject from './modules/pushProject.js';
-import login from './modules/login.js';
-import superBp from './modules/superBp.js';
-import pageAndSelect from './modules/pageAndSelect.js';
-import syncData from './modules/syncData.js';
+import pushProject from './modules/pushProject.js'; // 项目推送控制
+import login from './modules/login.js'; // 登陆数据存储
+import superBp from './modules/superBp.js'; // 超级BP控制
+import pageAndSelect from './modules/pageAndSelect.js'; // 列表页筛选控制
+import dialogDisplay from './modules/dialogDisplay.js'; // 全局公用弹框控制
+import projectDetails from './modules/projectDetails.js'; // 项目详情页面所有数据集合
+import syncData from './modules/syncData.js'; // 同步数据使用的
 Vue.use(Vuex);
 
 const state = {
@@ -17,14 +16,13 @@ const state = {
 
 export default new Vuex.Store({
   state,
-  getters,
-  actions,
-  mutations,
   modules: { // 用前面的去访问
     pushProject: pushProject,
     logining: login,
     pageANDSelect: pageAndSelect,
     syncData: syncData,
-    superBp: superBp
+    superBp: superBp,
+    dialogDisplay: dialogDisplay,
+    projectDetails: projectDetails
   }
 });

@@ -4,7 +4,7 @@
     <el-dialog :visible="recommendDisplay" :before-close="handleClose" close-on-press-escape close-on-click-modal lock-scroll
                :close-on-click-modal="showList" :close-on-press-escape="showList" size="tiny">
       <span slot="title" class="title">
-        帮您引荐【{{recomData.investor_name}}】
+        帮您引荐【{{matchInvestorsData.investor_name}}】
       </span>
       <div class="inner">
         <p class="push">今日剩余引荐<i>5</i>次</p>
@@ -21,16 +21,13 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
 //  import { error, success } from '@/utils/notification';
   export default {
     props: {
       recommendDisplay: {
         type: Boolean,
         default: false,
-        required: true
-      },
-      recomData: {
-        type: [Object, Array],
         required: true
       }
     },
@@ -42,6 +39,9 @@
       };
     },
     computed: {
+      ...mapState({
+        matchInvestorsData: state => state.projectDetails.matchInvestorsData
+      })
     },
     mounted () {
 

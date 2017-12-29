@@ -48,6 +48,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
+  import { warning, error } from '@/utils/notification';
   export default {
     props: {
       identityDisplay: {
@@ -73,18 +75,12 @@
       };
     },
     computed: {
-      userRealName () {
-        let userRealName = this.$store.state.logining.user_real_name || localStorage.user_real_name;
-        return userRealName;
-      },
-      groupStatus () {
-        let groupName = this.$store.state.logining.group_name || localStorage.group_name || '身份认证';
-        return groupName;
-      }
+      ...mapState({
+        groupStatus: state => state.logining.group_name,
+        userRealName: state => state.logining.user_real_name
+      })
     },
-    mounted () {
-
-    },
+    mounted () {},
     // 组件
     components: {},
     methods: {
@@ -161,12 +157,12 @@
             if (data.length !== 0) {
               this.$router.push({name: 'onekeyResearch', query: {company: item.company_name, pro: item.pro_id}});// 路由传参
             } else {
-              this.$tool.warning('未查询到该公司信息，无法获取');
+              warning('未查询到该公司信息，无法获取');
             }
             this.loading = false;
           })
           .catch(err => {
-            this.$tool.error('获取失败');
+            error('获取失败');
             console.log(err);
             this.loading = false;
           });
@@ -181,8 +177,7 @@
           localStorage.clear();
           sessionStorage.clear();
           this.$router.push({path: 'login'});// 登陆
-          this.$store.state.logining.user_real_name = '';
-          this.$store.state.logining.user_id = '';
+          this.$store.dispatch('setUserRealName', '');
           setTimeout(() => { window.location.reload(); }, 100);
         }
         this.value = '';
@@ -203,7 +198,7 @@
               this.$emit('identityopen', true);
             }
           } else {
-            this.$tool.error('核对身份接口调用失败');
+            error('核对身份接口调用失败');
           }
         });
       }

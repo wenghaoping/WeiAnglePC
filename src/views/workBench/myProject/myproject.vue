@@ -445,7 +445,7 @@
         this.getPra = this.$store.state.pageANDSelect.getPra;
         this.currentPage = this.$store.state.pageANDSelect.pracurrentPage || 1;
         this.getPra.page = this.$store.state.pageANDSelect.pracurrentPage || 1;
-        let node = this.$store.state.pageANDSelect.node | 0;
+        let node = this.$store.state.pageANDSelect.node || 0;
         this.searchinput = this.$store.state.pageANDSelect.proSearchinput || '';
         this.pro_schedule = node;
         this.setNodeCss(node);
@@ -498,7 +498,6 @@
         this.projectPushDisplay2 = false;
         this.previewDisplay = false;
       },
-
       // 请求函数
       // 搜索===首次进入页面加载的数据
       handleIconClick () {

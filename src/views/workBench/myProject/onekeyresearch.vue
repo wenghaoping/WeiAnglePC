@@ -5,7 +5,7 @@
                close-on-press-escape close-on-click-modal lock-scroll>
       <div class="contain-grid" style="width: 893px;">
         <div class="contain-position">
-          <p>您要尽调的公司：<span>{{compname}}</span><button class="fr button" @click="goToEdit">修改公司</button></p>
+          <p>您要尽调的公司：<span>{{searchCompany.companyName}}</span><button class="fr button" @click="goToEdit">修改公司</button></p>
         </div>
         <div class="contain-inner">
           <div class="item-lists1">
@@ -42,7 +42,7 @@
             </div>
             <!--公司信息-->
             <div class="item">
-              <company-message :comp-name="compname" :com-message="comMessage"></company-message>
+              <company-message :comp-name="searchCompany.companyName" :com-message="comMessage"></company-message>
             </div>
             <!--工商信息-->
             <div class="item">
@@ -186,17 +186,18 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   import companyMessage from '@/views/components/onkeyresearch/companyMessage.vue';
   import business from '@/views/components/onkeyresearch/business.vue';
   import downloadechart from '@/views/components/onkeyresearch/downloadEchart.vue';
   import { setTime } from '@/utils/formatData';
   import { error } from '@/utils/notification';
   export default {
-    props: ['searchDisplay', 'companyId', 'compName'],
+//    props: ['searchDisplay', 'companyId', 'compName'],
     data () {
       return {
-        compname: '', // 一键尽调公司的名称
-        com_id: 0, // 公司Id
+//        compname: '', // 一键尽调公司的名称
+//        com_id: 0, // 公司Id
         conmanyName: '3',
         productMessage: '产品信息',
         recruitMessage: '招聘信息',
@@ -301,15 +302,17 @@
         window.open(url);
       }, // 跳转到新的一键尽调
       goToEdit () {
-        this.$emit('closeSearchDisplay', false);
-        this.$emit('closeCompanySearchDisplay', true);
+        this.$store.dispatch('searchControl', false);
+        this.$store.dispatch('companySearchControl', true);
+//        this.$emit('closeSearchDisplay', false);
+//        this.$emit('closeCompanySearchDisplay', true);
       },
       getCrawlerTeam () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.$http.post(this.URL.getCrawlerTeam, {
             user_id: localStorage.user_id,
-            com_id: this.com_id
+            com_id: this.searchCompany.companyId
           })
             .then(res => {
               this.team = res.data.data;
@@ -326,7 +329,7 @@
           // 做一些异步操作
           this.$http.post(this.URL.getCrawlerHistoryFinance, {
             user_id: localStorage.user_id,
-            com_id: this.com_id
+            com_id: this.searchCompany.companyId
           })
             .then(res => {
               let data = res.data.data;
@@ -344,7 +347,7 @@
           // 做一些异步操作
           this.$http.post(this.URL.getCrawlerMilestone, {
             user_id: localStorage.user_id,
-            com_id: this.com_id
+            com_id: this.searchCompany.companyId
           })
             .then(res => {
               let data = res.data.data;
@@ -363,7 +366,7 @@
           // 做一些异步操作
           this.$http.post(this.URL.getCrawlerNews, {
             user_id: localStorage.user_id,
-            com_id: this.com_id
+            com_id: this.searchCompany.companyId
           })
             .then(res => {
               let data = res.data.data;
@@ -382,7 +385,7 @@
           // 做一些异步操作
           this.$http.post(this.URL.getCrawlerCompeting, {
             user_id: localStorage.user_id,
-            com_id: this.com_id
+            com_id: this.searchCompany.companyId
           })
             .then(res => {
               let data = res.data.data;
@@ -430,7 +433,7 @@
           // 做一些异步操作
           this.$http.post(this.URL.getCrawlerProject, {
             user_id: localStorage.user_id,
-            com_id: this.com_id
+            com_id: this.searchCompany.companyId
           })
             .then(res => {
               if (res.data.status_code === 2000000) {
@@ -455,10 +458,10 @@
         }
       }, // 设置数据
       getCrawlerCompany () {
-        let compName = this.compName;
+//        let compName = this.searchCompany.companyName;
         return new Promise((resolve, reject) => {
           // 做一些异步操作
-          this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: compName})
+          this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.searchCompany.companyName})
             .then(res => {
               let data = res.data.data;
               if (data.length === 0) { // 搜索不到信息
@@ -479,7 +482,7 @@
         return new Promise((resolve, reject) => {
           this.$http.post(this.URL.getCrawlerBrand, {
             user_id: localStorage.user_id,
-            com_id: this.com_id
+            com_id: this.searchCompany.companyId
           })
             .then(res => {
               let data = res.data.data;
@@ -492,7 +495,12 @@
         });
       }// 获取商标信息
     },
-    computed: {},
+    computed: {
+      ...mapState({
+        searchDisplay: state => state.dialogDisplay.searchDisplay,
+        searchCompany: state => state.projectDetails.searchCompany
+      })
+    },
     components: {
       companyMessage,
       business,
@@ -501,12 +509,11 @@
     created () {
 
     },
-
     watch: {
-      companyId: function (e) {
+      searchDisplay: function (e) {
         this.loading = true;
-        this.com_id = e;
-        this.compname = this.compName;
+//        this.com_id = e;
+//        this.compname = this.searchCompany.searchCompany;
         this.getCrawlerCompany()
           .then((data) => {
             return this.getCrawlerTeam();
@@ -530,10 +537,7 @@
             this.loading = false;
             return this.getCrawlerCompeting();
           });
-      }, // 获取公司id
-      dialogVisible: function (e) {
-
-      }
+      } // 获取公司id
 
     }
   };

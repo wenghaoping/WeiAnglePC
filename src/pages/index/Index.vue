@@ -54,8 +54,7 @@
           this.$route.path !== '/addProject' && this.$route.path !== '/iosBanner' &&
           this.$route.path !== '/skipToPc' && this.$route.path !== '/superBP') {
           this.$router.push({name: 'index'});
-          this.$store.state.logining.user_id = '';
-          this.$store.state.logining.user_real_name = '';
+          this.$store.dispatch('setUserRealName', '');
         }
         // 十二小时不动后退出登录
         setTimeout(function () {

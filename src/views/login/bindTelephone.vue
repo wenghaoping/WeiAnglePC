@@ -74,8 +74,14 @@
               this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
               localStorage.user_real_name = res.data.user_real_name;
               localStorage.token = res.data.token;
-              this.$store.state.logining.user_id = res.data.user_id;
-              this.$store.state.logining.user_real_name = res.data.user_real_name;
+              let obj = {
+                user_id: res.data.user_id,
+                user_real_name: res.data.user_real_name === '' ? '暂无姓名' : res.data.user_real_name,
+                user_brand: res.data.user_brand,
+                user_company_career: res.data.user_company_career,
+                user_company_name: res.data.user_company_name
+              };
+              this.$store.dispatch('setLoginData', obj);
               // is_exist: 0:新用户;1:老用户;NaN:没有请求过验证码
               if (res.data.is_exist === 0) {
                 this.$router.push({name: 'identityChoose'});
@@ -93,7 +99,6 @@
     },
     created: function () {
       this.open_session = this.$route.query.open_session;
-//          console.log(this.$route.query)
     }
   };
 </script>
