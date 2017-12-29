@@ -166,7 +166,6 @@
                             prop="follow_desc"
                             :rules="[{max: 500, message: '长度不能大于500个字符', trigger: 'blur' }]">
                 <el-input type="textarea"
-
                           v-model="follow.follow_desc"
                           :autosize="{ minRows: 4, maxRows: 30}" placeholder="请输入"></el-input>
               </el-form-item>
@@ -252,24 +251,12 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   import * as validata from '@/utils/validata';
   import { error, success } from '@/utils/notification';
   import * as formatData from '@/utils/formatData';
   export default {
     props: {
-      followDisplay: {
-        type: Boolean,
-        default: false,
-        required: true
-      },
-      followid: [String, Number],
-      projectid: [String, Number],
-      cardid: [String, Number],
-      userid: [String, Number],
-      projectname: {
-        type: String,
-        default: ''
-      },
       cardname: {
         type: String,
         default: ''
@@ -278,6 +265,16 @@
         type: String,
         default: ''
       }
+    },
+    computed: {
+      ...mapState({
+        followDisplay: state => state.dialogDisplay.followDisplay,
+        followId: state => state.projectDetails.followData.followId,
+        projectId: state => state.projectDetails.projectMessage.projectId,
+        projectIntro: state => state.projectDetails.projectMessage.projectIntro,
+        cardId: state => state.projectDetails.contactDeatil.cardId,
+        userId: state => state.projectDetails.contactDeatil.userId
+      })
     },
     data () {
       var checkPhoneNumber = (rule, value, callback) => {
@@ -331,7 +328,7 @@
         }, // 分组用的所有参数
         statusLast: 0,
         loadingcheck: false,
-        follow_id: '',
+//        follow_id: '',
         investor_id: '',
         value: '',
         followName: '',
@@ -415,7 +412,7 @@
       // 关闭
       handleClose (e) {
         if (!this.submitButton) {
-          this.$emit('closeFollow', false);
+          this.$store.dispatch('followControl', false);
         } else {
           error('请等待上传成功后关闭或取消上传');
         }
@@ -584,14 +581,13 @@
       getFollowUp () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
-          if (this.follow_id !== '') {
+          if (this.followId !== '') {
             this.loading = true;
             this.uploadShow.lists = [];
             this.fileList = [];
-            this.$http.post(this.URL.get_follow_record, {user_id: localStorage.user_id, follow_id: this.follow_id})
+            this.$http.post(this.URL.get_follow_record, {user_id: localStorage.user_id, follow_id: this.followId})
               .then(res => {
                 let data = res.data.data;
-//            data.schedule_id=data.schedule_id;
                 formatData.setTimeToReallyTime1(data, 'meet_time');// 时间格式设置
                 data.file_id = [];
                 this.typein = data.type;
@@ -835,22 +831,20 @@
               else if (validata.getNull(this.follow.project_name)) error('请选择正确的项目');
               else {
                 formatData.setReallyTimeToTime1(this.follow, 'meet_time', 'meet_time_stamp');// 标准时间转化为时间戳（单个数据）
-                this.follow.follow_id = this.follow_id;
+                this.follow.follow_id = this.followId;
                 if (this.follow.follow_id === '') delete this.follow.follow_id;
                 delete this.follow.files;
                 this.follow.user_id = localStorage.user_id;
                 this.follow.type = this.typein;
-//          this.follow.card_id=this.card_id;
-                if (this.userid !== undefined) {
-                  if (this.follow.type === 'user') {
-                    this.follow.card_id = this.userid;
-                  }
+                if (this.follow.type === 'user') {
+                  this.follow.card_id = this.userId;
                 }
                 this.loading = true;
                 this.$http.post(this.URL.add_follow_record, this.follow)
                   .then(res => {
                     if (res.data.status_code === 2000000) {
-                      this.follow_id = res.data.data;
+//                      this.follow_id = res.data.data;
+                      this.$store.dispatch('setFollowId', res.data.data);
                       this.open2('跟进编辑成功', '保存成功', '继续添加', '返回');
                     } else {
                       error(res.data.error_msg);
@@ -875,12 +869,13 @@
           type: 'success'
         }).then(() => {
           this.clearData();
-          this.follow_id = '';
+//          this.follow_id = '';
+          this.$store.dispatch('setFollowId', '');
           this.resetForm('follow');
         }).catch(() => {
-          this.$emit('closeFollow', false);
+          this.$store.dispatch('followControl', false);
           this.clearData();
-          this.follow_id = '';
+          this.$store.dispatch('setFollowId', '');
         });
       },
       // 清除所有数据
@@ -889,9 +884,9 @@
         this.investor_id = this.investorid || '';
         this.follow.file_id = [];
         this.fileList = [];
-        this.follow.project_id = this.projectid || '';
-        this.follow.project_name = this.projectname || '';
-        this.follow.card_id = this.cardid || '';
+        this.follow.project_id = this.projectId || '';
+        this.follow.project_name = this.projectIntro || '';
+        this.follow.card_id = this.cardId || '';
         this.follow.card_name = this.cardname || '';
         this.investor_id = this.investorid || '';
         this.saveJumpData = this.follow;
@@ -902,7 +897,7 @@
       followDisplay: function (e) {
         if (e) {
           this.clearData();
-          this.follow_id = this.followid || '';
+//          this.follow_id = this.followid || '';
           this.typein = this.type;
           this.loading = true;
           this.$global.func.getWxProjectCategory()
@@ -914,7 +909,8 @@
             });
           this.setFileType();
         } else {
-          this.follow_id = '';
+//          this.follow_id = '';
+          this.$store.dispatch('setFollowId', '');
           this.resetForm('follow');
         }
       }// 清空数据

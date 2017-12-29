@@ -345,14 +345,11 @@
     </el-dialog>
 
     <!--项目详情弹窗-->
-    <alertprojectdetail :alert-project-detail-display="alertProjectDetailDisplay" :proid="pro_id"
-                        @changeAlertProjectDetail="changeAlertProjectDetail"></alertprojectdetail>
+    <alertprojectdetail></alertprojectdetail>
 
     <!--写跟进弹框-->
-    <addfollow :follow-display="followDisplay" :cardid="contacts.card_id" :userid="contacts.user_id"
-               :cardname="contacts.user_real_name" :type="contacts.type"
-               @closeFollow="closeFollow"
-               ></addfollow>
+    <addfollow :cardname="contacts.user_real_name"
+               :type="contacts.type"></addfollow>
 
     <!--项目推送弹窗,人脉入口完整版-->
     <projectpush :project-push-show="projectPushDisplay" :user-message="userMessage"
@@ -369,6 +366,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   import echarts from 'echarts';
   import alertprojectdetail from '@/views/components/alertProjectDetail.vue';
   import addfollow from '@/views/components/addFollow.vue';
@@ -385,10 +383,10 @@
         close: false,
         /* 设置标签 */
         setTagDisplay: false, // 标签弹框设置
-        followDisplay: false, // 添加更近弹框
+//        followDisplay: false, // 添加更近弹框
         previewDisplay: false, // 项目预览弹窗
         projectPushDisplay: false, // 项目推送弹框,完整版
-        alertProjectDetailDisplay: false, // 控制项目详情弹窗
+//        alertProjectDetailDisplay: false, // 控制项目详情弹窗
         tagsValue: [], // 标签弹框数据绑定
         addTags: [{
           value: '',
@@ -467,7 +465,7 @@
         ], // 项目跟进进度搜索用,多一个全部
         searchSchedule: 0, // 意向项目的筛选进度
         tabs: true, // 标签切换
-        pro_id: '', // 项目详情
+//        pro_id: '', // 项目详情
         getPra: {}, // 获取项目的请求参数
         getConpro: {}, // 获取意向项目的请求参数
         getMatchPro: {}, // 获取匹配项目
@@ -522,6 +520,11 @@
         }// 推送数据
       };
     },
+    computed: {
+      ...mapState({
+        followDisplay: state => state.dialogDisplay.followDisplay
+      })
+    },
     methods: {
       // 返回上一层
       goBack () {
@@ -544,6 +547,7 @@
       getUserId () {
         this.contacts.user_id = this.$route.query.user_id;
         this.contacts.card_id = this.$route.query.card_id;
+        this.$store.dispatch('setConnectDeatil', {cardId: this.$route.query.card_id, userId: this.$route.query.user_id});
         this.contacts.investor_id = this.$route.query.investor_id;
         this.tags.card_id = this.$route.query.card_id;
       },
@@ -628,12 +632,10 @@
       filterChangeCurrent1 (page) {
         this.loading = true;
         this.getConpro.user_id = localStorage.user_id;
-//      this.getPra.user_id="2rzyz5vp";
         this.currentPage2 = page;
         this.getConpro.card_id = this.contacts.card_id;
         this.getConpro.page = page;
         this.getConpro.card_link_user_id = this.contacts.user_id;
-//        this.getConpro.schedule_id='';
         this.$http.post(this.URL.getEnjoyProjects, this.getConpro)
           .then(res => {
             if (res.data.status_code === 2000000) {
@@ -654,23 +656,12 @@
       },
       // 项目详情弹窗
       toDetail (data) {
-//          console.log(data);
-        this.pro_id = data.project_id;
-        this.alertProjectDetailDisplay = true;
+        this.$store.dispatch('setProjectId', data.project_id);
+        this.$store.dispatch('alertProjectControl', true);
       },
       // 点击添加意向项目按钮
       addFollow () {
-        this.followDisplay = true;
-      },
-      // 关闭添加意向项目
-      closeFollow (msg) {
-        this.followDisplay = msg;
-        this.getEnjoyProjects();
-        this.getEchartData();
-      },
-      // 项目详情弹窗关闭函数
-      changeAlertProjectDetail (msg) {
-        this.alertProjectDetailDisplay = msg;
+        this.$store.dispatch('followControl', true);
       },
       // 关闭项目预览AND关闭项目推送
       closePreviewANDProjectPush (msg) {
@@ -1314,7 +1305,14 @@
       projectpush,
       projectpreview
     },
-    watch: {}
+    watch: {
+      followDisplay: function (e) {
+        if (!e) {
+          this.getEnjoyProjects();
+          this.getEchartData();
+        }
+      }
+    }
   };
 </script>
 

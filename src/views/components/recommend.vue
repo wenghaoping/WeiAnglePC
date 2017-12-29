@@ -24,13 +24,7 @@
   import { mapState } from 'vuex';
 //  import { error, success } from '@/utils/notification';
   export default {
-    props: {
-      recommendDisplay: {
-        type: Boolean,
-        default: false,
-        required: true
-      }
-    },
+    props: {},
     data () {
       return {
 //        stageDisplay: false,
@@ -40,7 +34,8 @@
     },
     computed: {
       ...mapState({
-        matchInvestorsData: state => state.projectDetails.matchInvestorsData
+        matchInvestorsData: state => state.projectDetails.matchInvestorsData,
+        recommendDisplay: state => state.dialogDisplay.recommendDisplay
       })
     },
     mounted () {

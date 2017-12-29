@@ -5,7 +5,6 @@
         <!--信息介绍-->
         <div class="followItem" style="margin-top: 0px">
           <div class="item-cicle">
-            <!--<div class="item-cicle1"></div>-->
             <img :src="cirIcon">
           </div>
            <div class="item-time cursor" @click="toDetail(item)">{{item.investor_name}}</div>
@@ -17,11 +16,7 @@
               <span  style="max-width: 200px; white-space: nowrap;text-overflow: ellipsis;overflow: hidden;display: inline-block;line-height: 17.5px  ">( {{item.user_organization}} )</span>
             </el-tooltip>
           </div>
-
-
           <span class="followProject1" style="display: inline-block;line-height: 27px;float: left;margin-top: -5px;margin-left: 16px" :class="{ followColor: item.schedule.schedule_name=='Reject',followColor1:item.schedule.schedule_name=='Hold'}" >{{item.schedule.schedule_name}}</span>
-
-          <!--<div class="item-name">{{item.follow_user_name}}</div>-->
           <div class="item-edit">
             <el-button
               type="text"
@@ -35,22 +30,6 @@
         <!--信息内容介绍-->
         <div class="followContent">
           <div class="followProject">
-            <!--<span style="display: inline-block;float: left;position: relative;">关联项目&nbsp;:&nbsp;</span>-->
-            <!--<el-tooltip class="item" effect="dark"  placement="top" :disabled="pro_name.length > 10 ? false:true">-->
-              <!--<div slot="content">-->
-                <!--<div class="tips-txt">{{pro_name}}</div>-->
-              <!--</div>-->
-              <!--<span style="width:180px;max-width:200px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left">{{pro_name}}</span>-->
-            <!--</el-tooltip>-->
-            <!--<span style="display: inline-block;margin-left: 90px;float: left;position: relative;" v-show="item.investor_name!=''">意向投资人&nbsp;:&nbsp;</span>-->
-            <!--<el-tooltip class="item" effect="dark"  placement="top" :disabled="item.investor_name.length > 3 ? false:true">-->
-              <!--<div slot="content">-->
-                <!--<div class="tips-txt">{{item.investor_name}}</div>-->
-              <!--</div>-->
-              <!--<span style="width:58px;max-width:58px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;display:inline-block;float: left;text-align: center">{{item.investor_name}}</span>-->
-            <!--</el-tooltip>-->
-            <!--<span class="followProject1" style="display: inline-block;line-height: 23px;float: left;margin-top: 11px">{{item.schedule.schedule_name}}</span>-->
-            <!--约谈-->
             <div class="meet" style="padding-top: 15px;padding-bottom: 10px;" v-show="item.meet_back!=''||item.meet_status!=''||item.meet_type!=''||item.meet_time!=''||item.meet_address!=''">
             <el-row :span="24" >
               <el-col :span="12">
@@ -116,49 +95,6 @@
           <span>{{item.follow_user_name}}</span>
           <span>{{item.follow_time}}</span>
         </div>
-        <!--跟进约谈-->
-        <!--<div class="followTouch">-->
-          <!--<div class="followTouch1">-->
-           <!--<div class="touch1">-->
-             <!--<span class="touchTitle">约谈电话&nbsp;:</span>-->
-             <!--<span class="touchTitle1">电话</span>-->
-           <!--</div>-->
-            <!--<div class="touch1">-->
-              <!--<span class="touchTitle">约谈时间&nbsp;:</span>-->
-              <!--<span class="touchTitle1">2017-05-04 09:21</span>-->
-            <!--</div>-->
-            <!--<div class="touch1">-->
-              <!--<span class="touchTitle">约谈地点&nbsp;:</span>-->
-              <!--<span class="touchTitle1">浙江省杭州市西湖区文三路90-->
-<!--号东部软件园一楼智云社</span>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div class="followTouch1 followLeft">-->
-            <!--<div class="touch1">-->
-              <!--<span class="touchTitle">手机号&nbsp;:</span>-->
-              <!--<span class="touchTitle1">18221330799</span>-->
-            <!--</div>-->
-            <!--<div class="touch1">-->
-              <!--<span class="touchTitle">微信号&nbsp;:</span>-->
-              <!--<span class="touchTitle1">xug0771</span>-->
-            <!--</div>-->
-            <!--<div class="touch1">-->
-              <!--<span class="touchTitle">其他&nbsp;:</span>-->
-              <!--<span class="touchTitle1">xug@weitianshi.cn</span>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div class="followTouch1 followLeft">-->
-            <!--<div class="touch1">-->
-              <!--<span class="touchTitle">约谈反馈&nbsp;:</span>-->
-              <!--<span class="touchTitle1">继续跟进</span>-->
-            <!--</div>-->
-            <!--<div class="touch1">-->
-              <!--<span class="touchTitle">约谈状态&nbsp;:</span>-->
-              <!--<span class="touchTitle1">完成</span>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div class="clear"></div>-->
-        <!--</div>-->
         <!--确认删除弹框-->
         <el-dialog
           title="删除"
@@ -198,14 +134,13 @@
   export default {
     components: {
     },
-    props: ['proid', 'proName', 'getDataTrue'],
+    props: ['proid', 'getDataTrue'],
     data () {
       return {
         cirIcon: cirIcon,
         newTime: '',
         dialogFollow: false, // 控制写跟进弹框
         pro_id: this.proid,
-        pro_name: this.proName, // 关联项目
         loading: false, // 加载
         loading1: false, // 加载动画
         content: {}, // 跟进记录数据
@@ -218,7 +153,8 @@
     },
     methods: {
       toDetail (data) {
-        this.$emit('toDetail', data);
+        this.$store.dispatch('setConnectDeatil', {cardId: data.card_id, userId: data.user_id});
+        this.$store.dispatch('contactControl', true);
       },
       upload (item1, index) {
         let fileId = this.content[index].follow_file[item1].file_id;
@@ -240,7 +176,6 @@
 
               this.setDateTime(data);// 时间格式设置
               this.content = data;
-//              console.log(data);
               this.totalData = res.data.count;
             }
           })
@@ -308,9 +243,6 @@
       proid: function (e) {
         this.pro_id = e;
       }, // 获取项目id
-      proName: function (e) {
-        this.pro_name = e;
-      }, // 获取关联项目
       getDataTrue: function (e) {
         if (e) {
           this.getProjectFollowList();

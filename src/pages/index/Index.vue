@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <!--<el-row>-->
+    <a href="mobileEntrance.html" style="display: none">login</a>
       <top-header @identityopen="closeIdentity"></top-header>
       <div style="height: 60px;"></div>
       <!--下方主内容切换区-->
@@ -10,7 +11,6 @@
           </router-view>
         </transition>
       </main>
-    <a href="mobileEntrance.html" style="display: none">login</a>
     <!--</el-row>-->
     <alert-identity :identityDisplay="identityDisplay" @closeIdentity="closeIdentity"></alert-identity>
   </div>
@@ -31,7 +31,6 @@
 
     },
     methods: {
-
       // 检查localStorage.user_id
       checkUser () {
         this.user_id = localStorage.user_id;
@@ -39,10 +38,8 @@
         if (this.$route.path === '/workBench' || this.$route.path === '/workBench/') {
           this.active = 1;
         }
-
         // 看是否需要加入项目库
         this.addProject();
-
         // 未登录状态下拦截
         if (!localStorage.user_id && this.$route.path !== '/' &&
           this.$route.path !== '/login' && this.$route.path !== '/login/codeLogin' &&

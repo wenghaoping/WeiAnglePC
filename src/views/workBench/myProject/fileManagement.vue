@@ -514,9 +514,7 @@
       },
       // 移动文件接口调用
       fileMove () {
-//        console.log(this.radio)
         this.$http.post(this.URL.setFileType, {user_id: localStorage.user_id, file_id: this.fileId, type: this.radio}).then(res => {
-//          console.log(res)
           if (res.data.status_code === 2000000) {
             this.fileMoveFrame = false;
             success('移动文件成功');
@@ -544,7 +542,6 @@
       },
       // 发送分组设置请求
       saveGroupChange () { // file_id type_id user_id
-        // let type = this.groups.bp_type;
         let index = this.groups.index;
         let typeName = this.groups.name;
         this.$http.post(this.URL.setFileType, {
@@ -574,11 +571,5 @@
 
 <style lang="less">
   @import '../../../assets/css/fileManagement';
-  /*  .el-loading-mask{
-      display: none;
-      !*left:205px!important;*!
-      !*top:610px!important;*!
-    }*/
-
 </style>
 

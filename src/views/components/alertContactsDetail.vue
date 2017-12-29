@@ -1,4 +1,3 @@
-
 <template>
   <div id="alertContactsDetail" >
     <!--===========================================人脉详情弹窗=============================================-->
@@ -199,10 +198,10 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   import * as formatData from '@/utils/formatData';
   import { isArray } from '@/utils/validata';
   export default {
-    props: ['contactDisplay', 'cardid', 'userid'],
     data () {
       return {
         loading: false, // 加载动画
@@ -273,7 +272,7 @@
     },
     methods: {
       closeContact () {
-        this.$emit('closeContact', false);
+        this.$store.dispatch('contactControl', false);
       },
       openDiv (v) {
         this[v] = true;
@@ -349,7 +348,7 @@
       // 获取个人详情
       getOneUserInfo () {
         this.loading = true;
-        this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id, card_id: this.contacts.card_id, investor_user_id: this.contacts.user_id})
+        this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id, card_id: this.contactDeatil.cardId, investor_user_id: this.contactDeatil.userId})
           .then(res => {
             let data = res.data.data;
             data.user_invest_industry = formatData.setTagToString(data.user_invest_industry, 'industry_name');
@@ -375,18 +374,21 @@
           })
           .catch(err => {
             console.log(err);
-            console.log(err);
           });
         this.loading = false;
       }
 
     },
+    computed: {
+      ...mapState({
+        contactDeatil: state => state.projectDetails.contactDeatil,
+        contactDisplay: state => state.dialogDisplay.contactDisplay
+      })
+    },
     created () {},
     watch: {
       contactDisplay: function (e) {
         if (e) {
-          this.contacts.card_id = this.cardid || 0;
-          this.contacts.user_id = this.userid || 0;
           this.getOneUserInfo();
           this.getProjectList(1);
         } else {

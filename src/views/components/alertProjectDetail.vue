@@ -263,20 +263,9 @@
                 <p class="det-title">股权赠与</p>
                 <p class="det-info">{{private.stock_right}}%</p>
               </div>
-              <!--<div class="rz-detail" style="width: 25%">-->
-              <!--<p class="det-title">其他权益</p>-->
-              <!--<p class="det-info">{{project.pro_FA.stock_other}}%</p>-->
-              <!--</div>-->
-              <!--<div class="rz-detail" style="width: 25%">-->
-              <!--<p class="det-title">跟投权</p>-->
-              <!--<p class="det-info">{{project.pro_FA.stock_follow}}%</p>-->
-              <!--</div>-->
             </div>
             <div class="item"   style="margin-top:24px;height: 49px;">
               <div class="bot-det" v-show="private.contact_user_name!=''">
-                <!--<span>项目联系人 : </span>-->
-                <!--<span>{{project.contact.user_name}}</span>-->
-                <!--<span>{{project.contact.user_mobile}}</span>-->
                 <span class="det-title">项目联系人:</span>
                 <span class="del-info">{{private.contact_user_name}}</span>
               </div>
@@ -309,18 +298,23 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   import cirIcon from '../../../static/images/circle.png';
   import pinpai from '../../../static/images/icon-pinpa.png';
   import yunying from '../../../static/images/icon-yunying.png';
   export default {
-    props: ['alertProjectDetailDisplay', 'proid'],
+    computed: {
+      ...mapState({
+        alertProjectDetailDisplay: state => state.dialogDisplay.alertProjectDetailDisplay,
+        projectId: state => state.contactsDetails.alertProjectMessage.projectId
+      })
+    },
     data () {
       return {
         yunying: yunying,
         pinpai: pinpai,
         cirIcon: cirIcon,
         loading: false, // 加载动画
-        pro_id: '',
         file: {
           pro_BP: {
             created_at: '', // 2017-08-30 10:51:15
@@ -448,11 +442,11 @@
       },
       // 关闭弹窗
       handleClose () {
-        this.$emit('changeAlertProjectDetail', false);
+        this.$store.dispatch('alertProjectControl', false);
       },
       // 获取项目详情数据
       getProjectDetail () {
-        this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.pro_id})
+        this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.projectId})
           .then(res => {
             this.loading = false;
 //          console.log(res);
@@ -502,7 +496,6 @@
     watch: {
       alertProjectDetailDisplay: function (e) {
         if (e) {
-          this.pro_id = this.proid;
           this.getProjectDetail();
         }
       }
@@ -863,6 +856,7 @@
           box-sizing: border-box;
           padding:0 12px;
           margin-right: 15px;
+          margin-bottom: 10px;
         }
 
 

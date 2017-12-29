@@ -394,9 +394,10 @@
               </div>
             </el-tab-pane>
             <el-tab-pane label="跟进记录" name="flow">
-              <folowup :proid="project.project_id" :pro-name="project.pro_intro" :get-data-true="getFollowData"
-                       @getfollowid="getFollowId" @changefollowdata="changefollowdata"
-                       @toDetail="toDetail"></folowup>
+              <folowup :proid="project.project_id"
+                       :get-data-true="getFollowData"
+                       @getfollowid="getFollowId"
+                       @changefollowdata="changefollowdata"></folowup>
             </el-tab-pane>
             <el-tab-pane label="文件管理" name="files">
               <filemanagement :proid="project.project_id"></filemanagement>
@@ -405,7 +406,9 @@
               <onlinedata :proid="project.project_id"></onlinedata>
             </el-tab-pane>
             <el-tab-pane label="项目评价" name="scoreStatistics">
-              <score-statistics :proid="project.project_id" :scheduleid="project.pro_schedule.schedule_id"></score-statistics>
+              <score-statistics :proid="project.project_id"
+                                :scheduleid="project.pro_schedule.schedule_id">
+              </score-statistics>
             </el-tab-pane>
           </el-tabs>
           <div class="ul-lists list tc"  style="padding:0">
@@ -590,25 +593,22 @@
     </el-dialog>
 
     <!--人脉详情弹窗-->
-    <alertcontactsdetail :contact-display="contactDisplay" :cardid="cardid" :userid="userid"
-                         @closeContact="closeContact"></alertcontactsdetail>
+    <alertcontactsdetail></alertcontactsdetail>
 
     <!--写跟进弹框-->
-    <addfollow :follow-display="followDisplay"
-               :projectid="projecmessage.project_id"
-               :projectname="projecmessage.pro_intro"
-               :followid="followid"
-               @closeFollow="closeFollow"></addfollow>
+    <addfollow></addfollow>
 
     <!--项目推送弹窗,项目入口弹窗-->
     <projectpushtopro :project-push-show2="projectPushDisplay2" :proid="project.project_id"
-                      :pro-name="project.pro_name" :pro-intro="project.pro_intro"   :emitPush="emitPush"
+                      :pro-name="project.pro_name" :pro-intro="project.pro_intro"
+                      :emitPush="emitPush"
                       @openPreview="openPreview"
                       @closeProjectPush2="closeProjectPush2"
                       @previewPush="previewPush"></projectpushtopro>
 
     <!--项目推送弹窗,人脉入口弹窗============================-->
-    <projectpush :project-push-show="projectPushDisplay" :user-message="userMessage"
+    <projectpush :project-push-show="projectPushDisplay"
+                 :user-message="userMessage"
                  :user-email="userEmail"
                  @openPreview="openPreview"
                  @closeProjectPush="closeProjectPush"></projectpush>
@@ -620,7 +620,7 @@
                     @previewPush="previewPush"></projectpreview>
 
     <!--帮我引荐-->
-    <recommend :recommendDisplay="recommendDisplay"></recommend>
+    <recommend></recommend>
   </div>
 </template>
 
@@ -656,19 +656,6 @@
         xiaochengxu: xiaochengxu,
         projectPushDisplay: false, // 项目推送弹框,人脉入口
         projectPushDisplay2: false, // 项目推送弹框,项目入口
-//        searchDisplay: false, // 一键尽调弹框
-//        companySearchDisplay: false, // 公司搜索弹框
-        contactDisplay: false, // 人脉详情弹窗
-        recommendDisplay: false, // 帮我引荐
-        companyname: '', // 公司名称给一键尽调用的
-        companyid: '', // 公司id给一键尽调用的
-        cardid: '', // 人脉详情弹框用(点击的那个人的cardid)
-        userid: '', // 人脉详情弹框用(点击的那个人的userid)
-        projecmessage: {
-          project_id: '',
-          pro_intro: ''
-        }, // 项目名称,ID
-        followDisplay: false, // 添加意向投资人
         show: 'detail',
         searchName: '',
         form: {
@@ -800,7 +787,6 @@
         totalData: 0, // 总数(意向投资人)
         currentPageInvestors: 1, // 当前第几页(买家图谱)
         totalInvestors: 0, // 总数(买家图谱)
-
         schedule: [{label: '初始值', value: 0}], // 项目进度
         follow_schedule: [/* {
          value: 1,
@@ -893,7 +879,9 @@
         return this.schedule[this.schedule.length - 1].label;
       },
       ...mapState({
-        companySearchDisplay: state => state.dialogDisplay.companySearchDisplay
+        companySearchDisplay: state => state.dialogDisplay.companySearchDisplay,
+        recommendDisplay: state => state.dialogDisplay.recommendDisplay,
+        followDisplay: state => state.dialogDisplay.followDisplay
       })
     },
     components: {
@@ -915,16 +903,9 @@
       // 点击写跟近按钮
       addFollow () {
         this.zgClick('添加跟进');
-        this.followid = '';
-        this.followDisplay = true;
-        this.projecmessage.project_id = this.project.project_id;
-        this.projecmessage.pro_intro = this.project.pro_intro;
-      },
-      // 关闭添加跟进
-      closeFollow (msg) {
-        this.followDisplay = msg;
-        this.getEnjoyedInvestors();
-        this.getFollowData = true;
+        this.$store.dispatch('setFollowId', '');
+        this.$store.dispatch('followControl', true);
+        this.$store.dispatch('setFollowUp', {projectId: this.project.project_id, projectIntro: this.project.pro_intro});
       },
       // 关闭添加跟进重置
       changefollowdata () {
@@ -974,19 +955,15 @@
             .then(res => {
               let data = res.data.data;
               if (data.length === 0) { // 搜索不到信息
-//                this.companySearchDisplay = true;
                 this.$store.dispatch('companySearchControl', true);
                 this.searchName = this.project.pro_company_name;
-                this.companyname = this.project.pro_company_name;
+//                this.companyname = this.project.pro_company_name;
                 this.seachCompanys = [{company_name: '匹配不到你要搜索的公司,请重新继续输入', com_id: -2}];
                 this.loading = false;
               } else { // 搜索到了
                 this.loading = false;
-//                this.searchDisplay = true;
                 this.$store.dispatch('setSearchCompany', {companyId: data.company.com_id, companyName: this.project.pro_company_name});
                 this.$store.dispatch('searchControl', true);
-                /* this.companyid = data.company.com_id;
-                this.companyname = this.project.pro_company_name; */
               }
             })
             .catch(err => {
@@ -1007,19 +984,13 @@
           }).then(() => {
             this.$http.post(this.URL.updateProjectCompany, {user_id: localStorage.user_id, pro_company_name: data.newName, project_id: this.project.project_id})
               .then(res => {
-//                console.log(res);
                 if (res.data.status_code === 2000000) {
                   success('修改成功');
                   if (data.com_id !== -1) {
-//                    this.companySearchDisplay = false;
                     this.$store.dispatch('companySearchControl', false);
                     this.$store.dispatch('setSearchCompany', {companyId: data.com_id, companyName: data.newName});
-                    /* this.companyid = data.com_id;
-                    this.companyname = data.newName; */
-//                    this.searchDisplay = true;
                     this.$store.dispatch('searchControl', true);
                   } else {
-//                    this.companySearchDisplay = false;
                     this.$store.dispatch('companySearchControl', false);
                   }
                 }
@@ -1035,7 +1006,6 @@
       },
       // 关闭搜索弹框
       dialogVisibleTo () {
-//        this.companySearchDisplay = false;
         this.$store.dispatch('companySearchControl', false);
       },
       // 输入搜索
@@ -1054,17 +1024,6 @@
       goBack () {
         if (this.activeFrom === 0) this.$router.push({name: 'myProject', query: {activeTo: 0}});
         else if (this.activeFrom === 2) this.$router.push({name: 'followUp', query: {activeTo: 2}});// 路由传参
-      },
-      // 传递给一键尽调窗口
-      closeSearchDisplay (msg) {
-        this.searchDisplay = msg;
-        if (!msg) {
-          this.getProjectDetail();
-        }
-      },
-      // 传递给一键尽调搜索窗口
-      closeCompanySearchDisplay (msg) {
-        this.companySearchDisplay = msg;
       },
       // 人脉详情弹窗关闭
       closeContact (msg) {
@@ -1130,7 +1089,6 @@
               } else {
                 let data = res.data.data;
                 // 项目介绍
-//              if(data.project.pro_company_name==''){data.project.pro_company_name=='-'}
                 if (data.project.pro_scale === '') { data.project.pro_scale = {}; data.project.pro_scale.scale_money = ' '; }
                 if (data.project.pro_area === '') { data.project.pro_area = {}; data.project.pro_area.area_title = ' '; }
                 if (data.project.pro_stage === '') { data.project.pro_stage = {}; data.project.pro_stage.stage_name = ' '; }
@@ -1164,7 +1122,7 @@
                 this.brands = data.brands;
 
                 if (data.pro_schedule === '') { data.pro_schedule = {}; data.pro_schedule.schedule_name = ''; data.pro_schedule.schedule_id = ''; }
-
+                this.$store.dispatch('setFollowUp', {projectId: this.project.project_id, projectIntro: this.project.pro_intro});
                 resolve(3);
                 this.loading = false;
               }
@@ -1204,9 +1162,8 @@
       },
       // 打开人脉详情弹窗
       toDetail (data) {
-        this.cardid = data.card_id;
-        this.userid = data.user_id;
-        this.contactDisplay = true;
+        this.$store.dispatch('setConnectDeatil', {cardId: data.card_id, userId: data.user_id});
+        this.$store.dispatch('contactControl', true);
       },
       // hold切换后
       selectChange2 (e) {
@@ -1241,6 +1198,7 @@
         else this.tabs = false;
       },
       // 设置意向投资人右边
+
       // 获取意向项目数据(图表)
       async getEchartData () {
         return new Promise((resolve, reject) => {
@@ -1265,7 +1223,6 @@
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.getConCon.user_id = localStorage.user_id;
-//      this.getPra.user_id="2rzyz5vp";
           this.currentPage = 1;
           this.getConCon.project_id = this.project.project_id;
           this.getConCon.page = 1;
@@ -1621,16 +1578,16 @@
       },
       // 帮我引荐
       helpKnow (data) {
-        this.$store.dispatch('setMatchInvestorsData', data);
         console.log(data);
-        this.recommendDisplay = true;
+        this.$store.dispatch('setMatchInvestorsData', data); // 设置买家图谱所需要的数据
+        this.$store.dispatch('recommendControl', true);
       },
       // 编辑跟进记录
       // 拿到跟进记录id
       getFollowId (id) {
-        this.followDisplay = true;
-        this.followid = id;
         this.getFollowData = false;
+        this.$store.dispatch('setFollowId', id);
+        this.$store.dispatch('followControl', true);
       },
       // 项目推送
       // 打开项目预览
@@ -1661,26 +1618,6 @@
         } catch (err) {
           console.err('Error：' + err);
         }
-         /* this.$global.func.getWxProjectCategory()
-          .then((data) => {
-            return this.getWxProjectCategory();
-          })
-          .then((data) => {
-            return this.getProjectDetail();
-          })
-          .then((data) => {
-            return this.getEchartData();
-          })
-          .then((data) => {
-            return this.getProjectMatchInvestors();
-          })
-          .then((data) => {
-            return this.getWX();
-          })
-          .then((data) => {
-            this.loading = false;
-            return this.getEnjoyedInvestors();
-          }); */
       },
       // 获取二维码
       async getWX () {
@@ -1710,14 +1647,18 @@
       this.getAllData();
     },
     watch: {
-
+      followDisplay: function (e) {
+        if (!e) {
+          this.getEnjoyedInvestors();
+          this.getFollowData = true;
+        }
+      }
     }
   };
 </script>
 
 <style lang="less">
   @import '../../../assets/css/projectDetail.less';
-
   .scheduleColor{
     color:#20a0ff!important;
   }

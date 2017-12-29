@@ -5,10 +5,19 @@
 export const SEARCH_CHANGE = 'SEARCH_CHANGE'; // 项目详情 => 一键尽调弹框
 export const COMPANY_SEARCH_CHANGE = 'COMPANY_SEARCH_CHANGE'; // 项目详情 => 一键尽调(搜索)弹框
 export const RECOMMEND_CHANGE = 'RECOMMEND_CHANGE'; // 项目详情 => 帮我引荐弹框
+export const CONTACT_CHANGE = 'CONTACT_CHANGE'; // 项目详情 / 跟进列表 => 人脉详情弹框
+export const FOLLOWUP_CHANGE = 'FOLLOWUP_CHANGE'; // 项目详情 => 跟进弹框
+export const ALERT_PROJECT_CHANGE = 'ALERT_PROJECT_CHANGE'; // 人脉详情 => 项目详情弹框
 
 // 作为项目详情页的所有数据存储,包括所有弹框的数据交互
 export const SET_SEARCH_COMPANY = 'SET_SEARCH_COMPANY'; // 项目详情 => 一键尽调存储数据
+export const SET_CONTACT_DETAIL = 'SET_CONTACT_DETAIL'; // 项目详情 => 人脉详情弹框
+export const SET_FOLLOW_UP_DATA = 'SET_FOLLOW_UP_DATA'; // 项目详情 => 跟进弹框所需要的数据(所有需要项目详情数据的地方都存在这里)
+export const SET_FOLLOW_ID = 'SET_FOLLOW_ID'; // 项目详情 => 跟进弹框所需要的数据followid
 export const MATCH_INVESTORS_DATA = 'MATCH_INVESTORS_DATA'; // 项目详情 => 买家图谱 => 帮我引荐弹框需要的数据
+
+// 作为人脉详情页的所有数据存储,包括弹框的数据交互
+export const SET_PROJECT_ID = 'SET_PROJECT_ID'; // 人脉详情 => 项目详情弹框
 
 // 超级BP_type
 export const INDUSTRY_CHANGE = 'INDUSTRY_CHANGE'; // 改变行业弹框

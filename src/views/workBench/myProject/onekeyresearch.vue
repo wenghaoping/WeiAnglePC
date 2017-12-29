@@ -193,7 +193,6 @@
   import { setTime } from '@/utils/formatData';
   import { error } from '@/utils/notification';
   export default {
-//    props: ['searchDisplay', 'companyId', 'compName'],
     data () {
       return {
 //        compname: '', // 一键尽调公司的名称
@@ -304,8 +303,6 @@
       goToEdit () {
         this.$store.dispatch('searchControl', false);
         this.$store.dispatch('companySearchControl', true);
-//        this.$emit('closeSearchDisplay', false);
-//        this.$emit('closeCompanySearchDisplay', true);
       },
       getCrawlerTeam () {
         return new Promise((resolve, reject) => {
@@ -512,8 +509,6 @@
     watch: {
       searchDisplay: function (e) {
         this.loading = true;
-//        this.com_id = e;
-//        this.compname = this.searchCompany.searchCompany;
         this.getCrawlerCompany()
           .then((data) => {
             return this.getCrawlerTeam();
@@ -538,7 +533,6 @@
             return this.getCrawlerCompeting();
           });
       } // 获取公司id
-
     }
   };
 </script>

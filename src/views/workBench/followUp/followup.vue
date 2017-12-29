@@ -227,14 +227,15 @@
     </div>
 
   <!--写跟进弹框-->
-  <addfollow :follow-display="followDisplay" :followid="followid" @closeFollow="closeFollow"></addfollow>
+  <addfollow></addfollow>
+
   <!--人脉详情弹窗-->
-  <alertcontactsdetail :contact-display="contactDisplay" :cardid="cardid" :userid="userid"
-                       @closeContact="closeContact"></alertcontactsdetail>
+  <alertcontactsdetail></alertcontactsdetail>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   import addfollow from '@/views/components/addFollow.vue';
   import alertcontactsdetail from '@/views/components/alertContactsDetail.vue';
   import { error, success } from '@/utils/notification';
@@ -245,13 +246,13 @@
       addfollow,
       alertcontactsdetail
     },
+    computed: {
+      ...mapState({
+        followDisplay: state => state.dialogDisplay.followDisplay
+      })
+    },
     data () {
       return {
-        followDisplay: false, // 控制写跟进弹框
-        contactDisplay: false, // 人脉详情弹窗
-        cardid: '', // 人脉详情弹框用(点击的那个人的cardid)
-        userid: '', // 人脉详情弹框用(点击的那个人的userid)
-        followid: '', // 跟进id
         loading: false, // 加载动画
         searchinput: '', // 搜索输入框
         totalData: 1, // 总页数
@@ -296,7 +297,6 @@
           .then(res => {
             let data = res.data.data;
             this.tableData = data.follow_record;
-//          console.log(this.tableData.project_id);
             this.totalData = data.count;
             this.loading = false;
           })
@@ -319,7 +319,7 @@
 
       addFollow () {
         this.zgClick('添加跟进');
-        this.followDisplay = true;
+        this.$store.dispatch('followControl', true);
       }, // 点击写跟近按钮
       handleSelect (row, event, column) {
         if (column.label !== '重置' && column.label !== '投资人') {
@@ -330,8 +330,8 @@
       }, // 跳转到更近详情页
       handleEdit (index, row) {
         this.zgClick('编辑跟进');
-        this.followDisplay = true;
-        this.followid = row.follow_id;
+        this.$store.dispatch('followControl', true);
+        this.$store.dispatch('setFollowId', row.follow_id);
         this.setRouterData();
       }, // 点击编辑按钮,跳转
       headerClick (column, event) {
@@ -433,12 +433,6 @@
           return arr;
         }
       }, // 意向投资人筛选控制
-      closeFollow (msg) {
-        this.followDisplay = msg;
-        this.followid = '';
-        this.filterChangeCurrent(this.currentPage || 1);
-      }, // 关闭添加跟进
-
       getList (list) {
         let arr = [];
         for (let i = 0; i < list.length; i++) {
@@ -488,9 +482,8 @@
         this.contactDisplay = msg;
       }, // 人脉详情弹窗关闭
       contanctDetail (row) {
-        this.cardid = row.type === 'user' ? 0 : row.card_id;
-        this.userid = row.type === 'user' ? row.card_id : 0;
-        this.contactDisplay = true;
+        this.$store.dispatch('setConnectDeatil', {cardId: row.type === 'user' ? 0 : row.card_id, userId: row.type === 'user' ? row.card_id : 0});
+        this.$store.dispatch('contactControl', true);
       }
     },
     created () {
@@ -502,7 +495,8 @@
     watch: {
       followDisplay: function (e) {
         if (!e) {
-//        this.handleIconClick();
+          this.$store.dispatch('setFollowId', '');
+          this.filterChangeCurrent(this.currentPage || 1);
         }
       }
     }

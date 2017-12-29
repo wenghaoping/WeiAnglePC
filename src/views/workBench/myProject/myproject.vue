@@ -288,9 +288,7 @@
                  @reload="handleIconClick"></alertUpload>
 
     <!--写跟进弹框-->
-    <addfollow :follow-display="followDisplay" :projectid="projecmessage.project_id"
-               :projectname="projecmessage.project_name"
-               @closeFollow="closeFollow"></addfollow>
+    <addfollow></addfollow>
 
     <!--项目推送项目入口弹窗-->
     <projectpushtopro :project-push-show2="projectPushDisplay2" :proid="pushId"
@@ -352,7 +350,7 @@
     },
     data () {
       return {
-        followDisplay: false, // 控制写跟进弹框
+//        followDisplay: false, // 控制写跟进弹框
         projectPushDisplay2: false, // 项目推送弹窗
         uploadDisplay: false, // 上传弹框控制
         previewDisplay: false, // 控制项目推送预览显隐
@@ -470,17 +468,12 @@
       // 点击写跟近按钮
       addFollow (index, row) {
         this.zgClick('添加跟进');
-        this.followDisplay = true;
-        this.projecmessage.project_id = row.project_id;
-        this.projecmessage.project_name = row.pro_intro;
+        this.$store.dispatch('followControl', true);
+        this.$store.dispatch('setFollowUp', {projectId: row.project_id, projectIntro: row.pro_intro});
       },
       // 打开预览弹框
       openPreview (msg) {
         this.previewDisplay = msg;
-      },
-      // 关闭添加跟进
-      closeFollow (msg) {
-        this.followDisplay = msg;
       },
       // 点击项目推送
       addprojectPush (index, row) {

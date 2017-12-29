@@ -55,12 +55,11 @@
             if (data.status_msg === 'success') {
               clearInterval(this.timeout);
               localStorage.token = res.data.token;
-              if (data.type === 'create') setTimeout(() => { this.$router.push({name: 'creatproject'}); }, 50);
-              if (data.type === 'update') setTimeout(() => { this.$router.push({name: 'editproject', query: {project_id: data.project_id}}); }, 50);
               localStorage.user_id = data.user_info.user_id;
               localStorage.user_real_name = data.user_info.user_real_name;
-              this.$store.state.logining.user_id = data.user_info.user_id;
-              this.$store.state.logining.user_real_name = data.user_info.user_real_name;
+              this.$store.dispatch('setUserRealName', data.user_info.user_real_name);
+              if (data.type === 'create') setTimeout(() => { this.$router.push({name: 'creatproject'}); }, 50);
+              if (data.type === 'update') setTimeout(() => { this.$router.push({name: 'editproject', query: {project_id: data.project_id}}); }, 50);
             } else if (data.status_msg === 'timeout') {
               clearInterval(this.timeout);
               this.checkout = false;
