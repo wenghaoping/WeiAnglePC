@@ -71,7 +71,7 @@
           error('请正确输入验证码');
         } else if (validata.getNull(this.resetPassword)) {
           error('请正确输入重置密码');
-        } else if (this.$tool.checkPassword(this.resetPassword)) {
+        } else if (this.checkPassword(this.resetPassword)) {
           error('重置密码长度应为6-20');
         } else {
           this.$http.post(this.URL.resetPassword, {
@@ -86,7 +86,14 @@
             }
           });
         }
-      }
+      },
+      checkPassword (data) {
+        if (data.length > 20 || data.length < 6) {
+          return true;
+        } else {
+          return false;
+        }
+      } // 密码长度认证(6-20)
     }
   };
 </script>
