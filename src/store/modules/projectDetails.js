@@ -15,7 +15,8 @@ export default {
     // 人脉详情 / 添加更近弹框, 弹框所需要的Id
     contactDeatil: {
       cardId: '',
-      userId: '' // 当前详情的人的id
+      userId: '', // 当前详情的人的id
+      type: 'userInfo' // 详情弹框是取人脉详情,还是投资人详情
     },
     // 写跟进弹框所需要的数据(所有需要项目详情数据的地方都存在这里)
     projectMessage: {
@@ -26,7 +27,8 @@ export default {
     followData: {
       followId: '' // 跟进弹框需要的id
     },
-    matchInvestorsData: {} // 点击买家图谱的数据.
+    // 点击买家图谱的数据.
+    matchInvestorsData: {}
   },
   mutations: {
     // 一键尽调存储数据
@@ -38,6 +40,7 @@ export default {
     [types.SET_CONTACT_DETAIL] (state, data) {
       state.contactDeatil.cardId = data.cardId;
       state.contactDeatil.userId = data.userId;
+      state.contactDeatil.type = data.type;
     },
     // 跟进弹框所需要的数据存储(所有需要项目数据的地方都存在这里)
     [types.SET_FOLLOW_UP_DATA] (state, data) {

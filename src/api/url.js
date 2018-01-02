@@ -149,7 +149,7 @@ export default
 
   /* 买家图谱*(项目详情右边) */
   getProjectMatchInvestors: 'api/project/getProjectMatchInvestors', // 买家图谱列表
-
+  getInvestorInfo: 'api/investors/getInvestorInfo', // 投资人详情
   /* 项目推送 */
   matchProject: 'api/v/project/matchProject', // 我的人脉-推送（模糊匹配我的项目）
   pushUser: '/api/v/project/pushUser', // 我的人脉-推送（发送邮件）

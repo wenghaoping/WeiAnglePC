@@ -123,7 +123,6 @@
     <div class="emptyData" v-else>
       <img src="../../../assets/images/kongshuju.png">
     </div>
-
   </div>
 </template>
 
@@ -153,7 +152,7 @@
     },
     methods: {
       toDetail (data) {
-        this.$store.dispatch('setConnectDeatil', {cardId: data.card_id, userId: data.user_id});
+        this.$store.dispatch('setConnectDeatil', {cardId: data.card_id, userId: data.user_id, type: 'userInfo'});
         this.$store.dispatch('contactControl', true);
       },
       upload (item1, index) {

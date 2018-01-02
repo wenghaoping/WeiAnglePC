@@ -37,7 +37,7 @@ export default {
     },
     // 改变帮我引荐弹框
     [types.RECOMMEND_CHANGE] (state, dispaly) {
-      state.industryDisplay = dispaly;
+      state.recommendDisplay = dispaly;
     }
   },
   actions: {

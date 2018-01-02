@@ -516,7 +516,7 @@
                   <div class="item_lists">
                     <div class="item_list" v-for="projectMatchInvestor in ProjectMatchInvestors" v-if="ProjectMatchInvestors.length!=0">
                       <div class="list_main list_main2">
-                        <div @click="toDetail(projectMatchInvestor)" class="click">
+                        <div @click="toInvestorDetail(projectMatchInvestor)" class="click">
                           <div class="block" style="width: 290px;padding-top: 20px;">
                             <div class="img" v-if="projectMatchInvestor.user_avatar_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
                             <div class="img" v-else><span class="header">{{projectMatchInvestor.user_avatar_txt}}</span></div>
@@ -865,7 +865,8 @@
         }, // 传递给推送的数据
         userEmail: '',
         scrolled: false,
-        qrImg: '' // 二维码地址
+        qrImg: '', // 二维码地址
+        InvestorType: 'userInfo' // 人脉详情弹框,应该用那种数据设置
       };
     },
     computed: {
@@ -1025,10 +1026,6 @@
         if (this.activeFrom === 0) this.$router.push({name: 'myProject', query: {activeTo: 0}});
         else if (this.activeFrom === 2) this.$router.push({name: 'followUp', query: {activeTo: 2}});// 路由传参
       },
-      // 人脉详情弹窗关闭
-      closeContact (msg) {
-        this.contactDisplay = msg;
-      },
       // 关闭项目推送弹框(人脉入口)
       closeProjectPush (msg) {
         this.projectPushDisplay = msg;
@@ -1162,7 +1159,17 @@
       },
       // 打开人脉详情弹窗
       toDetail (data) {
-        this.$store.dispatch('setConnectDeatil', {cardId: data.card_id, userId: data.user_id});
+//        this.InvestorType = 'userInfo';
+        this.$store.dispatch('setConnectDeatil', {cardId: data.card_id, userId: data.user_id, type: 'userInfo'});
+        this.$store.dispatch('contactControl', true);
+      },
+      // 买家图谱 => 打开投资人详情
+      toInvestorDetail (data) {
+//        this.InvestorType = 'InvestorInfo';
+        console.log(data);
+        this.$store.dispatch('setFollowUp', {projectId: this.project.project_id, projectIntro: ''});
+        this.$store.dispatch('setConnectDeatil', {type: 'InvestorInfo'});
+        this.$store.dispatch('setMatchInvestorsData', data); // 设置买家图谱所需要的数据
         this.$store.dispatch('contactControl', true);
       },
       // hold切换后
@@ -1477,7 +1484,6 @@
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.getInvestors.user_id = localStorage.user_id;
-//      this.getPra.user_id="2rzyz5vp";
           this.currentPageInvestors = 1;
           this.getInvestors.project_id = this.project.project_id;
           this.getInvestors.page = 1;
@@ -1578,9 +1584,9 @@
       },
       // 帮我引荐
       helpKnow (data) {
-        console.log(data);
         this.$store.dispatch('setMatchInvestorsData', data); // 设置买家图谱所需要的数据
         this.$store.dispatch('recommendControl', true);
+        console.log(data);
       },
       // 编辑跟进记录
       // 拿到跟进记录id
