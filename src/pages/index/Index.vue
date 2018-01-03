@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <a href="mobileEntrance.html">login</a>
     <!--<el-row>-->
       <top-header @identityopen="closeIdentity"></top-header>
       <div style="height: 60px;"></div>
@@ -10,7 +11,6 @@
           </router-view>
         </transition>
       </main>
-    <a href="mobileEntrance.html" style="display: none">login</a>
     <!--</el-row>-->
     <alert-identity :identityDisplay="identityDisplay" @closeIdentity="closeIdentity"></alert-identity>
   </div>
