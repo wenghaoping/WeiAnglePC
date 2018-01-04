@@ -151,13 +151,16 @@ export default
   getProjectMatchInvestors: 'api/project/getProjectMatchInvestors', // 买家图谱列表
   getInvestorInfo: 'api/investors/getInvestorInfo', // 投资人详情
   /* 项目推送 */
-  matchProject: 'api/v/project/matchProject', // 我的人脉-推送（模糊匹配我的项目）
+  matchProject: 'api/v/project/matchProject', // 我的人脉-推送（模糊匹配我的项目(废弃)=====================
+  getPushProjects: '/api/project/getPushProjects', // (项目推送，项目单选)投资人匹配到的项目
   pushUser: '/api/v/project/pushUser', // 我的人脉-推送（发送邮件）
-  pushProject: '/api/v/project/pushProject', // 我的项目-推送(发送邮件)
+  pushProject: '/api/v/project/pushProject', // 我的项目-推送(发送邮件)(废弃)=====================
   pushCount: '/api/v/project/pushCount', // 推送剩余次数
-  getConnectUserSortByMatch: 'api/v/project/getConnectUserSortByMatch', // 推送项目时获取我的人脉
-  getAllConnectUserSortByMatch: 'api/v/project/getAllConnectUserSortByMatch', // 推送项目时获取全站人脉
-
+  getConnectUserSortByMatch: 'api/v/project/getConnectUserSortByMatch', // 推送项目时获取我的人脉(废弃)合二为一===============
+  getAllConnectUserSortByMatch: 'api/v/project/getAllConnectUserSortByMatch', // 推送项目时获取全站人脉(废弃)合二为一=====================
+  getPushInvestors: 'api/project/getPushInvestors', // 推送项目获取投资人
+  recommendProject: 'api/project/recommendProject', // 帮我引荐
+  pushProjectToUsers: 'api/project/pushProjectToUsers', // 推送项目给多个投资人(人脉多选)
   /* 使用微信二维码 */
   getProjectQr: 'https://wx.weitianshi.cn/api/wx/getProjectQr', //
   getProjectQrOur: 'api/auth/getProjectQr',

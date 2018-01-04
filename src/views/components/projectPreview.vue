@@ -1,19 +1,24 @@
 <template>
   <div id="projectPreview" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
     <!--===========================================项目推送预览弹框=============================================-->
-    <el-dialog :visible="previewShow" :show-close="close"  custom-class="dialogCon" :before-close="closePreview" close-on-press-escape close-on-click-modal>
+    <el-dialog :visible="projectPushPreviewDisplay" :show-close="close"
+               custom-class="dialogCon" :before-close="closePreview"
+               close-on-press-escape close-on-click-modal>
       <div class="top_pro">
-        <p style="line-height: 42px;">{{email.title}}</p><!--用户写的标题-->
-        <p style="line-height: 42px;">尊敬的:　{{user.user_real_name}}</p><!--尊敬的翁浩平/被推送的人-->
+        <p style="line-height: 42px;">{{pushMessage.title}}</p><!--用户写的标题-->
+        <p style="line-height: 42px;">尊敬的:　{{userMessage.user_real_name}}</p><!--尊敬的翁浩平/被推送的人-->
 
         <p style="font-size:18px;color:#fc703e;font-weight: bolder;line-height: 28px;">
-          <i v-if="user.user_brand!=''">{{user.user_brand}}－</i>
-          <i v-else>{{user.firse_user_company_name}}<i v-if="user.firse_user_company_name==''">－</i></i>
-          <i v-if="user.firse_user_company_career!=''">{{user.firse_user_company_career}}－</i>
-          <i v-if="user.firse_user_real_name!=''">{{user.firse_user_real_name}}</i>
+          <i v-if="userData.user_brand!=''">{{userData.user_brand}}－</i>
+          <i v-else>{{userData.user_real_name}}<i v-if="userData.user_real_name==''">－</i></i>
+          <i v-if="userData.user_company_career!=''">{{userData.user_company_career}}－</i>
+          <i v-if="userData.user_real_name!=''">{{userData.user_real_name}}</i>
         </p>
-        <p style="line-height: 24px;">通过<i style="color:#1F2D3D;font-weight: bolder">微天使乐投平台(www.weitianshi.cn)</i>向您推荐了一个投资项目，您可以<i style="color:#009eff">注册/登录</i>微天使乐投平台，找到更多FA精选优质项目</p>
-        <p style="line-height: 20px;">{{email.body}}</p>
+        <p style="line-height: 24px;">通过<i style="color:#1F2D3D;font-weight: bolder">
+          微天使乐投平台(www.weitianshi.cn)</i>向您推荐了一个投资项目，您可以
+          <i style="color:#009eff">注册/登录</i>
+          微天使乐投平台，找到更多FA精选优质项目</p>
+        <p style="line-height: 20px;">{{pushMessage.body}}</p>
       </div>
 
       <div class="contain-grid contain-center2 fl">
@@ -262,14 +267,15 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   import yichu from '../../assets/images/icon-yichu.png';
   import xiaochengxu from '../../../static/images/xiaochengxu.png';
   import pinpai from '../../../static/images/icon-pinpa.png';
   import yunying from '../../../static/images/icon-yunying.png';
   import cirIcon from '../../../static/images/circle.png';
-  import { success } from '@/utils/notification';
+  import { success, error } from '@/utils/notification';
   export default {
-    props: ['previewShow', 'investorid', 'comeFrom'],
+    props: ['investorid', 'comeFrom'],
     data () {
       return {
         yichu: yichu,
@@ -396,23 +402,20 @@
               goodness_title: ''// 亮点亮点
             }]
           }
-        },
-
-        user: {
-          user_real_name: '顾家', // 被推送的人
-          user_company_career: '投资尽力',
-          user_company_name: '杭州投着乐网络科技有限公司',
-          firse_user_real_name: '顾家', // 当前用户
-          firse_user_company_career: '投资尽力',
-          firse_user_company_name: '杭州投着乐网络科技有限公司',
-          user_brand: ''// 品牌
-        },
-        pushMessage: {}, // 推送用的数据
-        project_id: '',
-        project_intro: '',
-        email: {
-
         }
+//        user: {
+//          user_real_name: '暂无数据', // 被推送的人
+//          user_company_career: '暂无数据',
+//          user_company_name: '暂无数据',
+//          firse_user_real_name: '暂无数据', // 当前用户
+//          user_brand: '暂无数据', // 品牌
+//          firse_user_company_career: '暂无数据',
+//          firse_user_company_name: '暂无数据'
+//        }
+//        pushMessage: {}, // 推送用的数据
+//        project_id: '',
+//        project_intro: '',
+//        email: {}
       };
     },
     methods: {
@@ -428,7 +431,7 @@
       },
       // 关闭当前弹窗
       closePreview () {
-        this.$emit('closePreview', false);
+        this.$store.dispatch('projectPushPreviewControl', false);
       },
       // 获取当前用户部分信息
       getFirstUser () {
@@ -439,7 +442,7 @@
               this.user.firse_user_real_name = data.user_real_name;
               this.user.firse_user_company_career = data.user_company_career;
               this.user.firse_user_company_name = data.user_company_name;
-              this.user.user_brand = data.user_brand || '';
+              this.user.user_brand = data.user_brand || ''; // 品牌
             }
           })
           .catch(err => {
@@ -460,7 +463,7 @@
       getProjectDetail () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
-          this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.project_id})
+          this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.projectId})
             .then(res => {
               let data = res.data.data;
               // 项目介绍
@@ -514,37 +517,43 @@
       },
       // 推送项目
       pushProject () {
-        if (this.comeFrom === 'contacts') {
-          this.$http.post(this.URL.pushUser, this.pushMessage)
-            .then(res => {
-              if (res.data.status_code === 2000000) {
-                // let data = res.data.data;
-                success('推送成功');
-                this.$emit('closePreviewANDProjectPush', false);// 关闭所有的弹框包括预览,推送
-                this.$emit('closePreview', false);// 关闭预览弹框
-              }
-            })
-            .catch(err => {
-              console.log(err);
-              success('推送失败');
-            });
-        } else {
-          this.$emit('previewPush', true);
-        }
+        this.$http.post(this.URL.pushProjectToUsers, this.pushMessage).then(res => {
+          if (res.data.status_code === 2000000) {
+            success('推送成功');
+            this.loading = false;
+            this.$store.dispatch('projectPushToProControl', false);
+            this.$store.dispatch('projectPushToConControl', false);
+            this.$store.dispatch('projectPushPreviewControl', false);
+          } else {
+            error(res.data.error_msg);
+            this.loading = false;
+          }
+        })
+          .catch(err => {
+            console.log(err);
+            this.loading = false;
+          });
       }
     },
-    create () {
-//    this.getProjectDetail();
+    computed: {
+      ...mapState({
+        projectPushPreviewDisplay: state => state.pushProject.projectPushPreviewDisplay,
+        projectId: state => state.projectDetails.projectMessage.projectId,
+        projectIntro: state => state.projectDetails.projectMessage.projectIntro,
+        pushMessage: state => state.pushProject.pushMessage, // 推送的数据，包括邮箱所有数据
+        userMessage: state => state.pushProject.userMessage, // 被推送的用户的数据
+        userData: state => state.logining // 当前用户的部分信息
+      })
     },
+    create () {},
     watch: {
-      previewShow: function (e) {
+      projectPushPreviewDisplay: function (e) {
         if (e) {
-          this.project_id = this.$store.state.pushProject.project_id;
-          this.user = this.$store.state.pushProject.user;
-          this.pushMessage = this.$store.state.pushProject.pushMessage;
-          this.project_intro = this.$store.state.pushProject.pro_intro;
-          this.email = this.$store.state.pushProject.email;
-          this.getFirstUser();
+//          this.user = this.$store.state.pushProject.user;
+//          this.pushMessage = this.$store.state.pushProject.pushMessage;
+//          this.project_intro = this.$store.state.pushProject.pro_intro;
+//          this.email = this.$store.state.pushProject.email;
+//          this.getFirstUser();
           this.getProjectDetail();
         }
       }

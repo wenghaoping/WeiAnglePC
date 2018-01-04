@@ -95,3 +95,11 @@ export function checkPhoneNumber1 (value) {
   }
   return check;
 }
+// 密码长度认证(6-20)
+export function checkPassword (data) {
+  if (data.length > 20 || data.length < 6) {
+    return true;
+  } else {
+    return false;
+  }
+}

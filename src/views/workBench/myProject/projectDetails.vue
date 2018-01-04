@@ -415,7 +415,7 @@
             <div class="toButton" style="padding-left: 0;z-index: 111">
               <el-button type="primary" @click="toEdit" class="btn1">编辑</el-button>
               <el-button type="primary" @click="addFollow" class="btn1">写跟进</el-button>
-              <el-button type="primary" @click="projectPush2" class="btn1">项目推送</el-button>
+              <el-button type="primary" @click="projectPushToPro" class="btn1">项目推送</el-button>
             </div>
           </div>
         </div>
@@ -599,25 +599,13 @@
     <addfollow></addfollow>
 
     <!--项目推送弹窗,项目入口弹窗-->
-    <projectpushtopro :project-push-show2="projectPushDisplay2" :proid="project.project_id"
-                      :pro-name="project.pro_name" :pro-intro="project.pro_intro"
-                      :emitPush="emitPush"
-                      @openPreview="openPreview"
-                      @closeProjectPush2="closeProjectPush2"
-                      @previewPush="previewPush"></projectpushtopro>
+    <projectpushtopro :emitPush="emitPush"></projectpushtopro>
 
     <!--项目推送弹窗,人脉入口弹窗============================-->
-    <projectpush :project-push-show="projectPushDisplay"
-                 :user-message="userMessage"
-                 :user-email="userEmail"
-                 @openPreview="openPreview"
-                 @closeProjectPush="closeProjectPush"></projectpush>
+    <projectpush></projectpush>
 
     <!--项目预览弹窗-->
-    <projectpreview :preview-show="previewDisplay" :comeFrom="'project'"
-                    @closePreview="closePreview"
-                    @closePreviewANDProjectPush="closePreviewANDProjectPush"
-                    @previewPush="previewPush"></projectpreview>
+    <projectpreview></projectpreview>
 
     <!--帮我引荐-->
     <recommend></recommend>
@@ -654,8 +642,8 @@
         pinpai: pinpai,
         cirIcon: cirIcon,
         xiaochengxu: xiaochengxu,
-        projectPushDisplay: false, // 项目推送弹框,人脉入口
-        projectPushDisplay2: false, // 项目推送弹框,项目入口
+//        projectPushDisplay: false, // 项目推送弹框,人脉入口
+//        projectPushDisplay2: false, // 项目推送弹框,项目入口
         show: 'detail',
         searchName: '',
         form: {
@@ -857,13 +845,6 @@
         previewDisplay: false, // 项目推送预览显隐控制
         emitPush: false, // 控制项目推送-项目入口的推送函数触发
         getFollowData: false, // 看是否要获取跟进的数据
-        followid: '', // 得到followid
-        userMessage: {
-          user_real_name: '翁浩平', // 姓名
-          user_company_career: '投资总监', // 职位
-          user_company_name: '杭州投着乐网络科技有限公司'// 公司名称
-        }, // 传递给推送的数据
-        userEmail: '',
         scrolled: false,
         qrImg: '', // 二维码地址
         InvestorType: 'userInfo' // 人脉详情弹框,应该用那种数据设置
@@ -882,7 +863,8 @@
       ...mapState({
         companySearchDisplay: state => state.dialogDisplay.companySearchDisplay,
         recommendDisplay: state => state.dialogDisplay.recommendDisplay,
-        followDisplay: state => state.dialogDisplay.followDisplay
+        followDisplay: state => state.dialogDisplay.followDisplay,
+        projectPushToProDisplay: state => state.pushProject.projectPushToProDisplay
       })
     },
     components: {
@@ -1026,23 +1008,6 @@
         if (this.activeFrom === 0) this.$router.push({name: 'myProject', query: {activeTo: 0}});
         else if (this.activeFrom === 2) this.$router.push({name: 'followUp', query: {activeTo: 2}});// 路由传参
       },
-      // 关闭项目推送弹框(人脉入口)
-      closeProjectPush (msg) {
-        this.projectPushDisplay = msg;
-        this.getAllData();
-      },
-      // 关闭项目推送弹框(项目入口)
-      closeProjectPush2 (msg) {
-        this.projectPushDisplay2 = msg;
-        this.getAllData();
-      },
-      // 关闭预览AND关闭项目推送1,关闭项目推送2
-      closePreviewANDProjectPush (msg) {
-        this.projectPushDisplay = false;
-        this.projectPushDisplay2 = false;
-        this.previewDisplay = false;
-        this.getAllData();
-      },
       // 项目来源编辑
       getProjectTag (arr) {
         let str = '';
@@ -1142,8 +1107,8 @@
         });
       },
       // 项目推送入口,项目入口
-      projectPush2 () {
-        this.projectPushDisplay2 = true;
+      projectPushToPro () {
+        this.$store.dispatch('projectPushToProControl', true);
         this.zgClick('推送项目');
       },
       // 获取id
@@ -1475,6 +1440,7 @@
           obj.recommend_status = x.recommend_status;
           obj.wts_match_weight = x.wts_match_weight;
           obj.push_statues = x.push_statues;
+          obj.investor_email = x.investor_email;
           newArr.push(obj);
         });
         return newArr;
@@ -1532,20 +1498,16 @@
           warning('已提交');
         } else {
           this.zgClick('推送项目');
-          this.userMessage.user_real_name = data.user_real_name;
-          this.userMessage.user_company_career = data.user_company_career;
-          this.userMessage.user_company_name = data.user_company_name;
-          this.userMessage.card_id = data.card_id;
-          if (data.type === 'user') {
-            this.userMessage.card_id = data.user_id;
-          }
-          this.userMessage.type = data.type || '';
-          this.userEmail = data.user_eamil;
-          this.$store.state.pushProject.projectMessgae = {pro_id: this.project.project_id || '', pro_intro: this.project.pro_intro || ''};
-          this.$store.state.pushProject.pushMessage.investor_id = data.investor_id;
-          this.projectPushDisplay = true;
-          this.pushData.email = data.user_eamil;
-          this.pushData.project_id = this.project.project_id;
+          let obj = {
+            user_real_name: data.investor_name,
+            user_company_career: data.investor_career,
+            user_company_name: data.investor_company,
+            investor_id: data.investor_id,
+            investor_email: data.investor_email
+          };
+          this.$store.dispatch('setMatchInvestorsData', data); // 设置买家图谱所需要的数据
+          this.$store.dispatch('setUserMessage', obj);
+          this.$store.dispatch('projectPushToConControl', true);
         }
       },
       // 买家图谱人脉删除
@@ -1586,7 +1548,6 @@
       helpKnow (data) {
         this.$store.dispatch('setMatchInvestorsData', data); // 设置买家图谱所需要的数据
         this.$store.dispatch('recommendControl', true);
-        console.log(data);
       },
       // 编辑跟进记录
       // 拿到跟进记录id
@@ -1594,19 +1555,6 @@
         this.getFollowData = false;
         this.$store.dispatch('setFollowId', id);
         this.$store.dispatch('followControl', true);
-      },
-      // 项目推送
-      // 打开项目预览
-      openPreview (msg) {
-        this.previewDisplay = msg;
-      },
-      // 项目推送预览隐藏
-      previewPush (x) {
-        this.emitPush = x;
-      },
-      // 关闭项目预览
-      closePreview (msg) {
-        this.previewDisplay = msg;
       },
       // 重新获取所有数据
       async getAllData (e) {
@@ -1653,10 +1601,17 @@
       this.getAllData();
     },
     watch: {
+      // 关闭跟进弹框，刷新跟进详情
       followDisplay: function (e) {
         if (!e) {
           this.getEnjoyedInvestors();
           this.getFollowData = true;
+        }
+      },
+      // 推送弹框关闭，刷新所有新数据
+      projectPushToProDisplay: function (e) {
+        if (!e) {
+          this.getAllData();
         }
       }
     }

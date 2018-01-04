@@ -9,6 +9,13 @@ export const CONTACT_CHANGE = 'CONTACT_CHANGE'; // 项目详情 / 跟进列表 =
 export const FOLLOWUP_CHANGE = 'FOLLOWUP_CHANGE'; // 项目详情 => 跟进弹框
 export const ALERT_PROJECT_CHANGE = 'ALERT_PROJECT_CHANGE'; // 人脉详情 => 项目详情弹框
 
+// 项目推送相关弹框
+export const PROJECT_PUSH_TO_PRO_CHANGE = 'PROJECT_PUSH_TO_PRO_CHANGE'; // 项目推送项目入口（多选）
+export const PROJECT_PUSH_TO_CON_CHANGE = 'PROJECT_PUSH_TO_CON_CHANGE'; // 项目推送人脉入口（单选）
+export const PROJECT_PUSH_PREVIEW_CHANGE = 'PROJECT_PUSH_PREVIEW_CHANGE'; // 项目推送预览弹框
+export const SET_USER_MESSAGE = 'SET_USER_MESSAGE'; // 买家图谱推送所需要的人数据
+export const SET_PUSH_MESSAGE = 'SET_PUSH_MESSAGE'; // 设置推送的数据
+
 // 作为项目详情页的所有数据存储,包括所有弹框的数据交互
 export const SET_SEARCH_COMPANY = 'SET_SEARCH_COMPANY'; // 项目详情 => 一键尽调存储数据
 export const SET_CONTACT_DETAIL = 'SET_CONTACT_DETAIL'; // 项目详情 => 人脉详情弹框

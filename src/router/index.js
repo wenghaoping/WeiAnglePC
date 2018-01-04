@@ -5,8 +5,8 @@ const _import = require('./_import_' + process.env.NODE_ENV);
 Vue.use(Router);
 
 // 测试页面
-// const checkone = r => require.ensure([], () => r(require('@/test/checkone.vue')), 'checkone');
-const checkone = r => require.ensure([], () => r(require('@/views/components/tinymce.vue')), 'tinymce');
+const checkone = r => require.ensure([], () => r(require('@/test/checkone.vue')), 'checkone');
+// const checkone = r => require.ensure([], () => r(require('@/views/components/tinymce.vue')), 'tinymce');
 
 /* 配置路由 */
 export default new Router({

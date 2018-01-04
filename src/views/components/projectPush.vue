@@ -1,7 +1,7 @@
 <template>
-  <!--项目推送人脉入口-->
+  <!--项目推送人脉入口（单选)-->
   <div id="projectPush">
-    <el-dialog :visible="projectPushShow" :before-close="closeProjectPush">
+    <el-dialog :visible="projectPushToConDisplay" :before-close="closeProjectPush">
 
      <span slot="title" class="dialog-title clearfix">
         <div class="lines fl"></div>
@@ -79,12 +79,12 @@
                   </template>
                 </el-table-column>
                 <el-table-column
-                  prop="match_weight"
+                  prop="wts_match_weight"
                   label="匹配度"
                   min-width="80">
                   <template slot-scope="scope">
                     <div class="origin">
-                      {{scope.row.match_weight}}%
+                      {{scope.row.wts_match_weight}}%
                     </div>
                   </template>
                 </el-table-column>
@@ -125,10 +125,18 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   import * as validata from '@/utils/validata';
   import { error, success, warning } from '@/utils/notification';
   export default {
-    props: ['projectPushShow', 'userMessage', 'userEmail'],
+    props: [],
+    computed: {
+      ...mapState({
+        projectPushToConDisplay: state => state.pushProject.projectPushToConDisplay,
+        userMessage: state => state.pushProject.userMessage,
+        projectMessage: state => state.projectDetails.projectMessage
+      })
+    },
     data () {
       var checkEmail = (rule, value, callback) => {
         if (validata.getNull(value)) {
@@ -149,36 +157,35 @@
           callback();
         }
       };// 不为空判断
-
       return {
         emailRule: {validator: checkEmail, trigger: 'blur'},
         titleRule: {validator: checkTitle, trigger: 'blur'},
         close: false, // 默认关闭
         loading: false, // 加载动画
-        pushTitle1: '',
         activeName: 'first',
 //      dialogPush:false,//控制显不显示
-
+        // 主标题
         email: {
-          title: this.pushTitle1, // 邮件标题
+          title: '', // 邮件标题
           body: ''// 邮件正文
         },
+        // 输入框中单独一个
         email2: {
           nameEmail: ''// 人脉的邮箱(一个)
         },
-        user: {
-          user_real_name: '',
-          user_company_career: '',
-          user_company_name: '',
-          card_id: ''
-        }, // 推送的用户消息
-        project: {
-          pro_id: '', // 项目id
-          pro_intro: ''// 项目介绍
-        }, // 推送的项目消息
+        // 推送的用户消息
+//        user: {
+//          user_real_name: '',
+//          user_company_career: '',
+//          user_company_name: '',
+//          card_id: ''
+//        },
+//        project: {
+//          pro_id: '', // 项目id
+//          pro_intro: ''// 项目介绍
+//        }, // 推送的项目消息
         projectList: [], // 推送的项目列表
         projectAll: [], // 项目列表下拉框基本是不用的
-
         tableData3: [
           /*          {
            pro_intro: '项目的一句话介绍，字数可能会有点长，但不管怎样，就显示一行，如果显示不下那但不管怎样，就显示一行，如果显示不下那但不管怎样，就显示一行，如果显示不下那',
@@ -186,17 +193,20 @@
            project_id:1
            } */
         ],
-        projectRadio: '', // 绑定当前项目数据,单选框的数据(project_id)
-        firstInData: {
-          user: {},
-          email2: {},
-          email: {}
-        }, // 保存数据
+        // 绑定当前项目数据,单选框的数据(project_id)
+        projectRadio: '',
+        // 保存数据(继续推送时，需要保存除了项目以外的所有数据)
+//        firstInData: {
+//          email2: {},
+//          email: {}
+//        },
         pushCount: 0, // 剩余推送次数
         totalMatchProject: 0, // 项目加载总页数
         currentPageMatchProject: 1, // 当前第几页
         searchProject: {}, // 搜索项目的数据
-        searchProjectInput: ''// 搜素项目用的
+        searchProjectInput: '', // 搜素项目用的
+        emailMust: false,
+        email2Must: false
       };
     },
     methods: {
@@ -210,8 +220,7 @@
         } else {
           this.pushbrand = this.user_brand + '-' || '';
         }
-
-        this.pushTitle1 = this.pushbrand + this.user_company_career + this.user_real_name + '推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
+        return this.pushbrand + this.user_company_career + this.user_real_name + '推荐项目|微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
       },
       // 推送预览
       preview () {
@@ -222,63 +231,77 @@
           else if (this.email.body.length > 500) error('正文不能大于500个字');
           else {
             this.zgClick('预览');
-            this.$store.state.pushProject.project_id = this.projectRadio;
-            this.$store.state.pushProject.user = this.user;
-            this.$store.state.pushProject.pushMessage.user_id = localStorage.user_id;
-            this.$store.state.pushProject.pushMessage.card_id = this.user.card_id;
-//          this.$store.state.pushProject.pushMessage.investor_id=this.user.investor_id;
-            this.$store.state.pushProject.pushMessage.email = this.email2.nameEmail;
-            this.$store.state.pushProject.pushMessage.title = this.email.title;
-            this.$store.state.pushProject.pushMessage.body = this.email.body;
-            this.$store.state.pushProject.pushMessage.project_ids = [];
-            this.$store.state.pushProject.pushMessage.project_ids.push(this.projectRadio);
-            this.$store.state.pushProject.pushMessage.type = this.user.type;
-            /*          console.log(this.$store.state.pushProject.pushMessage)
-             console.log(this.user) */
-            this.$store.state.pushProject.email.title = this.email.title;
-            this.$store.state.pushProject.email.body = this.email.body;
-            this.$emit('openPreview', true);//
+            let obj = {
+              email: this.email2.nameEmail,
+              title: this.email.title,
+              body: this.email.body,
+              receive_users: [this.userMessage.investor_id],
+              project_id: this.projectRadio
+            };
+            this.$store.dispatch('setFollowUp', {projectId: this.projectRadio}); // 设置项目id
+            this.$store.dispatch('setPushMessage', obj);
+            this.$store.dispatch('projectPushPreviewControl', true);
           }
         } else {
           warning('您今日的推送次数已用完,请明天再试');
         }
       },
       // 推送按钮
-      push (type) {
+      push () {
         if (this.pushCount !== 0) {
-          this.firstInData.email = this.email;
-          let check1 = this.submitForm('email');
-          let check2 = this.submitForm('email2');
-          if (this.projectRadio === '' || this.projectRadio === undefined) error('请选择要推送的项目');
-          else if (!validata.checkEmail(this.email2.nameEmail)) error('请输入正确的邮箱');
-          else if (this.email.title.length > 100) error('标题不能大于100个字');
-          else if (this.email.body.length > 500) error('正文不能大于500个字');
-          else if (type === 1) { // 关闭
-            if (check1 && check2) {
-              this.zgClick('推送');
-              let pushData = [];
-              pushData.user_id = localStorage.user_id;
-              pushData.card_id = this.user.card_id;
-              pushData.email = this.email2.nameEmail;
-              pushData.title = this.email.title;
-              pushData.body = this.email.body;
-              pushData.type = this.userMessage.type || '';
-              pushData.project_ids = [];
-              pushData.project_ids.push(this.projectRadio);
-              this.loading = true;
-              this.$http.post(this.URL.pushUser, pushData)
-                .then(res => {
-                  success('推送成功');
-                  this.getpushCount();
-                  this.loading = false;
-                  this.open2('推送成功', '推送成功', '继续推送', '返回');
+          const submit = () => {
+            return new Promise((resolve, reject) => {
+              // 做一些异步操作
+              this.submitForm('email', 'emailMust');
+              this.submitForm('email2', 'email2Must');
+              resolve(true);
+            });
+          };
+          const check = () => {
+            return new Promise((resolve, reject) => {
+              // 做一些异步操作
+              setTimeout(() => {
+                if (this.emailMust) {
+                } else if (this.email2Must) {
+                } else if (this.projectRadio === '' || this.projectRadio === undefined) error('请选择要推送的项目');
+                else if (!validata.checkEmail(this.email2.nameEmail)) error('请输入正确的邮箱');
+                else if (this.email.title.length > 100) error('标题不能大于100个字');
+                else if (this.email.body.length > 500) error('正文不能大于500个字');
+                else {
+                  resolve(true);
+                }
+              }, 200);
+            });
+          };
+          submit()
+            .then((data) => {
+              return check();
+            })
+            .then((data) => {
+              if (data) {
+                this.$http.post(this.URL.pushProjectToUsers, {
+                  user_id: localStorage.user_id,
+                  project_id: this.projectRadio,
+                  title: this.email.title,
+                  body: this.email.body,
+                  email: this.email2.nameEmail,
+                  receive_users: [this.userMessage.investor_id]
+                }).then(res => {
+                  if (res.data.status_code === 2000000) {
+                    success('推送成功');
+                    this.getpushCount();
+                    this.loading = false;
+                    this.open2('推送成功', '推送成功', '继续推送', '返回');
+                  } else {
+                    this.loading = false;
+                  }
                 })
-                .catch(err => {
-                  console.log(err);
-                  success('推送失败');
-                });
-            }
-          }
+                  .catch(err => {
+                    console.log(err);
+                    this.loading = false;
+                  });
+              }
+            });
         } else {
           warning('您今日的推送次数已用完');
         }
@@ -290,15 +313,14 @@
           this.loading = true;
           this.currentPageMatchProject = 1;
           this.searchProject.user_id = localStorage.user_id;
-          this.searchProject.card_id = this.user.card_id;
-          this.searchProject.pro_intro = query;
+          this.searchProject.investor_id = this.userMessage.investor_id;
+          this.searchProject.search = query || '';
           this.searchProject.page = 1;
-          this.searchProject.type = this.userMessage.type || '';
-          this.$http.post(this.URL.matchProject, this.searchProject)
+          this.$http.post(this.URL.getPushProjects, this.searchProject)
             .then(res => {
               let data = res.data.data;
-              this.tableData3 = data.projects;
-              this.projectAll = this.setProjectAll(data.projects);
+              this.tableData3 = data;
+              this.projectAll = this.setProjectAll(data);
               this.totalMatchProject = data.count;
               this.loading = false;
               resolve(1);
@@ -313,12 +335,13 @@
       filterChangeMatchProject (page) {
         this.loading = true;
         this.searchProject.page = page;
-        this.searchProject.pro_intro = this.searchProjectInput;
-        this.$http.post(this.URL.matchProject, this.searchProject)
+        this.searchProject.investor_id = this.userMessage.investor_id;
+        this.searchProject.search = this.searchProjectInput;
+        this.$http.post(this.URL.getPushProjects, this.searchProject)
           .then(res => {
             let data = res.data.data;
-            this.tableData3 = data.projects;
-            this.projectAll = this.setProjectAll(data.projects);
+            this.tableData3 = data;
+            this.projectAll = this.setProjectAll(data);
             this.loading = false;
             this.totalMatchProject = data.count;
           })
@@ -358,25 +381,20 @@
           let arr = this.tableData3;
           for (let i = 0; i < arr.length; i++) {
             if (arr[i].project_id === id) {
-              this.$store.state.pushProject.pro_intro = arr[i].pro_intro;
+              this.$store.dispatch('setFollowUp', {projectId: arr[i].project_id, projectIntro: arr[i].pro_intro});
             }
           }
         }
       },
-      submitForm (formName) {
-        let check = true;
+      // 检查所有必填项目以及获取所有数据/true过.false不过
+      submitForm (formName, checkName) {
         this.$refs[formName].validate((valid) => {
-          if (valid) {
-
-          } else {
-            check = false;
-          }
+          this[checkName] = !valid;
         });
-        return check;
       },
       // 关闭项目推送
       closeProjectPush () {
-        this.$emit('closeProjectPush', false);
+        this.$store.dispatch('projectPushToConControl', false);
       },
       // 获取剩余推送次数
       getpushCount () {
@@ -406,43 +424,36 @@
           this.getpushCount();
           this.clearData();
         }).catch(() => {
-          this.$emit('closeProjectPush', false);
+          this.$store.dispatch('projectPushToConControl', false);
           this.clearData();
         });
       },
       clearData () {
-        this.user = {};
-        this.email2.nameEmai = '';
-        this.projectList = [];
-        this.tableData3 = [];
-        this.email = this.firstInData.email;
-        this.user = this.firstInData.user;
-        this.email2 = this.firstInData.email2;
+        this.projectRadio = ''; // 清空项目选择选项
+        this.projectList = []; // 清空项目选择选项
+//        this.email2.nameEmail = '';
+//        this.tableData3 = [];
+//        this.firstInData.email = this.email;
+//        this.firstInData.email2 = this.email2;
       }
     },
     watch: {
       projectRadio: function (e) {
         this.getIntroduce(e);
       },
-      projectPushShow: function (e) {
+      projectPushToConDisplay: function (e) {
         if (e) {
           this.getCheckUserInfo(localStorage.user_id);
-          setTimeout(() => { this.title(); this.email.title = this.pushTitle1; }, 1000);
-          this.user = {};
-          this.email2.nameEmai = '';
+          setTimeout(() => { this.email.title = this.title(); }, 1000);
+          this.email2.nameEmail = '';
           this.projectList = [];
           this.tableData3 = [];
           this.projectRadio = '';
-          this.user = this.userMessage || this.$store.state.pushProject.user;
-          this.project = this.$store.state.pushProject.projectMessgae || {};
-          this.email2.nameEmail = this.userEmail;
-          this.firstInData.user = this.userMessage;
-          this.firstInData.email2.nameEmail = this.userEmail;
-          this.firstInData.project = this.$store.state.pushProject.projectMessgae || {};
-          if (this.firstInData.project.pro_id !== '') {
-            this.remoteMethod(this.firstInData.project.pro_intro)
+          this.email2.nameEmail = this.userMessage.investor_email;
+          if (this.projectMessage.projectId !== '' || this.projectMessage.projectId !== undefined) {
+            this.remoteMethod(this.projectMessage.projectIntro)
               .then((data) => {
-                this.projectRadio = this.firstInData.project.pro_id;
+                this.projectRadio = this.projectMessage.projectId;
               });
           } else {
             this.remoteMethod('');
@@ -451,9 +462,7 @@
         this.getpushCount();
       }
     },
-    created () {
-
-    }
+    created () {}
   };
 </script>
 

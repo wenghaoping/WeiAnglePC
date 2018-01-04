@@ -44,7 +44,7 @@ export function setTag (arr, pro) {
   }
 }
 // 将数组中需要的id取出来合并为一个数组
-export function setIdToArr (arr, title) {
+export function setIdToArr (arr = [], title) {
   if (isArray(arr)) {
     let tags = [];
     arr.forEach((x) => {
@@ -58,7 +58,7 @@ export function setIdToArr (arr, title) {
 
 // 将标签转化为字符长串例子'汽车交通、物流、房产服务、
 // 体育运动、工业生产'data为总的数组,title为要改变的字段(字符串格式)
-export function setTagToString (data, title) {
+export function setTagToString (data = [], title) {
   if (isArray(data)) {
     let str = '';
     if (data.length === 0) {
@@ -71,7 +71,7 @@ export function setTagToString (data, title) {
     }
     return str;
   } else {
-    return data;
+    return [];
   }
 }
 // 如果数据为0,则返回空字符串data为总的数组,title为要改变的字段(字符串格式)

@@ -318,14 +318,10 @@
     </el-dialog>
 
     <!--项目推送弹窗人脉入口-->
-    <projectpush :project-push-show="projectPushDisplay" :user-message="userMessage" :user-email="userEmail"
-                 @openPreview="closePreview"
-                 @closeProjectPush="closeProjectPush"></projectpush>
+    <projectpush></projectpush>
 
     <!--项目预览弹窗-->
-    <projectpreview :preview-show="previewDisplay" :comeFrom="'contacts'"
-                    @closePreviewANDProjectPush="closePreviewANDProjectPush"
-                    @closePreview="closePreview"></projectpreview>
+    <projectpreview></projectpreview>
 
     <!--设置评委-->
     <judge-setting :judgeDisplay="judgeDisplay" @closeJudge="closeJudge"
@@ -346,8 +342,8 @@
     data () {
       return {
         addTagDislpay: false, // 标签弹框设置
-        projectPushDisplay: false, // 项目推送弹框设置(人脉入口)
-        previewDisplay: false, // 项目预览弹窗
+//        projectPushDisplay: false, // 项目推送弹框设置(人脉入口)
+//        previewDisplay: false, // 项目预览弹窗
         judgeDisplay: false, // 设为评委弹框
         close: false,
         activeName: 'second',
@@ -492,15 +488,25 @@
       // 点击推送,并且传送数据给推送弹框
       handlePush (index, row) {
         this.zgClick('推送项目');
-        this.userMessage.user_real_name = row.user_real_name;
-        this.userMessage.user_company_career = row.user_company_career;
-        this.userMessage.user_company_name = row.user_company_name;
-        this.userMessage.card_id = row.card_id;
-        this.userMessage.investor_id = row.investor_id;
-        this.userMessage.type = row.type || '';
-        if (row.type === 'user') { this.userMessage.card_id = row.user_id; }
-        this.userEmail = row.user_email;
-        this.projectPushDisplay = true;
+//        this.userMessage.user_real_name = row.user_real_name;
+//        this.userMessage.user_company_career = row.user_company_career;
+//        this.userMessage.user_company_name = row.user_company_name;
+//        this.userMessage.card_id = row.card_id;
+//        this.userMessage.investor_id = row.investor_id;
+//        this.userMessage.type = row.type || '';
+//        if (row.type === 'user') { this.userMessage.card_id = row.user_id; }
+//        this.userEmail = row.user_email;
+//        this.projectPushDisplay = true;
+
+        let obj = {
+          user_real_name: row.user_real_name,
+          user_company_career: row.user_company_career,
+          user_company_name: row.user_company_name,
+          investor_id: row.investor_id,
+          investor_email: row.user_email
+        };
+        this.$store.dispatch('setUserMessage', obj);
+        this.$store.dispatch('projectPushToConControl', true);
       },
       // 添加人脉
       addContacts () {
@@ -508,20 +514,20 @@
         this.$router.push({name: 'createContacts', query: {card_id: 'creat'}});// 路由传参
       },
       // 打开关闭项目预览
-      closePreview (msg) {
-        this.previewDisplay = msg;
-      },
+//      closePreview (msg) {
+//        this.previewDisplay = msg;
+//      },
       // 关闭项目推送弹窗(人脉入口)
-      closeProjectPush (msg) {
-        this.projectPushDisplay = msg;
-        this.handleIconClick();
-      },
+//      closeProjectPush (msg) {
+//        this.projectPushDisplay = msg;
+//        this.handleIconClick();
+//      },
       // 关闭项目预览AND关闭项目推送(人脉入口)
-      closePreviewANDProjectPush (msg) {
-        this.projectPushDisplay = msg;
-        this.previewDisplay = msg;
-        this.handleIconClick();
-      },
+//      closePreviewANDProjectPush (msg) {
+//        this.projectPushDisplay = msg;
+//        this.previewDisplay = msg;
+//        this.handleIconClick();
+//      },
 
       //* 请求函数
       // 搜索===首次进入页面加载的数据

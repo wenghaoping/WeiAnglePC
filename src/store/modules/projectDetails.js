@@ -28,7 +28,13 @@ export default {
       followId: '' // 跟进弹框需要的id
     },
     // 点击买家图谱的数据.
-    matchInvestorsData: {}
+    matchInvestorsData: {
+      investor_career: '',
+      investor_company: '',
+      investor_id: '',
+      investor_name: '',
+      investor_source: '' // 是哪里来的数据 / 平台？
+    }
   },
   mutations: {
     // 一键尽调存储数据
@@ -53,7 +59,12 @@ export default {
     },
     // 设置买家图谱数据
     [types.MATCH_INVESTORS_DATA] (state, data) {
-      state.matchInvestorsData = data;
+      state.matchInvestorsData.investor_career = data.investor_career;
+      state.matchInvestorsData.investor_company = data.investor_company;
+      state.matchInvestorsData.investor_id = data.investor_id;
+      state.matchInvestorsData.investor_name = data.investor_name;
+      state.matchInvestorsData.investor_source = data.investor_source;
+      state.matchInvestorsData.investor_email = data.investor_email;
     }
   },
   actions: {
