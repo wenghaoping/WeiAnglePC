@@ -6,8 +6,10 @@ import Element from 'element-ui'; // element
 import 'element-ui/lib/theme-default/index.css'; // element样式
 import axios from '../../api/api.js';// axios请求配置
 import URL_ from '../../api/url.js';// URL请求地址汇总
+import global from '../../global/global';//
 
 Vue.config.productionTip = false;
+Vue.prototype.$global = global;
 Vue.prototype.$http = axios;
 Vue.prototype.URL = URL_;
 Vue.use(Element); // UI库
