@@ -20,7 +20,6 @@
         <br>
         <el-button @click="reload" size="large" style="display: block;margin: 0 auto">超时,点击刷新页面</el-button>
       </div>
-      <!--<p class="samll2">微信>发现>小程序>微天使乐投平台</p>-->
     </div>
   </div>
 </template>
@@ -71,10 +70,6 @@
             console.log(err);
           });
       }// 获取id
-
-    },
-    created () {
-
     },
     mounted () {
       this.checkout = true;

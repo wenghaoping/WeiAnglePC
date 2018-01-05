@@ -47,10 +47,6 @@
         cardPlanButton: true // 控制上传按钮的显示
       };
     },
-    computed: {},
-    mounted () {},
-    // 组件
-    components: {},
     methods: {
       handlePictureCardPreview (file) {
         this.dialogImageUrl = file.url;
@@ -107,10 +103,7 @@
         console.log(err);
         error('上传失败,请联系管理员');
       }
-    },
-    // 当dom一创建时
-    created () {},
-    watch: {}
+    }
   };
 </script>
 

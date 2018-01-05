@@ -35,7 +35,6 @@
     },
     data () {
       return {
-//        listsDisplay: false,
         loading: false,
         showList: false,
         customDatas: [
@@ -56,10 +55,6 @@
         checkListAll: ['pro_name', 'pro_intro', 'pro_source', 'pro_schedule', 'pro_industry', 'is_exclusive', 'pro_stage', 'pro_area', 'pro_scale', 'created_at']
       };
     },
-    computed: {},
-    mounted () {},
-    // 组件
-    components: {},
     methods: {
       // 关闭
       handleClose (e) {

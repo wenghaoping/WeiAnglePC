@@ -46,11 +46,7 @@ export function setTag (arr, pro) {
 // 将数组中需要的id取出来合并为一个数组
 export function setIdToArr (arr = [], title) {
   if (isArray(arr)) {
-    let tags = [];
-    arr.forEach((x) => {
-      tags.push(x[title]);
-    });
-    return tags;
+    return arr.map(item => item[title]);
   } else {
     return arr;
   }

@@ -77,7 +77,6 @@
                 <div class="list" v-for="history in history_finance">
                     <span class="radio_line fl">
                       <span class="radio"></span>
-                      <!--<span class="l-line"></span>-->
                     </span>
                   <span class="date fl">{{history.history_financing_time | timeToReallTime}}</span>
                   <span class="blood fl">{{history.history_financing_money}}</span>
@@ -93,11 +92,9 @@
                 <div class="list" v-for="milestone in milestone_list">
                     <span class="radio_line">
                       <span class="radio"></span>
-                      <!--<span class="l-line"></span>-->
                     </span>
                   <span class="date">{{milestone.milestone_time}}</span>
                   <span class="blood blood2">
-
                     <el-tooltip placement="top" :disabled="milestone.milestone_event.length > 40 ? false:true">
                       <div slot="content">{{milestone.milestone_event}}</div>
                       <i>{{milestone.milestone_event}}</i>
@@ -113,7 +110,6 @@
                 <div class="list" v-for="new1 in news">
                     <span class="radio_line">
                       <span class="radio"></span>
-                      <!--<span class="l-line"></span>-->
                     </span>
                   <span class="date">{{new1.project_news_time}}</span>
                   <span class="dateTag"><el-tag type="primary" style="margin-left: 5px;" v-if="new1.project_news_label">{{new1.project_news_label}}</el-tag></span>
@@ -195,8 +191,6 @@
   export default {
     data () {
       return {
-//        compname: '', // 一键尽调公司的名称
-//        com_id: 0, // 公司Id
         conmanyName: '3',
         productMessage: '产品信息',
         recruitMessage: '招聘信息',
@@ -455,7 +449,6 @@
         }
       }, // 设置数据
       getCrawlerCompany () {
-//        let compName = this.searchCompany.companyName;
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.$http.post(this.URL.getCrawlerCompany, {user_id: localStorage.user_id, company_name: this.searchCompany.companyName})
@@ -502,9 +495,6 @@
       companyMessage,
       business,
       downloadechart
-    },
-    created () {
-
     },
     watch: {
       searchDisplay: function (e) {

@@ -84,7 +84,6 @@
             <span class="f-name" style="cursor: pointer">{{newF.name}}</span>
             <img src="../../../assets/images/loading.gif" style="width:16px;height: 16px;margin-left: 10px;">
             <i @click.prevent="cancelUpload(item.type_name,newF,index)" style="font-size:12px;color:#f44c4c;cursor: pointer">取消</i>
-            <!--<span class="upLoading" v-loading.body="true"></span>-->
           </div>
         </div>
       </el-collapse-item>
@@ -207,7 +206,6 @@
         this.$http.post(this.URL.getAllFileType, {
           user_id: localStorage.user_id
         }).then(res => {
-//          console.log('fisrt-groupList',res.data.data)
           var groupList = res.data.data;
           // 获取分组列表内部文件数据
           this.$http.post(this.URL.getProjectFiles, {
@@ -224,7 +222,6 @@
                 }
               });
             });
-
             // 如果有值传进来
             if (file) {
               // 剔除掉已经上传成功的文件
@@ -234,7 +231,6 @@
                 }
               });
             }
-
             // 将没有文件的分组设定默认值0
             groupList.forEach((x, index) => {
               if (!x.file) {
@@ -327,7 +323,6 @@
             type_id: this.typeId,
             type_name: this.exGroupName
           }).then(res => {
-//            console.log(res)
             if (res.data.status_code === 2000000) {
               this.loading = false;
               this.$refs['renameFrame'].resetFields();
@@ -392,11 +387,9 @@
           error('暂不支持超过20m文件上传哦');
           return false;
         };
-
         // 给上传文件加typeId属性标志其分组后存入uploadList
         file.typeId = this.typeId;
         this.uploadList.push(file);
-
         // 将上传文件放入相应数据的newFile属性中
         this.groupList.forEach(x => {
           if (x.type_id === this.typeId) {
@@ -452,10 +445,6 @@
       // 文件上传中
       uploadProgress (event, file, fileList) {
         // 不知道为什么文件上传中的勾子函数内的console会触发两次,且event的值不同
-        /* console.log('文件上传中')
-         console.log(event)
-         console.log(file)
-         console.log(fileList) */
       },
       // 上传文件成功
       uploadsuccess (response, file, fileList) {
@@ -527,7 +516,7 @@
       // 点击下载
       download (fileId) {
         const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + fileId;
-        window.location.href = url;
+        window.open(url);
       },
       // 点击分组设置中的单选框
       groupchange (label) {
@@ -564,8 +553,7 @@
       this.project_id = this.proid;
       getTop();
       this.initData();
-    },
-    watch: {}
+    }
   };
 </script>
 

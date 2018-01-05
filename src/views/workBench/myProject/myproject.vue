@@ -746,12 +746,10 @@
       this.getNodeCount();
       this.titleSift();
       this.filterChangeCurrent(this.currentPage || 1);
-    },
-    watch: {}
+    }
   };
 </script>
 
 <style type="text/css" lang="less">
   @import '../../../assets/css/myproject';
-
 </style>

@@ -20,7 +20,7 @@
                 <span class="big-tag">{{project.pro_area.area_title}}</span><span class="split">｜</span>
                 <span class="big-tag">{{project.pro_stage.stage_name}}</span>
               </div>
-              <div class="tag" style="padding-top: 20px;    display: inline-block;">
+              <div class="tag" style="padding-top: 20px;display: inline-block;">
                 <span class="tag-bottom" style="margin-right: 11px;" v-if="project.tag.length!=0"><img src="../../assets/images/tag2.png"></span>
                 <span class="tag-bottom" v-if="project.tag.length!=0"><i v-for="tag in project.tag">{{tag}}　</i></span>
               </div>
@@ -47,9 +47,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import cirIcon from '../../../static/images/circle.png';
-  import pinpai from '../../../static/images/icon-pinpa.png';
-  import yunying from '../../../static/images/icon-yunying.png';
   import { warning } from '@/utils/notification';
   const checkAllOption = ['project'];
   export default {
@@ -61,51 +58,48 @@
         checkedSync: [], // 已勾选数组
         checkedSyncS: checkAllOption, // 勾选数组所有的
         cover: false, // 是否允许覆盖
-        yunying: yunying,
-        pinpai: pinpai,
-        cirIcon: cirIcon,
         loading: false, // 加载动画
         companyId: '', // 尽调搜索公司ID
 
         // 项目信息
         project: {
-          follow_user: '张小五',
+          follow_user: '暂无数据',
           open_status: 1,
-          pro_company_name: '公司',
-          pro_intro: '微天使PC端开发文档介绍介绍介绍介绍',
-          pro_name: '微天使PC端开发文档',
-          pro_schedule: '10',
-          pro_total_score: '94',
+          pro_company_name: '暂无数据',
+          pro_intro: '暂无数据',
+          pro_name: '暂无数据',
+          pro_schedule: '0',
+          pro_total_score: '0',
           pro_area: {
-            area_title: '北京市'
+            area_title: '暂无数据'
           },
           pro_scale: {
-            scale_money: '1001W-200W'
+            scale_money: '暂无数据'
           },
           pro_finance_stock_after: '-',
           pro_finance_value: '-',
           pro_stage: {
-            stage_name: '天使论'
+            stage_name: '暂无数据'
           },
           pro_industry: [{
             industry_id: 12,
-            industry_name: '社交网络'
+            industry_name: '暂无数据'
           }],
           tag: []
         },
         team: {
           core_users: [{
-            ct_member_career: 'career',
-            ct_member_intro: 'intro',
-            ct_member_name: 'name'
+            ct_member_career: '暂无数据',
+            ct_member_intro: '暂无数据',
+            ct_member_name: '暂无数据'
           }],
 
           tag: {
-            tag_name: '大海'
+            tag_name: '暂无数据'
           }
         },
         financing: {
-          pro_finance_use: '用途',
+          pro_finance_use: '暂无数据',
           pro_history_finance: [
             /* {
              finance_time:1503331200,
@@ -121,9 +115,9 @@
         },
         company: {
           pro_company_scale: {
-            comp_scale_value: '1-20'
+            comp_scale_value: '暂无数据'
           },
-          pro_website: 'm'
+          pro_website: '暂无数据'
         },
         milepost: {
           pro_develop: [
@@ -136,7 +130,6 @@
         brands: {
           brand: []
         }// 产品
-
       };
     },
     methods: {

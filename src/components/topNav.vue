@@ -13,7 +13,6 @@
 
 <script type="text/ecmascript-6">
   export default {
-    name: 'hello',
     data () {
       return {
         active: 0,

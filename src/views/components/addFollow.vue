@@ -328,7 +328,6 @@
         }, // 分组用的所有参数
         statusLast: 0,
         loadingcheck: false,
-//        follow_id: '',
         investor_id: '',
         value: '',
         followName: '',
@@ -658,7 +657,7 @@
         if (index !== -1) {
           let fileId = this.uploadShow.lists[index].file_id;
           const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + fileId + '&token=' + localStorage.token;
-          window.location.href = url;
+          window.open(url);
         }
       },
       // 删除当前上传文件
@@ -761,7 +760,6 @@
       // 发送分组设置请求
       saveGroupChange () { // file_id type_id user_id
         this.zgClick('提交跟进');
-        // let type = this.groups.type;
         let index = this.groups.index;
         let typeName = this.groups.name;
         this.$http.post(this.URL.setFileType, {
@@ -850,8 +848,6 @@
                       error(res.data.error_msg);
                     }
                     this.loading = false;
-//              this.getFollow.user_id=localStorage.user_id;
-//              this.getFollow.project_id=this.follow.project_id;
                   })
                   .catch(err => {
                     console.log(err);
@@ -860,7 +856,7 @@
               }
             }
           });
-      }, // 发送请求
+      },
       // 编辑成功弹窗
       open2 (title, main, confirm, cancel) {
         this.$confirm(main, title, {
@@ -869,7 +865,6 @@
           type: 'success'
         }).then(() => {
           this.clearData();
-//          this.follow_id = '';
           this.$store.dispatch('setFollowId', '');
           this.resetForm('follow');
         }).catch(() => {
@@ -881,7 +876,6 @@
       // 清除所有数据
       clearData () {
         this.uploadShow.lists = [];
-        this.investor_id = this.investorid || '';
         this.follow.file_id = [];
         this.fileList = [];
         this.follow.project_id = this.projectId || '';
@@ -897,7 +891,6 @@
       followDisplay: function (e) {
         if (e) {
           this.clearData();
-//          this.follow_id = this.followid || '';
           this.typein = this.type;
           this.loading = true;
           this.$global.func.getWxProjectCategory()
@@ -909,13 +902,11 @@
             });
           this.setFileType();
         } else {
-//          this.follow_id = '';
           this.$store.dispatch('setFollowId', '');
           this.resetForm('follow');
         }
       }// 清空数据
-    },
-    mounted () {}
+    }
   };
 </script>
 

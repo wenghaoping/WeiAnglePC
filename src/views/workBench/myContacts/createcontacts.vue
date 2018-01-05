@@ -560,7 +560,6 @@
               this.restaurants = this.loadData(data);
               if (queryString === '') this.restaurants = [];
               let restaurants = this.restaurants;
-              /*             let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants; */
               clearTimeout(this.timeout);
               this.timeout = setTimeout(() => {
                 cb(restaurants);

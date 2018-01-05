@@ -65,6 +65,11 @@ export default {
       state.matchInvestorsData.investor_name = data.investor_name;
       state.matchInvestorsData.investor_source = data.investor_source;
       state.matchInvestorsData.investor_email = data.investor_email;
+    },
+    // 清空项目数据
+    [types.CLEAR_PROJECT_MESSAGE] (state, clear) {
+      state.projectMessage.projectId = '';
+      state.projectMessage.projectIntro = '';
     }
   },
   actions: {
@@ -82,6 +87,9 @@ export default {
     },
     setMatchInvestorsData ({ commit }, data) {
       commit(types.MATCH_INVESTORS_DATA, data);
+    },
+    clearProjectMessage ({ commit }, clear) {
+      commit(types.CLEAR_PROJECT_MESSAGE, clear);
     }
   }
 };

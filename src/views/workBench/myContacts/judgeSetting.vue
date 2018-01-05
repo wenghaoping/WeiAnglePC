@@ -59,7 +59,6 @@
     },
     data () {
       return {
-//        judgeDisplay: false,
         loading: false,
         showList: false,
         schedule: [],
@@ -69,12 +68,6 @@
           card_id: ''
         }
       };
-    },
-    computed: {
-
-    },
-    mounted () {
-
     },
     // 组件
     components: {},
@@ -128,8 +121,6 @@
       judgeDisplay: function (e) {
         if (e) {
           this.getJudgeData();
-        } else {
-
         }
       }// 清空数据
     }

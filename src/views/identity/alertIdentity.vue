@@ -185,7 +185,7 @@
           message_board: '',
           updated_at: '2017-09-05 20:42:41',
           user_card_image: '',
-          user_id: '8W1ERo3W'
+          user_id: '0'
         },
         // 投资需求
         investment: {

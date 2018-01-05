@@ -223,6 +223,7 @@
   import { mapState } from 'vuex';
   import * as formatData from '@/utils/formatData';
   import { isArray } from '@/utils/validata';
+  import { error } from '@/utils/notification';
   export default {
     data () {
       return {
@@ -240,14 +241,14 @@
         contacts: {
           card_id: '', // id
           user_id: '', // user_id
-          user_real_name: '张三', // 姓名
-          user_nickname: '昵称', // 昵称
-          user_mobile: '18758307033', // 名片手机号
-          user_email: 'zhangsan@weitianshi.cn', // 邮箱
-          user_company_name: '杭州投着乐网络科技有限公司 ', // 公司名称
-          import_user_name: '', // 来源
-          user_brand: '投着乐', // 品牌
-          user_company_career: '投资经理', // 职位
+          user_real_name: '暂无数据', // 姓名
+          user_nickname: '暂无数据', // 昵称
+          user_mobile: '暂无数据', // 名片手机号
+          user_email: '暂无数据', // 邮箱
+          user_company_name: '暂无数据 ', // 公司名称
+          import_user_name: '暂无数据', // 来源
+          user_brand: '暂无数据', // 品牌
+          user_company_career: '暂无数据', // 职位
           user_invest_tag: [], // 人脉标签
           user_avatar_url: '', // 头像URL
           user_invest_industry_string: [], // 领域标签
@@ -266,11 +267,11 @@
           project_case: [
             {
               case_deal_time: 1503936000, // 时间
-              case_stage_name: 'pre-A轮', // 轮次
-              case_name: '第三个项目', // 名称
-              case_money: '15800000', // 钱
-              has_many_industry: '金融', // 金融,人工智能
-              has_one_city: '北京'// 地区
+              case_stage_name: '暂无数据', // 轮次
+              case_name: '暂无数据', // 名称
+              case_money: '暂无数据', // 钱
+              has_many_industry: '暂无数据', // 金融,人工智能
+              has_one_city: '暂无数据'// 地区
             }
           ]// 投资案例
         }, // 人脉参数
@@ -357,24 +358,35 @@
       // 设置投资案例
       setProjectCase (arr) {
         let newArr = [];
-        arr.forEach((x) => {
-          let obj = {};
-          obj.case_deal_time = x.case_deal_time;
-          obj.case_stage_name = x.case_stage_name;
-          obj.case_name = x.case_name;
-          obj.case_money = x.case_money;
-          obj.has_many_industry = formatData.setTagToString(x.has_many_industry, 'industry_name');
-          obj.has_one_city = x.has_one_city.area_title;
-          newArr.push(obj);
-        });
+        if (isArray(arr)) {
+          arr.forEach((x) => {
+            let obj = {};
+            obj.case_deal_time = x.case_deal_time;
+            obj.case_stage_name = x.case_stage_name;
+            obj.case_name = x.case_name;
+            obj.case_money = x.case_money;
+            obj.has_many_industry = formatData.setTagToString(x.has_many_industry, 'industry_name');
+            obj.has_one_city = x.has_one_city.area_title;
+            newArr.push(obj);
+          });
+        };
         return newArr;
       },
       // 获取个人详情
       getOneUserInfo () {
         this.loading = true;
-        this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id, card_id: this.contactDeatil.cardId, investor_user_id: this.contactDeatil.userId})
+        this.$http.post(this.URL.getOneUserInfo, {
+          user_id: localStorage.user_id,
+          card_id: this.contactDeatil.cardId,
+          investor_user_id: this.contactDeatil.userId})
           .then(res => {
-            this.setUserInfo(res);
+            let data = res.data.data;
+            if (res.data.status_code === 2000000) {
+              this.setUserInfo(data);
+            } else {
+              error(res.data.error_msg);
+              this.$store.dispatch('contactControl', false);
+            }
           })
           .catch(err => {
             console.log(err);
@@ -384,9 +396,18 @@
       // 投资人详情 => 买家图谱需要的
       getInvestorInfo () {
         this.loading = true;
-        this.$http.post(this.URL.getInvestorInfo, {user_id: localStorage.user_id, investor_id: this.matchInvestorsData.investor_id, project_id: this.projectMessage.projectId})
+        this.$http.post(this.URL.getInvestorInfo, {
+          user_id: localStorage.user_id,
+          investor_id: this.matchInvestorsData.investor_id,
+          project_id: this.projectMessage.projectId})
           .then(res => {
-            this.setUserInfo(res);
+            let data = res.data.data;
+            if (res.data.status_code === 2000000) {
+              this.setUserInfo(data);
+            } else {
+              error(res.data.error_msg);
+              this.$store.dispatch('contactControl', false);
+            }
           })
           .catch(err => {
             console.log(err);
@@ -394,15 +415,14 @@
         this.loading = false;
       },
       // 设置数据
-      setUserInfo (res) {
-        let data = res.data.data;
+      setUserInfo (data) {
         data.user_invest_industry_string = formatData.setTagToString(data.user_invest_industry, 'industry_name');
         data.user_invest_stage_string = formatData.setTagToString(data.user_invest_stage, 'stage_name');
         data.user_invest_scale_string = formatData.setTagToString(data.user_invest_scale, 'scale_money');
         data.user_resource_find_string = formatData.setTagToString(data.user_resource_find, 'resource_name');
         data.user_resource_give_string = formatData.setTagToString(data.user_resource_give, 'resource_name');
         data.user_avatar_txt = formatData.setUrlChange(data.user_avatar_url, data.user_real_name);
-        data.match_weight = Number.parseFloat(data.match_weight);
+        data.match_weight = Number.parseFloat(data.match_weight) || 0;
         // 数据组用户
         if (data.investor_source === 'scrapy_id') {
           this.user_invest = false;// 投资需求

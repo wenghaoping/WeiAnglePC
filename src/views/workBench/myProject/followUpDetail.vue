@@ -131,14 +131,13 @@
   import { success } from '@/utils/notification';
   import { getTop } from '@/utils';
   export default {
-    components: {
-    },
+    components: {},
     props: ['proid', 'getDataTrue'],
     data () {
       return {
         cirIcon: cirIcon,
         newTime: '',
-        dialogFollow: false, // 控制写跟进弹框
+//        dialogFollow: false, // 控制写跟进弹框
         pro_id: this.proid,
         loading: false, // 加载
         loading1: false, // 加载动画
@@ -158,7 +157,7 @@
       upload (item1, index) {
         let fileId = this.content[index].follow_file[item1].file_id;
         const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + fileId;
-        window.location.href = url;
+        window.open(url);
       }, // 下载
       filterChangeCurrent (page) {
         this.getProjectFollowList(page);
@@ -172,7 +171,6 @@
           .then(res => {
             if (res.data.status_code === 2000000) {
               let data = res.data.data;
-
               this.setDateTime(data);// 时间格式设置
               this.content = data;
               this.totalData = res.data.count;
@@ -228,9 +226,9 @@
         this.followid = this.content[index].follow_id;
       }, // 获取删除记录id
       addFollow (index) {
-        this.dialogFollow = true;
+//        this.dialogFollow = true;
         this.followid = this.content[index].follow_id;
-        this.getProjectFollowList();
+//        this.getProjectFollowList();
         this.$emit('getfollowid', this.content[index].follow_id);
       } // 点击写跟近按钮
     },

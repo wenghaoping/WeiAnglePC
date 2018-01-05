@@ -56,9 +56,6 @@
           bpPage: state => state.superBp.bpPage
         })
       },
-      mounted () {},
-      // 组件
-      components: {},
       methods: {
         // 点击预览
         bpPreview (e) {
@@ -76,10 +73,7 @@
         changeCurrent (e) {
           this.$emit('changeCurrent', e);
         }
-      },
-      // 当dom一创建时
-      created () {},
-      watch: {}
+      }
     };
 </script>
 

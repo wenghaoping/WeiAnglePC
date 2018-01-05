@@ -96,10 +96,6 @@
           ]
         };
       },
-      computed: {},
-      mounted () {},
-      // 组件
-      components: {},
       methods: {
         // 控制页码
         filterChangeCurrent (page) {
@@ -151,7 +147,3 @@
       }
     };
 </script>
-
-<style lang="less">
-
-</style>

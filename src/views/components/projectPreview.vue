@@ -66,7 +66,6 @@
                          <span style="color:#475669;margin-top: -4px">{{goodness1.goodness_title}}&nbsp;:&nbsp;</span>
                       {{goodness1.goodness_desc}}
                        </span>
-                      <!--<span>{{highlights.goodness_desc}}</span>-->
                     </div>
                   </div>
                   <div  v-show="project.goodness.pro_market_genera.length!=0" style="margin-bottom: 20px">
@@ -76,7 +75,6 @@
                          <span style="color:#475669;margin-top: -4px">{{goodness2.goodness_title}}&nbsp;:&nbsp;</span>
                       {{goodness2.goodness_desc}}
                        </span>
-                      <!--<span>{{highlights.goodness_desc}}</span>-->
                     </div>
                   </div>
                   <div v-show="project.goodness.pro_business_model.length!=0" style="margin-bottom: 20px">
@@ -86,7 +84,6 @@
                          <span style="color:#475669;margin-top: -4px">{{goodness3.goodness_title}}</span>&nbsp;:&nbsp;
                       {{goodness3.goodness_desc}}
                        </span>
-                      <!--<span>{{highlights.goodness_desc}}</span>-->
                     </div>
                   </div>
                   <div v-if="project.goodness.pro_service.length!=0"  style="margin-bottom: 20px">
@@ -275,7 +272,6 @@
   import cirIcon from '../../../static/images/circle.png';
   import { success, error } from '@/utils/notification';
   export default {
-    props: ['investorid', 'comeFrom'],
     data () {
       return {
         yichu: yichu,
@@ -403,51 +399,16 @@
             }]
           }
         }
-//        user: {
-//          user_real_name: '暂无数据', // 被推送的人
-//          user_company_career: '暂无数据',
-//          user_company_name: '暂无数据',
-//          firse_user_real_name: '暂无数据', // 当前用户
-//          user_brand: '暂无数据', // 品牌
-//          firse_user_company_career: '暂无数据',
-//          firse_user_company_name: '暂无数据'
-//        }
-//        pushMessage: {}, // 推送用的数据
-//        project_id: '',
-//        project_intro: '',
-//        email: {}
       };
     },
     methods: {
       // 项目来源编辑
       getteam_tag (arr) {
-        let str = [];
-        for (let i = 0; i < arr.length; i++) {
-          if (arr[i].type === 1) {
-            str.push(arr[i].tag_name);
-          }
-        }
-        return str;
+        return arr.filter(v => v.type === 1).map(item => item.tag_name);
       },
       // 关闭当前弹窗
       closePreview () {
         this.$store.dispatch('projectPushPreviewControl', false);
-      },
-      // 获取当前用户部分信息
-      getFirstUser () {
-        this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id})
-          .then(res => {
-            if (res.data.status_code === 2000000) {
-              let data = res.data.data;
-              this.user.firse_user_real_name = data.user_real_name;
-              this.user.firse_user_company_career = data.user_company_career;
-              this.user.firse_user_company_name = data.user_company_name;
-              this.user.user_brand = data.user_brand || ''; // 品牌
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
       },
       // 项目来源编辑
       getProjectTag (arr) {
@@ -497,16 +458,7 @@
               this.pro = data.pro_FA;
               // brand
               this.brands = data.brands;
-//              if(data.pro_scale=="") {data.pro_scale={};data.pro_scale.scale_money="-";}
-//              if(data.pro_area=="") {data.pro_area={};data.pro_area.area_title="-";}
               if (data.pro_schedule === '') { data.pro_schedule = {}; data.pro_schedule.schedule_name = ''; data.pro_schedule.schedule_id = ''; }
-//              if(data.pro_stage=="") {data.pro_stage={};data.pro_stage.stage_name="-"}
-
-//              this.project=data;
-//              this.project.follow_user=data.follow_user;
-//              this.project.pro_source=this.getProjectTag(data.tag);
-//              this.project.team_tag=this.getteam_tag(data.tag);
-//              this.project.pro_BP.file_title=data.pro_BP.file_title+'.'+data.pro_BP.file_ext;
               resolve(3);
               this.loading = false;
             })
@@ -539,7 +491,6 @@
       ...mapState({
         projectPushPreviewDisplay: state => state.pushProject.projectPushPreviewDisplay,
         projectId: state => state.projectDetails.projectMessage.projectId,
-        projectIntro: state => state.projectDetails.projectMessage.projectIntro,
         pushMessage: state => state.pushProject.pushMessage, // 推送的数据，包括邮箱所有数据
         userMessage: state => state.pushProject.userMessage, // 被推送的用户的数据
         userData: state => state.logining // 当前用户的部分信息
@@ -549,11 +500,6 @@
     watch: {
       projectPushPreviewDisplay: function (e) {
         if (e) {
-//          this.user = this.$store.state.pushProject.user;
-//          this.pushMessage = this.$store.state.pushProject.pushMessage;
-//          this.project_intro = this.$store.state.pushProject.pro_intro;
-//          this.email = this.$store.state.pushProject.email;
-//          this.getFirstUser();
           this.getProjectDetail();
         }
       }

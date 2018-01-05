@@ -9,14 +9,12 @@
       <el-tab-pane label="访问用户" name="3"></el-tab-pane>
       <!--访问时长-->
       <el-tab-pane label="访问时长" name="4"></el-tab-pane>
-
     </el-tabs>
     <div id="pieBox" style="width:803px;height:432px;diplay:block"></div>
     <p class="sec"><i>{{title}}：</i>{{main}}</p>
     <div class="op"></div>
   </div>
 </template>
-
 <script type="text/ecmascript-6">
   import echarts from 'echarts';
   export default {
@@ -28,42 +26,46 @@
         title: '累计下载量',
         main: '综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。',
         xdata: [], // 时间
+        // APP下载量
         download: {
           ydataTotal: [], // 获取的数据
           ydataAverage: []// 平均数据
-        }, // APP下载量
+        },
+        // 活跃用户
         dau: {
           ydataTotal: [],
           ydataAverage: []
-        }, // 活跃用户
+        },
+        // 浏览页面
         pv: {
           ydataTotal: [],
           ydataAverage: []
-        }, // 浏览页面
+        },
+        // 访问用户数
         uv: {
           ydataTotal: [],
           ydataAverage: []
-        }, // 访问用户数
+        },
+        // 访问时长
         time: {
           ydataTotal: [],
           ydataAverage: []
-        }, // 访问时长
+        },
         chart: '',
         chartCheck: true
 
       };
     },
-    computed: {
-
-    },
     methods: {
+      // 获取图表数据变成json
       getChart (data) {
         if (data[0].project_views !== '') {
           return JSON.parse(data[0].project_views);
         } else {
           return {data: []};
         }
-      }, // 获取图表数据变成json
+      },
+      // 获取平均数
       getAverage (data) {
         let arr = [];
         let index = this.xdata.length;
@@ -71,13 +73,14 @@
           arr[i] = data;
         };
         return arr;
-      }, // 获取平均数
+      },
+      // 获取爬来的数据
       getTotal (data) {
         for (let i = 0; i < data.length; i++) {
           if (data[i] === '') data[i] = 0;
         };
         return data;
-      }, // 获取爬来的数据
+      },
       handleClick (tab, event) {
         let index = tab.index;
         switch (index) {
@@ -158,26 +161,31 @@
         this.chart.setOption(option);
         this.chartCheck = false;
       },
+      // 累计下载量
       getdownload () {
         this.title = '累计下载量';
         this.main = '综合各大应用市场的历史累计下载量，加权计算后的值。该指标是可以表明App存量用户量的指标。';
         this.eChart(this.xdata, this.download.ydataTotal, this.download.ydataAverage);
-      }, // 累计下载量
+      },
+      // 浏览页面数
       getpv () {
         this.title = '浏览页面数(PV)';
         this.main = '对目标公司网站在全网的日均访问量加总,并经过加权计算的值,值越高,访问量越大.该指标反映了用户对目标公司官方网站的访问情况,是可以表明目标公司网站内容受访问热度的指标.';
         this.eChart(this.xdata, this.pv.ydataTotal, this.pv.ydataAverage);
-      }, // 浏览页面数
+      },
+      // 访问用户数
       getuv () {
         this.title = '访问用户数(UV)';
         this.main = '对目标公司网站在全网的日均独立访问用户量加总,并经过加权计算的值,值越高,访问量越大.该指标反映了木不熬公司官方网站吸引用户的能力,是可以表明目标公司网站的获客能力的指标.';
         this.eChart(this.xdata, this.uv.ydataTotal, this.uv.ydataAverage);
-      }, // 访问用户数
+      },
+      // 访问时长
       gettime () {
         this.title = '访问时长';
         this.main = '所有访问用户在统计时间段内,从进入到离开该网站的时长平均值,是可以表现公司网站用户粘性的指标.';
         this.eChart(this.xdata, this.time.ydataTotal, this.time.ydataAverage);
-      }, // 访问时长
+      },
+      // 获取项目
       getCrawlerProject () {
         let data = this.getChart(this.chartData).data;
         this.chartDataCheck = data.length;
@@ -198,7 +206,7 @@
         } else {
           this.clearData();
         }
-      }, // 获取项目
+      },
       clearData () {
         this.download.ydataTotal = [];
         this.download.ydataAverage = [];
@@ -210,25 +218,16 @@
         this.time.ydataAverage = [];
         this.downloadEchartName = '1';
       }
-
     },
     // Echart组件
     mounted () {},
     watch: {
-      comid: function (e) {
-
-      }, // 获取公司id
-      compName: function (e) {
-
-      }, // 获取公司名称
       chartData: function (e) {
         this.clearData();
         if (e.length !== 0) {
           this.getCrawlerProject();
         }
       }// 获取图表数据
-    },
-    created () {
     }
   };
 </script>

@@ -1,15 +1,11 @@
 <template>
   <div id="researchAlone" class="clearfix" v-loading.fullscreen.lock="loading"
        element-loading-text="拼命加载中">
-<!--    <div class="titleDi">
-
-    </div>-->
     <!--===========================================一键尽调单独页面=============================================-->
       <div class="contain-grid contain-center1 fl dialog" >
         <div class="contain-inner">
           <div class="item-lists1" v-if="!empty">
             <!--项目信息-->
-
             <div style="height: 24px;"></div>
             <div class="item2">
               <div class="title">项目信息</div>
@@ -95,7 +91,6 @@
                 <div class="list" v-for="milestone in milestone_list">
                     <span class="radio_line">
                       <span class="radio"></span>
-                      <!--<span class="l-line"></span>-->
                     </span>
                   <span class="date">{{milestone.milestone_time | timeToReallTime}}</span>
                   <span class="blood blood2">
@@ -115,7 +110,6 @@
                 <div class="list" v-for="new1 in news">
                     <span class="radio_line">
                       <span class="radio"></span>
-                      <!--<span class="l-line"></span>-->
                     </span>
                   <span class="date">{{new1.project_news_time | timeToReallTime}}</span>
                   <span class="dateTag"><el-tag type="primary" style="margin-left: 5px;" v-if="new1.project_news_label">{{new1.project_news_label}}</el-tag></span>
@@ -273,7 +267,6 @@
         com_id: 0, // 公司Id
         conmanyName: '3',
         productMessage: '产品信息',
-
         //* 项目信息
         project: [
           {
@@ -682,10 +675,6 @@
           this.includeInvestorMap = decodeURI(this.$route.query.includeInvestorMap) || '';
           this.compName = decodeURI(this.$route.query.company) || '';
           this.id = this.$route.query.id || '';
-//          console.log(this.$route.query.company);
-//          console.log(this.$route.query.id);
-//          console.log(this.$route.query.includeInvestorMap);
-
           if (routerCompany === '') {
             error('请填写公司名称');
             this.empty = true;

@@ -142,7 +142,8 @@ export default
 
   /* 推荐项目(人脉详情右边) */
   getInvestorsMatchProjects: 'api/investors/getInvestorsMatchProjects', // 推荐项目
-  exceptMatchAction: 'api/v/project/exceptMatchAction', // 移除匹配
+  exceptMatchAction: 'api/v/project/exceptMatchAction', // 移除买家图谱匹配(废弃)=====================
+  removeInvestor: 'api/project/removeInvestor', // 移除买家图谱匹配
   /* 意向投资人(项目详情右边) */
   getEnjoyedInvestors: 'api/project/getEnjoyedInvestors', // 意向投资人列表
   getEnjoyedInvestorsGroup: 'api/project/getEnjoyedInvestorsGroup', // 意向投资人归总(图表)
@@ -160,6 +161,7 @@ export default
   getAllConnectUserSortByMatch: 'api/v/project/getAllConnectUserSortByMatch', // 推送项目时获取全站人脉(废弃)合二为一=====================
   getPushInvestors: 'api/project/getPushInvestors', // 推送项目获取投资人
   recommendProject: 'api/project/recommendProject', // 帮我引荐
+  getRecommendCount: 'api/project/getRecommendCount', // 项目引荐次数
   pushProjectToUsers: 'api/project/pushProjectToUsers', // 推送项目给多个投资人(人脉多选)
   /* 使用微信二维码 */
   getProjectQr: 'https://wx.weitianshi.cn/api/wx/getProjectQr', //

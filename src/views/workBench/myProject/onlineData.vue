@@ -44,8 +44,6 @@
         </template>
       </el-table-column>
 
-
-
       <el-table-column prop="group_title" label="角色" width="75"
                        show-overflow-tooltip>
         <template slot-scope="scope">
@@ -131,14 +129,6 @@
         ],
         URLChange: this.URL.getProjectViewData// URL地址修改
       };
-    },
-    computed: {},
-    mounted () {
-
-    },
-    // 组件
-    components: {
-
     },
     methods: {
       tabClick (tab, event) {
@@ -226,8 +216,7 @@
     // 当dom一创建时
     created () {
       this.filterChangeCurrent(1);
-    },
-    watch: {}
+    }
   };
 </script>
 

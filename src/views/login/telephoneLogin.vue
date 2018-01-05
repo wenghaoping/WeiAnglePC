@@ -11,7 +11,6 @@
   </div>
 </template>
 
-
 <script type="text/ecmascript-6">
   import * as validata from '@/utils/validata';
   import { error } from '@/utils/notification';
@@ -25,7 +24,6 @@
         // 获取验证码的倒计时
         captchaNum: 60,
         loading: false
-        //
       };
     },
     methods: {

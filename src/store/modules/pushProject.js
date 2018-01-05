@@ -14,7 +14,8 @@ export default {
       email: '', // 邮箱地址
       title: '', // 邮箱标题
       body: '', // 邮箱内容
-      project_id: '' // 推送的项目id集合
+      project_id: '', // 推送的项目id集合
+      card_id: []
     },
     // 邮件
     email: {
@@ -27,7 +28,8 @@ export default {
       user_company_career: '', // 职位
       user_company_name: '', // 公司名称
       investor_id: '', // 投资人id
-      investor_email: '' // 邮箱
+      investor_email: '', // 邮箱
+      card_id: ''
     }
   },
   mutations: {
@@ -50,6 +52,7 @@ export default {
       state.userMessage.user_company_name = obj.user_company_name;
       state.userMessage.investor_id = obj.investor_id;
       state.userMessage.investor_email = obj.investor_email;
+      state.userMessage.card_id = obj.card_id;
     },
     // 设置推送的数据
     [types.SET_PUSH_MESSAGE] (state, obj) {
@@ -58,6 +61,22 @@ export default {
       state.pushMessage.title = obj.title;
       state.pushMessage.body = obj.body;
       state.pushMessage.project_id = obj.project_id;
+      state.pushMessage.card_id = obj.card_id;
+    },
+    // 清空所有数据
+    [types.CLEAR_MESSAGE] (state, clear) {
+      state.userMessage.user_real_name = '';
+      state.userMessage.user_company_career = '';
+      state.userMessage.user_company_name = '';
+      state.userMessage.investor_id = '';
+      state.userMessage.investor_email = '';
+      state.userMessage.card_id = '';
+      state.pushMessage.receive_users = [];
+      state.pushMessage.email = '';
+      state.pushMessage.title = '';
+      state.pushMessage.body = '';
+      state.pushMessage.project_id = '';
+      state.pushMessage.card_id = '';
     }
   },
   actions: {
@@ -80,6 +99,10 @@ export default {
     // 项目推送预览弹框
     setPushMessage ({ commit }, obj) {
       commit(types.SET_PUSH_MESSAGE, obj);
+    },
+    // 清空所有数据
+    clearMessage ({ commit }, clear) {
+      commit(types.CLEAR_MESSAGE, clear);
     }
   }
 };

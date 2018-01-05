@@ -6,7 +6,6 @@
           <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
           <el-tabs v-model="activeName" type="card" @tab-click="handleClick" class="person">
             <el-tab-pane label="用户信息" name="person">
-
               <!--=================================基本资料================================-->
               <div class="d_jump"></div>
               <div class="item-block" style="margin-top:0;margin-bottom: 16px;padding-bottom: 26px;">
@@ -753,8 +752,6 @@
                 setTimeout(() => {
                   this.investCases.investCase = data.project_case; // 成功案例
                 }, 500);
-
-//                this.investCases.investCase.forEach((x) => { this.area1Change(x); });
                 this.loading = false;
               }
             })

@@ -1,15 +1,14 @@
 <template>
-  <div class="move-dialog"><!--@click="doMouseMove($event)"-->
-    <div class="el-dialog el-dialog--tiny" ref="moveDialog"
-         :class="{moveDisplayNone: !moveDisplay, moveDisplayBlock: moveDisplay}"
-         :style="{width: `${width}px`}">
-      <div class="el-dialog__header">
-        <button type="button" aria-label="Close" class="el-dialog__headerbtn" @click="handleClose"><i
-          class="el-dialog__close el-icon el-icon-close"></i></button>
-      </div>
-      <div class="el-dialog__body clearfix">
-        <slot></slot>
-      </div>
+<!--@click="doMouseMove($event)"                       -->
+  <div class="el-dialog el-dialog--tiny" ref="moveDialog"
+       :class="{moveDisplayNone: !moveDisplay, moveDisplayBlock: moveDisplay}"
+       :style="{width: `${width}px`}">
+    <div class="el-dialog__header">
+      <button type="button" aria-label="Close" class="el-dialog__headerbtn" @click="handleClose"><i
+        class="el-dialog__close el-icon el-icon-close"></i></button>
+    </div>
+    <div class="el-dialog__body clearfix">
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -31,13 +30,8 @@
       return {
         loading: false,
         showList: false
-//        moveDisplay: false
       };
     },
-    computed: {},
-    mounted () {},
-    // 组件
-    components: {},
     methods: {
       // 关闭
       handleClose (e) {
@@ -47,20 +41,16 @@
       },
       doMouseMove (event) {
         let e = event || window.event;
-        this.$refs.moveDialog.style.left = `${e.clientX - 342}px`;
-        this.$refs.moveDialog.style.top = `${e.clientY + 20}px`;
-        console.log({'x': e.clientX, 'y': e.clientY});
+        this.$refs.moveDialog.style.left = `${e.clientX - 332}px`;
+        this.$refs.moveDialog.style.top = `${e.clientY + 30}px`;
       }
-    },
-    // 当dom一创建时
-    created () {},
-    watch: {}
+    }
   };
 </script>
 
-<style lang="less">
-  .move-dialog {
+<style lang="less" scoped>
     .el-dialog{
+      position: fixed;
       transition: all .3s;
       z-index: 9999;
       box-shadow:0 0 10px 5px rgba(0,0,0,0.4), 0 0 6px 0 rgba(0,0,0,0.4);
@@ -71,5 +61,4 @@
     .moveDisplayBlock {
       display: block;
     }
-  }
 </style>

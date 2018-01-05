@@ -221,7 +221,6 @@
           return (Number.parseInt(this.total_score) / Number.parseInt(this.score_sum)) * 100 + '%';
         }
       },
-      mounted () {},
       // 组件
       components: {
         radar,

@@ -80,9 +80,6 @@
         userRealName: state => state.logining.user_real_name
       })
     },
-    mounted () {},
-    // 组件
-    components: {},
     methods: {
       // 切换选项卡
       toggle (i) {
@@ -202,10 +199,7 @@
           }
         });
       }
-    },
-    // 当dom一创建时
-    created () {},
-    watch: {}
+    }
   };
 </script>
 

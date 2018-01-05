@@ -7,8 +7,11 @@ this.$http.post(this.URL.getCrawlerBrand, {
 })
   .then(res => {
     let data = res.data.data;
-    this.business = data;
-    this.trademarkMessage = '商标信息' + '(' + data.brand.length + ')';
+    if (data.status_code === 2000000) {
+      this.handleClose();
+    } else {
+      error(res.data.error_msg);
+    }
   })
   .catch(err => {
     this.$tool.console(err);

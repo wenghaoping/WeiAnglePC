@@ -12,7 +12,7 @@ export default {
     stageId: [], // 阶段id
     bpId: '', // bpId存放
     bpPage: 1, // Bp选择时候的当前页数
-    bpBannerUrl: '../../assets/images/demo_test.png', // 设置支付页面Bp图片
+    bpBannerUrl: '', // 设置支付页面Bp图片
     type: false, // 搞一个参数控制是首页进入的，还是下载进入的
     industry: '' // 选择的行业
   },
@@ -73,36 +73,47 @@ export default {
     }
   },
   actions: {
+    // 改变行业弹框
     industryControl ({ commit }, dispaly) {
       commit(types.INDUSTRY_CHANGE, dispaly);
     },
+    // 改变BP选择
     choiceBpControl ({ commit }, dispaly) {
       commit(types.CHOICE_BP_CHANGE, dispaly);
     },
+    // 改变BP预览
     bpPreviewControl ({ commit }, dispaly) {
       commit(types.BP_PREVIEW_CHANGE, dispaly);
     },
+    // 改变BP支付弹框
     payBpControl ({ commit }, dispaly) {
       commit(types.PAY_BP_CHANGE, dispaly);
     },
+    // 控制关闭所有,切清空函数
     AllControl ({ commit }, dispaly) {
       commit(types.ALL_CHANGE, dispaly);
     },
+    // 设置行业和阶段ID
     setIndustryStageId ({ commit }, industryId, stageId) {
       commit(types.SET_INDUSTRY_STAGE_ID, industryId, stageId);
     },
+    // 设置bp_id
     setBpId ({ commit }, id) {
       commit(types.SET_BP_ID, id);
     },
+    // 设置bp_Page
     setBpPage ({ commit }, page) {
       commit(types.SET_BP_PAGE, page);
     },
+    // 获取支付页面bp图片URL
     setBpBannerUrl ({ commit }, url) {
       commit(types.GET_BP_BANNER, url);
     },
+    // 设置入口
     setBpEnterType ({ commit }, boolean) {
       commit(types.SET_TYPE, boolean);
     },
+    // 设置行业
     setIndestry ({ commit }, industry) {
       commit(types.SET_INDUSTRY, industry);
     }

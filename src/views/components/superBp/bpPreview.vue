@@ -40,7 +40,6 @@
     data () {
       return {
         loading: false,
-//        bpPreviewDisplay: false,
         showList: false,
         items: [
           /* {image_src: '', bp_id: 0, image_id: 0} */
@@ -57,9 +56,6 @@
         return this.items[0].image_src;
       }
     },
-    mounted () {},
-    // 组件
-    components: {},
     methods: {
       handClose () {
         this.$store.dispatch('AllControl', false);

@@ -1,8 +1,7 @@
 <template>
   <!--项目推送人脉入口（单选)-->
   <div id="projectPush">
-    <el-dialog :visible="projectPushToConDisplay" :before-close="closeProjectPush">
-
+    <el-dialog :visible="projectPushToConDisplay" :before-close="closeProjectPush" class="projectPushToProDialog">
      <span slot="title" class="dialog-title clearfix">
         <div class="lines fl"></div>
         <div class="title fl">项目推送</div>
@@ -30,7 +29,6 @@
         <span class="message_innder fl" v-if="userMessage.user_company_name!=''">{{userMessage.user_company_name}}</span>
         <span class="message_innder fl" v-else>&#45;&#45;</span>
       </div>
-
             <el-form label-position="top" label-width="80px">
               <el-form-item label="推送项目">
                 <el-select v-model="projectList" filterable
@@ -92,7 +90,7 @@
               <el-pagination
                 class="pagination fr"
                 small
-                v-if="totalMatchProject!=0"
+                v-if="totalMatchProject > 10"
                 @current-change="filterChangeMatchProject"
                 :current-page.sync="currentPageMatchProject"
                 layout="prev, pager, next"
@@ -120,7 +118,6 @@
               <el-button type="primary" @click="push(1)">推送</el-button>
             </span>
     </el-dialog>
-
   </div>
 </template>
 
@@ -129,7 +126,6 @@
   import * as validata from '@/utils/validata';
   import { error, success, warning } from '@/utils/notification';
   export default {
-    props: [],
     computed: {
       ...mapState({
         projectPushToConDisplay: state => state.pushProject.projectPushToConDisplay,
@@ -163,7 +159,6 @@
         close: false, // 默认关闭
         loading: false, // 加载动画
         activeName: 'first',
-//      dialogPush:false,//控制显不显示
         // 主标题
         email: {
           title: '', // 邮件标题
@@ -173,17 +168,6 @@
         email2: {
           nameEmail: ''// 人脉的邮箱(一个)
         },
-        // 推送的用户消息
-//        user: {
-//          user_real_name: '',
-//          user_company_career: '',
-//          user_company_name: '',
-//          card_id: ''
-//        },
-//        project: {
-//          pro_id: '', // 项目id
-//          pro_intro: ''// 项目介绍
-//        }, // 推送的项目消息
         projectList: [], // 推送的项目列表
         projectAll: [], // 项目列表下拉框基本是不用的
         tableData3: [
@@ -195,11 +179,6 @@
         ],
         // 绑定当前项目数据,单选框的数据(project_id)
         projectRadio: '',
-        // 保存数据(继续推送时，需要保存除了项目以外的所有数据)
-//        firstInData: {
-//          email2: {},
-//          email: {}
-//        },
         pushCount: 0, // 剩余推送次数
         totalMatchProject: 0, // 项目加载总页数
         currentPageMatchProject: 1, // 当前第几页
@@ -210,6 +189,12 @@
       };
     },
     methods: {
+      // 关闭项目推送
+      closeProjectPush () {
+        this.$store.dispatch('projectPushToConControl', false);
+        this.$store.dispatch('clearMessage', false);
+        this.$store.dispatch('clearProjectMessage', false);
+      },
       title () {
         this.user_company_name = localStorage.user_company_name;
         this.user_brand = localStorage.user_brand;
@@ -313,7 +298,8 @@
           this.loading = true;
           this.currentPageMatchProject = 1;
           this.searchProject.user_id = localStorage.user_id;
-          this.searchProject.investor_id = this.userMessage.investor_id;
+          this.searchProject.investor_id = this.userMessage.investor_id || 0;
+          this.searchProject.card_id = this.userMessage.card_id || 0;
           this.searchProject.search = query || '';
           this.searchProject.page = 1;
           this.$http.post(this.URL.getPushProjects, this.searchProject)
@@ -392,10 +378,6 @@
           this[checkName] = !valid;
         });
       },
-      // 关闭项目推送
-      closeProjectPush () {
-        this.$store.dispatch('projectPushToConControl', false);
-      },
       // 获取剩余推送次数
       getpushCount () {
         this.$http.post(this.URL.pushCount, {
@@ -431,10 +413,6 @@
       clearData () {
         this.projectRadio = ''; // 清空项目选择选项
         this.projectList = []; // 清空项目选择选项
-//        this.email2.nameEmail = '';
-//        this.tableData3 = [];
-//        this.firstInData.email = this.email;
-//        this.firstInData.email2 = this.email2;
       }
     },
     watch: {
@@ -461,8 +439,7 @@
         }
         this.getpushCount();
       }
-    },
-    created () {}
+    }
   };
 </script>
 

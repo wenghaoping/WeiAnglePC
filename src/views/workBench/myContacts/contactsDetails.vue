@@ -367,7 +367,6 @@
   import projectpush from '@/views/components/projectPush.vue';
   import projectpreview from '@/views/components/projectPreview.vue';
   import { error, success, warning } from '@/utils/notification';
-//  import { checkEmail } from '@/utils/validata';
   import * as formatData from '@/utils/formatData';
   import { getTagsPro } from '@/utils/setSelect';
   import { getTop } from '@/utils';
@@ -377,10 +376,6 @@
         close: false,
         /* 设置标签 */
         setTagDisplay: false, // 标签弹框设置
-//        followDisplay: false, // 添加更近弹框
-//        previewDisplay: false, // 项目预览弹窗
-//        projectPushDisplay: false, // 项目推送弹框,完整版
-//        alertProjectDetailDisplay: false, // 控制项目详情弹窗
         tagsValue: [], // 标签弹框数据绑定
         addTags: [{
           value: '',
@@ -396,14 +391,14 @@
           card_id: '', // id那个人的card_id
           user_id: '', // user_id那个人的userid
           investor_id: '', // investor_id
-          user_real_name: '张三', // 姓名
-          user_nickname: '昵称', // 昵称
-          user_mobile: '18758307033', // 名片手机号
-          user_email: 'zhangsan@weitianshi.cn', // 邮箱
-          user_company_name: '杭州投着乐网络科技有限公司 ', // 公司名称
-          import_user_name: '', // 来源
-          user_brand: '投着乐', // 品牌
-          user_company_career: '投资经理', // 职位
+          user_real_name: '暂无数据', // 姓名
+          user_nickname: '暂无数据', // 昵称
+          user_mobile: '暂无数据', // 名片手机号
+          user_email: '暂无数据', // 邮箱
+          user_company_name: '暂无数据 ', // 公司名称
+          import_user_name: '暂无数据', // 来源
+          user_brand: '暂无数据', // 品牌
+          user_company_career: '暂无数据', // 职位
           user_invest_tag: [], // 人脉标签
           user_avatar_url: '', // 头像URL
           user_invest_industry: [], // 领域标签
@@ -422,18 +417,18 @@
           project_case: [
             {
               case_deal_time: 1503936000, // 时间
-              case_stage_name: 'pre-A轮', // 轮次
-              case_name: '第三个项目', // 名称
-              case_money: '15800000', // 钱
-              has_many_industry: '金融', // 金融,人工智能
-              has_one_city: '北京'// 地区
+              case_stage_name: '暂无数据', // 轮次
+              case_name: '暂无数据', // 名称
+              case_money: '0', // 钱
+              has_many_industry: '暂无数据', // 金融,人工智能
+              has_one_city: '暂无数据'// 地区
             }
           ]// 投资案例
         }, // 人脉参数
         userMessage: {
-          user_real_name: '翁浩平', // 姓名
-          user_company_career: '投资总监', // 职位
-          user_company_name: '杭州投着乐网络科技有限公司'// 公司名称
+          user_real_name: '暂无数据', // 姓名
+          user_company_career: '暂无数据', // 职位
+          user_company_name: '暂无数据'// 公司名称
         }, // 传递给推送的数据
         userEmail: '',
         loading: false, // 加载动画
@@ -507,11 +502,6 @@
            } */
         ],
         pushCount: 0 // 剩余推送次数
-//        pushData: {
-//          email: '',
-//          body: '',
-//          project_id: ''
-//        }// 推送数据
       };
     },
     computed: {
@@ -552,85 +542,19 @@
           warning('已推送过');
         } else {
           this.zgClick('推送项目');
-//          this.userMessage.user_real_name = this.contacts.user_real_name;
-//          this.userMessage.user_company_career = this.contacts.user_company_career;
-//          this.userMessage.user_company_name = this.contacts.user_company_name;
-//          this.userMessage.card_id = this.contacts.card_id;
-//          if (this.contacts.type === 'user') { this.userMessage.card_id = this.contacts.user_id; }
-//          this.userMessage.type = this.contacts.type;
-//          this.userEmail = this.contacts.user_email;
-//          this.$store.state.pushProject.projectMessgae = {pro_id: data.project_id || '', pro_intro: data.pro_intro || ''};
-//          this.projectPushDisplay = true;
-//          this.pushData.email = this.contacts.user_email;
-//          this.pushData.project_id = data.project_id;
-
           this.$store.dispatch('setFollowUp', {projectId: data.project_id || '', projectIntro: data.pro_intro || ''});
           let obj = {
             user_real_name: this.contacts.user_real_name,
             user_company_career: this.contacts.user_company_career,
             user_company_name: this.contacts.user_company_name,
-            investor_id: this.contacts.investor_id,
-            investor_email: this.contacts.user_email
+            investor_id: 0,
+            investor_email: this.contacts.user_email,
+            card_id: this.contacts.card_id
           };
           this.$store.dispatch('setUserMessage', obj);
           this.$store.dispatch('projectPushToConControl', true);
         }
       },
-      // 点击推送完整版,并且传送数据给推送弹框
-//      handlePushComplete () {
-//        this.pushData.project_id = '';
-//        this.$store.state.pushProject.projectMessgae = {pro_id: '', pro_intro: ''};
-//        this.userMessage.user_real_name = this.contacts.user_real_name;
-//        this.userMessage.user_company_career = this.contacts.user_company_career;
-//        this.userMessage.user_company_name = this.contacts.user_company_name;
-//        this.userMessage.card_id = this.contacts.card_id;
-//        if (this.contacts.type === 'user') this.userMessage.card_id = this.contacts.user_id;
-//        this.userMessage.type = this.contacts.type || '';
-//        this.userEmail = this.contacts.user_email;
-//        this.projectPushDisplay = true;
-//      },
-//      // 打开预览弹框
-//      openPreview (msg) {
-//        this.$store.dispatch('projectPushPreviewControl', true);
-//      },
-      // 项目预览
-//      preview () {
-//        if (this.pushCount !== 0) {
-//          if (!checkEmail(this.pushData.email)) error('请输入正确的邮箱');
-//          else if (this.pushData.body > 40) error('标题不能大于40个字');
-//          else {
-//            this.$store.state.pushProject.project_id = this.$store.state.pushProject.projectMessgae.pro_id;
-//            this.$store.state.pushProject.user = this.user;
-//            this.$store.state.pushProject.pushMessage.user_id = localStorage.user_id;
-//            this.$store.state.pushProject.pushMessage.card_id = this.userMessage.card_id;
-//            this.$store.state.pushProject.pushMessage.investor_id=this.user.investor_id;
-//            this.$store.state.pushProject.pushMessage.email = this.pushData.email;
-//            this.$store.state.pushProject.pushMessage.title = this.pushData.body;
-//            this.$store.state.pushProject.pushMessage.project_ids = [];
-//            this.$store.state.pushProject.pushMessage.project_ids.push(this.$store.state.pushProject.projectMessgae.pro_id);
-//            this.$store.state.pushProject.email.title = this.pushData.body;
-//
-//            this.$store.dispatch('projectPushPreviewControl', true);
-//          }
-//        } else {
-//          warning('您今日的推送次数已用完,请明天再试');
-//        }
-//      },
-      // 关闭项目推送弹窗
-//      closeProjectPush (msg) {
-//        this.projectPushDisplay = msg;
-//        this.getpushCount();
-//        this.getOneUserInfo()
-//          .then((data) => {
-//            return this.getEchartData();
-//          })
-//          .then((data) => {
-//            return this.getInvestorsMatchProjects();
-//          })
-//          .then((data) => {
-//            return this.getEnjoyProjects();
-//          });
-//      },
       // 控制项目页码1
       filterChangeCurrent (page) {
         this.getProjectList(page);
@@ -670,15 +594,6 @@
       addFollow () {
         this.$store.dispatch('followControl', true);
       },
-      // 关闭项目预览AND关闭项目推送
-//      closePreviewANDProjectPush (msg) {
-//        this.projectPushDisplay = msg;
-//        this.previewDisplay = msg;
-//      },
-      // 关闭项目预览
-//      closePreview (msg) {
-//        this.previewDisplay = msg;
-//      },
       // 设置项目库函数
       setProjectList (data) {
         let arr = [];
@@ -704,13 +619,11 @@
         }
         return arr;
       },
-      // 请求函数
       // 获取项目列表
       async getProjectList (page) {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.getPra.user_id = this.contacts.user_id;
-//      this.getPra.user_id="2rzyz5vp";
           this.currentPage = page;
           this.getPra.page = page;
           this.$http.post(this.URL.getProjectList, this.getPra)
@@ -734,11 +647,7 @@
       },
       // 设置标签的函数
       setTag (arr) {
-        let newArr = [];
-        arr.forEach((x) => {
-          newArr.push(x.tag_id);
-        });
-        return newArr;
+        return arr.map(item => item.tag_id);
       },
       // 设置投资案例
       setProjectCase (arr) {
@@ -893,7 +802,6 @@
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.getConpro.user_id = localStorage.user_id;
-//      this.getPra.user_id="2rzyz5vp";
           this.currentPage2 = 1;
           this.getConpro.card_id = this.contacts.card_id;
           this.getConpro.page = 1;
@@ -1098,7 +1006,6 @@
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.getMatchPro.user_id = localStorage.user_id;
-//      this.getPra.user_id="2rzyz5vp";
           this.currentPage3 = 1;
           this.getMatchPro.investor_id = this.contacts.investor_id;
           this.getMatchPro.card_id = this.contacts.card_id;
@@ -1110,7 +1017,6 @@
                 if (res.data.data) {
                   let data = res.data.data;
                   this.matchProjects = this.setMatchProject(data);
-//                  console.log(this.matchProjects);
                   this.totalData3 = res.data.count;
                 }
               }
@@ -1147,7 +1053,6 @@
       filterChangeCurrent2 (page) {
         this.loading = true;
         this.getMatchPro.user_id = localStorage.user_id;
-//      this.getPra.user_id="2rzyz5vp";
         this.currentPage3 = page;
         this.getMatchPro.investor_id = this.contacts.investor_id;
         this.getMatchPro.card_id = this.contacts.card_id;
@@ -1214,49 +1119,6 @@
             this.loading = false;
           });
       },
-      // 弹框确定推送
-//      submitForm (formName) {
-//        this.$refs[formName].validate((valid) => {
-//          if (valid) {
-//            this.push();
-//          } else {
-//            console.log('error submit!!');
-//            return false;
-//          }
-//        });
-//      },
-      // 推送
-//      push () {
-//        if (this.pushCount !== 0) {
-//          let pushData = {};
-//          pushData.user_id = localStorage.user_id;
-//          pushData.card_id = this.contacts.card_id;
-//          pushData.email = this.pushData.email;
-//          pushData.title = this.pushData.body;
-//          pushData.body = '';
-//          pushData.project_ids = [];
-//          pushData.project_ids.push(this.pushData.project_id);
-//          this.$http.post(this.URL.pushUser, pushData)
-//            .then(res => {
-//              if (res.data.status_code === 2000000) {
-//                // let data = res.data.data;
-//                success('推送成功');
-//                this.getpushCount();
-//                this.getInvestorsMatchProjects();
-//                this.dialogPushVisible = false;
-//              } else {
-//                error(res.data.error_msg);
-//              }
-//            })
-//            .catch(err => {
-//              console.log(err);
-//              success('推送失败');
-//              this.dialogPushVisible = false;
-//            });
-//        } else {
-//          warning('您今日的推送次数已用完');
-//        }
-//      },
       // 获取所有数据
       async getAllData (e) {
         try {
@@ -1281,26 +1143,6 @@
       this.getUserId();
       this.getpushCount();
       this.getAllData();
-/*      this.$global.func.getWxProjectCategory()
-        .then((data) => {
-          return this.getWxProjectCategory();
-        })
-        .then((data) => {
-          return this.getOneUserInfo();
-        })
-        .then((data) => {
-          if (this.contacts.user_id !== 0) this.getProjectList(1);
-          else this.projectLists = [];
-          return this.getEchartData();
-        })
-        .then((data) => {
-          this.loading = false;
-          return this.getInvestorsMatchProjects();
-        })
-        .then((data) => {
-          this.loading = false;
-          return this.getEnjoyProjects();
-        }); */
     },
     // Echart组件
     mounted () {

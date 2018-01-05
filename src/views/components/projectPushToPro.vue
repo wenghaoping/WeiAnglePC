@@ -1,8 +1,8 @@
 <template>
-  <!--项目推送项目入口-->
+  <!--项目推送项目入口，多选-->
   <div id="projectPush">
     <el-dialog :visible="projectPushToProDisplay" :before-close="handleClose"
-               :close-on-press-escape="close" :close-on-click-modal="close">
+               :close-on-press-escape="close" :close-on-click-modal="close" class="projectPushToProDialog">
       <!--弹窗头部-->
       <span slot="title" class="dialog-title clearfix">
         <div class="lines fl"></div>
@@ -39,7 +39,6 @@
       </el-form>
 
       <!--标签放置-->
-
       <div>
         <el-tag
           v-for="tag in pushTags"
@@ -275,7 +274,6 @@
   import * as formatData from '@/utils/formatData';
   import { error, success, warning } from '@/utils/notification';
   export default {
-    props: ['emitPush'],
     data () {
       var checkPhoneNumber = (rule, value, callback) => {
         if (!validata.getNull(value)) {
@@ -324,15 +322,15 @@
         // 我的人脉数据原始数据
         myContacts: [
           {
-            investor_career: 'ui',
-            investor_company: '投着乐',
-            investor_email: 'xug@weitianshi.cn',
-            investor_id: 'd8W1EW5l',
-            investor_name: '徐冠',
+            investor_career: '暂无数据',
+            investor_company: '暂无数据',
+            investor_email: '暂无数据',
+            investor_id: '暂无数据',
+            investor_name: '暂无数据',
             investor_source: 'card_id',
             match_weight: 0.2,
-            original_id: 'VoWdYKpQ',
-            wts_match_weight: 50
+            original_id: '0',
+            wts_match_weight: 100
           }
         ],
         myContotalData: 0, // 我的人脉总数
@@ -361,14 +359,14 @@
         contacts: {
           card_id: '', // id
           user_id: '', // user_id
-          user_real_name: '张三', // 姓名
-          user_nickname: '昵称', // 昵称
-          user_mobile: '18758307033', // 名片手机号
-          user_email: 'zhangsan@weitianshi.cn', // 邮箱
-          user_company_name: '杭州投着乐网络科技有限公司 ', // 公司名称
+          user_real_name: '暂无数据', // 姓名
+          user_nickname: '暂无数据', // 昵称
+          user_mobile: '暂无数据', // 名片手机号
+          user_email: '暂无数据', // 邮箱
+          user_company_name: '暂无数据 ', // 公司名称
           import_user_name: '', // 来源
-          user_brand: '投着乐', // 品牌
-          user_company_career: '投资经理', // 职位
+          user_brand: '暂无数据', // 品牌
+          user_company_career: '暂无数据', // 职位
           user_invest_tag: [], // 人脉标签
           user_avatar_url: '', // 头像URL
           user_invest_industry_string: [], // 领域标签
@@ -387,11 +385,11 @@
           project_case: [
             {
               case_deal_time: 1503936000, // 时间
-              case_stage_name: 'pre-A轮', // 轮次
-              case_name: '第三个项目', // 名称
-              case_money: '15800000', // 钱
-              has_many_industry: '金融', // 金融,人工智能
-              has_one_city: '北京'// 地区
+              case_stage_name: '暂无数据', // 轮次
+              case_name: '暂无数据', // 名称
+              case_money: '0', // 钱
+              has_many_industry: '暂无数据', // 金融,人工智能
+              has_one_city: '暂无数据'// 地区
             }
           ]// 投资案例
         }, // 人脉参数
@@ -431,7 +429,7 @@
               this.pushTagMyConCheckAll.push(x.investor_id);
             });
           } else {
-            console.log(res.data.error_msg);
+            error(res.data.error_msg);
           }
           this.loadingMyCon = false;
           setTimeout(() => { this.getMyConCheck(); }, 200);
@@ -440,6 +438,8 @@
       // 关闭弹框
       handleClose () {
         this.$store.dispatch('projectPushToProControl', false);
+        this.$store.dispatch('clearMessage', false);
+        this.$store.dispatch('clearProjectMessage', false);
       },
       // 删除标签
       tagDelete (tag) {
@@ -461,8 +461,6 @@
         tag.investor_career = data.investor_career;
         tag.investor_company = data.investor_company;
         tag.type = 'primary';
-//        tag.id = (data.type === 'user' ? data.card.user_id : data.card.card_id);
-//        tag.conType = data.type;
         tag.investor_email = data.investor_email;
         tag.investor_id = data.investor_id;
         let checkIndex = this[activeNameSelectCheck].indexOf(data.investor_id);// 在各自的范围中查找
@@ -530,7 +528,7 @@
               this.customerAddFormDisplay = false;
               this.getMyContacts(1);
             } else {
-              error('添加失败');
+              error(res.data.error_msg);
               this.customerAddFormDisplay = false;
               this.getMyContacts(1);
             }
@@ -569,6 +567,7 @@
               this.loading = false;
               this.$store.dispatch('projectPushToProControl', false);
             } else {
+              error(res.data.error_msg);
               this.loading = false;
             }
           })
@@ -627,7 +626,6 @@
         return this.pushbrand + this.user_company_career + this.user_real_name + '推荐项目 | 微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
       },
       doMouseMove (e, row) {
-        console.log(row);
         this.getInvestorInfo(row);
         this.moveDisplay = true;
         this.$refs.moveDialog.doMouseMove(e);
@@ -640,7 +638,11 @@
         this.loading = true;
         this.$http.post(this.URL.getInvestorInfo, {user_id: localStorage.user_id, investor_id: row.investor_id, project_id: this.projectId})
           .then(res => {
-            this.setUserInfo(res);
+            if (res.data.status_code === 2000000) {
+              this.setUserInfo(res);
+            } else {
+              error(res.data.error_msg);
+            }
           })
           .catch(err => {
             console.log(err);

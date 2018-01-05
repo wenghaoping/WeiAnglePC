@@ -2,7 +2,6 @@
   <!--雷达图-->
   <div :class="className" :id="id" :style="{height:height,width:width}"></div>
 </template>
-
 <script type="text/ecmascript-6">
   import echarts from 'echarts';
   export default {
@@ -132,8 +131,6 @@
       this.chart.dispose();
       this.chart = null;
     },
-    // 当dom一创建时
-    created () {},
     watch: {
       innerValue: function (e) {
         this.initCharts();
@@ -142,6 +139,3 @@
   };
 </script>
 
-<style lang="less">
-
-</style>

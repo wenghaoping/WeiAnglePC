@@ -115,7 +115,6 @@
                   <div class="paper" v-if="file.pro_BP.length!=0">
                     <img class="img" style="padding-left: 16px;" src="../../../assets/images/paper.png">
                     <span class="pt">{{file.pro_BP.file_title}}</span>
-                    <!--<el-button type="text" size="mini">查看</el-button>-->
                     <el-button type="text" size="mini" @click="download(file.pro_BP.file_id)">下载</el-button>
                   </div>
                 </div>
@@ -128,7 +127,6 @@
                          <span style="color:#475669;margin-top: -4px">{{goodness1.goodness_title}}&nbsp;:&nbsp;</span>
                       {{goodness1.goodness_desc}}
                        </span>
-                        <!--<span>{{highlights.goodness_desc}}</span>-->
                       </div>
                     </div>
                     <div  v-show="project.goodness.pro_market_genera.length!=0" style="margin-bottom: 20px">
@@ -138,7 +136,6 @@
                          <span style="color:#475669;margin-top: -4px">{{goodness2.goodness_title}}&nbsp;:&nbsp;</span>
                       {{goodness2.goodness_desc}}
                        </span>
-                        <!--<span>{{highlights.goodness_desc}}</span>-->
                       </div>
                     </div>
                     <div v-show="project.goodness.pro_business_model.length!=0" style="margin-bottom: 20px">
@@ -148,7 +145,6 @@
                          <span style="color:#475669;margin-top: -4px">{{goodness3.goodness_title}}</span>&nbsp;:&nbsp;
                       {{goodness3.goodness_desc}}
                        </span>
-                        <!--<span>{{highlights.goodness_desc}}</span>-->
                       </div>
                     </div>
                     <div v-if="project.goodness.pro_service.length!=0"  style="">
@@ -174,14 +170,12 @@
                 <div style="margin-top:32px;"></div>
                 <div class="item" v-show="team.core_users!=''" v-for="bili in team.core_users" style="margin-top:10px;">
                   <el-tooltip class="item" effect="dark"  placement="top">
-                    <!--:disabled="bili.ct_member_name.length > 5 ? false:true"-->
                     <div slot="content">
                       <div class="tips-txt">{{bili.ct_member_name}}</div>
                     </div>
                     <span class="p-name" style="text-align:left;line-height: 44px;width: 90px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_name}}</span>
                   </el-tooltip>
                   <el-tooltip class="item" effect="dark"  placement="top-start" >
-                    <!--:disabled="bili.ct_member_name.length > 15 ? false:true"-->
                     <div slot="content">
                       <div class="tips-txt">{{bili.ct_member_career}}</div>
                     </div>
@@ -189,7 +183,6 @@
                   </el-tooltip>
                   <div class="p-gf" style="margin-top: 11px">股权占比 : <span>{{bili.stock_scale}}%</span></div>
                   <div class="p-doc">{{bili.ct_member_intro}}</div>
-                  <!--<div class="line"></div>-->
                 </div>
 
               </div>
@@ -206,7 +199,6 @@
                       <span class="det-title" style="width: 100%;line-height: 21px">公司官网</span>
 
                       <el-tooltip class="item" effect="dark"  placement="top" :disabled="company.pro_website.length > 15 ? false:true">
-                        <!--:disabled="company.pro_website.length > 15 ? false:true"-->
                         <div slot="content">
                           <div class="tips-txt">{{company.pro_website}}</div>
                         </div>
@@ -228,7 +220,6 @@
                   <div class="brand">
                     <div class="brand1" v-for="brandd in brands.brand">
                       <el-tooltip class="item" effect="dark"  placement="top" >
-                        <!--:disabled="brandd.brand_name.length > 15 ? false:true"-->
                         <div slot="content">
                           <div class="tips-txt">{{brandd.brand_name}}</div>
                         </div>
@@ -244,7 +235,6 @@
                       <span class="brand1_lei" v-if="brandd.type_id==8" >微信公众号</span>
                       <span class="brand1_lei" v-if="brandd.type_id==9" >其他</span>
                       <el-tooltip class="item" effect="dark"  placement="top" >
-                        <!--:disabled="brandd.brand_desc.length > 30 ? false:true"-->
                         <div slot="content">
                           <div class="tips-txt">{{brandd.brand_desc}}</div>
                         </div>
@@ -321,9 +311,7 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
-
               </div>
               <!--FA签约协议-->
               <div class="ul-lists" style="margin-top:16px;" >
@@ -342,20 +330,9 @@
                       <p class="det-title">股权赠与</p>
                       <p class="det-info">{{private.stock_right}}%</p>
                     </div>
-                    <!--<div class="rz-detail" style="width: 25%">-->
-                    <!--<p class="det-title">其他权益</p>-->
-                    <!--<p class="det-info">{{project.pro_FA.stock_other}}%</p>-->
-                    <!--</div>-->
-                    <!--<div class="rz-detail" style="width: 25%">-->
-                    <!--<p class="det-title">跟投权</p>-->
-                    <!--<p class="det-info">{{project.pro_FA.stock_follow}}%</p>-->
-                    <!--</div>-->
                   </div>
                   <div class="item"   style="margin-top:24px;height: 34px;" v-show="private.contact_user_name!=''||private.contact_user_career!=''||private.contact_user_mobile!=''">
                     <div class="bot-det" v-show="private.contact_user_name!=''">
-                      <!--<span>项目联系人 : </span>-->
-                      <!--<span>{{project.contact.user_name}}</span>-->
-                      <!--<span>{{project.contact.user_mobile}}</span>-->
                       <span class="det-title">项目联系人:</span>
                       <el-tooltip class="item" effect="dark"  placement="top-start" >
                         <div slot="content">
@@ -521,8 +498,6 @@
                             <div class="img" v-if="projectMatchInvestor.user_avatar_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
                             <div class="img" v-else><span class="header">{{projectMatchInvestor.user_avatar_txt}}</span></div>
                             <span class="name">{{projectMatchInvestor.investor_name}}</span>
-                            <!--<span class="imgs" v-if="projectMatchInvestor.user_group!=''"><img src="../../../assets/images/renzhen.png"/></span>-->
-                            <!--<span class="ren">{{projectMatchInvestor.user_group}}</span>-->
                           </div>
                           <div class="block" style="margin-left: 78px;">
                             <span class="company">{{projectMatchInvestor.investor_career}}</span>
@@ -539,12 +514,13 @@
                             </span>
                           </div>
                         </div>
-                        <div class="closeTu absolute" @click="industryDelete(projectMatchInvestor)"><i class="el-icon-close"></i></div>
+                        <div class="closeTu absolute cursor" @click="industryDelete(projectMatchInvestor)"><i class="el-icon-close"></i></div>
                         <div class="block clearfix">
                           <div class="fr" style="margin: 15px 21px 24px 0;">
-                            <el-button @click="industryPush(projectMatchInvestor)" v-if="projectMatchInvestor.push_statues==0">提交项目</el-button>
-                            <el-button @click="industryPush(0)" v-if="projectMatchInvestor.push_statues==1">已提交</el-button>
-                            <el-button type="primary" @click="helpKnow(projectMatchInvestor)">帮我引荐</el-button>
+                            <el-button @click="industryPush(projectMatchInvestor)" v-if="projectMatchInvestor.push_status==0">提交项目</el-button>
+                            <el-button @click="industryPush(0)" v-if="projectMatchInvestor.push_status==1">已提交</el-button>
+                            <el-button type="primary" @click="helpKnow(projectMatchInvestor)" v-if="projectMatchInvestor.recommend_status==0">帮我引荐</el-button>
+                            <el-button type="primary" @click="helpKnow(0)" v-if="projectMatchInvestor.recommend_status==1">已引荐</el-button>
                           </div>
                         </div>
                         <div style="border-bottom: 1px solid #eff2f7"></div>
@@ -572,7 +548,6 @@
         <div style="height: 50px;"></div>
       </div>
     </div>
-
 
     <!--一键尽调弹窗-->
     <research></research>
@@ -642,8 +617,6 @@
         pinpai: pinpai,
         cirIcon: cirIcon,
         xiaochengxu: xiaochengxu,
-//        projectPushDisplay: false, // 项目推送弹框,人脉入口
-//        projectPushDisplay2: false, // 项目推送弹框,项目入口
         show: 'detail',
         searchName: '',
         form: {
@@ -864,7 +837,8 @@
         companySearchDisplay: state => state.dialogDisplay.companySearchDisplay,
         recommendDisplay: state => state.dialogDisplay.recommendDisplay,
         followDisplay: state => state.dialogDisplay.followDisplay,
-        projectPushToProDisplay: state => state.pushProject.projectPushToProDisplay
+        projectPushToProDisplay: state => state.pushProject.projectPushToProDisplay,
+        projectPushToConDisplay: state => state.pushProject.projectPushToConDisplay
       })
     },
     components: {
@@ -898,7 +872,7 @@
       // 下载文件
       download (e) {
         const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + e;
-        window.location.href = url;
+        window.open(url);
       },
       // 远程数据模拟
       loadData (arr) {
@@ -930,7 +904,6 @@
       // 一键尽调按钮
       goOnkey () {
         if (this.project.pro_company_name === '') {
-//          this.companySearchDisplay = true;
           this.$store.dispatch('companySearchControl', true);
         } else {
           this.loading = true;
@@ -940,7 +913,6 @@
               if (data.length === 0) { // 搜索不到信息
                 this.$store.dispatch('companySearchControl', true);
                 this.searchName = this.project.pro_company_name;
-//                this.companyname = this.project.pro_company_name;
                 this.seachCompanys = [{company_name: '匹配不到你要搜索的公司,请重新继续输入', com_id: -2}];
                 this.loading = false;
               } else { // 搜索到了
@@ -982,7 +954,6 @@
                 console.log(err);
               });
           }).catch(() => {
-//            this.companySearchDisplay = false;
             this.$store.dispatch('companySearchControl', false);
           });
         }
@@ -1007,6 +978,7 @@
       goBack () {
         if (this.activeFrom === 0) this.$router.push({name: 'myProject', query: {activeTo: 0}});
         else if (this.activeFrom === 2) this.$router.push({name: 'followUp', query: {activeTo: 2}});// 路由传参
+        this.$store.dispatch('clearProjectMessage', false);
       },
       // 项目来源编辑
       getProjectTag (arr) {
@@ -1020,13 +992,7 @@
       },
       // 项目来源编辑
       getteam_tag (arr) {
-        let str = [];
-        for (let i = 0; i < arr.length; i++) {
-          if (arr[i].type === 1) {
-            str.push(arr[i].tag_name);
-          }
-        }
-        return str;
+        return arr.filter(e => e.type === 1).map(item => item.tag_name);
       },
       // 链接跳转
       urlOpen (url) {
@@ -1124,14 +1090,11 @@
       },
       // 打开人脉详情弹窗
       toDetail (data) {
-//        this.InvestorType = 'userInfo';
         this.$store.dispatch('setConnectDeatil', {cardId: data.card_id, userId: data.user_id, type: 'userInfo'});
         this.$store.dispatch('contactControl', true);
       },
       // 买家图谱 => 打开投资人详情
       toInvestorDetail (data) {
-//        this.InvestorType = 'InvestorInfo';
-        console.log(data);
         this.$store.dispatch('setFollowUp', {projectId: this.project.project_id, projectIntro: ''});
         this.$store.dispatch('setConnectDeatil', {type: 'InvestorInfo'});
         this.$store.dispatch('setMatchInvestorsData', data); // 设置买家图谱所需要的数据
@@ -1439,7 +1402,7 @@
           obj.original_id = x.original_id;
           obj.recommend_status = x.recommend_status;
           obj.wts_match_weight = x.wts_match_weight;
-          obj.push_statues = x.push_statues;
+          obj.push_status = x.push_status;
           obj.investor_email = x.investor_email;
           newArr.push(obj);
         });
@@ -1473,7 +1436,6 @@
         getTop();
         this.loading = true;
         this.getInvestors.user_id = localStorage.user_id;
-//      this.getPra.user_id="2rzyz5vp";
         this.currentPageInvestors = page;
         this.getInvestors.project_id = this.project.project_id;
         this.getInvestors.page = page;
@@ -1513,7 +1475,6 @@
       // 买家图谱人脉删除
       industryDelete (data) {
         let delData = {};
-        console.log(data);
         delData.user_id = localStorage.user_id;
         delData.investor_id = data.investor_id;
         delData.project_id = this.project.project_id;
@@ -1524,11 +1485,13 @@
         }).then(() => {
           this.zgClick('买家图谱移除');
           this.loading = true;
-          this.$http.post(this.URL.exceptMatchAction, delData)
+          this.$http.post(this.URL.removeInvestor, delData)
             .then(res => {
               if (res.data.status_code === 2000000) {
                 success('移除成功');
                 this.getProjectMatchInvestors();
+              } else {
+                error(res.data.error_msg);
               }
               this.loading = false;
             })
@@ -1546,8 +1509,12 @@
       },
       // 帮我引荐
       helpKnow (data) {
-        this.$store.dispatch('setMatchInvestorsData', data); // 设置买家图谱所需要的数据
-        this.$store.dispatch('recommendControl', true);
+        if (data === 0) {
+          warning('已引荐');
+        } else {
+          this.$store.dispatch('setMatchInvestorsData', data); // 设置买家图谱所需要的数据
+          this.$store.dispatch('recommendControl', true);
+        }
       },
       // 编辑跟进记录
       // 拿到跟进记录id
@@ -1608,8 +1575,14 @@
           this.getFollowData = true;
         }
       },
-      // 推送弹框关闭，刷新所有新数据
+      // 推送弹框关闭，刷新所有新数据（项目入口）
       projectPushToProDisplay: function (e) {
+        if (!e) {
+          this.getAllData();
+        }
+      },
+      // 推送弹框关闭，刷新所有新数据（人脉入口）
+      projectPushToConDisplay: function (e) {
         if (!e) {
           this.getAllData();
         }
