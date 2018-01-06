@@ -3,6 +3,7 @@
   <div class="cardUpload">
     <span style="margin-left: 20px;" class="fl">
       <el-upload class="uploadImg"
+                 :style="{width: `${width}px`,height: `${height}px`}"
                  ref="upload"
                  :action="uploadCardAddress"
                  list-type="picture-card"
@@ -38,6 +39,18 @@
       cardplanList: {
         type: Array,
         default: []
+      },
+      width: {
+        type: Number,
+        default: 308
+      },
+      height: {
+        type: Number,
+        default: 148
+      },
+      size: {
+        type: Number,
+        default: 1048580
       }
     },
     data () {
@@ -72,8 +85,8 @@
           error(file.name + '是不支持的文件格式');
           return false;
         }
-        if (parseInt(file.size) > parseInt(1048580)) {
-          error(file.name + '超过1M大小哦');
+        if (parseInt(file.size) > parseInt(this.size)) {
+          error(`${file.name}超过${Number.parseInt(this.size / 1024) / 1024}M大小哦`);
           return false;
         };
       },
@@ -114,8 +127,8 @@
       height: 150px;
     }
     .uploadImg{
-      height: 148px;
-      width: 308px;
+      /*height: 148px;*/
+      /*width: 308px;*/
       overflow: hidden;
     }
   }

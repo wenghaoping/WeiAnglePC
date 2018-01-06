@@ -409,6 +409,7 @@
                   </div>
                 </el-collapse-transition>
               </div>
+
               <div class="ul-lists list tc"  style="padding:0">
                 <div class="toButton" style="padding-left: 0;z-index: 111">
                   <el-button type="primary" size="large" @click="allSave" :disabled="submitButton" style="margin: 0 auto">
@@ -1033,7 +1034,6 @@
         transform: rotate(360deg);
       }
     }
-
   }
 
 </style>

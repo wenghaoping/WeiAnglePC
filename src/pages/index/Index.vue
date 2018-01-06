@@ -20,6 +20,7 @@
   import alertIdentity from '@/views/identity/alertIdentity.vue';
   import topHeader from '@/components/topHeader.vue';
   import { IEVersion, success, warning, error } from '@/utils/notification';
+  import { getTop } from '@/utils';
   export default {
     data () {
       return {
@@ -104,9 +105,6 @@
       this.getUserGroupByStatusName(localStorage.user_id);
       if (IEVersion() !== -1) { alert('请不要使用IE浏览器，建议使用谷歌浏览器及其他浏览器，以获得更好体验'); };
     },
-    computed: {
-
-    },
     components: {
       alertIdentity,
       topHeader
@@ -114,6 +112,7 @@
     watch: {
       '$route' (to, from) {
         this.checkUser();
+        getTop();
         if (from.name === this.routerName) {
           this.zgTimeOut(from.name);
         }

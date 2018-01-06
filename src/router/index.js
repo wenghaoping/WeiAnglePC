@@ -88,6 +88,9 @@ export default new Router({
       path: '/customBp', name: 'customBp', component: _import('superBp/customBp') // BP问诊/定制
     },
     {
+      path: '/creatActivity', name: 'creatActivity', component: _import('Activity/creatActivity') // 创建活动
+    },
+    {
       path: '/test', name: 'test', component: checkone
     }
   ]
