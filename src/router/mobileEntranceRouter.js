@@ -11,7 +11,7 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: '/', name: 'index', component: _import('mobileEntranceIndex/mailProjectDetail_type1')
+      path: '/', name: 'index', component: _import('mobileEntranceIndex/mailProjectDetail_type2')
     },
     {
       path: '/mailProjectDetail_type1',

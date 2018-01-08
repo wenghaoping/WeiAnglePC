@@ -208,5 +208,10 @@ export default
   getIndustryAndStage: 'api/category/getIndustryAndStage', // 领域和阶段标签
   getBpPpt: 'api/superBp/getBpPpt', // bp预览
   getBpByIndustryAndStage: 'api/superBp/getBpByIndustryAndStage', // 通过领域和阶段筛选BP模板
-  superBpDownload: 'api/superBp/superBpDownload' // 模板下载
+  superBpDownload: 'api/superBp/superBpDownload', // 模板下载
+  // 自动邮件
+  mail_getProjectDetail: '/api/mobile/wtsProject', // 平台项目的项目详情
+  mail_getProjectDetail_scrapy: '/api/mobile/scrapyProject', // 爬虫怕取的项目详情
+  mail_createInterview: '/api/mobile/createInterview', // 项目约谈
+  mail_sendBp: '/api/mobile/emailForBp' // 发送BP
 };
