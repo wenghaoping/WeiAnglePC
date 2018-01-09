@@ -11,7 +11,7 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: '/', name: 'index', component: _import('mobileEntranceIndex/mailProjectDetail_type2')
+      path: '/', name: 'index', component: _import('mobileEntranceIndex/login')
     },
     {
       path: '/mailProjectDetail_type1',
@@ -22,6 +22,11 @@ export default new Router({
       path: '/mailProjectDetail_type2',
       name: 'mailProjectDetail_type2',
       component: _import('mobileEntranceIndex/mailProjectDetail_type2')
+    },
+    {
+      path: '/login',
+      name: 'mailProjectLogin',
+      component: _import('mobileEntranceIndex/login')
     }
   ]
 });

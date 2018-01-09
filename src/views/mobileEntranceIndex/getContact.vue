@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1>mobileEntranceIndex</h1>
+  <div id='mail_getContact'}>
+    <h1></h1>
   </div>
 </template>
 
