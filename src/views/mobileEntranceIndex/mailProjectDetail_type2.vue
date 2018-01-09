@@ -12,9 +12,12 @@
             <div class="pro_name">{{projectDetail.info.project_name}}</div>
             <div class="pro_intro size_12 color_9">{{projectDetail.info.project_intro}}</div>
             <div class="pro_industry flex">
-              <div class="tag" v-for="tag in projectDetail.info.industry_list">{{tag.industry_name}}</div>
+              <div class="tag" v-for="(tag,index) in projectDetail.info.industry_list">
+                <span class="size_12 color_6">{{tag.industry_name}}</span>
+                <span :hidden='index + 1 === projectDetail.info.industry_list.length'>|</span>
+              </div>
             </div>
-            <div class="stageAndCity">
+            <div class="stageAndCity color_6">
               <span>{{projectDetail.info.stage_name}}</span>
               &nbsp;·&nbsp;
               <span>{{projectDetail.info.area_name}}</span>
@@ -22,16 +25,16 @@
           </div>
         </div>
         <div class="special_list flex">
-          <div class="tag" v-for="tag in projectDetail.info.special_list">
+          <div class="tag size_12" v-for="tag in projectDetail.info.special_list">
             {{tag.special_name}}
           </div>
         </div>
       </div>
       <!--项目介绍-->
       <div class="projectIntro">
-        <div class="size_15">项目介绍</div>
-        <div class="size12 color_6">{{projectDetail.info.company_name}}</div>
-        <div class="projectIntroContent">
+        <div class="size_15 ">项目介绍</div>
+        <div class="projectIntroTitle size12 color_6">{{projectDetail.info.company_name}}</div>
+        <div class="projectIntroContent size_14 color_6">
           <div>{{projectDetail.info.project_desc}}</div>
           <div>{{moreOrless}}</div>
         </div>
@@ -43,12 +46,14 @@
           <div class="showAll">全部&nbsp;({{projectDetail.product_list.total_num}})</div>
         </div>
         <div class="brand flex" v-for="brand in projectDetail.product_list.list">
-          <img src="http://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/image/banner/email/default-logo.jpg" alt="">
-          <div style="width: 17.5rem;">
+          <div class="left">
+            <img src="http://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/image/banner/email/default-logo.jpg" alt="">
+          </div>
+          <div class="right" style="width: 17.5rem;">
             <div>
-              <div class="sb">
+              <div class="flex">
                 <div class="brand_name size_15">{{brand.product_name}}</div>
-                <div class="brand_type size_12">{{brand.product_type}}</div>
+                <div class="brand_type size_12">{{brand.product_type || '应用'}}</div>
               </div>
               <div class="brand_desc size_12 color_6">{{brand.product_introduce}}</div>
             </div>
@@ -61,17 +66,17 @@
           <div class="text_title ">历史融资</div>
           <div class="showAll">全部&nbsp;({{projectDetail.history_finance.total_num}})</div>
         </div>
-        <div class="pro_history_finance" v-for="finance in projectDetail.history_finance.list">
-          <div class="flex size_14">
-            <div class="finance_left">{{finance.finance_time}}</div>
+        <div class="pro_history_finance" v-for="( finance,index) in projectDetail.history_finance.list" :key = index>
+          <div class="flex size_14" style="margin-bottom: .75rem;">
+            <div class="finance_left finacingTime size_14 color_6">{{financingTime[index]}}</div>
             <div class="finance_middle"><img src="" alt=""></div>
-            <div class="finance_right">{{finance.finance_money}}</div>
+            <div class="finance_right finacingMoney size_14">{{finance.finance_money}}</div>
           </div>
           <div class='flex'>
-            <div class="finance_left">{{finance.stage_name}}</div>
+            <div class="finance_left financingStage size_14 color_3 weight">{{finance.stage_name}}</div>
             <div class="finance_middle"></div>
-            <div class="finance_right flex">
-              <div class="tag" v-for="tag in finance.investment_list">
+            <div class="finance_right financingTag flex">
+              <div class="tag size_14 color_3" v-for="tag in finance.investment_list">
                 {{tag.investment_name}}
               </div>
             </div>
@@ -84,25 +89,22 @@
           <div class="text_title ">核心团队</div>
           <div class="showAll">全部&nbsp;({{projectDetail.member_list.total_num}})</div>
         </div>
-        <div class="intro_tags flex">
-          <div class="tag" v-if="tag.type === 1" v-for="tag in projectDetail.tag">{{tag.tag_name}}</div>
-        </div>
         <div class="teamMember" v-for='member in projectDetail.member_list.list'>
           <div class="top flex">
-            <img class="left" v-if = 'member.member_avatar' src="member.member_avatar" alt="">
+            <img class="left headPic" v-if = 'member.member_avatar' src="member.member_avatar" alt="">
             <div class="left headPic" v-else>{{member.member_avatar_text}}</div>
-            <div class="right">
-              <div style="margin-bottom: .3rem;">
+            <div class="right size_12 color_6 ">
+              <div style="margin-bottom: .75rem">
                 <span class="name size_15 ">{{member.member_name}}</span>
                 <span class="career size_12 color_6">{{member.member_position}}</span>
               </div>
-              <div class="size_12 flex">
+              <div class="size_12 sb">
                 <div>
-                  <span class="stock_scaleText">股权比例:</span>
-                  <span class="stock_scale">{{member.stock_scale}}</span>
+                  <span class="stock_scaleText size_12 color_6">股权比例:</span>
+                  <span class="stock_scale">{{member.hold_rate}}</span>
                 </div>
                 <div>
-                  <span class="company_numText">扔有公司:</span>
+                  <span class="company_numText">拥有公司:</span>
                   <span class="company_num">{{member.company_num}}</span>
                 </div>
               </div>
@@ -110,7 +112,7 @@
           </div>
           <div class="bottom flex">
             <div class="left"></div>
-            <div class="right size_15 color_6">{{member.member_introduce}}</div>
+            <div class="right size_12 color_6" style="line-height: 1rem;">{{member.member_introduce}}</div>
           </div>
         </div>
       </div>
@@ -120,8 +122,8 @@
           <div class="text_title ">里程碑</div>
           <div class="showAll">全部&nbsp;({{projectDetail.milestone_list.total_num}})</div>
         </div>
-        <div class="pro_develop size_14 flex" v-for='milestone in projectDetail.milestone_list.list'>
-          <div class='left'>{{milestone.milestone_time}}</div>
+        <div class="pro_develop size_14 flex" v-for='(milestone,index) in projectDetail.milestone_list.list'>
+          <div class='left'>{{mileStomeTime[index]}}</div>
           <div class='middle'>
             <img src="" alt="">
           </div>
@@ -165,7 +167,7 @@
           <div class="new_content">{{news.news_title}}</div>
           <div class="new_content">{{news.news_title}}</div>
           <div class="new_tag flex">
-            <div v-for="tag in news."></div>
+            <div v-for="tag in news.list"></div>
           </div>
         </div>
       </div>
@@ -201,7 +203,22 @@
       };
     },
     computed: {
-
+      financingTime () {
+        let financingTime = [];
+        this.projectDetail.history_finance.list.forEach(x => {
+          let time = x.finance_time.substring(0, 4) + '.' + x.finance_time.substring(5, 7);
+          financingTime.push(time);
+        });
+        return financingTime;
+      },
+      mileStomeTime () {
+        let milestoneTime = [];
+        this.projectDetail.milestone_list.list.forEach(x => {
+          let time = x.milestone_time.substring(0, 4) + '.' + x.milestone_time.substring(5, 7);
+          milestoneTime.push(time);
+        });
+        return milestoneTime;
+      }
     },
     components: {
 
@@ -253,6 +270,10 @@
   @import '../../assets/css/mobileEntrance.less';
 
   #mailProjectDetail_type2 {
+    div,span{
+      line-height: 1em;
+      color: #333;
+    }
     width: 343px;
     padding: 1rem;
     margin: 0 auto;
@@ -300,24 +321,89 @@
     .showAll{
       cursor: pointer;
       font-size: .75rem;
-      color: #3378e0;
+      color: #009eff;
     }
     .flex {
       display: flex;
-    }
-    .industryItem,.tag{
-      padding: 0.25rem 0.5rem;
-      font-size: 0.75rem;
-      margin-top: 10/16rem;
-      margin-right: 7/16rem;
-      background-color:#f5f5f5;
-      border-radius:2/16rem;
-      color: #666;
+      flex-wrap:wrap;
     }
     .projectCard{
+      padding: 1rem;
+      .left{
+        flex:94;
+        img{
+          width: 66/16rem;
+          height: 66/16rem;
+          display: block;
+          background-color: black;
+        }
+      }
+      .right{
+        flex: 293;
+        padding-left: .75rem;
+        .pro_name{
+          font-size: 1rem;
+        }
+        .pro_intro{
+          margin-top: .75rem;
+        }
+        .pro_industry{
+          margin-top: .75rem;
+          .tag{
+            span:last-child{
+              color: #999;
+              font-size: .75rem;
+              margin-right: 7/16rem;
+            }
+          }
+        }
+        .stageAndCity{
+          font-size: .75rem;
+          margin-top: .75rem;
+        }
+      }
+      .special_list{
+        margin-top: 2rem;
+        margin-bottom: .25rem;
+        .tag{
+          padding: 6/16rem;
+          background:rgba(0,158,255,0.10);
+          border:1px solid rgba(0,158,255,0.20);
+          border-radius:2px;
+          color:#009eff;
+          margin-right: .75rem;
+        }
+      }
+    }
+    .projectIntro{
+      margin-top: 1rem;
+      padding: 1rem;
+      .projectIntroTitle{
+        margin-top: 1.25rem;
+        padding:10/16rem .5rem;
+        display: none;
 
+      }
+      .projectIntroContent{
+        margin-top: 11/16rem;
+        div:first-child{
+          line-height: 22/16rem;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          height: 88/16rem;
+          white-space: normal;
+        }
+        div:last-child{
+          margin-top: 1rem;
+          text-align: center;
+          font-size:12px;
+          color:#009eff;
+          height: 25/16rem;
+        }
+      }
     }
     .brandList{
+      margin-top: 1rem;
       padding: 1rem;
       .brand_title{
         justify-content: space-between;
@@ -330,46 +416,60 @@
       .brand{
         margin-top: 1.25rem;
         margin-bottom: 1.25rem;
-        img{
-          width: 52px;
-          height: 52px;
-          margin-right: 7/16rem;
+        .left{
+          flex:66;
+          margin-right: 1rem;
+          img{
+            width: 52px;
+            height: 52px;
+            display: block;
+          }
         }
-        .brand_name{
-
-        }
-        .brand_type{
-          border:1px solid #293b55;
-          border-radius:34px;
-          padding: .25rem .5rem;
-        }
-        .brand_desc{
-          margin-top: 11/16rem;
+        .right{
+          flex: 276;
+          align-items: center;
+          .brand_type{
+            font-size: .75rem;
+            padding: 0 0.25rem;
+            border:1px solid #40587a;
+            border-radius:34px;
+            line-height: 1rem;
+            margin-left: .75rem;
+          }
+          .brand_desc{
+            margin-top: 11/16rem;
+            line-height: 4/3em;
+          }
         }
       }
     }
     .financing{
       padding: 1rem;
-      .finance_left{
-        flex: 50;
-      }
-      .finance_middle{
-        flex:33;
-      }
-      .finance_right{
-        flex:246;
-      }
-    }
-    .financingInfo{
-      padding:1rem;
-      .size_15{
-        margin-bottom: 1rem;
-      };
-      .financingDetail{
-        padding: 9/8rem 0;
-        text-align: center;
-        .financingDetailItem{
-          flex: 1;
+      .pro_history_finance {
+        margin-bottom: 1.25rem;
+        .finance_left {
+          flex: 56;
+          text-align: center;
+        }
+        .finance_middle {
+          flex: 33;
+          img {
+            display: block;
+            width: 12/16rem;
+            height: 12/16rem;
+            background: red;
+            margin: 0 auto;
+          }
+        }
+        .finance_right {
+          flex: 246;
+          .financingMoney {
+            color: #fc703e;
+          }
+          .tag {
+            margin-right: 1rem;
+            margin-bottom: .75rem;
+          }
         }
       }
     }
@@ -392,12 +492,13 @@
         margin-bottom: 42/16rem;
         img{
           display: block;
-          border-radius: 50%;
         }
         .headPic{
           border-radius: 50%;
-          background:#f5f5f5;
+          background:red;
           text-align: center;
+          width: 52/16rem;
+          height: 52/16rem;
         }
         .name{
           margin-right: 7/16rem;
@@ -407,10 +508,14 @@
         }
         .left{
           flex: 53;
-          margin-right: 23/16rem;
         }
         .right{
           flex: 256;
+          padding-left: .75rem;
+          .stock_scale,.company_num{
+            padding-left: .5rem;
+            color: #fc703e;
+          }
         }
         .bottom{
           margin-top: .5rem;

@@ -7,6 +7,7 @@ import 'element-ui/lib/theme-default/index.css'; // element样式
 import axios from '../../api/api.js';// axios请求配置
 import URL_ from '../../api/url.js';// URL请求地址汇总
 import global from '../../global/global';//
+import '../../filters';// 过滤器
 
 Vue.config.productionTip = false;
 Vue.prototype.$global = global;
