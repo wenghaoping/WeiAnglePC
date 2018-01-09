@@ -1,194 +1,205 @@
 <template>
-  <div id='mailProjectDetail_type2'>
+  <div  id='mailProjectDetail_type2'>
     <!--项目详情-->
-    <div class="projectMaid">
-      <!--项目卡片-->
-      <div class="projectCard">
-        <div class="mainCard flex">
-          <div class="left">
-            <img src="projectDetail.info.project_logo" alt="">
-          </div>
-          <div class="right">
-            <div class="pro_name">{{projectDetail.info.project_name}}</div>
-            <div class="pro_intro size_12 color_9">{{projectDetail.info.project_intro}}</div>
-            <div class="pro_industry flex">
-              <div class="tag" v-for="(tag,index) in projectDetail.info.industry_list">
-                <span class="size_12 color_6">{{tag.industry_name}}</span>
-                <span :hidden='index + 1 === projectDetail.info.industry_list.length'>|</span>
-              </div>
+    <div>
+      <!--项目详情-->
+      <div class="projectMaid">
+        <!--项目卡片-->
+        <div class="projectCard">
+          <div class="mainCard flex">
+            <div class="left">
+              <img src="projectDetail.info.project_logo" alt="">
             </div>
-            <div class="stageAndCity color_6">
-              <span>{{projectDetail.info.stage_name}}</span>
-              &nbsp;·&nbsp;
-              <span>{{projectDetail.info.area_name}}</span>
-            </div>
-          </div>
-        </div>
-        <div class="special_list flex">
-          <div class="tag size_12" v-for="tag in projectDetail.info.special_list">
-            {{tag.special_name}}
-          </div>
-        </div>
-      </div>
-      <!--项目介绍-->
-      <div class="projectIntro">
-        <div class="size_15 ">项目介绍</div>
-        <div class="projectIntroTitle size12 color_6">{{projectDetail.info.company_name}}</div>
-        <div class="projectIntroContent size_14 color_6">
-          <div>{{projectDetail.info.project_desc}}</div>
-          <div>{{moreOrless}}</div>
-        </div>
-      </div>
-      <!--主要产品-->
-      <div class="brandList">
-        <div class="main_title flex">
-          <div class="text_title ">主要产品</div>
-          <div class="showAll">全部&nbsp;({{projectDetail.product_list.total_num}})</div>
-        </div>
-        <div class="brand flex" v-for="brand in projectDetail.product_list.list">
-          <div class="left">
-            <img src="http://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/image/banner/email/default-logo.jpg" alt="">
-          </div>
-          <div class="right" style="width: 17.5rem;">
-            <div>
-              <div class="flex">
-                <div class="brand_name size_15">{{brand.product_name}}</div>
-                <div class="brand_type size_12">{{brand.product_type || '应用'}}</div>
-              </div>
-              <div class="brand_desc size_12 color_6">{{brand.product_introduce}}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--历史融资-->
-      <div class="financing">
-        <div class="main_title flex">
-          <div class="text_title ">历史融资</div>
-          <div class="showAll">全部&nbsp;({{projectDetail.history_finance.total_num}})</div>
-        </div>
-        <div class="pro_history_finance" v-for="( finance,index) in projectDetail.history_finance.list" :key = index>
-          <div class="flex size_14" style="margin-bottom: .75rem;">
-            <div class="finance_left finacingTime size_14 color_6">{{financingTime[index]}}</div>
-            <div class="finance_middle"><img src="" alt=""></div>
-            <div class="finance_right finacingMoney size_14">{{finance.finance_money}}</div>
-          </div>
-          <div class='flex'>
-            <div class="finance_left financingStage size_14 color_3 weight">{{finance.stage_name}}</div>
-            <div class="finance_middle"></div>
-            <div class="finance_right financingTag flex">
-              <div class="tag size_14 color_3" v-for="tag in finance.investment_list">
-                {{tag.investment_name}}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--核心团队-->
-      <div class="coreTeam">
-        <div class="main_title flex">
-          <div class="text_title ">核心团队</div>
-          <div class="showAll">全部&nbsp;({{projectDetail.member_list.total_num}})</div>
-        </div>
-        <div class="teamMember" v-for='member in projectDetail.member_list.list'>
-          <div class="top flex">
-            <img class="left headPic" v-if = 'member.member_avatar' src="member.member_avatar" alt="">
-            <div class="left headPic" v-else>{{member.member_avatar_text}}</div>
-            <div class="right size_12 color_6 ">
-              <div style="margin-bottom: .75rem">
-                <span class="name size_15 ">{{member.member_name}}</span>
-                <span class="career size_12 color_6">{{member.member_position}}</span>
-              </div>
-              <div class="size_12 sb">
-                <div>
-                  <span class="stock_scaleText size_12 color_6">股权比例:</span>
-                  <span class="stock_scale">{{member.hold_rate}}</span>
+            <div class="right">
+              <div class="pro_name">{{projectDetail.info.project_name}}</div>
+              <div class="pro_intro size_12 color_9">{{projectDetail.info.project_intro}}</div>
+              <div class="pro_industry flex">
+                <div class="tag" v-for="(tag,index) in projectDetail.info.industry_list">
+                  <span class="size_12 color_6">{{tag.industry_name}}</span>
+                  <span :hidden='index + 1 === projectDetail.info.industry_list.length'>|</span>
                 </div>
-                <div>
-                  <span class="company_numText">拥有公司:</span>
-                  <span class="company_num">{{member.company_num}}</span>
+              </div>
+              <div class="stageAndCity color_6">
+                <span>{{projectDetail.info.stage_name}}</span>
+                &nbsp;·&nbsp;
+                <span>{{projectDetail.info.area_name}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="special_list flex">
+            <div class="tag size_12" v-for="tag in projectDetail.info.special_list">
+              {{tag.special_name}}
+            </div>
+          </div>
+        </div>
+        <!--项目介绍-->
+        <div class="projectIntro">
+          <div class="size_15 ">项目介绍</div>
+          <div class="projectIntroTitle size12 color_6">{{projectDetail.info.company_name}}</div>
+          <div class="projectIntroContent size_14 color_6">
+            <div>{{projectDetail.info.project_desc}}</div>
+            <div>{{moreOrless}}</div>
+          </div>
+        </div>
+        <!--主要产品-->
+        <div class="brandList">
+          <div class="main_title flex">
+            <div class="text_title ">主要产品</div>
+            <div class="showAll">全部&nbsp;({{projectDetail.product_list.total_num}})</div>
+          </div>
+          <div class="brand flex" v-for="brand in projectDetail.product_list.list">
+            <div class="left">
+              <img src="http://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/image/banner/email/default-logo.jpg" alt="">
+            </div>
+            <div class="right" style="width: 17.5rem;">
+              <div>
+                <div class="flex">
+                  <div class="brand_name size_15">{{brand.product_name}}</div>
+                  <div class="brand_type size_12">{{brand.product_type || '应用'}}</div>
+                </div>
+                <div class="brand_desc size_12 color_6">{{brand.product_introduce}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--历史融资-->
+        <div class="financing">
+          <div class="main_title flex">
+            <div class="text_title ">历史融资</div>
+            <div class="showAll">全部&nbsp;({{projectDetail.history_finance.total_num}})</div>
+          </div>
+          <div class="pro_history_finance" v-for="( finance,index) in projectDetail.history_finance.list" :key = index>
+            <div class="flex size_14" style="margin-bottom: .75rem;">
+              <div class="finance_left finacingTime size_14 color_6">{{financingTime[index]}}</div>
+              <div class="finance_middle"><img src="" alt=""></div>
+              <div class="finance_right finacingMoney size_14">{{finance.finance_money}}</div>
+            </div>
+            <div class='flex'>
+              <div class="finance_left financingStage size_14 color_3 weight">{{finance.stage_name}}</div>
+              <div class="finance_middle"></div>
+              <div class="finance_right financingTag flex">
+                <div class="tag size_14 color_3" v-for="tag in finance.investment_list">
+                  {{tag.investment_name}}
                 </div>
               </div>
             </div>
           </div>
-          <div class="bottom flex">
-            <div class="left"></div>
-            <div class="right size_12 color_6" style="line-height: 1rem;">{{member.member_introduce}}</div>
+        </div>
+        <!--核心团队-->
+        <div class="coreTeam">
+          <div class="main_title flex">
+            <div class="text_title ">核心团队</div>
+            <div class="showAll">全部&nbsp;({{projectDetail.member_list.total_num}})</div>
           </div>
-        </div>
-      </div>
-      <!--里程碑-->
-      <div class="milepost">
-        <div class="main_title flex">
-          <div class="text_title ">里程碑</div>
-          <div class="showAll">全部&nbsp;({{projectDetail.milestone_list.total_num}})</div>
-        </div>
-        <div class="pro_develop size_14 flex" v-for='(milestone,index) in projectDetail.milestone_list.list'>
-          <div class='left'>{{mileStomeTime[index]}}</div>
-          <div class='middle'>
-            <img src="" alt="">
-          </div>
-          <div class='right'>{{milestone.milestone_event}}</div>
-        </div>
-      </div>
-      <!--相似项目-->
-      <div class="competition_company_list">
-        <div class="main_title flex">
-          <div class="text_title ">相似项目</div>
-          <div class="showAll">全部&nbsp;({{projectDetail.competition_company.total_num}})</div>
-        </div>
-        <div class="competition_company flex" v-for="company in projectDetail.competition_company.list">
-          <div class="left">
-            <img src="company.project_logo" alt="">
-          </div>
-          <div class="right">
-            <div class="pro_name">
-              <span style="max-width: 12rem;">{{company.project_name}}</span>
-              <span>{{company.stage_name}}</span>
+          <div class="teamMember" v-for='member in projectDetail.member_list.list'>
+            <div class="top flex">
+              <img class="left headPic" v-if = 'member.member_avatar' src="member.member_avatar" alt="">
+              <div class="left headPic" v-else>{{member.member_avatar_text}}</div>
+              <div class="right size_12 color_6 ">
+                <div style="margin-bottom: .75rem">
+                  <span class="name size_15 ">{{member.member_name}}</span>
+                  <span class="career size_12 color_6">{{member.member_position}}</span>
+                </div>
+                <div class="size_12 sb">
+                  <div>
+                    <span class="stock_scaleText size_12 color_6">股权比例:</span>
+                    <span class="stock_scale">{{member.hold_rate}}</span>
+                  </div>
+                  <div>
+                    <span class="company_numText">拥有公司:</span>
+                    <span class="company_num">{{member.company_num}}</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="pro_intro size_12 color_9">{{company.project_intro}}</div>
-            <div class="pro_industry flex">
-              <div class="tag" v-for="tag in company.industry_list">{{tag.industry_name}}</div>
-            </div>
-            <div class="special_list" v-for = "(tag , index) in company.special_list">
-              <span>{{tag.special_name}}</span>
-              <span :hidden='index + 1  === company.special_list.length'>|</span>
+            <div class="bottom flex">
+              <div class="left"></div>
+              <div class="right size_12 color_6" style="line-height: 1rem;">{{member.member_introduce}}</div>
             </div>
           </div>
-          </div>
-      </div>
-      <!--媒体报道-->
-      <div class="new_list">
-        <div class="main_title flex">
-          <div class="text_title ">媒体报道</div>
-          <div class="showAll">全部&nbsp;({{projectDetail.news_list.total_num}})</div>
         </div>
-        <div class="competition_company flex" v-for="news in projectDetail.news_list.list">
-          <div class="new_time">{{news.news_time}}</div>
-          <div class="new_content">{{news.news_title}}</div>
-          <div class="new_content">{{news.news_title}}</div>
-          <div class="new_tag flex">
-            <div v-for="tag in news.list"></div>
+        <!--里程碑-->
+        <div class="milepost">
+          <div class="main_title flex">
+            <div class="text_title ">里程碑</div>
+            <div class="showAll">全部&nbsp;({{projectDetail.milestone_list.total_num}})</div>
+          </div>
+          <div class="pro_develop size_14 flex" v-for='(milestone,index) in projectDetail.milestone_list.list'>
+            <div class='left'>{{mileStomeTime[index]}}</div>
+            <div class='middle'>
+              <img src="" alt="">
+            </div>
+            <div class='right'>{{milestone.milestone_event}}</div>
           </div>
         </div>
+        <!--相似项目-->
+        <div class="competition_company_list">
+          <div class="main_title flex">
+            <div class="text_title ">相似项目</div>
+            <div class="showAll">全部&nbsp;({{projectDetail.competition_company.total_num}})</div>
+          </div>
+          <div class="competition_company flex" v-for="company in projectDetail.competition_company.list">
+            <div class="left">
+              <img src="http://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/image/banner/email/default-logo.jpg" alt="">
+            </div>
+            <div class="right">
+              <div class="pro_name">
+                <span style="max-width: 12rem;" class="pro_company">{{company.project_name}}</span>
+                <span class="comSta">{{company.stage_name}}</span>
+              </div>
+              <div class="pro_intro size_12 color_9">{{company.project_intro}}</div>
+              <div class="pro_industry flex">
+                <div class="tag" v-for="tag in company.industry_list">
+                  <span class="size_12 color_6">{{tag.industry_name}}</span>
+                  <span :hidden='index + 1 === company.industry_list.length'>|</span>
+                </div>
+              </div>
+              <div class="special_list" v-for = "(tag , index) in company.special_list">
+                <span>{{tag.special_name}}</span>
+                <span :hidden='index + 1 === company.special_list.length'>|</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--媒体报道-->
+        <div class="new_list">
+          <div class="main_title flex">
+            <div class="text_title ">媒体报道</div>
+            <div class="showAll">全部&nbsp;({{projectDetail.news_list.total_num}})</div>
+          </div>
+          <div class="competition_company flex" v-for="(news,index) in projectDetail.news_list.list" :key = index>
+            <div class="new_time">{{newTime[index]}}</div>
+            <div class="new_content">{{news.news_title}}</div>
+            <div class="new_tag flex">
+              <div v-for="tag in news.list">{{tag.tag_name}}</div>
+            </div>
+          </div>
+        </div>
+        <!--留空div-->
+        <div style='height: 4rem;'></div>
       </div>
-      <!--留空div-->
-      <div style='height: 4rem;'></div>
+      <!--操作按钮-->
+      <div class="btn_group size_15 flex">
+        <button class="contact" @click="openDialog">获得联系方式</button>
+      </div>
     </div>
-    <!--操作按钮-->
-    <div class="btn_group size_15 flex">
-      <button class="contact">获得练习方式</button>
-    </div>
+    <!--获取联系方式弹窗-->
+    <getContact class="getContact" :dialogVisible = 'dialogVisible' :project_id = 'project_id' @closeGetContact = 'closeGetContact'>
+
+    </getContact>
   </div>
 </template>
 
 
 <script type="text/ecmascript-6">
   import { warning } from '@/utils/notification';
+  import getContact from './getContact';
   export default {
     data () {
       return {
         loading: false,
         moreOrless: '更多',
+        dialogVisible: false,
         user_id: 0,
         project_id: '',
         projectDetail: {
@@ -218,10 +229,18 @@
           milestoneTime.push(time);
         });
         return milestoneTime;
+      },
+      newTime () {
+        let newTime = [];
+        this.projectDetail.news_list.list.forEach(x => {
+          let time = x.news_time.substring(0, 11);
+          newTime.push(time);
+        });
+        return newTime;
       }
     },
     components: {
-
+      getContact
     },
     mounted () {},
     methods: {
@@ -252,12 +271,31 @@
         this.project_id = this.$route.query.project_id;
         this.activeFrom = this.$route.query.activeTo || 0;
         this.show = this.$route.query.show || 'detail';
+      },
+      // 打开弹窗_获得联系方式
+      openDialog () {
+        this.checkLoginStatus(x => {
+          this.dialogVisible = true;
+        });
+      },
+      // 关闭弹窗_获得联系方式
+      closeGetContact () {
+        this.checkLoginStatus(x => {
+          this.dialogVisible = false;
+        });
+      },
+      // 检查登录态
+      checkLoginStatus (callBack) {
+        if (localStorage.user_id === 0 || localStorage.user_id === undefined) {
+          this.$router.push({name: 'mailProjectLogin'});
+        } else {
+          if (callBack) callBack();
+        }
       }
     },
     created () {
       this.getprojectId();
       this.getProjectDetail();
-      localStorage.setItem('user_id', 'Np38mX9r');
       console.log(this);
     },
     watch: {
@@ -268,8 +306,13 @@
 
 <style scoped lang="less">
   @import '../../assets/css/mobileEntrance.less';
-
   #mailProjectDetail_type2 {
+    .getContact{
+      .el-dialog{
+        width: 286px;
+      }
+    }
+
     div,span{
       line-height: 1em;
       color: #333;
@@ -524,6 +567,8 @@
     }
     .milepost{
       padding: 1rem;
+      .pro_develop{
+        padding-bottom: 0.5rem;
       .left{
         flex: 48;
       }
@@ -537,14 +582,114 @@
       }
       .right{
         flex: 252;
+        font-size:14px;
+        color:#333333;
+        line-height: 1rem;
+      }
       }
     }
+    .competition_company_list{
+      padding:1rem;
+      .competition_company{
+        padding: 1.5rem 0;
+        border-bottom: 1px solid #e6e6e6;
+      .left{
+        flex:66;
+        margin-right: 1rem;
+        img{
+          width: 52px;
+          height: 52px;
+          display: block;
+        }
+      }
+      .right{
+        flex: 276;
+        align-items: center;
+        .comSta{
+          font-size: .75rem;
+          padding: 0 0.25rem;
+          border:1px solid #40587a;
+          border-radius:34px;
+          line-height: 1rem;
+          margin-left: .75rem;
+        }
+        .pro_company{
+          font-size:15px;
+          color:#333333;
+          letter-spacing:0;
+          line-height:15px;
+          text-align:left;
+        }
+        .pro_intro{
+          margin-top: 11/16rem;
+          line-height: 4/3em;
+          overflow:hidden;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          overflow: hidden;
+          max-width: 273px;
+        }
+        .pro_industry{
+          margin-top: .75rem;
+          .tag{
+            span:last-child{
+              color: #999;
+              font-size: .75rem;
+              margin-right: 7/16rem;
+            }
+          }
+        }
+        .special_list{
+          margin-top: 2rem;
+          margin-bottom: .25rem;
+          .tag{
+            padding: 6/16rem;
+            background:rgba(0,158,255,0.10);
+            border:1px solid rgba(0,158,255,0.20);
+            border-radius:2px;
+            color:#009eff;
+            margin-right: .75rem;
+          }
+        }
+      }
+    }
+      .competition_company:last-of-type{
+        border:none;
+      }
+    }
+    .new_list{
+      padding:1rem;
+      .competition_company{
+        padding:1rem 0;
+        border-bottom: 1px solid #e6e6e6;
+      .new_time{
+        font-size:12px;
+        color:#fc703e;
+      }
+      .new_content{
+        font-size:14px;
+        color:#333333;
+        letter-spacing:0;
+        line-height:1.5rem;
+        text-align:left;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        margin-top: 0.5rem;
+      }
+      }
+      .competition_company:last-of-type{
+        border:none;
+      }
+   }
     .btn_group{
       position: fixed;
       left: 50%;
       bottom: 0;
-      padding: 10/16rem 1rem;
-      width: 375/16rem;
+      padding: 0 1rem;
+      width: 343/16rem;
       height: 44/16rem;
       text-align: center;
       background: white;
@@ -564,6 +709,5 @@
       }
     }
   }
-
 </style>
 

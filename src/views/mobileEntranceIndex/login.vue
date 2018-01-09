@@ -96,6 +96,7 @@
             }).then(res => {
               console.log('登陆');
               if (res.data.status_code === 2000000) {
+                console.log(localStorage.user_id);
                 localStorage.user_id = res.data.user_id;
                 localStorage.user_real_name = res.data.user_real_name === '' ? '暂无姓名' : res.data.user_real_name;
                 localStorage.user_brand = res.data.user_brand;
@@ -109,7 +110,7 @@
                 this.getCheckUserInfo(localStorage.user_id);
                 // is_exist: 0:新用户;1:老用户;NaN:没有请求过验证码
                 this.loading = false;
-                this.$router.back(-1);
+                this.$router.go(-1);
               } else {
                 error(res.data.error_msg);
                 this.loading = false;
@@ -133,6 +134,7 @@
               if (res.data.status_code === 2000000) {
                 // 将user_id存入sessionStorge并跳转
                 localStorage.user_id = res.data.user_id;
+                console.log(localStorage.user_id);
                 this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
                 localStorage.user_real_name = res.data.user_real_name === '' ? '暂无姓名' : res.data.user_real_name;
                 localStorage.user_brand = res.data.user_brand;
@@ -144,7 +146,7 @@
                 // 重新获取个人标签(因为获取个人标签必须要有user_id)
                 this.$global.func.getWxProjectCategory();
                 this.loading = false;
-                this.$route.back(-1);
+                this.$router.go(-1);
               } else {
                 error(res.data.error_msg);
                 this.loading = false;
