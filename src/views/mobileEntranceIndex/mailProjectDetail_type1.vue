@@ -1,7 +1,7 @@
 <template>
-  <div id='mailProjectDetail_type1'>
+  <div id='mailProjectDetail_type1'  v-loading.fullscreen="loading" element-loading-text="拼命加载中">
+    <!--项目详情-->
     <div >
-      <!--项目详情-->
       <div class="projectMaid">
         <h1 style="font-size: 1rem;">{{projectDetail.pro_intro}}</h1>
         <!--项目标签-->
@@ -78,7 +78,7 @@
         <div class="brandList">
           <div class="main_title flex">
             <div class="text_title ">产品</div>
-            <div class="showAll">全部&nbsp;()</div>
+            <div class="showAll">全部&nbsp;({{projectDetail.brand.length}})</div>
           </div>
           <div class="brand flex" v-for="brand in projectDetail.brand">
             <img src="http://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/image/banner/email/default-logo.jpg" alt="">
@@ -97,18 +97,25 @@
         <div class="financing">
           <div class="main_title flex">
             <div class="text_title ">历史融资</div>
-            <div class="showAll">全部&nbsp;()</div>
+            <div class="showAll">全部&nbsp;({{projectDetail.pro_history_finance.length}})</div>
           </div>
-          <div class="pro_history_finance" v-for="finance in projectDetail.pro_history_finance">
+          <div class="pro_history_finance" v-for="(finance, index) in projectDetail.pro_history_finance">
             <div class="flex size_14">
-              <div class="finance_left">{{finance.finance_time}}</div>
+              <div class="finance_left">{{finance.finance_time | timeToReallTime_pointType}}</div>
               <div class="finance_middle"><img src="../../assets/images/img-dianxx.png" alt=""></div>
               <div class="finance_right">{{finance.pro_finance_scale}}</div>
             </div>
-            <div class='flex'>
-              <div class="finance_left"></div>
+            <div class='flex' style="margin-top: 6px;">
+              <div class="finance_left financingStage size_14 color_3 weight">{{finance.belongs_to_stage.stage_name}}</div>
               <div class="finance_middle"></div>
-              <div class="finance_right"></div>
+              <div class="finance_right financingTag flex">
+                {{finance.pro_finance_investor}}
+              </div>
+              <!--<div class="finance_right financingTag flex">-->
+                <!--<div class="tag size_14 color_3" v-for="tag in finance.investment_list">-->
+                  <!--{{tag.investment_name}}-->
+                <!--</div>-->
+              <!--</div>-->
             </div>
           </div>
         </div>
@@ -129,7 +136,7 @@
               <div class="size_13" style="color: #f6a623;margin-top: .4rem;">{{projectDetail.pro_finance_value}}</div>
             </div>
           </div>
-          <div class="size_15">资金用途</div>
+          <div class="size_15" style="margin-top: 1rem;">资金用途</div>
           <div class="financingUseFor size_14 color_6">
             {{projectDetail.pro_finance_use}}
           </div>
@@ -146,21 +153,21 @@
           <div class="teamMember" v-for='member in projectDetail.core_users'>
             <div class="top flex">
               <!--<img class="left" src="" alt="">-->
-              <div class="left headPic">{{member.ct_member_name}}</div>
+              <div class="left headPic">{{member.ct_member_name.substring(0,1)}}</div>
               <div class="right">
                 <div style="margin-bottom: .3rem;">
                   <span class="name size_15 ">{{member.ct_member_name}}</span>
                   <span class="career size_12 color_6">{{member.ct_member_career}}</span>
                 </div>
                 <div class="size_12">
-                  <span class="stock_scaleText">股权比例:</span>
-                  <span class="stock_scale">{{member.stock_scale}}</span>
+                  <span class="stock_scaleText">股权比例 &nbsp;:</span>
+                  <span class="stock_scale">{{member.stock_scale}}%</span>
                 </div>
               </div>
             </div>
             <div class="bottom flex">
               <div class="left"></div>
-              <div class="right size_15 color_6">{{member.ct_member_intro}}</div>
+              <div class="right size_13 color_6">{{member.ct_member_intro}}</div>
             </div>
           </div>
         </div>
@@ -171,11 +178,11 @@
             <div class="showAll">全部&nbsp;({{projectDetail.pro_develop.length}})</div>
           </div>
           <div class="pro_develop size_14 flex" v-for='item in projectDetail.pro_develop'>
-            <div class='left'>{{item.created_at}}</div>
+            <div class='left size_14 color_6'>{{item.created_at | timeToReallTime_lineTopoint}}</div>
             <div class='middle'>
               <img src="../../assets/images/img-dianxx.png" alt="">
             </div>
-            <div class='right'>{{item.dh_event}}</div>
+            <div class='right size_13 color_3'>{{item.dh_event}}</div>
           </div>
         </div>
         <!--留空div-->
@@ -268,9 +275,7 @@
         projectUser: ''
       };
     },
-    computed: {
-
-    },
+    computed: {},
     components: {
       getContact
     },
@@ -345,16 +350,18 @@
         if (!validata.checkEmail(this.email)) {
           warning('邮箱格式不正确');
         } else {
-          this.getEmail = false;
+          this.loading = true;
           this.$http.post(this.URL.mail_sendBp, {
             user_id: localStorage.user_id,
             project_id: this.project_id,
             email: this.email,
             type: 'email'
           }).then(res => {
-            console.log(res);
             if (res.data.status_code === 2000000) {
               success('BP已成功发送至邮箱');
+              this.getEmail = false;
+              this.bpMethod = false;
+              this.loading = false;
             }
           });
         }
@@ -367,20 +374,24 @@
       },
       // 关闭弹窗_获得联系方式
       closeGetContact (text) {
-        this.checkLoginStatus(x => {
-          this.$http.post(this.URL.mail_createInterview, {
-            user_id: localStorage.user_id,
-            project_id: this.project_id,
-            remark: text
-          }).then(res => {
-            if (res.data.status_code === 2000000) {
-              success('已进行预约,请耐心等待回复');
-            } else {
-              warning(res.data.error_msg);
-            }
+        if (text) {
+          this.checkLoginStatus(x => {
+            this.$http.post(this.URL.mail_createInterview, {
+              user_id: localStorage.user_id,
+              project_id: this.project_id,
+              remark: text
+            }).then(res => {
+              if (res.data.status_code === 2000000) {
+                success('已进行预约,请耐心等待回复');
+              } else {
+                warning(res.data.error_msg);
+              }
+            });
+            this.dialogVisible = false;
           });
+        } else {
           this.dialogVisible = false;
-        });
+        }
       },
       // BP预览
       preview () {
@@ -497,7 +508,6 @@
       margin-top: 10/16rem;
       padding: 1rem 21/16rem 1rem 1rem;
       img{
-        background-color: red;
         border-radius: 50%;
         width: 2.25rem;
         height: 2.25rem;
@@ -529,8 +539,8 @@
       margin-top: 1rem;
       padding: 1rem;
       .intro_tags {
-        margin-top: 1rem;
-        margin-bottom: .25rem;
+        margin-top: 1.25rem;
+        margin-bottom: 1.25rem;
         flex-wrap:wrap;
         .tag{
           padding: .25rem .5rem;
@@ -544,6 +554,7 @@
       }
       .intro_item{
         font-size: 14/16rem;
+        margin-bottom: 1rem;
         span:first-child{
           margin-right: 1rem;
         }
@@ -551,6 +562,7 @@
     }
     .brandList{
       padding: 1rem;
+      margin-top: 1rem;
       .brand_title{
         justify-content: space-between;
         align-items: baseline;
@@ -582,18 +594,40 @@
     }
     .financing{
       padding: 1rem;
-      .finance_left{
-        flex: 50;
-      }
-      .finance_middle{
-        flex:33;
-      }
-      .finance_right{
-        flex:246;
+      margin-top: 1rem;
+      .pro_history_finance {
+        div{
+          align-items: center;
+        }
+        margin-bottom: 1.25rem;
+        .finance_left {
+          flex: 56;
+          text-align: right;
+        }
+        .finance_middle {
+          flex: 33;
+          img {
+            display: block;
+            width: 12/16rem;
+            height: 12/16rem;
+            margin: 0 auto;
+          }
+        }
+        .finance_right {
+          flex: 246;
+          .financingMoney {
+            color: #fc703e;
+          }
+          .tag {
+            margin-right: 1rem;
+            margin-bottom: .75rem;
+          }
+        }
       }
     }
     .financingInfo{
       padding:1rem;
+      margin-top: 1rem;
       .size_15{
         margin-bottom: 1rem;
       };
@@ -607,6 +641,7 @@
     }
     .coreTeam{
       padding: 1rem;
+      margin-top: 1rem;
       .intro_tags {
         margin-bottom: 25/16rem;
         flex-wrap: wrap;
@@ -636,6 +671,7 @@
         }
         .stock_scale{
           color: #F6A623;
+          margin-left: 1rem;
         }
         .left{
           flex: 53;
@@ -645,7 +681,7 @@
           flex: 256;
         }
         .bottom{
-          margin-top: .5rem;
+          margin-top: 18/16rem;
         }
       }
     }
@@ -657,6 +693,7 @@
       .middle{
         flex: 36;
         img{
+          margin: 0 auto;
           display: block;
           width: .75rem;
           height: .75rem;
@@ -664,6 +701,10 @@
       }
       .right{
         flex: 252;
+        line-height: 1.25rem;
+      }
+      .pro_develop{
+        align-items: center;
       }
     }
     .btn_group{
