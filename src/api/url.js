@@ -220,13 +220,15 @@ export default
   mail_getProjectDetail_scrapy: '/api/mobile/scrapyProject', // 爬虫怕取的项目详情
   mail_createInterview: '/api/mobile/createInterview', // 项目约谈
   mail_createInterview2: 'api/mobile/createSourceInterview', // 项目约谈_爬虫项目
-  mail_sendBp: '/api/mobile/emailForBp' // 发送BP
+  mail_sendBp: '/api/mobile/emailForBp', // 发送BP
 
   // 我的活动
   uploadImage: 'api/activity/uploadImage?token=', // 我的活动上传图片
   deleteActivityImage: 'api/activity/deleteImage', // 删除图片
   getActivity: 'api/activity/getActivity', // 获取活动基本信息
   editActivity: 'api/activity/editActivity', // 创建 / 编辑活动
-  getActivityApplyUser: 'api/activity/getActivityApplyUser' // 活动报名签到成员
+  getActivityApplyUser: 'api/activity/getActivityApplyUser', // 活动报名签到成员
+  getActivityList: 'api/activity/getActivityList', // 活动列表
+  deleteActivity: 'api/activity/deleteActivity' // 删除活动
 
 };

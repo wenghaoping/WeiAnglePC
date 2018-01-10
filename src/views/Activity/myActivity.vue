@@ -16,7 +16,7 @@
           <el-button type="primary" size="large" @click="addContacts">创建活动</el-button>
         </div>
       </div>
-      <div class="top-lists" style="cursor: pointer">
+      <div class="top-lists">
         <template>
           <el-table :data="tableData"
                     :show-header="false"
@@ -24,8 +24,13 @@
                     element-loading-text="拼命加载中">
             <el-table-column label="图片" width="170">
               <template slot-scope="scope">
-                <div class="my_heardimg">
-                  <img :src="scope.row.activity_theme_image">
+                <div class="my_heardimg relative">
+                  <img :src="scope.row.activity_theme_image" v-if="scope.row.activity_theme_image !== ''">
+                  <img src="../../assets/images/morenIMG.png" v-else>
+                  <div class="isSign absolute">
+                    <img src="../../assets/images/isSign.png" v-if="scope.row.is_end === 0">
+                    <img src="../../assets/images/noSign.png" v-if="scope.row.is_end === 1">
+                  </div>
                 </div>
               </template>
             </el-table-column>
@@ -39,19 +44,25 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="报名" min-width="100">
+            <el-table-column label="报名" width="110">
               <template slot-scope="scope">
                 <p class="my_sign tc">{{scope.row.activity_apply | nullToB}}</p>
                 <p class="is_sign tc cursor">已报名</p>
-                <p class="is_img tc cursor position_center_auto relative"><img :src="scope.row.activity_theme_image"></p>
+                <div class="position_center_auto relative">
+                  <!--<p class="is_img tc cursor fl"><img :src="scope.row.activity_theme_image"></p>-->
+                  <el-button type="text" :disabled="true">报名二维码</el-button>
+                </div>
               </template>
             </el-table-column>
 
-            <el-table-column label="报名2" width="100">
+            <el-table-column label="报名2" width="110">
               <template slot-scope="scope">
                 <p class="my_sign tc">{{scope.row.activity_sign | nullToB}}</p>
                 <p class="is_sign tc cursor">已签到</p>
-                <p class="is_img tc cursor position_center_auto relative"><img :src="scope.row.activity_theme_image"></p>
+                <div class="position_center_auto relative">
+                  <!--<p class="is_img tc cursor fl"><img :src="scope.row.activity_theme_image"></p>-->
+                  <el-button type="text">签到二维码</el-button>
+                </div>
               </template>
             </el-table-column>
 
@@ -62,11 +73,13 @@
               <template slot-scope="scope">
                 <el-button
                   type="text"
+                  @click="handleEdit(scope.row)"
                   size="small">
                   编辑
                 </el-button>
                 <el-button
                   type="text"
+                  @click="handleDelete(scope.row)"
                   size="small">
                   删除
                 </el-button>
@@ -79,12 +92,12 @@
             </el-table-column>
 
           </el-table>
-          <div class="pagenav" v-if="totalData > 10">
+          <div class="pagenav" v-if="totalData > 5">
             <el-pagination
               small
               @current-change="filterChangeCurrent"
               :current-page.sync="currentPage"
-              :page-size="10"
+              :page-size="5"
               layout="total, prev, pager, next"
               :total="totalData">
             </el-pagination>
@@ -100,8 +113,6 @@
 <script type="text/ecmascript-6">
   import alertMember from '@/views/components/alertMember.vue';
   import { error, success } from '@/utils/notification';
-  import * as formatData from '@/utils/formatData';
-  import { isArray } from '@/utils/validata';
   import { getTop } from '@/utils';
   export default {
     data () {
@@ -114,9 +125,9 @@
         getCon: {}, // 筛选的请求参数
         // 列表数据
         tableData: [
-          {
-            activity_id: 'KQWNOp18',
-            activity_title: '第一届中国微天使节和第二十届中国BD岁末嘉年华（杭州场）开始报名啦！',
+          /* {
+            activity_id: '',
+            activity_title: '',
             activity_user: '',
             activity_address: '浙江省杭州市西湖区文一西路588号中节能西溪首座B3-51信用卡-1楼江省杭州市西湖区文一西路58vv',
             activity_theme_image: 'https://i.imgur.com/SgDpf8x.jpg',
@@ -125,39 +136,33 @@
             is_end: 0,
             activity_apply: 2, // 报名人数
             activity_sign: 1 // 签到人数
-          }
+          } */
         ]
       };
     },
     components: { alertMember },
     methods: {
-      // 跳转到人脉详情页面传参数
-      handleSelect (row, event, column) {
-        if (column.label !== '重置') {
-          this.$router.push({name: 'contactsDetails', query: {user_id: row.user_id, card_id: row.card_id, investor_id: row.investor_id}});
-          this.setRouterData();
-        }
-      },
       // 点击编辑按钮,跳转
-      handleEdit (index, row) {
+      handleEdit (row) {
         this.$router.push({name: 'creatActivity', query: {activity_id: row.activity_id}});
       },
       // 点击删除按钮
-      handleDelete (index, row) {
-        this.setRouterData();
-        this.$confirm('此操作将永久删除该人脉, 是否继续?', '提示', {
+      handleDelete (row) {
+        this.$confirm('此操作将永久删除该活动, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.zgClick('删除人脉');
           this.loading = true;
-          this.$http.post(this.URL.deleteConnectUser, {user_id: localStorage.user_id, card_id: row.card_id})
+          this.$http.post(this.URL.deleteActivity, {user_id: localStorage.user_id, activity_id: row.activity_id})
             .then(res => {
+              if (res.data.status_code === 2000000) {
+                success('删除成功');
+                this.filterChangeCurrent(this.currentPage || 1);
+              } else {
+                error(res.data.error_msg);
+              }
               this.loading = false;
-              success('删除成功');
-              this.getRouterData();
-              this.filterChangeCurrent(this.currentPage || 1);
             })
             .catch(err => {
               this.loading = false;
@@ -182,10 +187,9 @@
           this.loading = true;
           this.getCon.user_id = localStorage.user_id;
           this.getCon.search = this.searchinput;
-          this.$store.state.pageANDSelect.conSearchinput = this.searchinput;
           this.currentPage = 1;
           this.getCon.page = 1;
-          this.$http.post(this.URL.getConnectUser, this.getCon)
+          this.$http.post(this.URL.getActivityList, this.getCon)
             .then(res => {
               let data = res.data.data;
               this.tableData = this.setProjectList(data);
@@ -205,7 +209,7 @@
         this.loading = true;
         this.getCon.user_id = localStorage.user_id;
         this.getCon.page = page;// 控制当前页码
-        this.$http.post(this.URL.getConnectUser, this.getCon)
+        this.$http.post(this.URL.getActivityList, this.getCon)
           .then(res => {
             let data = res.data.data;
             this.tableData = this.setProjectList(data);
@@ -223,28 +227,16 @@
         let arr = [];
         for (let i = 0; i < list.length; i++) {
           let obj = [];
-          obj.user_id = list[i].user_id;
-          obj.user_avatar_url = list[i].user_avatar_url;
-          obj.user_real_name = list[i].user_real_name;// 姓名
-          obj.user_avatar_url_change = formatData.setUrlChange(list[i].user_avatar_url, list[i].user_real_name);// 代替名称
-          obj.is_add = list[i].is_add;// 标签
-          obj.is_bind = list[i].is_bind;// 编辑
-          obj.user_company_career = list[i].user_company_career;// 职位
-          obj.user_company_name = list[i].user_company_name;// 公司名称
-          obj.user_brand = list[i].user_brand;// 品牌
-          obj.user_mobile = list[i].user_mobile;// 手机
-          obj.user_email = list[i].user_email;// 邮箱
-          obj.user_invest_industry = formatData.setTagToString(list[i].user_invest_industry, 'industry_name');// 投资领域
-          obj.user_invest_stage = formatData.setTagToString(list[i].user_invest_stage, 'stage_name');// 投资轮次
-          obj.tag = formatData.setTagToString(list[i].user_invest_tag, 'tag_name');// 标签
-          obj.tagArray = list[i].user_invest_tag;// 标签
-          obj.login_time = list[i].login_time;// 活跃时间
-          obj.card_id = list[i].card_id;// 活跃时间
-          obj.investor_id = list[i].investor_id;// 活跃时间
-          obj.type = list[i].type;// 类型
-          obj.is_judge = list[i].is_judge;// 是否是评委
-          obj.schedule = isArray(list[i].schedule) ? '' : list[i].schedule.schedule_name;// 评分阶段
-          obj.schedule_id = isArray(list[i].schedule) ? '' : list[i].schedule.schedule_id;// 评分阶段
+          obj.activity_id = list[i].activity_id;
+          obj.activity_title = list[i].activity_title;
+          obj.activity_user = list[i].activity_user;
+          obj.activity_address = list[i].activity_address;
+          obj.activity_theme_image = list[i].activity_theme_image;
+          obj.start_time = list[i].start_time;
+          obj.end_time = list[i].end_time;
+          obj.is_end = list[i].is_end;
+          obj.activity_apply = list[i].activity_apply;
+          obj.activity_sign = list[i].activity_sign;
           arr.push(obj);
         }
         return arr;
@@ -261,18 +253,16 @@
       }
     },
     created () {
-//      getTop();
-//      this.getRouterData();
-//      this.loading = true;
-//      this.is_competition = localStorage.is_competition;
-//      this.$global.func.getWxProjectCategory()
-//        .then((data) => {
-//          return this.getWxProjectCategory();
-//        })
-//        .then((data) => {
-//          return this.filterChangeCurrent(this.currentPage || 1);
-//        });
-//      this.titleSift();
+      getTop();
+      this.loading = true;
+      this.is_competition = localStorage.is_competition;
+      this.$global.func.getWxProjectCategory()
+        .then((data) => {
+          return this.getWxProjectCategory();
+        })
+        .then((data) => {
+          return this.filterChangeCurrent(this.currentPage || 1);
+        });
     }
   };
 </script>
@@ -301,8 +291,24 @@
         }
       }
     }
+    .el-table::after{
+      width: 0px!important;
+    }
+    .el-table::before{
+      width: 0px!important;
+    }
     .el-table{
+      border: none;
       margin-top: 48px;
+      td, .el-table th.is-leaf{
+        border: none;
+      }
+      .el-table__body-wrapper{
+        .el-table__row{
+          margin-bottom: 17px;
+          height: 150px;
+        }
+      }
     }
     .my_heardimg{
       border-radius:4px;
@@ -310,6 +316,15 @@
       height:120px;
       img{
         width: 100%;
+      }
+      .isSign{
+        width: 53px;
+        height: 25px;
+        img{
+          width: 100%;
+        }
+        left: -8px;
+        top: 6px;
       }
     }
     .my_title{

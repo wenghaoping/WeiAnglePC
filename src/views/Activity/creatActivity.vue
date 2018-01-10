@@ -206,7 +206,7 @@
     data () {
       return {
         loading: false,
-        activity_id: 'KQWNOp18', // 获取路由过来的数据
+        activity_id: '', // 获取路由过来的数据
         activityMust: false, // 验证
         activityShow: true, // 活动显示隐藏
         activityDeatilShow: true, // 活动详情显示隐藏
