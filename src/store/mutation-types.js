@@ -9,7 +9,6 @@ export const CONTACT_CHANGE = 'CONTACT_CHANGE'; // 项目详情 / 跟进列表 =
 export const FOLLOWUP_CHANGE = 'FOLLOWUP_CHANGE'; // 项目详情 => 跟进弹框
 export const ALERT_PROJECT_CHANGE = 'ALERT_PROJECT_CHANGE'; // 人脉详情 => 项目详情弹框
 
-
 // 项目推送相关弹框
 export const PROJECT_PUSH_TO_PRO_CHANGE = 'PROJECT_PUSH_TO_PRO_CHANGE'; // 项目推送项目入口（多选）
 export const PROJECT_PUSH_TO_CON_CHANGE = 'PROJECT_PUSH_TO_CON_CHANGE'; // 项目推送人脉入口（单选）

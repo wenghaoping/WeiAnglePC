@@ -138,7 +138,7 @@
       },
       methods: {
         handleClose () {
-          this.$store.dispatch('AllMemberControl', false);
+          this.$store.dispatch('memberControl', false);
         },
         // 控制页码
         filterChangeCurrent (page = 1) {
@@ -184,6 +184,8 @@
         memberDisplay: function (e) {
           if (e) {
             this.filterChangeCurrent(1);
+          } else {
+            this.$store.dispatch('AllMemberControl', false);
           }
         }
       }

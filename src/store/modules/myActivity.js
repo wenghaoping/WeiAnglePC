@@ -17,7 +17,6 @@ export default {
     },
     // 控制关闭所有,切清空函数
     [types.ALL_CHANGE] (state, dispaly) {
-      state.memberDisplay = false;
       state.activityId = '';
       state.isSign = 1;
     }

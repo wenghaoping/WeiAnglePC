@@ -1,5 +1,5 @@
 <template>
-  <div id="mycontacts" class="myActivity">
+  <div class="myActivity">
     <!-- 右侧底部主内容区 -->
     <div class="wrap-left">
       <div class="top-search-box clearfix">
@@ -16,262 +16,68 @@
           <el-button type="primary" size="large" @click="addContacts">创建活动</el-button>
         </div>
       </div>
-      <!--<div class="top-lists" style="cursor: pointer">
+      <div class="top-lists" style="cursor: pointer">
         <template>
-          <el-table :data="tableData" style="width: 100%"
-                    @row-click="handleSelect"
-                    @header-click="headerClick"
-                    @sort-change="filterChange"
-                    @filter-change="filterChange"
+          <el-table :data="tableData"
+                    :show-header="false"
                     v-loading="loading"
-                    element-loading-text="拼命加载中"
-                    stripe>
-            <el-table-column prop="user_real_name" label="姓名" width="200" show-overflow-tooltip>
+                    element-loading-text="拼命加载中">
+            <el-table-column label="图片" width="170">
               <template slot-scope="scope">
-                <div class="img fl">
-                  <img v-if="scope.row.user_avatar_url!=''" :src="scope.row.user_avatar_url">
-                  <span v-else class="header">{{scope.row.user_avatar_url_change}}</span>
-                </div>
-                <el-tooltip class="fl name" placement="top" :disabled="scope.row.user_real_name.length > 4 ? false:true">
-                  <div slot="content">
-                    <div class="tips-txt">{{scope.row.user_real_name}}</div>
-                  </div>
-                  <div>
-                    {{scope.row.user_real_name}}
-                  </div>
-                </el-tooltip>
-                <span class="fl add" v-if="scope.row.is_add==false"><img src="../../../assets/images/add.png"></span>
-                <div v-if="scope.row.user_real_name.length === 0">
-                  -
+                <div class="my_heardimg">
+                  <img :src="scope.row.activity_theme_image">
                 </div>
               </template>
             </el-table-column>
 
-            <el-table-column prop="user_company_career" label="职位" show-overflow-tooltip width="80">
+            <el-table-column label="题目" width="673">
               <template slot-scope="scope">
-                <div v-if="scope.row.user_company_career==''">
-                  -
-                </div>
-                <div else>
-                  {{scope.row.user_company_career}}
-                </div>
+                <p class="my_title">{{scope.row.activity_title | nullToB}}</p>
+                <p class="my_small_title">主办方：{{scope.row.activity_user | nullToB}}</p>
+                <p class="my_small_title">时间：{{scope.row.start_time | timeToReallTimeAll | nullToB}} ~ {{scope.row.end_time | timeToReallTimeAll | nullToB}}</p>
+                <p class="my_small_title">地点：{{scope.row.activity_address | nullToB}}</p>
               </template>
             </el-table-column>
 
-            <el-table-column prop="card_company_name" label="公司" show-overflow-tooltip width="144">
+            <el-table-column label="报名" min-width="100">
               <template slot-scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.user_company_name.length > 10 ? false:true">
-                  <div slot="content">
-                    <div class="tips-txt">{{scope.row.user_company_name}}</div>
-                  </div>
-                  <div>
-                    {{scope.row.user_company_name}}
-                  </div>
-                </el-tooltip>
-                <div v-if="scope.row.user_company_name.length === 0">
-                  -
-                </div>
+                <p class="my_sign tc">{{scope.row.activity_apply | nullToB}}</p>
+                <p class="is_sign tc cursor">已报名</p>
+                <p class="is_img tc cursor position_center_auto relative"><img :src="scope.row.activity_theme_image"></p>
               </template>
             </el-table-column>
 
-            <el-table-column prop="user_brand" label="品牌" show-overflow-tooltip width="80">
+            <el-table-column label="报名2" width="100">
               <template slot-scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.user_brand.length > 5 ? false:true">
-                  <div slot="content">
-                    <div class="tips-txt">{{scope.row.user_brand}}</div>
-                  </div>
-                  <div>
-                    {{scope.row.user_brand}}
-                  </div>
-                </el-tooltip>
-                <div v-if="scope.row.user_brand.length === 0">
-                  -
-                </div>
-              </template>
-            </el-table-column>
-
-            <el-table-column prop="user_mobile" label="手机" show-overflow-tooltip width="112">
-              <template slot-scope="scope">
-                <div v-if="scope.row.user_mobile==''">
-                  -
-                </div>
-                <div else>
-                  {{scope.row.user_mobile}}
-                </div>
-              </template>
-            </el-table-column>
-
-            <el-table-column prop="user_email" label="邮箱" show-overflow-tooltip width="148">
-              <template slot-scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.user_email.length > 17 ? false:true">
-                  <div slot="content">
-                    <div class="tips-txt">{{scope.row.user_email}}</div>
-                  </div>
-                  <div>
-                    {{scope.row.user_email}}
-                  </div>
-                </el-tooltip>
-                <div v-if="scope.row.user_email.length === 0">
-                  -
-                </div>
-              </template>
-            </el-table-column>
-&lt;!&ndash;不是赛事方列表&ndash;&gt;
-            <el-table-column prop="user_invest_industry" label="投资领域"
-                             show-overflow-tooltip
-                             width="128"
-                             column-key="industry"
-                             :filters="user_invest_industryFilters"
-                             filter-placement="bottom-end"
-                             v-if="is_competition == 'false'">
-              <template slot-scope="scope">
-                  <div>
-                    {{scope.row.user_invest_industry}}
-                  </div>
-                <div v-if="scope.row.user_invest_industry == ''">
-                  -
-                </div>
-              </template>
-            </el-table-column>
-
-            <el-table-column prop="user_invest_stage" label="投资轮次"
-                             show-overflow-tooltip
-                             width="140"
-                             column-key="stage"
-                             :filters="user_invest_stageFilters"
-                             filter-placement="bottom-end"
-                             v-if="is_competition == 'false'">
-              <template slot-scope="scope">
-                  <div>
-                    {{scope.row.user_invest_stage}}
-                  </div>
-                <div v-if="scope.row.user_invest_stage == ''">
-                   -
-                </div>
-              </template>
-            </el-table-column>
-&lt;!&ndash;赛事方列表&ndash;&gt;
-            <el-table-column prop="is_judge" label="是否评委"
-                             show-overflow-tooltip
-                             width="128"
-                             column-key="is_judge"
-                             :filters="is_judgeFilters"
-                             :filter-multiple="stateCheck"
-                             filter-placement="bottom-end"
-                             v-if="is_competition == 'true'">
-              <template slot-scope="scope">
-                <div>
-                  {{scope.row.is_judge}}
-                </div>
-                <div v-if="scope.row.is_judge == ''">
-                  -
-                </div>
-              </template>
-            </el-table-column>
-
-            <el-table-column prop="schedule" label="评分阶段"
-                             show-overflow-tooltip
-                             width="140"
-                             column-key="schedule_id"
-                             :filters="schedule_idFilters"
-                             :filter-multiple="stateCheck"
-                             filter-placement="bottom-end"
-                             v-if="is_competition == 'true'">
-              <template slot-scope="scope">
-                <div>
-                  {{scope.row.schedule}}
-                </div>
-                <div v-if="scope.row.schedule == ''">
-                  -
-                </div>
-              </template>
-            </el-table-column>
-
-            <el-table-column prop="tag" label="标签" show-overflow-tooltip
-                             width="74"
-                             column-key="tag"
-                             :filters="tagFilters"
-                             filter-placement="bottom-end">
-              <template slot-scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.tag.length > 4 ? false:true">
-                  <div slot="content">
-                    <div class="tips-txt">{{scope.row.tag}}</div>
-                  </div>
-                  <div>
-                    {{scope.row.tag}}
-                  </div>
-                </el-tooltip>
-                <div v-if="scope.row.tag.length === 0">
-                  -
-                </div>
-              </template>
-            </el-table-column>
-
-            <el-table-column prop="login_time" label="最近活跃"
-                             width="100" show-overflow-tooltip
-                             column-key="login_time"
-                             :filters="login_timeFilters"
-                             :filter-multiple="stateCheck"
-                             filter-placement="bottom-end"
-                             sortable="custom">
-              <template slot-scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.login_time.length > 4 ? false:true">
-                  <div slot="content">
-                    <div class="tips-txt">{{scope.row.login_time}}</div>
-                  </div>
-                  <div>
-                    {{scope.row.login_time}}
-                  </div>
-                </el-tooltip>
-                <div v-if="scope.row.login_time.length === 0">
-                  -
-                </div>
+                <p class="my_sign tc">{{scope.row.activity_sign | nullToB}}</p>
+                <p class="is_sign tc cursor">已签到</p>
+                <p class="is_img tc cursor position_center_auto relative"><img :src="scope.row.activity_theme_image"></p>
               </template>
             </el-table-column>
 
             <el-table-column
               prop="reset"
               label="重置"
-              width="130" class="edits-btn btn-cur">
+              width="220" class="edits-btn btn-cur">
               <template slot-scope="scope">
-                <div :class="{ prointrolone: is_competition == 'true'}">
-                  <el-button
-                    @click="handlePush(scope.$index, scope.row)"
-                    type="text"
-                    size="small" class="edits-btn btn-cur">
-                    推送
-                  </el-button>
-                  <el-button
-                    type="text"
-                    size="small" class="flow-btn btn-cur" v-if="scope.row.is_bind==0"
-                    @click="handleEdit(scope.$index, scope.row)">
-                    编辑
-                  </el-button>
-                  <el-button
-                    type="text"
-                    size="small" class="flow-btn btn-cur"
-                    v-if="scope.row.is_bind==1"
-                    @click="handleTag(scope.$index, scope.row)">
-                    标签
-                  </el-button>
-                  <el-button
-                    type="text"
-                    size="small" class="send-btn btn-cur"
-                    @click="handleDelete(scope.$index, scope.row)">
-                    删除
-                  </el-button>
-                </div>
-                <div :class="{ prointrolone: is_competition == 'true'}" v-if="is_competition == 'true'">
-                  <el-button
-                    type="text"
-                    size="small"
-                    :disabled="scope.row.type === 'card'"
-                    @click="judgeSetValue(scope.$index, scope.row)">
-                    评委设置
-                  </el-button>
-                </div>
+                <el-button
+                  type="text"
+                  size="small">
+                  编辑
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small">
+                  删除
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small">
+                  导入报名名单
+                </el-button>
               </template>
             </el-table-column>
+
           </el-table>
           <div class="pagenav" v-if="totalData > 10">
             <el-pagination
@@ -284,7 +90,7 @@
             </el-pagination>
           </div>
         </template>
-      </div>-->
+      </div>
     </div>
 
     <alert-member></alert-member>
@@ -294,79 +100,33 @@
 <script type="text/ecmascript-6">
   import alertMember from '@/views/components/alertMember.vue';
   import { error, success } from '@/utils/notification';
-  import { getTitleSift } from '@/utils/setSelect';
   import * as formatData from '@/utils/formatData';
   import { isArray } from '@/utils/validata';
   import { getTop } from '@/utils';
   export default {
     data () {
       return {
-        addTagDislpay: false, // 标签弹框设置
-        judgeDisplay: false, // 设为评委弹框
         close: false,
-        activeName: 'second',
         loading: false, // 加载
         searchinput: '', // 搜索绑定
         totalData: 1, // 总页数
         currentPage: 1, // 当前页数
         getCon: {}, // 筛选的请求参数
-        tagsValue: [], // 标签弹框数据绑定
-        addTags: [], // 人脉标签展示数据
+        // 列表数据
         tableData: [
-          /* {
-           user_avatar_url:"https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83epia77Br2Wk8RiaR8hMAxMG9DerJfzuRCGr5Pf0s2MNDj1FU6dwnpKycchqTRck13S0RTQ6Cg3qZy4A/0",//头像
-           user_avatar_url_change:"翁",//代替图片
-           user_real_name:'翁浩平',//姓名
-           is_add: true,//标签,true显示,false不显示
-           user_company_career:'投资总监',//职位
-           user_company_name:'杭州投着乐网络科技有限公司',//公司名称
-           user_brand:'微天使,FA',//品牌
-           user_mobile: "18910359282",//手机
-           user_email: "123@168.com",//邮箱
-           user_invest_industry: "电子商务",//投资领域
-           user_invest_stage: "种子轮 ",//投资轮次
-           tag:"海龟",//标签
-           tagArray:[],//原版标签,设置标签用的
-           login_time:"刚刚活跃",//最近活跃
-           is_bind:0,//编辑
-           } */
-        ], // 列表数据
-        user_invest_industryFilters: [], // 投资领域筛选条件
-        user_invest_stageFilters: [], // 投资轮次筛选
-        tagFilters: [], // 标签筛选条件
-        is_judgeFilters: [
-          {text: '是', value: 1},
-          {text: '否', value: 0}
-        ], // 是否是评委
-        schedule_idFilters: [], // 评分阶段筛选
-        userMessage: {
-          user_real_name: '', // 姓名
-          user_company_career: '', // 职位
-          user_company_name: ''// 公司名称
-        }, // 传递给推送的数据
-        userEmail: '',
-        tags: {
-          changecont: [], // 项目标签新增
-          index: '', // 取数据保存的位置
-          card_id: ''// 人脉id
-        },
-        multiplelimit: 5, // 标签控制5个
-        timeSelect: '', // 时间选择器
-        pickerOptions: {
-          disabledDate (time) {
-            return time.getTime() > Date.now() - 8.64e7 + 3600 * 1000 * 24;
+          {
+            activity_id: 'KQWNOp18',
+            activity_title: '第一届中国微天使节和第二十届中国BD岁末嘉年华（杭州场）开始报名啦！',
+            activity_user: '',
+            activity_address: '浙江省杭州市西湖区文一西路588号中节能西溪首座B3-51信用卡-1楼江省杭州市西湖区文一西路58vv',
+            activity_theme_image: 'https://i.imgur.com/SgDpf8x.jpg',
+            start_time: 1515377593,
+            end_time: '',
+            is_end: 0,
+            activity_apply: 2, // 报名人数
+            activity_sign: 1 // 签到人数
           }
-        },
-        login_timeFilters: [
-          { text: '刚刚活跃', value: 0 },
-          { text: '一天前活跃', value: 1 },
-          { text: '两天前活跃', value: 2 },
-          { text: '三天前活跃', value: 3 },
-          { text: '一周前活跃', value: 7 }
-        ], // 最近活跃
-        stateCheck: false, // 跟进状态单选
-        is_competition: false, // 是否是赛事方
-        judgeSet: {} // 评委设置数据
+        ]
       };
     },
     components: { alertMember },
@@ -381,13 +141,6 @@
       // 点击编辑按钮,跳转
       handleEdit (index, row) {
         this.$router.push({name: 'creatActivity', query: {activity_id: row.activity_id}});
-      },
-      // 从vuex中取数据
-      getRouterData () {
-        this.getCon = this.$store.state.pageANDSelect.getCon;
-        this.getCon.page = this.$store.state.pageANDSelect.concurrentPage || 1;
-        this.currentPage = this.$store.state.pageANDSelect.concurrentPage || 1;
-        this.searchinput = this.$store.state.pageANDSelect.conSearchinput;
       },
       // 点击删除按钮
       handleDelete (index, row) {
@@ -418,12 +171,6 @@
           });
         });
       },
-      // 点击重置按钮时
-      headerClick (column, event) {
-        if (column.label === '重置') {
-          window.location.reload();
-        }
-      },
       // 添加人脉
       addContacts () {
         this.$router.push({name: 'creatActivity', query: {activity_id: 'creat'}});// 路由传参
@@ -452,39 +199,6 @@
             });
         });
       },
-      // 筛选 ascending升/descending降/
-      filterChange (filters) {
-        this.loading = true;
-        this.currentPage = 1;
-        this.getCon.page = 1;// 控制当前页码
-        this.getCon.user_id = localStorage.user_id;
-        if (filters.order) {
-          if (filters.order === 'ascending') filters.order = 'asc';// 升降序
-          else filters.order = 'desc';
-          this.getCon.order = filters.prop;
-          this.getCon.sort = filters.order;
-        } else {
-          for (let key in filters) {
-            this.getCon[key] = filters[key];
-          }
-        } // 筛选
-        for (let key in this.getCon) {
-          if (this.getCon[key] === '' || this.getCon[key] === 'NaN') {
-            delete this.getCon[key];
-          }
-        }// 删除空的查询项
-        this.$http.post(this.URL.getConnectUser, this.getCon)
-          .then(res => {
-            this.loading = false;
-            let data = res.data.data;
-            this.tableData = this.setProjectList(data);
-            this.totalData = res.data.count;
-          })
-          .catch(err => {
-            this.loading = false;
-            console.log(err);
-          });
-      },
       // 控制页码
       filterChangeCurrent (page) {
         delete this.getCon.page;
@@ -502,24 +216,6 @@
           .catch(err => {
             this.loading = false;
             console.log(err, 2);
-          });
-      },
-      // 获取表头
-      titleSift () {
-        this.$http.post(this.URL.userTitleSift, {user_id: localStorage.user_id})
-          .then(res => {
-            let data = res.data.data;
-            let cardIndustry = data.card_industry;// 投资领域
-            let cardStage = data.card_stage;// 投资轮次
-            let cardTag = data.card_tag;// 标签
-            let schedule = data.schedule;// 标签
-            this.user_invest_industryFilters = getTitleSift(cardIndustry);
-            this.user_invest_stageFilters = getTitleSift(cardStage);
-            this.tagFilters = getTitleSift(cardTag);
-            this.schedule_idFilters = getTitleSift(schedule);
-          })
-          .catch(err => {
-            console.log(err);
           });
       },
       // 总设置列表的数据处理
@@ -582,10 +278,71 @@
 </script>
 
 <style type="text/css" lang="less">
-  @import '../../assets/css/mycontacts';
   .myActivity{
     .wrap-left{
       margin: 24px auto 0;
+      width: 1336px;
+      background: rgb(255, 255, 255);
+      padding: 24px;
+    }
+    .top-search-box {
+      .input-box {
+        height: 36px;
+        line-height: 36px;
+        width: 320px;
+        border-radius: 5px;
+        .el-input {
+          .el-input__inner {
+            font-size: 14px;
+            background: #e5e9f2;
+            border: 0px;
+            border-radius: 2px;
+          }
+        }
+      }
+    }
+    .el-table{
+      margin-top: 48px;
+    }
+    .my_heardimg{
+      border-radius:4px;
+      width:162px;
+      height:120px;
+      img{
+        width: 100%;
+      }
+    }
+    .my_title{
+      font-weight: bold;
+      font-size:20px;
+      color:#1f2d3d;
+      line-height:26px;
+      max-width: 623px;
+      height: 52px;
+      margin-bottom: 6px;
+    }
+    .my_small_title{
+      font-size:13px;
+      color:#8492a6;
+      max-width: 623px;
+    }
+    .my_sign{
+      font-size:28px;
+      color:#1f2d3d;
+    }
+    .is_sign{
+      margin-top: 8px;
+      font-size:13px;
+      color:#475669;
+      text-decoration: underline;
+    }
+    .is_img{
+      width: 18px;
+      height: 18px;
+      margin-top: 8px;
+      img{
+        width: 100%;
+      }
     }
   }
 </style>
