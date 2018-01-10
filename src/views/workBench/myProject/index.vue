@@ -25,12 +25,6 @@
     },
     components: {
       topNav
-    },
-    methods: {
-
-    },
-    created () {
-
     }
   };
 </script>

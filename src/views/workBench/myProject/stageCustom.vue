@@ -53,7 +53,6 @@
     },
     data () {
       return {
-//        stageDisplay: false,
         showList: false,
         customData: {
           customDatas: [
@@ -66,11 +65,6 @@
           ]
         }
       };
-    },
-    computed: {
-    },
-    mounted () {
-
     },
     // 组件
     components: {
@@ -215,8 +209,6 @@
       stageDisplay: function (e) {
         if (e) {
           this.getAllNode();
-        } else {
-
         }
       }// 清空数据
     }

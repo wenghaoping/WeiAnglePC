@@ -53,9 +53,6 @@
     },
     mounted () {
       this.creatObj();
-    },
-    created () {
-
     }
   };
 </script>

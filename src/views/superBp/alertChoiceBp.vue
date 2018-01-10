@@ -21,7 +21,6 @@
   import { error } from '@/utils/notification';
   import choiceBp from '@/views/components/superBp/choiceBp.vue';
   export default {
-    props: {},
     data () {
       return {
         loading: false,
@@ -38,7 +37,6 @@
         bpPage: state => state.superBp.bpPage
       })
     },
-    mounted () {},
     // 组件
     components: {
       choiceBp

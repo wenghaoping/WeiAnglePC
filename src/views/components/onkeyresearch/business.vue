@@ -36,14 +36,7 @@
             <el-col :span="8"><div class="content right">{{business.company.company_business_term}}</div></el-col>
             <el-col :span="4"><div class="content left">登记机关</div></el-col>
             <el-col :span="8"><div class="content right">{{business.company.company_register_office}}</div></el-col>
-            <!--            <el-col :span="4"><div class="content left">发照日期</div></el-col>
-                        <el-col :span="8"><div class="content right"></div></el-col>-->
           </el-row>
-          <!--          <el-row :span="24">
-
-                      &lt;!&ndash;<el-col :span="4"><div class="content left">登记状态</div></el-col>&ndash;&gt;
-                      &lt;!&ndash;<el-col :span="8"><div class="content right"></div></el-col>&ndash;&gt;
-                    </el-row>-->
           <el-row :span="24">
             <el-col :span="4"><div class="left hei">经营范围</div></el-col>
             <el-col :span="20"><div class="hei2" style="padding: 14px 12px 12px 15px;border:1px solid #e0e6ed;margin-right: -8px;background: #ffffff">{{business.company.company_empirical_range}}</div></el-col>
@@ -117,7 +110,6 @@
     </el-tabs>
   </div>
 </template>
-
 <script type="text/ecmascript-6">
   import { setTime } from '@/utils/formatData';
   export default {
@@ -159,7 +151,7 @@
           brand: [{
             com_id: 4,
             company_brand_type: '20',
-            company_brand_registration_number: '17680971A',
+            company_brand_registration_number: '0',
             company_brand_status: '暂无信息',
             company_brand_name: '暂无信息',
             company_brand_time: '暂无信息'
@@ -176,24 +168,25 @@
       };
     },
     methods: {
+      // 获取商标信息
       getCrawlerBrand () {
         let data = this.busData || {};
         setTime(data.company_change, 'company_change_time');
         setTime(data.brand, 'company_brand_time');
         this.business = data;
         this.trademarkMessage = '知识产权-商标信息' + '(' + data.brand.length + ')';
-      }// 获取商标信息
+      }
     },
-    created () {},
     watch: {
+      // 获取公司id
       busData: function () {
         this.getCrawlerBrand();
-      }// 获取公司id
+      }
     }
   };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .mark{
     position: absolute;
     left: 191px;

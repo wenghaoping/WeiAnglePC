@@ -115,7 +115,6 @@
                   <div class="paper" v-if="file.pro_BP.length!=0">
                     <img class="img" style="padding-left: 16px;" src="../../../assets/images/paper.png">
                     <span class="pt">{{file.pro_BP.file_title}}</span>
-                    <!--<el-button type="text" size="mini">查看</el-button>-->
                     <el-button type="text" size="mini" @click="download(file.pro_BP.file_id)">下载</el-button>
                   </div>
                 </div>
@@ -128,7 +127,6 @@
                          <span style="color:#475669;margin-top: -4px">{{goodness1.goodness_title}}&nbsp;:&nbsp;</span>
                       {{goodness1.goodness_desc}}
                        </span>
-                        <!--<span>{{highlights.goodness_desc}}</span>-->
                       </div>
                     </div>
                     <div  v-show="project.goodness.pro_market_genera.length!=0" style="margin-bottom: 20px">
@@ -138,7 +136,6 @@
                          <span style="color:#475669;margin-top: -4px">{{goodness2.goodness_title}}&nbsp;:&nbsp;</span>
                       {{goodness2.goodness_desc}}
                        </span>
-                        <!--<span>{{highlights.goodness_desc}}</span>-->
                       </div>
                     </div>
                     <div v-show="project.goodness.pro_business_model.length!=0" style="margin-bottom: 20px">
@@ -148,7 +145,6 @@
                          <span style="color:#475669;margin-top: -4px">{{goodness3.goodness_title}}</span>&nbsp;:&nbsp;
                       {{goodness3.goodness_desc}}
                        </span>
-                        <!--<span>{{highlights.goodness_desc}}</span>-->
                       </div>
                     </div>
                     <div v-if="project.goodness.pro_service.length!=0"  style="">
@@ -174,14 +170,12 @@
                 <div style="margin-top:32px;"></div>
                 <div class="item" v-show="team.core_users!=''" v-for="bili in team.core_users" style="margin-top:10px;">
                   <el-tooltip class="item" effect="dark"  placement="top">
-                    <!--:disabled="bili.ct_member_name.length > 5 ? false:true"-->
                     <div slot="content">
                       <div class="tips-txt">{{bili.ct_member_name}}</div>
                     </div>
                     <span class="p-name" style="text-align:left;line-height: 44px;width: 90px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{bili.ct_member_name}}</span>
                   </el-tooltip>
                   <el-tooltip class="item" effect="dark"  placement="top-start" >
-                    <!--:disabled="bili.ct_member_name.length > 15 ? false:true"-->
                     <div slot="content">
                       <div class="tips-txt">{{bili.ct_member_career}}</div>
                     </div>
@@ -189,7 +183,6 @@
                   </el-tooltip>
                   <div class="p-gf" style="margin-top: 11px">股权占比 : <span>{{bili.stock_scale}}%</span></div>
                   <div class="p-doc">{{bili.ct_member_intro}}</div>
-                  <!--<div class="line"></div>-->
                 </div>
 
               </div>
@@ -206,7 +199,6 @@
                       <span class="det-title" style="width: 100%;line-height: 21px">公司官网</span>
 
                       <el-tooltip class="item" effect="dark"  placement="top" :disabled="company.pro_website.length > 15 ? false:true">
-                        <!--:disabled="company.pro_website.length > 15 ? false:true"-->
                         <div slot="content">
                           <div class="tips-txt">{{company.pro_website}}</div>
                         </div>
@@ -228,7 +220,6 @@
                   <div class="brand">
                     <div class="brand1" v-for="brandd in brands.brand">
                       <el-tooltip class="item" effect="dark"  placement="top" >
-                        <!--:disabled="brandd.brand_name.length > 15 ? false:true"-->
                         <div slot="content">
                           <div class="tips-txt">{{brandd.brand_name}}</div>
                         </div>
@@ -244,7 +235,6 @@
                       <span class="brand1_lei" v-if="brandd.type_id==8" >微信公众号</span>
                       <span class="brand1_lei" v-if="brandd.type_id==9" >其他</span>
                       <el-tooltip class="item" effect="dark"  placement="top" >
-                        <!--:disabled="brandd.brand_desc.length > 30 ? false:true"-->
                         <div slot="content">
                           <div class="tips-txt">{{brandd.brand_desc}}</div>
                         </div>
@@ -321,9 +311,7 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
-
               </div>
               <!--FA签约协议-->
               <div class="ul-lists" style="margin-top:16px;" >
@@ -342,20 +330,9 @@
                       <p class="det-title">股权赠与</p>
                       <p class="det-info">{{private.stock_right}}%</p>
                     </div>
-                    <!--<div class="rz-detail" style="width: 25%">-->
-                    <!--<p class="det-title">其他权益</p>-->
-                    <!--<p class="det-info">{{project.pro_FA.stock_other}}%</p>-->
-                    <!--</div>-->
-                    <!--<div class="rz-detail" style="width: 25%">-->
-                    <!--<p class="det-title">跟投权</p>-->
-                    <!--<p class="det-info">{{project.pro_FA.stock_follow}}%</p>-->
-                    <!--</div>-->
                   </div>
                   <div class="item"   style="margin-top:24px;height: 34px;" v-show="private.contact_user_name!=''||private.contact_user_career!=''||private.contact_user_mobile!=''">
                     <div class="bot-det" v-show="private.contact_user_name!=''">
-                      <!--<span>项目联系人 : </span>-->
-                      <!--<span>{{project.contact.user_name}}</span>-->
-                      <!--<span>{{project.contact.user_mobile}}</span>-->
                       <span class="det-title">项目联系人:</span>
                       <el-tooltip class="item" effect="dark"  placement="top-start" >
                         <div slot="content">
@@ -394,9 +371,10 @@
               </div>
             </el-tab-pane>
             <el-tab-pane label="跟进记录" name="flow">
-              <folowup :proid="project.project_id" :pro-name="project.pro_intro" :get-data-true="getFollowData"
-                       @getfollowid="getFollowId" @changefollowdata="changefollowdata"
-                       @toDetail="toDetail"></folowup>
+              <folowup :proid="project.project_id"
+                       :get-data-true="getFollowData"
+                       @getfollowid="getFollowId"
+                       @changefollowdata="changefollowdata"></folowup>
             </el-tab-pane>
             <el-tab-pane label="文件管理" name="files">
               <filemanagement :proid="project.project_id"></filemanagement>
@@ -405,14 +383,16 @@
               <onlinedata :proid="project.project_id"></onlinedata>
             </el-tab-pane>
             <el-tab-pane label="项目评价" name="scoreStatistics">
-              <score-statistics :proid="project.project_id" :scheduleid="project.pro_schedule.schedule_id"></score-statistics>
+              <score-statistics :proid="project.project_id"
+                                :scheduleid="project.pro_schedule.schedule_id">
+              </score-statistics>
             </el-tab-pane>
           </el-tabs>
           <div class="ul-lists list tc"  style="padding:0">
             <div class="toButton" style="padding-left: 0;z-index: 111">
               <el-button type="primary" @click="toEdit" class="btn1">编辑</el-button>
               <el-button type="primary" @click="addFollow" class="btn1">写跟进</el-button>
-              <el-button type="primary" @click="projectPush2" class="btn1">项目推送</el-button>
+              <el-button type="primary" @click="projectPushToPro" class="btn1">项目推送</el-button>
             </div>
           </div>
         </div>
@@ -513,13 +493,11 @@
                   <div class="item_lists">
                     <div class="item_list" v-for="projectMatchInvestor in ProjectMatchInvestors" v-if="ProjectMatchInvestors.length!=0">
                       <div class="list_main list_main2">
-                        <div @click="toDetail(projectMatchInvestor)" class="click">
+                        <div @click="toInvestorDetail(projectMatchInvestor)" class="click">
                           <div class="block" style="width: 290px;padding-top: 20px;">
                             <div class="img" v-if="projectMatchInvestor.user_avatar_url!=''"><img :src="projectMatchInvestor.user_avatar_url"></div>
                             <div class="img" v-else><span class="header">{{projectMatchInvestor.user_avatar_txt}}</span></div>
                             <span class="name">{{projectMatchInvestor.investor_name}}</span>
-                            <!--<span class="imgs" v-if="projectMatchInvestor.user_group!=''"><img src="../../../assets/images/renzhen.png"/></span>-->
-                            <!--<span class="ren">{{projectMatchInvestor.user_group}}</span>-->
                           </div>
                           <div class="block" style="margin-left: 78px;">
                             <span class="company">{{projectMatchInvestor.investor_career}}</span>
@@ -536,24 +514,25 @@
                             </span>
                           </div>
                         </div>
-                        <div class="closeTu absolute" @click="industryDelete(projectMatchInvestor)"><i class="el-icon-close"></i></div>
+                        <div class="closeTu absolute cursor" @click="industryDelete(projectMatchInvestor)"><i class="el-icon-close"></i></div>
                         <div class="block clearfix">
                           <div class="fr" style="margin: 15px 21px 24px 0;">
-                            <el-button @click="industryPush(projectMatchInvestor)" v-if="projectMatchInvestor.push_statues==0">提交项目</el-button>
-                            <el-button @click="industryPush(0)" v-if="projectMatchInvestor.push_statues==1">已提交</el-button>
-                            <el-button type="primary" @click="helpKnow(projectMatchInvestor)">帮我引荐</el-button>
+                            <el-button @click="industryPush(projectMatchInvestor)" v-if="projectMatchInvestor.push_status==0">提交项目</el-button>
+                            <el-button @click="industryPush(0)" v-if="projectMatchInvestor.push_status==1">已提交</el-button>
+                            <el-button type="primary" @click="helpKnow(projectMatchInvestor)" v-if="projectMatchInvestor.recommend_status==0">帮我引荐</el-button>
+                            <el-button type="primary" @click="helpKnow(0)" v-if="projectMatchInvestor.recommend_status==1">已引荐</el-button>
                           </div>
                         </div>
                         <div style="border-bottom: 1px solid #eff2f7"></div>
                       </div>
                     </div>
-                    <div class="emptyImg" v-if="ProjectMatchInvestors.length==0">
+                    <div class="emptyImg" v-if="ProjectMatchInvestors.length == 0">
                       <img src="../../../assets/images/zanwushuju.png">
                     </div>
                     <el-pagination
                       class="pagination fr"
                       small
-                      v-if="totalInvestors>5"
+                      v-if="totalInvestors > 5"
                       @current-change="filterChangeInvestors"
                       :current-page.sync="currentPageInvestors"
                       layout="prev, pager, next"
@@ -566,10 +545,9 @@
             </el-collapse-transition>
           </el-tab-pane>
         </el-tabs>
-        <div style="height: 50px;"></div>
+        <div style="height: 100px;"></div>
       </div>
     </div>
-
 
     <!--一键尽调弹窗-->
     <research></research>
@@ -590,37 +568,22 @@
     </el-dialog>
 
     <!--人脉详情弹窗-->
-    <alertcontactsdetail :contact-display="contactDisplay" :cardid="cardid" :userid="userid"
-                         @closeContact="closeContact"></alertcontactsdetail>
+    <alertcontactsdetail></alertcontactsdetail>
 
     <!--写跟进弹框-->
-    <addfollow :follow-display="followDisplay"
-               :projectid="projecmessage.project_id"
-               :projectname="projecmessage.pro_intro"
-               :followid="followid"
-               @closeFollow="closeFollow"></addfollow>
+    <addfollow></addfollow>
 
     <!--项目推送弹窗,项目入口弹窗-->
-    <projectpushtopro :project-push-show2="projectPushDisplay2" :proid="project.project_id"
-                      :pro-name="project.pro_name" :pro-intro="project.pro_intro"   :emitPush="emitPush"
-                      @openPreview="openPreview"
-                      @closeProjectPush2="closeProjectPush2"
-                      @previewPush="previewPush"></projectpushtopro>
+    <projectpushtopro :emitPush="emitPush"></projectpushtopro>
 
     <!--项目推送弹窗,人脉入口弹窗============================-->
-    <projectpush :project-push-show="projectPushDisplay" :user-message="userMessage"
-                 :user-email="userEmail"
-                 @openPreview="openPreview"
-                 @closeProjectPush="closeProjectPush"></projectpush>
+    <projectpush></projectpush>
 
     <!--项目预览弹窗-->
-    <projectpreview :preview-show="previewDisplay" :comeFrom="'project'"
-                    @closePreview="closePreview"
-                    @closePreviewANDProjectPush="closePreviewANDProjectPush"
-                    @previewPush="previewPush"></projectpreview>
+    <projectpreview></projectpreview>
 
     <!--帮我引荐-->
-    <recommend :recommendDisplay="recommendDisplay"></recommend>
+    <recommend></recommend>
   </div>
 </template>
 
@@ -654,21 +617,6 @@
         pinpai: pinpai,
         cirIcon: cirIcon,
         xiaochengxu: xiaochengxu,
-        projectPushDisplay: false, // 项目推送弹框,人脉入口
-        projectPushDisplay2: false, // 项目推送弹框,项目入口
-//        searchDisplay: false, // 一键尽调弹框
-//        companySearchDisplay: false, // 公司搜索弹框
-        contactDisplay: false, // 人脉详情弹窗
-        recommendDisplay: false, // 帮我引荐
-        companyname: '', // 公司名称给一键尽调用的
-        companyid: '', // 公司id给一键尽调用的
-        cardid: '', // 人脉详情弹框用(点击的那个人的cardid)
-        userid: '', // 人脉详情弹框用(点击的那个人的userid)
-        projecmessage: {
-          project_id: '',
-          pro_intro: ''
-        }, // 项目名称,ID
-        followDisplay: false, // 添加意向投资人
         show: 'detail',
         searchName: '',
         form: {
@@ -800,7 +748,6 @@
         totalData: 0, // 总数(意向投资人)
         currentPageInvestors: 1, // 当前第几页(买家图谱)
         totalInvestors: 0, // 总数(买家图谱)
-
         schedule: [{label: '初始值', value: 0}], // 项目进度
         follow_schedule: [/* {
          value: 1,
@@ -871,15 +818,9 @@
         previewDisplay: false, // 项目推送预览显隐控制
         emitPush: false, // 控制项目推送-项目入口的推送函数触发
         getFollowData: false, // 看是否要获取跟进的数据
-        followid: '', // 得到followid
-        userMessage: {
-          user_real_name: '翁浩平', // 姓名
-          user_company_career: '投资总监', // 职位
-          user_company_name: '杭州投着乐网络科技有限公司'// 公司名称
-        }, // 传递给推送的数据
-        userEmail: '',
         scrolled: false,
-        qrImg: '' // 二维码地址
+        qrImg: '', // 二维码地址
+        InvestorType: 'userInfo' // 人脉详情弹框,应该用那种数据设置
       };
     },
     computed: {
@@ -893,7 +834,11 @@
         return this.schedule[this.schedule.length - 1].label;
       },
       ...mapState({
-        companySearchDisplay: state => state.dialogDisplay.companySearchDisplay
+        companySearchDisplay: state => state.dialogDisplay.companySearchDisplay,
+        recommendDisplay: state => state.dialogDisplay.recommendDisplay,
+        followDisplay: state => state.dialogDisplay.followDisplay,
+        projectPushToProDisplay: state => state.pushProject.projectPushToProDisplay,
+        projectPushToConDisplay: state => state.pushProject.projectPushToConDisplay
       })
     },
     components: {
@@ -915,16 +860,9 @@
       // 点击写跟近按钮
       addFollow () {
         this.zgClick('添加跟进');
-        this.followid = '';
-        this.followDisplay = true;
-        this.projecmessage.project_id = this.project.project_id;
-        this.projecmessage.pro_intro = this.project.pro_intro;
-      },
-      // 关闭添加跟进
-      closeFollow (msg) {
-        this.followDisplay = msg;
-        this.getEnjoyedInvestors();
-        this.getFollowData = true;
+        this.$store.dispatch('setFollowId', '');
+        this.$store.dispatch('followControl', true);
+        this.$store.dispatch('setFollowUp', {projectId: this.project.project_id, projectIntro: this.project.pro_intro});
       },
       // 关闭添加跟进重置
       changefollowdata () {
@@ -934,7 +872,7 @@
       // 下载文件
       download (e) {
         const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + e;
-        window.location.href = url;
+        window.open(url);
       },
       // 远程数据模拟
       loadData (arr) {
@@ -966,7 +904,6 @@
       // 一键尽调按钮
       goOnkey () {
         if (this.project.pro_company_name === '') {
-//          this.companySearchDisplay = true;
           this.$store.dispatch('companySearchControl', true);
         } else {
           this.loading = true;
@@ -974,19 +911,14 @@
             .then(res => {
               let data = res.data.data;
               if (data.length === 0) { // 搜索不到信息
-//                this.companySearchDisplay = true;
                 this.$store.dispatch('companySearchControl', true);
                 this.searchName = this.project.pro_company_name;
-                this.companyname = this.project.pro_company_name;
                 this.seachCompanys = [{company_name: '匹配不到你要搜索的公司,请重新继续输入', com_id: -2}];
                 this.loading = false;
               } else { // 搜索到了
                 this.loading = false;
-//                this.searchDisplay = true;
                 this.$store.dispatch('setSearchCompany', {companyId: data.company.com_id, companyName: this.project.pro_company_name});
                 this.$store.dispatch('searchControl', true);
-                /* this.companyid = data.company.com_id;
-                this.companyname = this.project.pro_company_name; */
               }
             })
             .catch(err => {
@@ -1007,19 +939,13 @@
           }).then(() => {
             this.$http.post(this.URL.updateProjectCompany, {user_id: localStorage.user_id, pro_company_name: data.newName, project_id: this.project.project_id})
               .then(res => {
-//                console.log(res);
                 if (res.data.status_code === 2000000) {
                   success('修改成功');
                   if (data.com_id !== -1) {
-//                    this.companySearchDisplay = false;
                     this.$store.dispatch('companySearchControl', false);
                     this.$store.dispatch('setSearchCompany', {companyId: data.com_id, companyName: data.newName});
-                    /* this.companyid = data.com_id;
-                    this.companyname = data.newName; */
-//                    this.searchDisplay = true;
                     this.$store.dispatch('searchControl', true);
                   } else {
-//                    this.companySearchDisplay = false;
                     this.$store.dispatch('companySearchControl', false);
                   }
                 }
@@ -1028,14 +954,12 @@
                 console.log(err);
               });
           }).catch(() => {
-//            this.companySearchDisplay = false;
             this.$store.dispatch('companySearchControl', false);
           });
         }
       },
       // 关闭搜索弹框
       dialogVisibleTo () {
-//        this.companySearchDisplay = false;
         this.$store.dispatch('companySearchControl', false);
       },
       // 输入搜索
@@ -1054,38 +978,7 @@
       goBack () {
         if (this.activeFrom === 0) this.$router.push({name: 'myProject', query: {activeTo: 0}});
         else if (this.activeFrom === 2) this.$router.push({name: 'followUp', query: {activeTo: 2}});// 路由传参
-      },
-      // 传递给一键尽调窗口
-      closeSearchDisplay (msg) {
-        this.searchDisplay = msg;
-        if (!msg) {
-          this.getProjectDetail();
-        }
-      },
-      // 传递给一键尽调搜索窗口
-      closeCompanySearchDisplay (msg) {
-        this.companySearchDisplay = msg;
-      },
-      // 人脉详情弹窗关闭
-      closeContact (msg) {
-        this.contactDisplay = msg;
-      },
-      // 关闭项目推送弹框(人脉入口)
-      closeProjectPush (msg) {
-        this.projectPushDisplay = msg;
-        this.getAllData();
-      },
-      // 关闭项目推送弹框(项目入口)
-      closeProjectPush2 (msg) {
-        this.projectPushDisplay2 = msg;
-        this.getAllData();
-      },
-      // 关闭预览AND关闭项目推送1,关闭项目推送2
-      closePreviewANDProjectPush (msg) {
-        this.projectPushDisplay = false;
-        this.projectPushDisplay2 = false;
-        this.previewDisplay = false;
-        this.getAllData();
+        this.$store.dispatch('clearProjectMessage', false);
       },
       // 项目来源编辑
       getProjectTag (arr) {
@@ -1099,13 +992,7 @@
       },
       // 项目来源编辑
       getteam_tag (arr) {
-        let str = [];
-        for (let i = 0; i < arr.length; i++) {
-          if (arr[i].type === 1) {
-            str.push(arr[i].tag_name);
-          }
-        }
-        return str;
+        return arr.filter(e => e.type === 1).map(item => item.tag_name);
       },
       // 链接跳转
       urlOpen (url) {
@@ -1130,7 +1017,6 @@
               } else {
                 let data = res.data.data;
                 // 项目介绍
-//              if(data.project.pro_company_name==''){data.project.pro_company_name=='-'}
                 if (data.project.pro_scale === '') { data.project.pro_scale = {}; data.project.pro_scale.scale_money = ' '; }
                 if (data.project.pro_area === '') { data.project.pro_area = {}; data.project.pro_area.area_title = ' '; }
                 if (data.project.pro_stage === '') { data.project.pro_stage = {}; data.project.pro_stage.stage_name = ' '; }
@@ -1164,7 +1050,7 @@
                 this.brands = data.brands;
 
                 if (data.pro_schedule === '') { data.pro_schedule = {}; data.pro_schedule.schedule_name = ''; data.pro_schedule.schedule_id = ''; }
-
+                this.$store.dispatch('setFollowUp', {projectId: this.project.project_id, projectIntro: this.project.pro_intro});
                 resolve(3);
                 this.loading = false;
               }
@@ -1187,8 +1073,8 @@
         });
       },
       // 项目推送入口,项目入口
-      projectPush2 () {
-        this.projectPushDisplay2 = true;
+      projectPushToPro () {
+        this.$store.dispatch('projectPushToProControl', true);
         this.zgClick('推送项目');
       },
       // 获取id
@@ -1204,9 +1090,15 @@
       },
       // 打开人脉详情弹窗
       toDetail (data) {
-        this.cardid = data.card_id;
-        this.userid = data.user_id;
-        this.contactDisplay = true;
+        this.$store.dispatch('setConnectDeatil', {cardId: data.card_id, userId: data.user_id, type: 'userInfo'});
+        this.$store.dispatch('contactControl', true);
+      },
+      // 买家图谱 => 打开投资人详情
+      toInvestorDetail (data) {
+        this.$store.dispatch('setFollowUp', {projectId: this.project.project_id, projectIntro: ''});
+        this.$store.dispatch('setConnectDeatil', {type: 'InvestorInfo'});
+        this.$store.dispatch('setMatchInvestorsData', data); // 设置买家图谱所需要的数据
+        this.$store.dispatch('contactControl', true);
       },
       // hold切换后
       selectChange2 (e) {
@@ -1241,6 +1133,7 @@
         else this.tabs = false;
       },
       // 设置意向投资人右边
+
       // 获取意向项目数据(图表)
       async getEchartData () {
         return new Promise((resolve, reject) => {
@@ -1265,7 +1158,6 @@
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.getConCon.user_id = localStorage.user_id;
-//      this.getPra.user_id="2rzyz5vp";
           this.currentPage = 1;
           this.getConCon.project_id = this.project.project_id;
           this.getConCon.page = 1;
@@ -1510,7 +1402,8 @@
           obj.original_id = x.original_id;
           obj.recommend_status = x.recommend_status;
           obj.wts_match_weight = x.wts_match_weight;
-          obj.push_statues = x.push_statues;
+          obj.push_status = x.push_status;
+          obj.investor_email = x.investor_email;
           newArr.push(obj);
         });
         return newArr;
@@ -1520,7 +1413,6 @@
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.getInvestors.user_id = localStorage.user_id;
-//      this.getPra.user_id="2rzyz5vp";
           this.currentPageInvestors = 1;
           this.getInvestors.project_id = this.project.project_id;
           this.getInvestors.page = 1;
@@ -1544,7 +1436,6 @@
         getTop();
         this.loading = true;
         this.getInvestors.user_id = localStorage.user_id;
-//      this.getPra.user_id="2rzyz5vp";
         this.currentPageInvestors = page;
         this.getInvestors.project_id = this.project.project_id;
         this.getInvestors.page = page;
@@ -1569,26 +1460,21 @@
           warning('已提交');
         } else {
           this.zgClick('推送项目');
-          this.userMessage.user_real_name = data.user_real_name;
-          this.userMessage.user_company_career = data.user_company_career;
-          this.userMessage.user_company_name = data.user_company_name;
-          this.userMessage.card_id = data.card_id;
-          if (data.type === 'user') {
-            this.userMessage.card_id = data.user_id;
-          }
-          this.userMessage.type = data.type || '';
-          this.userEmail = data.user_eamil;
-          this.$store.state.pushProject.projectMessgae = {pro_id: this.project.project_id || '', pro_intro: this.project.pro_intro || ''};
-          this.$store.state.pushProject.pushMessage.investor_id = data.investor_id;
-          this.projectPushDisplay = true;
-          this.pushData.email = data.user_eamil;
-          this.pushData.project_id = this.project.project_id;
+          let obj = {
+            user_real_name: data.investor_name,
+            user_company_career: data.investor_career,
+            user_company_name: data.investor_company,
+            investor_id: data.investor_id,
+            investor_email: data.investor_email
+          };
+          this.$store.dispatch('setMatchInvestorsData', data); // 设置买家图谱所需要的数据
+          this.$store.dispatch('setUserMessage', obj);
+          this.$store.dispatch('projectPushToConControl', true);
         }
       },
       // 买家图谱人脉删除
       industryDelete (data) {
         let delData = {};
-        console.log(data);
         delData.user_id = localStorage.user_id;
         delData.investor_id = data.investor_id;
         delData.project_id = this.project.project_id;
@@ -1599,11 +1485,13 @@
         }).then(() => {
           this.zgClick('买家图谱移除');
           this.loading = true;
-          this.$http.post(this.URL.exceptMatchAction, delData)
+          this.$http.post(this.URL.removeInvestor, delData)
             .then(res => {
               if (res.data.status_code === 2000000) {
                 success('移除成功');
                 this.getProjectMatchInvestors();
+              } else {
+                error(res.data.error_msg);
               }
               this.loading = false;
             })
@@ -1621,29 +1509,19 @@
       },
       // 帮我引荐
       helpKnow (data) {
-        this.$store.dispatch('setMatchInvestorsData', data);
-        console.log(data);
-        this.recommendDisplay = true;
+        if (data === 0) {
+          warning('已引荐');
+        } else {
+          this.$store.dispatch('setMatchInvestorsData', data); // 设置买家图谱所需要的数据
+          this.$store.dispatch('recommendControl', true);
+        }
       },
       // 编辑跟进记录
       // 拿到跟进记录id
       getFollowId (id) {
-        this.followDisplay = true;
-        this.followid = id;
         this.getFollowData = false;
-      },
-      // 项目推送
-      // 打开项目预览
-      openPreview (msg) {
-        this.previewDisplay = msg;
-      },
-      // 项目推送预览隐藏
-      previewPush (x) {
-        this.emitPush = x;
-      },
-      // 关闭项目预览
-      closePreview (msg) {
-        this.previewDisplay = msg;
+        this.$store.dispatch('setFollowId', id);
+        this.$store.dispatch('followControl', true);
       },
       // 重新获取所有数据
       async getAllData (e) {
@@ -1661,26 +1539,6 @@
         } catch (err) {
           console.err('Error：' + err);
         }
-         /* this.$global.func.getWxProjectCategory()
-          .then((data) => {
-            return this.getWxProjectCategory();
-          })
-          .then((data) => {
-            return this.getProjectDetail();
-          })
-          .then((data) => {
-            return this.getEchartData();
-          })
-          .then((data) => {
-            return this.getProjectMatchInvestors();
-          })
-          .then((data) => {
-            return this.getWX();
-          })
-          .then((data) => {
-            this.loading = false;
-            return this.getEnjoyedInvestors();
-          }); */
       },
       // 获取二维码
       async getWX () {
@@ -1710,14 +1568,37 @@
       this.getAllData();
     },
     watch: {
-
+      // 关闭跟进弹框，刷新跟进详情
+      followDisplay: function (e) {
+        if (!e) {
+          this.getEnjoyedInvestors();
+          this.getFollowData = true;
+        }
+      },
+      // 推送弹框关闭，刷新所有新数据（项目入口）
+      projectPushToProDisplay: function (e) {
+        if (!e) {
+          this.getAllData();
+        }
+      },
+      // 推送弹框关闭，刷新所有新数据（人脉入口）
+      projectPushToConDisplay: function (e) {
+        if (!e) {
+          this.getAllData();
+        }
+      },
+      // 关闭引荐弹框刷新数据
+      recommendDisplay: function (e) {
+        if (!e) {
+          this.getAllData();
+        }
+      }
     }
   };
 </script>
 
 <style lang="less">
   @import '../../../assets/css/projectDetail.less';
-
   .scheduleColor{
     color:#20a0ff!important;
   }

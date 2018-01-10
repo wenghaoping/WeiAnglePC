@@ -2,10 +2,11 @@
   <div id="app">
     <a href="mobileEntrance.html">login</a>
     <!--<el-row>-->
+    <a href="mobileEntrance.html" style="display: none">login</a>
       <top-header @identityopen="closeIdentity"></top-header>
       <div style="height: 60px;"></div>
       <!--下方主内容切换区-->
-      <main style="width: 100%;">
+      <main style="width: 100%;" class="clearfix">
         <transition name="fade" mode="out-in">
           <router-view class="view">
           </router-view>
@@ -20,6 +21,7 @@
   import alertIdentity from '@/views/identity/alertIdentity.vue';
   import topHeader from '@/components/topHeader.vue';
   import { IEVersion, success, warning, error } from '@/utils/notification';
+  import { getTop } from '@/utils';
   export default {
     data () {
       return {
@@ -31,7 +33,6 @@
 
     },
     methods: {
-
       // 检查localStorage.user_id
       checkUser () {
         this.user_id = localStorage.user_id;
@@ -39,10 +40,8 @@
         if (this.$route.path === '/workBench' || this.$route.path === '/workBench/') {
           this.active = 1;
         }
-
         // 看是否需要加入项目库
         this.addProject();
-
         // 未登录状态下拦截
         if (!localStorage.user_id && this.$route.path !== '/' &&
           this.$route.path !== '/login' && this.$route.path !== '/login/codeLogin' &&
@@ -107,9 +106,6 @@
       this.getUserGroupByStatusName(localStorage.user_id);
       if (IEVersion() !== -1) { alert('请不要使用IE浏览器，建议使用谷歌浏览器及其他浏览器，以获得更好体验'); };
     },
-    computed: {
-
-    },
     components: {
       alertIdentity,
       topHeader
@@ -117,6 +113,7 @@
     watch: {
       '$route' (to, from) {
         this.checkUser();
+        getTop();
         if (from.name === this.routerName) {
           this.zgTimeOut(from.name);
         }

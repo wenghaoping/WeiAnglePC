@@ -27,7 +27,6 @@
               <div class="onlyone">
                 <img v-if="project.is_exclusive==1" src="../../assets/images/onlyonedark.png"/>
                 <img v-if="project.is_exclusive==2" src="../../assets/images/onlyonelight.png"/>
-                <!--<img v-else-if="project.is_exclusive==2" src="../assets/images/onlyonelight.png"/>-->
               </div>
             </div>
             </el-checkbox>
@@ -102,7 +101,6 @@
                     </div>
                     <div class="brand1_introduce" style="white-space: normal;word-break: break-all;">{{brandd.brand_desc}}</div>
                   </el-tooltip>
-
                 </div>
                 <div class="clear"></div>
               </div>
@@ -142,10 +140,6 @@
               <div>
                 <div class="v-progress-table" style="padding-top: 5px;">
                   <div class="v-progress-txt" v-for="develop in milepost.pro_develop">
-                      <!--<span class="radio_line">-->
-                        <!--<span class="radio"></span>-->
-                        <!--&lt;!&ndash;<span class="l-line"></span>&ndash;&gt;-->
-                      <!--</span>-->
                     <img :src="cirIcon" alt="" style="width: 12px;height: 12px;">
                     <span class="pro-txt-1">
                         {{develop.dh_start_time  | timeToReallTime}}
@@ -196,46 +190,45 @@
         cirIcon: cirIcon,
         loading: false, // 加载动画
         companyId: '', // 尽调搜索公司ID
-
         // 项目信息
         project: {
-          follow_user: '张小五',
+          follow_user: '暂无数据',
           open_status: 1,
-          pro_company_name: '公司',
-          pro_intro: '微天使PC端开发文档介绍介绍介绍介绍',
-          pro_name: '微天使PC端开发文档',
+          pro_company_name: '暂无数据',
+          pro_intro: '暂无数据',
+          pro_name: '暂无数据',
           pro_schedule: '10',
           pro_total_score: '94',
           pro_area: {
-            area_title: '北京市'
+            area_title: '暂无数据'
           },
           pro_scale: {
-            scale_money: '1001W-200W'
+            scale_money: '暂无数据'
           },
           pro_finance_stock_after: '-',
           pro_finance_value: '-',
           pro_stage: {
-            stage_name: '天使论'
+            stage_name: '暂无数据'
           },
           pro_industry: [{
             industry_id: 12,
-            industry_name: '社交网络'
+            industry_name: '暂无数据'
           }],
           tag: []
         },
         team: {
           core_users: [{
-            ct_member_career: 'career',
-            ct_member_intro: 'intro',
-            ct_member_name: 'name'
+            ct_member_career: '暂无数据',
+            ct_member_intro: '暂无数据',
+            ct_member_name: '暂无数据'
           }],
 
           tag: {
-            tag_name: '大海'
+            tag_name: '暂无数据'
           }
         },
         financing: {
-          pro_finance_use: '用途',
+          pro_finance_use: '暂无数据',
           pro_history_finance: [
             /* {
              finance_time:1503331200,
@@ -338,7 +331,6 @@
             .then(res => {
               if (res.data.status_code === 2000000) {
                 let data = res.data.data;
-//                console.log(res);
                 this.$store.state.syncData.data.project.tag = data;
                 resolve(1);
               }
@@ -350,9 +342,6 @@
             });
         });
       }
-    },
-    created () {
-
     },
     watch: {
       syncProjectDetailDisplay: function (e) {

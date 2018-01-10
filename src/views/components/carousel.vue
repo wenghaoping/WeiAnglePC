@@ -57,10 +57,7 @@
             this.$refs.progress.style.left = 0 + 'px';
           }
         }
-      },
-      // 当dom一创建时
-      created () {},
-      watch: {}
+      }
     };
 </script>
 

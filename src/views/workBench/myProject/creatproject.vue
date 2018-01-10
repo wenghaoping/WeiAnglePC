@@ -218,7 +218,6 @@
                   </el-col>
                   <el-col :span="18">
                     <div class="goodnessTag" :class="{goodnessTagBl:tagShow==1}" style="top: -100px;">
-                      <!--:style="{top:-86* + 'px' }"-->
                       <img src="../../../assets/images/xiangmuliangdian.png">
                     </div>
                     <el-form-item
@@ -432,9 +431,7 @@
         }
       };// 可以为空,必须为数字,比例数值1-100判断
       return {
-
         projectMust: false,
-
         uploadAddress: this.URL.weitianshiLine + this.URL.projectUpload + localStorage.token, // 上传地址
         planList: [], // 商业计划书上传列表
         planButton: false, // 控制上传按钮的显示
@@ -553,12 +550,10 @@
     methods: {
       // 获得项目亮点焦点
       focus (e) {
-//          console.log(e)
         this.tagShow = e;
       },
       // 取消项目亮点焦点
       blur (e) {
-//        console.log(e)
         this.tagShow = 0;
       },
       // 获取列表各种数据
@@ -602,14 +597,6 @@
             });
         }
       }, // 设置二级城市下拉列表2
-      // 判断是不是数字
-      checkNumber (theObj) {
-        let reg = /^[0-9]+.?[0-9]*$/;
-        if (reg.test(theObj)) {
-          return true;
-        }
-        return false;
-      },
       // 商业计划书
       planChange (file, fileList) {
         this.planList = fileList;
@@ -658,7 +645,7 @@
       // 点击下载
       planPreview (file) {
         const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + this.uploadShow.file_id;
-        window.location.href = url;
+        window.open(url);
       },
       // 上传前的验证
       beforeUpload (file) {

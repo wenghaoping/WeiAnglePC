@@ -18,7 +18,6 @@
     </div>
 </template>
 
-
 <script type="text/ecmascript-6">
   import * as validata from '@/utils/validata';
   import { error } from '@/utils/notification';

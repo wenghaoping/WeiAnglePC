@@ -1,28 +1,14 @@
 <template>
-  <div id="emailContact" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
-    <div class="titleTo">
-    </div>
+  <div id="emailContact">
+    <div class="titleTo"></div>
     <div class="scan">
     <span style="font-size:20px;color:#1f2d3d;display: inline-block;margin-top: 28px">微天使客服会联系您并安排与项目方的沟通</span>
     <span style="font-size:14px;color:#5e6d82;display: inline-block;margin-top: 25px">联系客服：0571-85026758</span><br>
     <span style="font-size:14px;color:#5e6d82;margin-top: 5px">或加微信：weitianshicn</span>
-    <img :src="img" alt="" style="width: 164px;height: 164px;margin-top: 24px">
+    <img src="../../assets/images/img-fageerweima.png" alt="" style="width: 164px;height: 164px;margin-top: 24px">
     </div>
   </div>
 </template>
-<script type="text/ecmascript-6">
-  import img from '../../../static/images/img-fageerweima.png';
-  export default {
-    data () {
-      return {
-        img: img,
-        loading: false
-      };
-    },
-    methods: {}
-  };
-</script>
-
 <style scoped lang="less">
   #emailContact {
     .scan{

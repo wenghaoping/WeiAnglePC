@@ -20,7 +20,7 @@
                   <cardUpload :uploadCardAddress="uploadAddress"
                               :uploadDate="uploadDate" :cardplanList="planList"
                               @delete="planRemove" @success="planuploadsuccess"
-                              @changeUploadData="changeUploadData">
+                              @changeUploadData="changeUploadData" style="margin-left: 20px;">
                   </cardUpload>
                 </div>
                 <el-form :model="contacts" ref="contacts" label-width="100px" class="padding" label-position="top">
@@ -560,7 +560,6 @@
               this.restaurants = this.loadData(data);
               if (queryString === '') this.restaurants = [];
               let restaurants = this.restaurants;
-              /*             let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants; */
               clearTimeout(this.timeout);
               this.timeout = setTimeout(() => {
                 cb(restaurants);

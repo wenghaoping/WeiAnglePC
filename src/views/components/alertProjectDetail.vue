@@ -44,7 +44,6 @@
           <div class="onlyone">
             <img v-if="project.is_exclusive==1" src="../../assets/images/onlyonedark.png"/>
             <img v-if="project.is_exclusive==2" src="../../assets/images/onlyonelight.png"/>
-            <!--<img v-else-if="project.is_exclusive==2" src="../assets/images/onlyonelight.png"/>-->
           </div>
         </div>
       </div>
@@ -62,7 +61,6 @@
             <span class="person-tag" v-for="tag in project.tag" v-if="tag.type==0">{{tag.tag_name}}</span>
           </div>
           <div class="item"  style="margin-top:24px;background:#ffffff;height: 49px;line-height: 49px;" >
-            <!--v-if="file.pro_BP.length!=0"-->
               <img class="img" style="padding-left: 16px;" src="../../assets/images/paper.png">
               <span class="pt"  v-if="file.pro_BP.file_title!==''">{{file.pro_BP.file_title}}</span>
           </div>
@@ -76,7 +74,6 @@
                          <span style="color:#475669;margin-top: -4px">{{goodness1.goodness_title}}&nbsp;:&nbsp;</span>
                       {{goodness1.goodness_desc}}
                        </span>
-                  <!--<span>{{highlights.goodness_desc}}</span>-->
                 </div>
               </div>
               <div  v-show="project.goodness.pro_market_genera.length!=0" style="margin-bottom: 20px">
@@ -86,7 +83,6 @@
                          <span style="color:#475669;margin-top: -4px">{{goodness2.goodness_title}}&nbsp;:&nbsp;</span>
                       {{goodness2.goodness_desc}}
                        </span>
-                  <!--<span>{{highlights.goodness_desc}}</span>-->
                 </div>
               </div>
               <div v-show="project.goodness.pro_business_model.length!=0" style="margin-bottom: 20px">
@@ -96,7 +92,6 @@
                          <span style="color:#475669;margin-top: -4px">{{goodness3.goodness_title}}</span>&nbsp;:&nbsp;
                       {{goodness3.goodness_desc}}
                        </span>
-                  <!--<span>{{highlights.goodness_desc}}</span>-->
                 </div>
               </div>
               <div v-if="project.goodness.pro_service.length!=0"  style="margin-bottom: 20px">
@@ -201,7 +196,6 @@
             </div>
           </div>
           <div class="item" style="margin-top:6px;">
-            <!-- v-show="financing.pro_history_finance.length!=0"-->
             <div>
               <span class="sec-title" style="margin-top: 20px">历史融资</span>
               <div class="v-progress-table" style="padding-left: 10px">
@@ -263,20 +257,9 @@
                 <p class="det-title">股权赠与</p>
                 <p class="det-info">{{private.stock_right}}%</p>
               </div>
-              <!--<div class="rz-detail" style="width: 25%">-->
-              <!--<p class="det-title">其他权益</p>-->
-              <!--<p class="det-info">{{project.pro_FA.stock_other}}%</p>-->
-              <!--</div>-->
-              <!--<div class="rz-detail" style="width: 25%">-->
-              <!--<p class="det-title">跟投权</p>-->
-              <!--<p class="det-info">{{project.pro_FA.stock_follow}}%</p>-->
-              <!--</div>-->
             </div>
             <div class="item"   style="margin-top:24px;height: 49px;">
               <div class="bot-det" v-show="private.contact_user_name!=''">
-                <!--<span>项目联系人 : </span>-->
-                <!--<span>{{project.contact.user_name}}</span>-->
-                <!--<span>{{project.contact.user_mobile}}</span>-->
                 <span class="det-title">项目联系人:</span>
                 <span class="del-info">{{private.contact_user_name}}</span>
               </div>
@@ -309,18 +292,23 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   import cirIcon from '../../../static/images/circle.png';
   import pinpai from '../../../static/images/icon-pinpa.png';
   import yunying from '../../../static/images/icon-yunying.png';
   export default {
-    props: ['alertProjectDetailDisplay', 'proid'],
+    computed: {
+      ...mapState({
+        alertProjectDetailDisplay: state => state.dialogDisplay.alertProjectDetailDisplay,
+        projectId: state => state.contactsDetails.alertProjectMessage.projectId
+      })
+    },
     data () {
       return {
         yunying: yunying,
         pinpai: pinpai,
         cirIcon: cirIcon,
         loading: false, // 加载动画
-        pro_id: '',
         file: {
           pro_BP: {
             created_at: '', // 2017-08-30 10:51:15
@@ -441,21 +429,15 @@
       };
     },
     methods: {
-      // 下载文件
-      download (e) {
-        const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + e;
-        window.location.href = url;
-      },
       // 关闭弹窗
       handleClose () {
-        this.$emit('changeAlertProjectDetail', false);
+        this.$store.dispatch('alertProjectControl', false);
       },
       // 获取项目详情数据
       getProjectDetail () {
-        this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.pro_id})
+        this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.projectId})
           .then(res => {
             this.loading = false;
-//          console.log(res);
             let data = res.data.data;
             if (data.project.pro_scale === '') { data.project.pro_scale = {}; data.project.pro_scale.scale_money = '-'; }
             if (data.project.pro_area === '') { data.project.pro_area = {}; data.project.pro_area.area_title = '-'; }
@@ -486,33 +468,19 @@
             this.loading = false;
             console.log(err);
           });
-      },
-      // 项目来源编辑(获取项目详情数据的辅助函数)
-      getProjectTag (arr) {
-        let str = '';
-        for (let i = 0; i < arr.length; i++) {
-          if (arr[i].type === 2) {
-            str += arr[i].tag_name + '.';
-          }
-        }
-        return str;
       }
     },
-    created () {},
     watch: {
       alertProjectDetailDisplay: function (e) {
         if (e) {
-          this.pro_id = this.proid;
           this.getProjectDetail();
         }
       }
     }
   };
 </script>
-
 <style lang="less">
   #alertProjectDetail{
-
     /*组件自带格式修改*/
     .el-dialog__body{
       padding: 0 !important;;
@@ -585,6 +553,7 @@
       }
     }
     /*上层弹框*/
+
     #projectPreview .contain-center1 .item-lists .item span{
       display: inline-block;
       vertical-align: middle;
@@ -863,6 +832,7 @@
           box-sizing: border-box;
           padding:0 12px;
           margin-right: 15px;
+          margin-bottom: 10px;
         }
 
 

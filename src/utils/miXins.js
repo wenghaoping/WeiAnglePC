@@ -5,6 +5,7 @@
 /* eslint-disable */
 import Vue from 'vue';
 import { getIntervalTime, srtIntervalClearTime } from '@/utils';
+import { error } from './notification';
 let int = null;// 时间设置
 let time = '';
 // 时间控制数据
@@ -78,7 +79,7 @@ Vue.mixin({
       }
     },
 
-    // 公用函数
+    // 公用函数(设置登陆用户的所有信息)
     getCheckUserInfo (user_id = 0) {
       if (user_id !== 0) {
         return new Promise((resolve, reject) => {
@@ -129,7 +130,7 @@ Vue.mixin({
             localStorage.group_name = group_name;
             this.$store.dispatch('setGroupName', group_name);
           } else {
-            this.$tool.error('核对身份接口调用失败');
+            error('核对身份接口调用失败');
           }
         });
       }

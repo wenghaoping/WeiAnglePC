@@ -1251,14 +1251,14 @@
       return {
         dynamicValidateForm: {
           pro_goodness: [{
-            goodness_title: '标题1',
-            goodness_desc: '内容1'
+            goodness_title: '暂无内容',
+            goodness_desc: '暂无内容'
           }, {
-            goodness_title: '标题1',
-            goodness_desc: '标题1'
+            goodness_title: '暂无内容',
+            goodness_desc: '暂无内容'
           }, {
-            goodness_title: '标题1',
-            goodness_desc: '标题1'
+            goodness_title: '暂无内容',
+            goodness_desc: '暂无内容'
           }]
         },
         addStateDisplay: false,
@@ -1311,8 +1311,8 @@
               goodness_title: ''// 亮点亮点
             }],
             pro_goodness: [{
-              goodness_desc: '亮点1', // 凉凉凉凉
-              goodness_title: '亮点1'// 亮点亮点
+              goodness_desc: '', // 凉凉凉凉
+              goodness_title: ''// 亮点亮点
             }
             ],
             pro_market_genera: [{
@@ -1327,7 +1327,7 @@
           open_status: '1', // 私密设置
           pro_area: {
             area_id: 2,
-            area_title: '北京市', // 市级
+            area_title: '暂无内容', // 市级
             pid: 1// 省级
           }, // 所属地区1省级单位
           pro_company_name: '',
@@ -1344,12 +1344,12 @@
           pro_name: '',
           pro_scale: {
             scale_id: '',
-            scale_money: '100W以下'
+            scale_money: '暂无内容'
           }, // 规模多少钱
           pro_stage: {
             sort: '',
             stage_id: 13,
-            stage_name: 'A轮'
+            stage_name: '暂无内容'
           },
           project_id: '',
           tag: []
@@ -1357,7 +1357,7 @@
         // 公司运营
         company: {
           pro_company_scale: {comp_scale_id: 1},
-          pro_status: {status_id: 3, status_name: '上线'},
+          pro_status: {status_id: 3, status_name: '暂无内容'},
           pro_website: ''
         },
         // 产品
@@ -1628,8 +1628,6 @@
         if (forFor(privateValue) === 0) this.privatePerfect = true;
         else this.privatePerfect = false;
 
-        /*        if(this.project.goodness.pro_goodness.goodness_desc!="") number-1;
-         if(this.project.goodness.pro_goodness.goodness_title!="") number-1; */
         return parseInt(((sum - number) / sum) * 100);
       }
     },
@@ -1741,7 +1739,7 @@
             .then(res => {
               let data = res.data.data;
               this.area2 = getCity(data);
-              if (parseInt(newData) === parseInt(pid)) {
+              if (Number.parseInt(newData) === Number.parseInt(pid)) {
               } else {
                 this.project.pro_area.area_id = '';
               }
@@ -1977,7 +1975,7 @@
       // 点击下载
       planPreview (file) {
         const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + this.uploadShow.file_id;
-        window.location.href = url;
+        window.open(url);
       },
       // 上传前的验证
       beforeUpload (file) {
@@ -2070,7 +2068,7 @@
         if (index !== -1) {
           let fileId = this.uploadShow2.lists[index].file_id;
           const url = this.URL.weitianshi + this.URL.download + '?user_id=' + localStorage.user_id + '&file_id=' + fileId;
-          window.location.href = url;
+          window.open(url);
         }
       },
       // 删除当前上传文件
@@ -2316,9 +2314,6 @@
               console.log(err);
             });
         }
-//        else{
-//          this.tags.changeTeam=this.team.tags_team.slice(0);
-//        }
       },
       // 添加项目来源
       addChangesource (e) {
@@ -2330,18 +2325,13 @@
               let newState = {};
               newState.label = tagName;
               newState.value = res.data.tag_id;
-//              this.tags_source.push(newState);
               this.tags.changesource.push(newState);
-              /* this.tags.changesource.push(res.data.tag_id); */
             })
             .catch(err => {
               error('添加失败');
               console.log(err);
             });
         }
-        /* else{
-         this.tags.changesource=this.project.pro_source.slice(0);
-         } */
       },
       // 添加投资亮点
       addgoodNess () {
@@ -2636,9 +2626,8 @@
               if (allData.private.commission === '' || allData.private.commission === undefined) allData.private.commission = 0;// 签约佣金
 
               allData.company.pro_company_scale = allData.company.pro_company_scale.comp_scale_id;
-
               allData.company.pro_status = allData.company.pro_status.status_id;
-//              console.log(allData);
+
               this.$http.post(this.URL.editProject, allData)
                 .then(res => {
                   this.loading = false;
@@ -2788,7 +2777,6 @@
         let syncDataCheck = this.$store.state.syncData;
         let syncData = syncDataCheck.data;
         let checkList = syncDataCheck.checkedSync;
-//          console.log(syncData);
         if (msg.updateCategory) {               // 看是否需要更新标签
           this.$global.func.getWxProjectCategory()
             .then((data) => {

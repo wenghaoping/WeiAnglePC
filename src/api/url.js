@@ -142,22 +142,27 @@ export default
 
   /* 推荐项目(人脉详情右边) */
   getInvestorsMatchProjects: 'api/investors/getInvestorsMatchProjects', // 推荐项目
-  exceptMatchAction: 'api/v/project/exceptMatchAction', // 移除匹配
+  exceptMatchAction: 'api/v/project/exceptMatchAction', // 移除买家图谱匹配(废弃)=====================
+  removeInvestor: 'api/project/removeInvestor', // 移除买家图谱匹配
   /* 意向投资人(项目详情右边) */
   getEnjoyedInvestors: 'api/project/getEnjoyedInvestors', // 意向投资人列表
   getEnjoyedInvestorsGroup: 'api/project/getEnjoyedInvestorsGroup', // 意向投资人归总(图表)
 
   /* 买家图谱*(项目详情右边) */
   getProjectMatchInvestors: 'api/project/getProjectMatchInvestors', // 买家图谱列表
-
+  getInvestorInfo: 'api/investors/getInvestorInfo', // 投资人详情
   /* 项目推送 */
-  matchProject: 'api/v/project/matchProject', // 我的人脉-推送（模糊匹配我的项目）
+  matchProject: 'api/v/project/matchProject', // 我的人脉-推送（模糊匹配我的项目(废弃)=====================
+  getPushProjects: '/api/project/getPushProjects', // (项目推送，项目单选)投资人匹配到的项目
   pushUser: '/api/v/project/pushUser', // 我的人脉-推送（发送邮件）
-  pushProject: '/api/v/project/pushProject', // 我的项目-推送(发送邮件)
+  pushProject: '/api/v/project/pushProject', // 我的项目-推送(发送邮件)(废弃)=====================
   pushCount: '/api/v/project/pushCount', // 推送剩余次数
-  getConnectUserSortByMatch: 'api/v/project/getConnectUserSortByMatch', // 推送项目时获取我的人脉
-  getAllConnectUserSortByMatch: 'api/v/project/getAllConnectUserSortByMatch', // 推送项目时获取全站人脉
-
+  getConnectUserSortByMatch: 'api/v/project/getConnectUserSortByMatch', // 推送项目时获取我的人脉(废弃)合二为一===============
+  getAllConnectUserSortByMatch: 'api/v/project/getAllConnectUserSortByMatch', // 推送项目时获取全站人脉(废弃)合二为一=====================
+  getPushInvestors: 'api/project/getPushInvestors', // 推送项目获取投资人
+  recommendProject: 'api/project/recommendProject', // 帮我引荐
+  getRecommendCount: 'api/project/getRecommendCount', // 项目引荐次数
+  pushProjectToUsers: 'api/project/pushProjectToUsers', // 推送项目给多个投资人(人脉多选)
   /* 使用微信二维码 */
   getProjectQr: 'https://wx.weitianshi.cn/api/wx/getProjectQr', //
   getProjectQrOur: 'api/auth/getProjectQr',
@@ -209,10 +214,19 @@ export default
   getBpPpt: 'api/superBp/getBpPpt', // bp预览
   getBpByIndustryAndStage: 'api/superBp/getBpByIndustryAndStage', // 通过领域和阶段筛选BP模板
   superBpDownload: 'api/superBp/superBpDownload', // 模板下载
+
   // 自动邮件
   mail_getProjectDetail: '/api/mobile/wtsProject', // 平台项目的项目详情
   mail_getProjectDetail_scrapy: '/api/mobile/scrapyProject', // 爬虫怕取的项目详情
   mail_createInterview: '/api/mobile/createInterview', // 项目约谈
   mail_createInterview2: 'api/mobile/createSourceInterview', // 项目约谈_爬虫项目
   mail_sendBp: '/api/mobile/emailForBp' // 发送BP
+
+  // 我的活动
+  uploadImage: 'api/activity/uploadImage?token=', // 我的活动上传图片
+  deleteActivityImage: 'api/activity/deleteImage', // 删除图片
+  getActivity: 'api/activity/getActivity', // 获取活动基本信息
+  editActivity: 'api/activity/editActivity', // 创建 / 编辑活动
+  getActivityApplyUser: 'api/activity/getActivityApplyUser' // 活动报名签到成员
+
 };
