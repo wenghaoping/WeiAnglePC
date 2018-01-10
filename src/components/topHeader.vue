@@ -178,7 +178,7 @@
           this.$store.dispatch('setUserRealName', '');
           setTimeout(() => { window.location.reload(); }, 100);
         } else if (e === 3) {
-          this.$router.push({name: 'creatActivity'});// 创建活动
+          this.$router.push({name: 'myActivity'});// 我的活动
         }
         this.value = '';
       },

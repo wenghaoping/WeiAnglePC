@@ -30,7 +30,7 @@ export function simpleClone (myObj) {
   if (typeof (myObj) !== 'object') return myObj;
   if (myObj == null) return myObj;
   let myNewObj = {};
-  for (var i in myObj) { myNewObj[i] = myObj[i]; }
+  for (let i in myObj) { myNewObj[i] = myObj[i]; }
   return myNewObj;
 }
 

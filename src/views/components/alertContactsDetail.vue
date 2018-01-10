@@ -28,7 +28,7 @@
               <div class="item com"><img src="../../assets/images/phone.png">{{contacts.user_mobile}}</div>
               <div class="item com" style="width: 780px;">
                 <img src="../../assets/images/email.png">{{contacts.user_email}}
-                <div class="fr" v-if="contacts.import_user_name!=''" style="color: #8492A6">
+                <div class="fr" v-if="contacts.import_user_name !== ''" style="color: #8492A6">
                   来源: {{contacts.import_user_name}}
                 </div>
               </div>
@@ -436,6 +436,7 @@
           data.user_resource_give = [];
           data.user_invest_tag = [];
           data.user_intro = '';
+          data.import_user_name = '';
         } else {
           data.project_case = this.setProjectCase(data.project_case);
           if (data.user_invest_industry_string === '' && data.user_invest_stage_string === '' && data.user_invest_scale_string === '' && data.user_invest_desc === '') {

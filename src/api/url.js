@@ -213,5 +213,11 @@ export default
   getIndustryAndStage: 'api/category/getIndustryAndStage', // 领域和阶段标签
   getBpPpt: 'api/superBp/getBpPpt', // bp预览
   getBpByIndustryAndStage: 'api/superBp/getBpByIndustryAndStage', // 通过领域和阶段筛选BP模板
-  superBpDownload: 'api/superBp/superBpDownload' // 模板下载
+  superBpDownload: 'api/superBp/superBpDownload', // 模板下载
+
+  // 我的活动
+  uploadImage: 'api/activity/uploadImage?token=', // 我的活动上传图片
+  deleteActivityImage: 'api/activity/deleteImage', // 删除图片
+  getActivity: 'api/activity/getActivity', // 获取活动基本信息
+  editActivity: 'api/activity/editActivity' // 创建 / 编辑活动
 };

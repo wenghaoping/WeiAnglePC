@@ -5,7 +5,7 @@
       <top-header @identityopen="closeIdentity"></top-header>
       <div style="height: 60px;"></div>
       <!--下方主内容切换区-->
-      <main style="width: 100%;">
+      <main style="width: 100%;" class="clearfix">
         <transition name="fade" mode="out-in">
           <router-view class="view">
           </router-view>

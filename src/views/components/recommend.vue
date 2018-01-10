@@ -94,6 +94,8 @@
       recommendDisplay: function (e) {
         if (e) {
           this.getRemomeTime();
+        } else {
+          this.remark = '';
         }
       }
     }

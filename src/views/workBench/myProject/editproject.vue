@@ -1739,7 +1739,7 @@
             .then(res => {
               let data = res.data.data;
               this.area2 = getCity(data);
-              if (parseInt(newData) === parseInt(pid)) {
+              if (Number.parseInt(newData) === Number.parseInt(pid)) {
               } else {
                 this.project.pro_area.area_id = '';
               }

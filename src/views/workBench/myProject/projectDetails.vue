@@ -526,13 +526,13 @@
                         <div style="border-bottom: 1px solid #eff2f7"></div>
                       </div>
                     </div>
-                    <div class="emptyImg" v-if="ProjectMatchInvestors.length==0">
+                    <div class="emptyImg" v-if="ProjectMatchInvestors.length == 0">
                       <img src="../../../assets/images/zanwushuju.png">
                     </div>
                     <el-pagination
                       class="pagination fr"
                       small
-                      v-if="totalInvestors>5"
+                      v-if="totalInvestors > 5"
                       @current-change="filterChangeInvestors"
                       :current-page.sync="currentPageInvestors"
                       layout="prev, pager, next"
@@ -545,7 +545,7 @@
             </el-collapse-transition>
           </el-tab-pane>
         </el-tabs>
-        <div style="height: 50px;"></div>
+        <div style="height: 100px;"></div>
       </div>
     </div>
 
@@ -1583,6 +1583,12 @@
       },
       // 推送弹框关闭，刷新所有新数据（人脉入口）
       projectPushToConDisplay: function (e) {
+        if (!e) {
+          this.getAllData();
+        }
+      },
+      // 关闭引荐弹框刷新数据
+      recommendDisplay: function (e) {
         if (!e) {
           this.getAllData();
         }

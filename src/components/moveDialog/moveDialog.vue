@@ -40,9 +40,11 @@
         this.$refs.moveDialog.style.top = 0;
       },
       doMouseMove (event) {
-        let e = event || window.event;
-        this.$refs.moveDialog.style.left = `${e.clientX - 332}px`;
-        this.$refs.moveDialog.style.top = `${e.clientY + 30}px`;
+//        let e = event || window.event;
+//        this.$refs.moveDialog.style.left = `${e.clientX - 332}px`;
+//        this.$refs.moveDialog.style.top = `${e.clientY + 30}px`;
+        this.$refs.moveDialog.style.left = `50%`;
+        this.$refs.moveDialog.style.top = `30%`;
       }
     }
   };

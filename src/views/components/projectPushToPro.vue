@@ -686,12 +686,6 @@
         matchInvestorsData: state => state.projectDetails.matchInvestorsData
       })
     },
-    mounted () {
-
-    },
-    created () {
-
-    },
     components: {
       moveDialog
     },
@@ -709,6 +703,7 @@
           this.pushTagMyCon = [];
           this.pushTagMyConCheckAll = [];
           this.pushTagMyConCheck = [];
+          this.contacts = {};
         }
       }
     }
