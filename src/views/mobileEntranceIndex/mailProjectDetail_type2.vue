@@ -37,8 +37,9 @@
           <div class="size_15 ">项目介绍</div>
           <div class="projectIntroTitle size12 color_6">{{projectDetail.info.company_name}}</div>
           <div class="projectIntroContent size_14 color_6">
-            <div>{{projectDetail.info.project_desc}}</div>
-            <div>{{moreOrless}}</div>
+            <div class="content" v-if="moreOrless === '缩起'">{{projectDetail.info.project_desc}}</div>
+            <div class="content" v-else>{{new_projectIntro}}</div>
+            <div class="show_moreOrless" @click = 'textLengthChange' v-if = 'show_moreOrless'>{{moreOrless}}</div>
           </div>
         </div>
         <!--主要产品-->
@@ -199,13 +200,16 @@
       return {
         loading: false,
         moreOrless: '更多',
+        show_moreOrless: false,
         dialogVisible: false,
         user_id: 0,
         project_id: '53641',
         projectDetail: {
           competition_company: {},
           history_finance: {},
-          info: {},
+          info: {
+            project_desc: ''
+          },
           member_list: {},
           milestone_list: {},
           news_list: {},
@@ -244,6 +248,15 @@
           newTag.push(x.news_label.split(','));
         });
         return newTag;
+      },
+      new_projectIntro () {
+        let i = 100;
+        if (this.projectDetail.info.project_desc.length > i) {
+          this.show_moreOrless = true;
+          return this.projectDetail.info.project_desc.substring(0, i) + '...';
+        } else {
+          return this.projectDetail.info.project_desc;
+        }
       }
     },
     components: {
@@ -279,6 +292,14 @@
         this.activeFrom = this.$route.query.activeTo || 0;
         this.show = this.$route.query.show || 'detail';
       },
+      // 项目介绍展开缩起
+      textLengthChange () {
+        if (this.moreOrless === '更多') {
+          this.moreOrless = '缩起';
+        } else if (this.moreOrless === '缩起') {
+          this.moreOrless = '更多';
+        }
+      },
       // 打开弹窗_获得联系方式
       openDialog () {
         this.checkLoginStatus(x => {
@@ -287,20 +308,24 @@
       },
       // 关闭弹窗_获得联系方式
       closeGetContact (text) {
-        this.checkLoginStatus(x => {
-          this.$http.post(this.URL.mail_createInterview2, {
-            user_id: localStorage.user_id,
-            project_id: this.projectDetail.info.project_id,
-            content_desc: text
-          }).then(res => {
-            if (res.data.status_code === 2000000) {
-              success('已进行预约,请耐心等待回复');
-            } else {
-              warning(res.data.error_msg);
-            }
+        if (text) {
+          this.checkLoginStatus(x => {
+            this.$http.post(this.URL.mail_createInterview2, {
+              user_id: localStorage.user_id,
+              project_id: this.projectDetail.info.project_id,
+              content_desc: text
+            }).then(res => {
+              if (res.data.status_code === 2000000) {
+                success('已进行预约,请耐心等待回复');
+              } else {
+                warning(res.data.error_msg);
+              }
+            });
+            this.dialogVisible = false;
           });
+        } else {
           this.dialogVisible = false;
-        });
+        }
       },
       // 检查登录态
       checkLoginStatus (callBack) {
@@ -328,6 +353,9 @@
     .getContact{
       .el-dialog{
         width: 286px;
+      }
+      .el-dialog__header,.el-dialog__footer{
+        text-align: center;
       }
     }
 
@@ -447,14 +475,13 @@
       }
       .projectIntroContent{
         margin-top: 11/16rem;
-        div:first-child{
+        .content{
           line-height: 22/16rem;
           text-overflow: ellipsis;
           overflow: hidden;
-          height: 88/16rem;
           white-space: normal;
         }
-        div:last-child{
+        .show_moreOrless{
           margin-top: 1rem;
           text-align: center;
           font-size:12px;
@@ -586,7 +613,7 @@
     .milepost{
       padding: 1rem;
       .pro_develop{
-        padding-bottom: 0.5rem;
+        padding-bottom: 26/16rem;
       .left{
         flex: 48;
       }

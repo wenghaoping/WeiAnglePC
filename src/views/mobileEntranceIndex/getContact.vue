@@ -10,7 +10,7 @@
       <div class="text" style="margin-top: 1rem;">微天使会在第一时间告诉你联系方式</div>
       <div class="text">或添加FA哥微信：weitianshicn</div>
       <span slot="footer" class="dialog-footer">
-      <el-button class="certain" type="primary" style="background:#40587a;border-radius:3px;" @click = 'handleClose'>确 定</el-button>
+      <el-button class="certain" type="primary" style="background:#40587a;border-radius:3px;" @click = 'handleClose(1)'>确 定</el-button>
     </span>
     </el-dialog>
   </div>
@@ -29,8 +29,12 @@
       };
     },
     methods: {
-      handleClose () {
-        this.$emit('closeGetContact', this.contactText);
+      handleClose (i) {
+        if (i === 1) {
+          this.$emit('closeGetContact', this.contactText);
+        } else {
+          this.$emit('closeGetContact');
+        }
       }
     },
     mounted () {
