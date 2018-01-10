@@ -213,5 +213,6 @@ export default
   mail_getProjectDetail: '/api/mobile/wtsProject', // 平台项目的项目详情
   mail_getProjectDetail_scrapy: '/api/mobile/scrapyProject', // 爬虫怕取的项目详情
   mail_createInterview: '/api/mobile/createInterview', // 项目约谈
+  mail_createInterview2: 'api/mobile/createSourceInterview', // 项目约谈_爬虫项目
   mail_sendBp: '/api/mobile/emailForBp' // 发送BP
 };

@@ -149,12 +149,12 @@
               </div>
               <div class="pro_intro size_12 color_9">{{company.project_intro}}</div>
               <div class="pro_industry flex">
-                <div class="tag" v-for="tag in company.industry_list">
+                <div class="tag" v-for="(tag, index) in company.industry_list">
                   <span class="size_12 color_6">{{tag.industry_name}}</span>
                   <span :hidden='index + 1 === company.industry_list.length'>|</span>
                 </div>
               </div>
-              <div class="special_list" v-for = "(tag , index) in company.special_list">
+              <div class="special_list" v-for = "(tag, index) in company.special_list">
                 <span>{{tag.special_name}}</span>
                 <span :hidden='index + 1 === company.special_list.length'>|</span>
               </div>
@@ -167,11 +167,11 @@
             <div class="text_title ">媒体报道</div>
             <div class="showAll">全部&nbsp;({{projectDetail.news_list.total_num}})</div>
           </div>
-          <div class="competition_company flex" v-for="(news,index) in projectDetail.news_list.list" :key = index>
+          <div class="competition_company flex" v-for="(news, index) in projectDetail.news_list.list" :key = index>
             <div class="new_time">{{newTime[index]}}</div>
             <div class="new_content">{{news.news_title}}</div>
             <div class="new_tag flex">
-              <div v-for="tag in news.list">{{tag.tag_name}}</div>
+              <div v-for="tag in mediaTag[index]">{{tag}}</div>
             </div>
           </div>
         </div>
@@ -192,7 +192,7 @@
 
 
 <script type="text/ecmascript-6">
-  import { warning } from '@/utils/notification';
+  import { success, warning } from '@/utils/notification';
   import getContact from './getContact';
   export default {
     data () {
@@ -201,7 +201,7 @@
         moreOrless: '更多',
         dialogVisible: false,
         user_id: 0,
-        project_id: '',
+        project_id: '53641',
         projectDetail: {
           competition_company: {},
           history_finance: {},
@@ -237,6 +237,13 @@
           newTime.push(time);
         });
         return newTime;
+      },
+      mediaTag () {
+        let newTag = [];
+        this.projectDetail.news_list.list.forEach(x => {
+          newTag.push(x.news_label.split(','));
+        });
+        return newTag;
       }
     },
     components: {
@@ -248,7 +255,7 @@
       async getProjectDetail () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
-          this.$http.post(this.URL.mail_getProjectDetail_scrapy, {user_id: localStorage.user_id, project_id: '53641', scene: 'mobile'})
+          this.$http.post(this.URL.mail_getProjectDetail_scrapy, {user_id: localStorage.user_id, project_id: this.project_id, scene: 'mobile'})
             .then(res => {
               if (res.data.status_code === 430004) {
                 warning('找不到项目');
@@ -279,8 +286,19 @@
         });
       },
       // 关闭弹窗_获得联系方式
-      closeGetContact () {
+      closeGetContact (text) {
         this.checkLoginStatus(x => {
+          this.$http.post(this.URL.mail_createInterview2, {
+            user_id: localStorage.user_id,
+            project_id: this.projectDetail.info.project_id,
+            content_desc: text
+          }).then(res => {
+            if (res.data.status_code === 2000000) {
+              success('已进行预约,请耐心等待回复');
+            } else {
+              warning(res.data.error_msg);
+            }
+          });
           this.dialogVisible = false;
         });
       },
@@ -294,7 +312,7 @@
       }
     },
     created () {
-      this.getprojectId();
+//      this.getprojectId();
       this.getProjectDetail();
       console.log(this);
     },
@@ -682,6 +700,15 @@
       }
       .competition_company:last-of-type{
         border:none;
+      }
+      .new_tag{
+        font-size:10/16px;
+        color:#999999;
+        margin-top: .75rem;
+        div{
+          color:#999999;
+          margin-right: 1rem;
+        }
       }
    }
     .btn_group{

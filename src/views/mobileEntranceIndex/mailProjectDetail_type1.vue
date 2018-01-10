@@ -203,17 +203,20 @@
       title="请输入邮箱"
       :visible.sync="getEmail"
       width="30%"
-      :before-close="bpMethodClose">
-      <div>
-        <input>
+      :before-close="inputEmailClose">
+      <div class="getEmail flex">
+        <div>邮箱:</div>
+        <input name="email" v-model="email" placeholder="请输入邮箱">
       </div>
+      <el-button class="sumbmitEmail" type="primary" @click='sendBpEmail'>确定</el-button>
     </el-dialog>
   </div>
 </template>
 
 
 <script type="text/ecmascript-6">
-  import { warning } from '@/utils/notification';
+  import * as validata from '@/utils/validata';
+  import { success, warning } from '@/utils/notification';
   import getContact from './getContact';
   export default {
     data () {
@@ -222,8 +225,9 @@
         dialogVisible: false,
         bpMethod: false,
         getEmail: false,
+        email: '',
         user_id: 0,
-        project_id: '',
+        project_id: '2rzVAMr3',
         projectDetail: {
           brand: {},
           company_open_status: {},
@@ -279,7 +283,7 @@
           // 做一些异步操作
           this.$http.post(this.URL.mail_getProjectDetail, {
             user_id: localStorage.user_id || 0,
-            project_id: '2rzVAMr3',
+            project_id: this.project_id,
             scene: 'mobile'
           })
             .then(res => {
@@ -318,7 +322,11 @@
       },
       // 打开弹窗_查看Bp
       previewBp () {
-        this.bpMethod = true;
+        if (this.projectDetail.pro_BP === '') {
+          warning('该项目并没有上传BP');
+        } else {
+          this.bpMethod = true;
+        }
       },
       // 关闭弹窗_查看Bp
       bpMethodClose () {
@@ -326,7 +334,30 @@
       },
       // 打开弹窗_填写邮箱
       inputEmail () {
-        console.log();
+        this.getEmail = true;
+      },
+      // 关闭弹窗_填写邮箱
+      inputEmailClose () {
+        this.getEmail = false;
+      },
+      // 发送BP到邮箱
+      sendBpEmail () {
+        if (!validata.checkEmail(this.email)) {
+          warning('邮箱格式不正确');
+        } else {
+          this.getEmail = false;
+          this.$http.post(this.URL.mail_sendBp, {
+            user_id: localStorage.user_id,
+            project_id: this.project_id,
+            email: this.email,
+            type: 'email'
+          }).then(res => {
+            console.log(res);
+            if (res.data.status_code === 2000000) {
+              success('BP已成功发送至邮箱');
+            }
+          });
+        }
       },
       // 打开弹窗_获得联系方式
       openDialog () {
@@ -335,28 +366,30 @@
         });
       },
       // 关闭弹窗_获得联系方式
-      closeGetContact () {
+      closeGetContact (text) {
         this.checkLoginStatus(x => {
+          this.$http.post(this.URL.mail_createInterview, {
+            user_id: localStorage.user_id,
+            project_id: this.project_id,
+            remark: text
+          }).then(res => {
+            if (res.data.status_code === 2000000) {
+              success('已进行预约,请耐心等待回复');
+            } else {
+              warning(res.data.error_msg);
+            }
+          });
           this.dialogVisible = false;
         });
       },
       // BP预览
       preview () {
-        if (this.projectDetail.pro_BP === '') {
-          window.location.href = 'https://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/test_file/20170628/T3tUw8gw5FoQ32IRBJHVVPIRikbmIKtjOWHBrryY.pdf';
-          warning('该项目并没有上传BP');
-        } else {
-          window.location.href = 'https://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/test_file/20170628/T3tUw8gw5FoQ32IRBJHVVPIRikbmIKtjOWHBrryY.pdf';
-        }
-      },
-      // 发送BP到邮箱
-      sendToEmail () {
-        console.log();
+        window.location.href = 'https://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/test_file/20170628/T3tUw8gw5FoQ32IRBJHVVPIRikbmIKtjOWHBrryY.pdf';
       }
     },
     created () {
 //      localStorage.clear();
-      this.getprojectId();
+//      this.getprojectId();
       this.getProjectDetail();
       console.log(this);
     },
@@ -366,14 +399,43 @@
   };
 </script>
 
-<style scoped lang="less">
+<style  lang="less">
   @import '../../assets/css/mobileEntrance.less';
-
+  .el-dialog--small{
+    width: 75%;
+  }
   #mailProjectDetail_type1 {
     width: 343px;
     padding: 1rem;
     margin: 0 auto;
     position: relative;
+    .getEmail{
+      padding: .5rem 0;
+      align-items: center;
+      div{
+        flex: 2;
+        height: 2rem;
+        line-height: 2rem;
+      }
+      input{
+        flex: 8;
+        border: 1px solid #40587a;
+        height: 2rem;
+        padding-left: .5rem;
+      }
+    }
+    .sumbmitEmail{
+      margin-top: 1rem;
+      width: 100%;
+      background:#40587a;
+      border-radius:3px;
+    }
+    .bpMethod{
+      padding: 1rem;
+      text-align: center;
+      border: 1px solid #40587a;
+      margin-bottom: 1rem;
+    }
     .size_11{
       font-size:11/16rem;
     }
@@ -481,10 +543,10 @@
         }
       }
       .intro_item{
-         font-size: 14/16rem;
-         span:first-child{
-           margin-right: 1rem;
-         }
+        font-size: 14/16rem;
+        span:first-child{
+          margin-right: 1rem;
+        }
       }
     }
     .brandList{
@@ -511,7 +573,7 @@
         .brand_type{
           border:1px solid #293b55;
           border-radius:34px;
-        padding: .25rem .5rem;
+          padding: .25rem .5rem;
         }
         .brand_desc{
           margin-top: 11/16rem;

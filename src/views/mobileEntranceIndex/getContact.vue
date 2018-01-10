@@ -5,12 +5,12 @@
       :visible.sync="dialogVisible"
       :before-close="handleClose"
       width = '90'
-      :center = true>
-      <textarea name="contactText" value="contactText"  id="" cols="30" rows="5" placeholder="请简要描述您意向的约谈时间、地点、方式"></textarea>
-      <div class="text">微天使会在第一时间告诉你联系方式</div>
+      center = true>
+      <el-input type="textarea" name="contactText" v-model='contactText' :cols=30 :rows = 3 resize='none' placeholder="请简要描述您意向的约谈时间、地点、方式"></el-input>
+      <div class="text" style="margin-top: 1rem;">微天使会在第一时间告诉你联系方式</div>
       <div class="text">或添加FA哥微信：weitianshicn</div>
       <span slot="footer" class="dialog-footer">
-      <el-button class="certain" type="primary" @click = 'handleClose'>确 定</el-button>
+      <el-button class="certain" type="primary" style="background:#40587a;border-radius:3px;" @click = 'handleClose'>确 定</el-button>
     </span>
     </el-dialog>
   </div>
@@ -30,7 +30,7 @@
     },
     methods: {
       handleClose () {
-        this.$emit('closeGetContact');
+        this.$emit('closeGetContact', this.contactText);
       }
     },
     mounted () {
@@ -38,18 +38,14 @@
   };
 </script>
 
-<style scoped lang="less">
+<style  lang="less">
   @import '../../assets/css/mobileEntrance.less';
   #getContact{
-    .el-dialog{
-      width: 286px;
+    .el-dialog--small {
+      width: 75%;
     }
     .text{
       text-align: center;
-    }
-    .certain{
-      background:#40587a;
-      border-radius:3px;
     }
   }
 </style>
