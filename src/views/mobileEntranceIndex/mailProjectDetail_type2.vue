@@ -1,5 +1,5 @@
 <template>
-  <div  id='mailProjectDetail_type2'>
+  <div  id='mailProjectDetail_type2'  v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     <!--项目详情-->
     <div>
       <!--项目详情-->
@@ -337,7 +337,7 @@
       }
     },
     created () {
-//      this.getprojectId();
+      this.getprojectId();
       this.getProjectDetail();
       console.log(this);
     },
@@ -545,7 +545,6 @@
             display: block;
             width: 12/16rem;
             height: 12/16rem;
-            background: red;
             margin: 0 auto;
           }
         }
@@ -583,7 +582,6 @@
         }
         .headPic{
           border-radius: 50%;
-          background:red;
           text-align: center;
           width: 52/16rem;
           height: 52/16rem;
@@ -620,6 +618,7 @@
       .middle{
         flex: 36;
         img{
+          margin: 0 auto;
           display: block;
           width: .75rem;
           height: .75rem;
