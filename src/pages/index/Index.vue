@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <a href="mobileEntrance.html">login</a>
     <!--<el-row>-->
     <a href="mobileEntrance.html" style="display: none">login</a>
       <top-header @identityopen="closeIdentity"></top-header>
