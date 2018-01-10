@@ -17,7 +17,7 @@
         </div>
         <!--用户名片-->
         <div class='userCard flex'>
-          <img src = '' alt="">
+          <img :src = 'projectUser.user_avatar_url' alt="">
           <div>
             <div class="name">{{projectUser.user_name}}</div>
             <div class="careerAndcompany size_12 color_6">{{projectUser.user_career}}·{{projectUser.user_company}}</div>
@@ -102,7 +102,7 @@
           <div class="pro_history_finance" v-for="finance in projectDetail.pro_history_finance">
             <div class="flex size_14">
               <div class="finance_left">{{finance.finance_time}}</div>
-              <div class="finance_middle"><img src="" alt=""></div>
+              <div class="finance_middle"><img src="../../assets/images/img-dianxx.png" alt=""></div>
               <div class="finance_right">{{finance.pro_finance_scale}}</div>
             </div>
             <div class='flex'>
@@ -173,7 +173,7 @@
           <div class="pro_develop size_14 flex" v-for='item in projectDetail.pro_develop'>
             <div class='left'>{{item.created_at}}</div>
             <div class='middle'>
-              <img src="" alt="">
+              <img src="../../assets/images/img-dianxx.png" alt="">
             </div>
             <div class='right'>{{item.dh_event}}</div>
           </div>

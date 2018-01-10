@@ -8,7 +8,7 @@
         <div class="projectCard">
           <div class="mainCard flex">
             <div class="left">
-              <img src="projectDetail.info.project_logo" alt="">
+              <img :src="projectDetail.info.project_logo" alt="">
             </div>
             <div class="right">
               <div class="pro_name">{{projectDetail.info.project_name}}</div>
@@ -72,7 +72,7 @@
           <div class="pro_history_finance" v-for="( finance,index) in projectDetail.history_finance.list" :key = index>
             <div class="flex size_14" style="margin-bottom: .75rem;">
               <div class="finance_left finacingTime size_14 color_6">{{financingTime[index]}}</div>
-              <div class="finance_middle"><img src="" alt=""></div>
+              <div class="finance_middle"><img src="../../assets/images/img-dianxx.png" alt=""></div>
               <div class="finance_right finacingMoney size_14">{{finance.finance_money}}</div>
             </div>
             <div class='flex'>
@@ -94,7 +94,7 @@
           </div>
           <div class="teamMember" v-for='member in projectDetail.member_list.list'>
             <div class="top flex">
-              <img class="left headPic" v-if = 'member.member_avatar' src="member.member_avatar" alt="">
+              <img class="left headPic" v-if = 'member.member_avatar' :src="member.member_avatar" alt="">
               <div class="left headPic" v-else>{{member.member_avatar_text}}</div>
               <div class="right size_12 color_6 ">
                 <div style="margin-bottom: .75rem">
@@ -128,7 +128,7 @@
           <div class="pro_develop size_14 flex" v-for='(milestone,index) in projectDetail.milestone_list.list'>
             <div class='left'>{{mileStomeTime[index]}}</div>
             <div class='middle'>
-              <img src="" alt="">
+              <img src="../../assets/images/img-dianxx.png" alt="">
             </div>
             <div class='right'>{{milestone.milestone_event}}</div>
           </div>
