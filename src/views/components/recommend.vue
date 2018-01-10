@@ -7,8 +7,8 @@
         帮您引荐【{{matchInvestorsData.investor_name}}】
       </span>
       <div class="inner">
-        <p class="push">今日剩余引荐<i>5</i>次</p>
-        <el-input v-model="input" placeholder="还可输入其他需要引荐的投资人"></el-input>
+        <p class="push">今日剩余引荐<i>{{remain_times}}</i>次</p>
+        <el-input v-model="remark" placeholder="还可输入其他需要引荐的投资人"></el-input>
         <p class="phone" style="margin-top: 22px;">微天使会在48小时内与您联系，您也可咨询</p>
         <p class="phone">手机：18158415921、微信：vceggs</p>
       </div>
@@ -22,42 +22,83 @@
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex';
-//  import { error, success } from '@/utils/notification';
+  import { error, success, warning } from '@/utils/notification';
   export default {
-    props: {
-      recommendDisplay: {
-        type: Boolean,
-        default: false,
-        required: true
-      }
-    },
     data () {
       return {
-//        stageDisplay: false,
         showList: false,
-        input: ''
+        remark: '',
+        remain_times: 0 // 剩余引荐的次数
       };
     },
     computed: {
       ...mapState({
-        matchInvestorsData: state => state.projectDetails.matchInvestorsData
+        matchInvestorsData: state => state.projectDetails.matchInvestorsData,
+        projectMessage: state => state.projectDetails.projectMessage,
+        recommendDisplay: state => state.dialogDisplay.recommendDisplay
       })
     },
-    mounted () {
-
-    },
-    // 组件
-    components: {},
     methods: {
       // 关闭
       handleClose (e) {
-        this.$emit('closeRecommend', false);
+        this.$store.dispatch('recommendControl', false);
       },
-      save () {}
+      // 获取剩余引荐次数
+      getRemomeTime () {
+        this.$http.post(this.URL.getRecommendCount, {
+          user_id: localStorage.user_id
+        })
+          .then(res => {
+            let data = res.data.data;
+            if (res.data.status_code === 2000000) {
+              this.remain_times = data.push_count.remain_times;
+            } else {
+              error(res.data.error_msg);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });// 请求函数
+      },
+      // 引荐
+      save () {
+        if (this.remain_times !== 0) {
+          if (this.remark.length > 100) {
+            warning('最多输入100字');
+          } else {
+            this.$http.post(this.URL.recommendProject, {
+              user_id: localStorage.user_id,
+              project_id: this.projectMessage.projectId,
+              investor_id: this.matchInvestorsData.investor_id,
+              remark: this.remark
+            })
+              .then(res => {
+                let data = res.data;
+                if (data.status_code === 2000000) {
+                  success('引荐成功');
+                  this.handleClose();
+                } else {
+                  error(res.data.error_msg);
+                }
+              })
+              .catch(err => {
+                console.log(err);
+              });// 请求函数
+          }
+        } else {
+          warning('对不起，您今日的引荐次数已用完，请明天再试');
+        }
+      }
     },
-    // 当dom一创建时
-    created () {},
-    watch: {}
+    watch: {
+      recommendDisplay: function (e) {
+        if (e) {
+          this.getRemomeTime();
+        } else {
+          this.remark = '';
+        }
+      }
+    }
   };
 </script>
 

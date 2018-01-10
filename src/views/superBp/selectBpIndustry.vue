@@ -40,10 +40,8 @@
     import { mapState } from 'vuex';
     import { error, warning } from '@/utils/notification';
     export default {
-      props: {},
       data () {
         return {
-//          industryDisplay: false,
           showList: false,
           loading: false,
           industry: [],
@@ -59,9 +57,6 @@
           stageId: state => state.superBp.stageId
         })
       },
-      mounted () {},
-      // 组件
-      components: {},
       methods: {
         // 关闭
         handleClose (e) {

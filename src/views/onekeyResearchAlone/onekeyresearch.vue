@@ -1,9 +1,6 @@
 <template>
   <div id="researchAlone" class="clearfix" v-loading.fullscreen.lock="loading"
        element-loading-text="拼命加载中">
-    <!--    <div class="titleDi">
-
-        </div>-->
     <span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
     <!--===========================================首页搜索一键尽调进入页面=============================================-->
     <div class="contain-grid contain-center1 fl dialog" >
@@ -94,11 +91,9 @@
               <div class="list" v-for="milestone in milestone_list">
                     <span class="radio_line">
                       <span class="radio"></span>
-                      <!--<span class="l-line"></span>-->
                     </span>
                 <span class="date">{{milestone.milestone_time | timeToReallTime}}</span>
                 <span class="blood blood2">
-
                     <el-tooltip placement="top" :disabled="milestone.milestone_event.length > 40 ? false:true">
                       <div slot="content">{{milestone.milestone_event}}</div>
                       <i>{{milestone.milestone_event}}</i>
@@ -114,7 +109,6 @@
               <div class="list" v-for="new1 in news">
                     <span class="radio_line">
                       <span class="radio"></span>
-                      <!--<span class="l-line"></span>-->
                     </span>
                 <span class="date">{{new1.project_news_time | timeToReallTime}}</span>
                 <span class="dateTag"><el-tag type="primary" style="margin-left: 5px;" v-if="new1.project_news_label">{{new1.project_news_label}}</el-tag></span>
@@ -215,11 +209,7 @@
             <span style="font-size:20px;color:#1f2d3d;display: inline-block;margin-top: 28px">微天使客服会联系您并安排与项目方的沟通</span>
             <span style="font-size:14px;color:#5e6d82;display: inline-block;margin-top: 25px">联系客服：0571-85026758</span><br>
             <span style="font-size:14px;color:#5e6d82;margin-top: 5px">或加微信：weitianshicn</span>
-            <img :src="img" alt="" style="width: 164px;height: 164px;margin-top: 24px">
-            <!--<span slot="footer" class="dialog-footer">-->
-            <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
-            <!--<el-button type="primary" @click="dialogVisible = false">确 定</el-button>-->
-            <!--</span>-->
+            <img src="../../assets/images/img-fageerweima.png" alt="" style="width: 164px;height: 164px;margin-top: 24px">
           </el-dialog>
         </div>
 
@@ -294,13 +284,10 @@
         </el-tabs>
       </div>
     </div>
-
   </div>
-
 </template>
 
 <script type="text/ecmascript-6">
-  import img from '../../../static/images/img-fageerweima.png';
   import companyMessage from '@/views/components/onkeyresearch/companyMessage.vue';
   import business from '@/views/components/onkeyresearch/business.vue';
   import downloadechart from '@/views/components/onkeyresearch/downloadEchart.vue';
@@ -312,7 +299,6 @@
       return {
         CompName: '',
         data1: ' ',
-        img: img,
         currentPathName: '',
         dialogVisible: false,
         dialogVisible1: false,
@@ -324,15 +310,15 @@
         // 项目详情
         project: {
           goodness: {
-            pro_goodness: { goodness_id: 1, project_id: 7295, goodness_title: '我是亮点1', goodness_desc: '我是亮点1' },
-            pro_market_genera: {goodness_id: 2, project_id: 7295, goodness_title: '我是亮点2', goodness_desc: '我是亮点2'},
-            pro_business_model: {goodness_id: 2, project_id: 7295, goodness_title: '我是亮点2', goodness_desc: '我是亮点2'},
-            pro_service: {goodness_id: 2, project_id: 7295, goodness_title: '我是亮点2', goodness_desc: '我是亮点2'}
+            pro_goodness: { goodness_id: 1, project_id: 7295, goodness_title: '暂无信息', goodness_desc: '暂无信息' },
+            pro_market_genera: {goodness_id: 2, project_id: 7295, goodness_title: '暂无信息', goodness_desc: '暂无信息'},
+            pro_business_model: {goodness_id: 2, project_id: 7295, goodness_title: '暂无信息', goodness_desc: '暂无信息'},
+            pro_service: {goodness_id: 2, project_id: 7295, goodness_title: '暂无信息', goodness_desc: '暂无信息'}
           }, // 亮点
           open_status: '1', // 私密设置
           pro_area: {
             area_id: 2,
-            area_title: '北京市', // 市级
+            area_title: '暂无信息', // 市级
             pid: 1// 省级
           }, // 所属地区1省级单位
           pro_company_name: '',
@@ -349,12 +335,12 @@
           pro_name: '',
           pro_scale: {
             scale_id: 1,
-            scale_money: '100W以下'
+            scale_money: '暂无信息'
           }, // 规模多少钱
           pro_stage: {
             sort: 4,
             stage_id: 13,
-            stage_name: 'A轮'
+            stage_name: '暂无信息'
           },
           project_id: '',
           tag: []
@@ -362,7 +348,7 @@
         // 公司运营
         company: {
           pro_company_scale: {comp_scale_id: 1},
-          pro_status: {status_id: 3, status_name: '上线'},
+          pro_status: {status_id: 3, status_name: '暂无信息'},
           pro_website: ''
         },
         // 品牌
@@ -594,7 +580,6 @@
       handleClose (done) {
         done();
       },
-
       // 获取信息
       getCrawlerTeam () {
         return new Promise((resolve, reject) => {
@@ -739,12 +724,9 @@
                 this.chartData = res.data.data;
                 if (res.data.data.length === 0) {
                   this.data1 = ' ';
-                  // console.log(this.data1);
                 } else if (res.data.data[0].project_name) {
                   this.data1 = res.data.data[0].project_name;
-                  // console.log(this.data1);
                 }// 联系项目方项目名称
-//                this.data1=this.project[0].project_name?this.project[0].project_name:' ';
                 this.getCrawlerProjectChart(res.data.data);
               } else {
                 this.chartDataCheck = false;
@@ -770,7 +752,6 @@
           data[i].project_industry = data[i].project_industry.split(',');
         }
       }, // 设置数据
-
       // 买家图谱
       setProjectMatchInvestors (arr) {
         let newArr = [];
@@ -868,10 +849,6 @@
           this.compName = decodeURI(this.$route.query.company) || '';
           this.id = this.$route.query.id || '';
           this.pro = decodeURI(this.$route.query.pro) || '';
-//          console.log(this.$route.query.company);
-//          console.log(this.$route.query.id);
-//          console.log(this.$route.query.includeInvestorMap);
-
           if (routerCompany === '') {
             error('请填写公司名称');
             this.empty = true;
@@ -909,7 +886,6 @@
         });
       }// 获取API请求的数据
     },
-    computed: {},
     components: {
       companyMessage,
       business,
@@ -918,8 +894,7 @@
     created () {
       getTop();
       this.getRouter();
-    },
-    watch: {}
+    }
   };
 </script>
 

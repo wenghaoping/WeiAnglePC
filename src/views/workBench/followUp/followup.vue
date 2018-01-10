@@ -227,14 +227,15 @@
     </div>
 
   <!--写跟进弹框-->
-  <addfollow :follow-display="followDisplay" :followid="followid" @closeFollow="closeFollow"></addfollow>
+  <addfollow></addfollow>
+
   <!--人脉详情弹窗-->
-  <alertcontactsdetail :contact-display="contactDisplay" :cardid="cardid" :userid="userid"
-                       @closeContact="closeContact"></alertcontactsdetail>
+  <alertcontactsdetail></alertcontactsdetail>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   import addfollow from '@/views/components/addFollow.vue';
   import alertcontactsdetail from '@/views/components/alertContactsDetail.vue';
   import { error, success } from '@/utils/notification';
@@ -245,13 +246,13 @@
       addfollow,
       alertcontactsdetail
     },
+    computed: {
+      ...mapState({
+        followDisplay: state => state.dialogDisplay.followDisplay
+      })
+    },
     data () {
       return {
-        followDisplay: false, // 控制写跟进弹框
-        contactDisplay: false, // 人脉详情弹窗
-        cardid: '', // 人脉详情弹框用(点击的那个人的cardid)
-        userid: '', // 人脉详情弹框用(点击的那个人的userid)
-        followid: '', // 跟进id
         loading: false, // 加载动画
         searchinput: '', // 搜索输入框
         totalData: 1, // 总页数
@@ -285,6 +286,7 @@
       };
     },
     methods: {
+      // 搜索===首次进入页面加载的数据
       handleIconClick () {
         this.loading = true;
         this.getFollow.user_id = localStorage.user_id;
@@ -296,7 +298,6 @@
           .then(res => {
             let data = res.data.data;
             this.tableData = data.follow_record;
-//          console.log(this.tableData.project_id);
             this.totalData = data.count;
             this.loading = false;
           })
@@ -304,41 +305,46 @@
             this.loading = false;
             console.log(err, 2);
           });
-      }, // 搜索===首次进入页面加载的数据
-
+      },
+      // 跳转之后设置参数
       setRouterData () {
         this.$store.state.pageANDSelect.getFollow = this.getFollow;
         this.$store.state.pageANDSelect.folcurrentPage = this.currentPage;
-      }, // 跳转之后设置参数
+      },
+      // 从vuex中取数据
       getRouterData () {
         this.getFollow = this.$store.state.pageANDSelect.getFollow;
         this.currentPage = this.$store.state.pageANDSelect.folcurrentPage || 1;
         this.getFollow.page = this.$store.state.pageANDSelect.folcurrentPage || 1;
         this.searchinput = this.$store.state.pageANDSelect.followSearchinput;
-      }, // 从vuex中取数据
-
+      },
+      // 点击写跟近按钮
       addFollow () {
         this.zgClick('添加跟进');
-        this.followDisplay = true;
-      }, // 点击写跟近按钮
+        this.$store.dispatch('followControl', true);
+      },
+      // 跳转到更近详情页
       handleSelect (row, event, column) {
         if (column.label !== '重置' && column.label !== '投资人') {
           this.zgClick('查看项目详情');
           this.$router.push({name: 'projectDetails', query: {project_id: row.project_id, show: 'flow', activeTo: 2}});
           this.setRouterData();
         }
-      }, // 跳转到更近详情页
+      },
+      // 点击编辑按钮,跳转
       handleEdit (index, row) {
         this.zgClick('编辑跟进');
-        this.followDisplay = true;
-        this.followid = row.follow_id;
+        this.$store.dispatch('followControl', true);
+        this.$store.dispatch('setFollowId', row.follow_id);
         this.setRouterData();
-      }, // 点击编辑按钮,跳转
+      },
+      // 点击重置按钮时
       headerClick (column, event) {
         if (column.label === '重置') {
           window.location.reload();
         }
-      }, // 点击重置按钮时
+      },
+      // 点击删除按钮
       handleDelete (index, row) {
         this.setRouterData();
         this.$confirm('您确认要删除当前项目跟进记录及关联文件吗?, 是否继续?', '提示', {
@@ -366,7 +372,8 @@
             message: '已取消删除'
           });
         });
-      }, // 点击删除按钮
+      },
+      // 筛选 ascending升/descending降/
       filterChange (filters) {
         this.loading = true;
         this.currentPage = 1;
@@ -397,7 +404,8 @@
             this.loading = false;
             console.log(err);
           });
-      }, // 筛选 ascending升/descending降/
+      },
+      // 控制页码
       filterChangeCurrent (page) {
         getTop();
         delete this.getFollow.page;
@@ -415,7 +423,8 @@
             this.loading = false;
             console.log(err);
           });
-      }, // 控制页码
+      },
+      // 意向投资人筛选控制
       filterInvestors (data) {
         if (data) {
           let arr = [];
@@ -432,13 +441,8 @@
           }
           return arr;
         }
-      }, // 意向投资人筛选控制
-      closeFollow (msg) {
-        this.followDisplay = msg;
-        this.followid = '';
-        this.filterChangeCurrent(this.currentPage || 1);
-      }, // 关闭添加跟进
-
+      },
+      // 总设置列表的数据处理
       getList (list) {
         let arr = [];
         for (let i = 0; i < list.length; i++) {
@@ -461,8 +465,8 @@
           arr.push(obj);
         }
         return arr;
-      }, // 总设置列表的数据处理
-
+      },
+      // 设置意向投资人表头
       getInvestors (data) {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
@@ -473,7 +477,8 @@
           arr.push(obj);
         }
         return arr;
-      }, // 设置意向投资人表头
+      },
+      // 获取表头
       titleSift () {
         this.$http.post(this.URL.getToInvestor, {user_id: localStorage.user_id})
           .then(res => {
@@ -483,14 +488,12 @@
           .catch(err => {
             console.log(err);
           });
-      }, // 获取表头
-      closeContact (msg) {
-        this.contactDisplay = msg;
-      }, // 人脉详情弹窗关闭
+      },
+      // 跳转人脉详情
       contanctDetail (row) {
-        this.cardid = row.type === 'user' ? 0 : row.card_id;
-        this.userid = row.type === 'user' ? row.card_id : 0;
-        this.contactDisplay = true;
+        console.log(row);
+        this.$store.dispatch('setConnectDeatil', {cardId: row.card_id, userId: row.user_id, type: 'userInfo'});
+        this.$store.dispatch('contactControl', true);
       }
     },
     created () {
@@ -502,7 +505,8 @@
     watch: {
       followDisplay: function (e) {
         if (!e) {
-//        this.handleIconClick();
+          this.$store.dispatch('setFollowId', '');
+          this.filterChangeCurrent(this.currentPage || 1);
         }
       }
     }

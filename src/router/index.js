@@ -6,8 +6,9 @@ Vue.use(Router);
 
 // 测试页面
 const checkone = r => require.ensure([], () => r(require('@/test/checkone.vue')), 'checkone');
+// const checkone = r => require.ensure([], () => r(require('@/components/tinymce.vue')), 'tinymce');
 
-/* 配置路由 */
+// 配置路由
 export default new Router({
   routes: [
     {
@@ -85,6 +86,12 @@ export default new Router({
     },
     {
       path: '/customBp', name: 'customBp', component: _import('superBp/customBp') // BP问诊/定制
+    },
+    {
+      path: '/creatActivity', name: 'creatActivity', component: _import('Activity/creatActivity') // 创建活动
+    },
+    {
+      path: '/myActivity', name: 'myActivity', component: _import('Activity/myActivity') // 我的活动
     },
     {
       path: '/test', name: 'test', component: checkone

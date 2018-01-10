@@ -146,12 +146,6 @@
           schedule: []
         };
       },
-      computed: {},
-      mounted () {
-
-      },
-      // 组件
-      components: {},
       methods: {
         getWxProjectCategory () {
           return new Promise((resolve, reject) => {
@@ -173,17 +167,21 @@
           })
             .then(res => {
               let data = res.data.data;
-              if (data.schedule_id === 0) {
-                data.schedule_id = this.schedule[0].value;
-              }
-              if (this.schid) {
-                this.schedule_id = this.schid;
+              if (res.data.status_code === 2000000) {
+                if (data.schedule_id === 0) {
+                  data.schedule_id = this.schedule[0].value;
+                }
+                if (this.schid) {
+                  this.schedule_id = this.schid;
+                } else {
+                  this.schedule_id = data.schedule_id;
+                }
+                this.competition = data;
+                if (data.competition_index.length === 0) {
+                  this.addScore();
+                }
               } else {
-                this.schedule_id = data.schedule_id;
-              }
-              this.competition = data;
-              if (data.competition_index.length === 0) {
-                this.addScore();
+                error(res.data.error_msg);
               }
               this.loading = false;
             })
@@ -201,9 +199,13 @@
           })
             .then(res => {
               let data = res.data.data;
-              this.competition = data;
-              if (data.competition_index.length === 0) {
-                this.addScore();
+              if (res.data.status_code === 2000000) {
+                this.competition = data;
+                if (data.competition_index.length === 0) {
+                  this.addScore();
+                }
+              } else {
+                error(res.data.error_msg);
               }
               this.loading = false;
             })

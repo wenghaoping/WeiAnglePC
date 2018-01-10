@@ -33,7 +33,6 @@
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex';
   export default {
-    props: {},
     data () {
       return {
         loading: false,
@@ -50,9 +49,6 @@
         industry: state => state.superBp.industry
       })
     },
-    mounted () {},
-    // 组件
-    components: {},
     methods: {
       handClose () {
         this.$store.dispatch('AllControl', false);
@@ -69,12 +65,9 @@
       },
       downloadIng () {
         const url = this.URL.weitianshi + this.URL.superBpDownload + '?user_id=' + localStorage.user_id + '&bp_id=' + this.bpId + '&industry=' + this.industryId + '&stage=' + this.stageId;
-        window.location.href = url;
+        window.open(url);
       }
-    },
-    // 当dom一创建时
-    created () {},
-    watch: {}
+    }
   };
 </script>
 

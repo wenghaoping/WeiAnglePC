@@ -27,6 +27,7 @@
                 {{userRealName}}<i class="el-icon-caret-bottom el-icon--right"></i>
               </span>
           <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item><div @click="loginOut(3)">我的活动</div></el-dropdown-item>
             <el-dropdown-item><div @click="loginOut(0)">个人信息</div></el-dropdown-item>
             <el-dropdown-item><div @click="loginOut(1)" >{{groupStatus}}</div></el-dropdown-item>
             <el-dropdown-item divided><div @click="loginOut(2)">退出</div></el-dropdown-item>
@@ -80,9 +81,6 @@
         userRealName: state => state.logining.user_real_name
       })
     },
-    mounted () {},
-    // 组件
-    components: {},
     methods: {
       // 切换选项卡
       toggle (i) {
@@ -179,6 +177,8 @@
           this.$router.push({path: 'login'});// 登陆
           this.$store.dispatch('setUserRealName', '');
           setTimeout(() => { window.location.reload(); }, 100);
+        } else if (e === 3) {
+          this.$router.push({name: 'myActivity'});// 我的活动
         }
         this.value = '';
       },
@@ -202,10 +202,7 @@
           }
         });
       }
-    },
-    // 当dom一创建时
-    created () {},
-    watch: {}
+    }
   };
 </script>
 

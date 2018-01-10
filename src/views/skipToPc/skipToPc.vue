@@ -1,7 +1,5 @@
 <template>
-    <div id="addproject" v-loading.fullscreen="loading" element-loading-text="正在登陆中">
-
-    </div>
+    <div id="addproject" v-loading.fullscreen="loading" element-loading-text="正在登陆中"></div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -13,11 +11,6 @@
         show: ''
       };
     },
-    computed: {},
-    mounted () {},
-    // 组件
-    components: {},
-    methods: {},
     // 当dom一创建时
     created () {
       if (this.$route.path === '/skipToPc') {
@@ -46,11 +39,6 @@
             }
           });
       }
-    },
-    watch: {}
+    }
   };
 </script>
-
-<style>
-
-</style>

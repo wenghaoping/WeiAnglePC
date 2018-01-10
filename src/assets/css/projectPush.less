@@ -16,12 +16,12 @@
   }
   .el-dialog{
     .el-dialog__header{
-      padding-left: 23px;
+      padding-left: 23px!important;
       padding-top: 32px;
     }
   }
   .el-table .cell .el-tooltip {
-    max-width: 105px !important;
+    //max-width: 105px !important;
     overflow: hidden !important;
     white-space: nowrap !important;
     text-overflow: ellipsis !important;
@@ -378,7 +378,6 @@
   .baseimg{
     width: 343px;
     height: 190px;
-    margin-top: 20px;
   }
   .mid-tag2{
     border:1px solid #e6e0ed;
@@ -417,6 +416,131 @@
   .isSuccess{
     .el-progress-bar__inner{
       background-color: rgb(19, 206, 102);
+    }
+  }
+
+  .reason_padd{
+    margin: 40px 35px 0px;
+  }
+  .reason_border{
+    background:#ffffff;
+    border:1px solid #e6e6e6;
+    border-radius:4px;
+    width:341px;
+    height:188px;
+    img{
+      width: 100%;
+    }
+  }
+  .tit{
+    padding: 12px 0;
+
+  }
+  .tit_left{
+    font-size:14px;
+    color:#8492a6;
+  }
+  .tit_right{
+    font-size:14px;
+    color:#475669;
+    width: 690px;
+    display: block;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    margin-left: 13px;
+
+  }
+  .tit_mian{
+    font-size:14px;
+    color:#5e6d82;
+    width: 785px;
+    display: block;
+    line-height:28px;
+    text-align:left;
+  }
+  .button_list{
+    background:#ffffff;
+    box-shadow:0 -2px 4px 0 rgba(64,88,122,0.10);
+    width:835px;
+    height:60px;
+    .lis{
+      width: 210px;
+      margin: 0 auto;
+      display: block;
+
+    }
+    .button{
+      background:#40587a;
+      border-radius:2px;
+      width:88px;
+      height:36px;
+      font-size:14px;
+      color:#ffffff;
+      text-align:center;
+      margin-top: 12px;
+      cursor: pointer;
+
+    }
+  }
+  .reason{
+    width: 343px;
+    height: 252px;
+    position: relative;
+    .icon2{
+      cursor: pointer;
+      position: absolute;
+      left: 147px;
+      top: 7px;
+      width: 16px;
+      height: 16px;
+      img{
+        width: 100%;
+      }
+    }
+    .title{
+      font-size:14px;
+      color: #1f2d3d!important;
+    }
+    .baseimg{
+      width: 341px;
+      height: 188px;
+      border-radius:4px;
+    }
+    .el_pro{
+      width: 240px; margin-top: 15px;
+    }
+    .height{
+      color: #99a9bf;
+      line-height: 18px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .active_tag{
+      color: #475669!important;
+    }
+    .big-tag{
+      font-size:14px;
+      color:#8492a6;
+      text-align:left;
+    }
+    .split{
+      height: 14px;
+      line-height: 14px;
+      color:#e0e6ed;
+      //margin:0 10px;
+    }
+    .isSuccess{
+      .el-progress-bar__inner{
+        background-color: rgb(19, 206, 102);
+      }
+    }
+  }
+
+  // 新增
+  .projectPushToProDialog{
+    .el-dialog{
+      top: 10px!important;
     }
   }
 }

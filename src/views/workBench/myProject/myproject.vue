@@ -288,22 +288,13 @@
                  @reload="handleIconClick"></alertUpload>
 
     <!--写跟进弹框-->
-    <addfollow :follow-display="followDisplay" :projectid="projecmessage.project_id"
-               :projectname="projecmessage.project_name"
-               @closeFollow="closeFollow"></addfollow>
+    <addfollow></addfollow>
 
     <!--项目推送项目入口弹窗-->
-    <projectpushtopro :project-push-show2="projectPushDisplay2" :proid="pushId"
-                      :pro-intro="pushIntro" :emitPush="emitPush"
-                      @openPreview="openPreview"
-                      @closeProjectPush2="closeProjectPush2"
-                      @previewPush="previewPush"></projectpushtopro>
+    <projectpushtopro></projectpushtopro>
 
     <!--项目预览弹窗-->
-    <projectpreview :preview-show="previewDisplay" :comeFrom="'project'"
-                    @closePreview="closePreview"
-                    @closePreviewANDProjectPush="closePreviewANDProjectPush"
-                    @previewPush="previewPush"></projectpreview>
+    <projectpreview></projectpreview>
 
     <!--评分指标-->
     <score-index :scoreDisplay="scoreDisplay" @closeScore="closeScore" @chengeSchedule="chengeSchedule"></score-index>
@@ -352,8 +343,6 @@
     },
     data () {
       return {
-        followDisplay: false, // 控制写跟进弹框
-        projectPushDisplay2: false, // 项目推送弹窗
         uploadDisplay: false, // 上传弹框控制
         previewDisplay: false, // 控制项目推送预览显隐
         scoreDisplay: false, // 评分指标弹窗
@@ -406,9 +395,6 @@
           value: '0',
           label: '删除'
         }], // 更多的选项表单
-        pushId: '', // 推送项目传值-项目ID
-        pushIntro: '', // 推送项目传值-项目名称
-        emitPush: false, // 控制项目推送-项目入口的推送函数触发
         pro_schedule: '', // 筛选选项
         column: [], // 选中中
         columns: [
@@ -470,33 +456,14 @@
       // 点击写跟近按钮
       addFollow (index, row) {
         this.zgClick('添加跟进');
-        this.followDisplay = true;
-        this.projecmessage.project_id = row.project_id;
-        this.projecmessage.project_name = row.pro_intro;
-      },
-      // 打开预览弹框
-      openPreview (msg) {
-        this.previewDisplay = msg;
-      },
-      // 关闭添加跟进
-      closeFollow (msg) {
-        this.followDisplay = msg;
+        this.$store.dispatch('followControl', true);
+        this.$store.dispatch('setFollowUp', {projectId: row.project_id, projectIntro: row.pro_intro});
       },
       // 点击项目推送
       addprojectPush (index, row) {
         this.zgClick('项目推送');
-        this.pushId = row.project_id;
-        this.pushIntro = row.pro_intro;
-        this.projectPushDisplay2 = true;
-      },
-      // 关闭项目推送弹窗
-      closeProjectPush2 (msg) {
-        this.projectPushDisplay2 = msg;
-      },
-      // 关闭预览AND关闭项目推送1,关闭项目推送2
-      closePreviewANDProjectPush (msg) {
-        this.projectPushDisplay2 = false;
-        this.previewDisplay = false;
+        this.$store.dispatch('setFollowUp', {projectId: row.project_id, projectIntro: row.pro_intro});
+        this.$store.dispatch('projectPushToProControl', true);
       },
       // 请求函数
       // 搜索===首次进入页面加载的数据
@@ -718,14 +685,6 @@
           });
         });
       },
-      // 项目推送预览隐藏
-      previewPush (x) {
-        this.emitPush = x;
-      },
-      // 关闭项目预览
-      closePreview (msg) {
-        this.previewDisplay = msg;
-      },
       // 评分指标下载
       scoreDownload () {
         const url = this.URL.weitianshi + this.URL.exportScoreByCompetition + '?user_id=' + localStorage.user_id;
@@ -740,7 +699,7 @@
         this.checkTime = setTimeout(() => {
           this.checkTimeTrue = true;
           console.log(this.checkTimeTrue, 2, '定时结束');
-        }, 7000);
+        }, 5000);
       },
       // 控制自定义
       closeStage (e) {
@@ -787,12 +746,10 @@
       this.getNodeCount();
       this.titleSift();
       this.filterChangeCurrent(this.currentPage || 1);
-    },
-    watch: {}
+    }
   };
 </script>
 
 <style type="text/css" lang="less">
   @import '../../../assets/css/myproject';
-
 </style>

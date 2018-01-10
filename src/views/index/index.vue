@@ -87,7 +87,7 @@ letter-spacing:0;">团中央·青年APP大赛</span></a>
       <span style="font-size:14px;color:#40587a;letter-spacing:3px;">100强项目展示</span>
     </div>
     <div class="er-box">
-      <img :src="zhanshi" alt="">
+      <img src="../../assets/images/xiangmuzhanshi.png" alt="">
     </div>
     <div class="qrCode">
       <img src='../../assets/images/indexQr.png'/>
@@ -111,13 +111,9 @@ letter-spacing:0;">团中央·青年APP大赛</span></a>
 
 
 <script type="text/ecmascript-6">
-  import zhanshi from '../../../static/images/xiangmuzhanshi.png';
   export default {
-    name: 'hello',
     data () {
       return {
-        zhanshi: zhanshi,
-        msg: '',
         // 控制二维码显示
         showQr: false
       };
@@ -142,9 +138,6 @@ letter-spacing:0;">团中央·青年APP大赛</span></a>
       aboutUs () {
         this.$router.push('/aboutUs');
       }
-    },
-    mounted () {
-
     }
   };
 </script>

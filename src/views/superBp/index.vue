@@ -30,7 +30,6 @@
       </div>
     </div>
 
-
     <!--选择行业弹框-->
     <select-bp-industry></select-bp-industry>
 
@@ -54,7 +53,6 @@
   import payBp from '@/views/superBp/payBp.vue';
   import { error } from '@/utils/notification';
   export default {
-    props: [],
     data () {
       return {
         loading: false,
@@ -62,8 +60,6 @@
         currentPage: 1 // 当前第几页
       };
     },
-    computed: {},
-    mounted () {},
     // 组件
     components: {
       choiceBp,
@@ -114,8 +110,7 @@
     created () {
       utils.getTop();
       this.getBpFileSelected();
-    },
-    watch: {}
+    }
   };
 </script>
 

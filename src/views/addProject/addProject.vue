@@ -10,11 +10,6 @@
         loading: true
       };
     },
-    computed: {},
-    mounted () {},
-    // 组件
-    components: {},
-    methods: {},
     // 当dom一创建时
     created () {
       if (this.$route.path === '/addProject' && this.$route.query.flog === 'mail') {
@@ -50,7 +45,6 @@
         sessionStorage.clear();// 把默认值清空;
         setTimeout(() => { this.$router.push({name: 'myProject', query: {activeTo: 0}}); }, 50);
       }
-    },
-    watch: {}
+    }
   };
 </script>

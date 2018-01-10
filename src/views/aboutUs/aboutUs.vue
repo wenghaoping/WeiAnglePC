@@ -1,5 +1,4 @@
 <template>
-  <!--<span class="back-tag" @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>-->
   <div class="content">
     <div class="content1">
       <h1 style="margin-top:66px;font-size:40px;color:#1f2d3d;letter-spacing:0;">关于微天使</h1>
@@ -28,11 +27,11 @@
        </div>
         <div class="recommend2">
           <div class="recommend22">
-            <img class="recommend2_Xiaochengxu" :src="ios">
+            <img class="recommend2_Xiaochengxu" src="../../../static/images/img-iOS.png">
             <div class="recommend2_name">IOS下载</div>
           </div>
           <div class="recommend22" style="margin-right: 16px">
-            <img class="recommend2_Xiaochengxu" :src="xiaochengxu">
+            <img class="recommend2_Xiaochengxu" src="../../../static/images/xiaochengxu.png">
             <div class="recommend2_name">小程序体验</div>
           </div>
         </div>
@@ -43,49 +42,30 @@
       </div>
       <div class="recommend_left" style="height: 200px;margin-bottom: 150px">
         <div class="recommend1">
-          <div class="recommend11"><img  :src="dianhua" class="contact_img"><span>&nbsp;&nbsp;0571-85026758</span></div>
-          <div class="recommend11"> <img :src="youxiang" class="contact_img">
+          <div class="recommend11"><img  src="../../../static/images/icon-dianhua.png" class="contact_img"><span>&nbsp;&nbsp;0571-85026758</span></div>
+          <div class="recommend11"> <img src="../../../static/images/icon-youxiang.png" class="contact_img">
           <span>&nbsp;&nbsp;fa@weitian.cn</span></div>
-          <div class="recommend11"> <img :src="dizhi" class="contact_img">
+          <div class="recommend11"> <img src="../../../static/images/icon-dizhi.png" class="contact_img">
             <span>&nbsp;&nbsp;杭州市文三路90号东部软件园8号楼1楼智云社</span></div>
         </div>
         <div class="recommend2" style="height: 100px;margin-top: 0">
           <div class="recommend22">
-            <img class="recommend2_Xiaochengxu" :src="weixin">
+            <img class="recommend2_Xiaochengxu" src="../../../static/images/img-weixin.png">
             <div class="recommend2_name">weitianshi.cn</div>
           </div>
-
         </div>
       </div>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import weixin from '../../../static/images/img-weixin.png';
-  import dianhua from '../../../static/images/icon-dianhua.png';
-  import youxiang from '../../../static/images/icon-youxiang.png';
-  import dizhi from '../../../static/images/icon-dizhi.png';
-  import xiaochengxu from '../../../static/images/xiaochengxu.png';
-  import ios from '../../../static/images/img-iOS.png';
+  import { getTop } from '@/utils';
   export default {
-    data () {
-      return {
-        dianhua: dianhua,
-        youxiang: youxiang,
-        dizhi: dizhi,
-        xiaochengxu: xiaochengxu,
-        ios: ios,
-        weixin: weixin
-      };
-    },
-    methods: {
-      goBack () {
-        this.$router.go(-1);
-      }// 返回上一层
+    created () {
+      getTop();
     }
   };
 </script>
-
 <style scoped lang="less">
   .contact_img{
     width:16px;

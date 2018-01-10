@@ -58,10 +58,6 @@
         uploadLoading: false // BP上传动画
       };
     },
-    computed: {},
-    mounted () {},
-    // 组件
-    components: {},
     methods: {
       // 点击下载
       planPreview (file) {
@@ -134,10 +130,7 @@
       submitUpload (e) {
         this.$refs.upload.submit();
       }
-    },
-    // 当dom一创建时
-    created () {},
-    watch: {}
+    }
   };
 </script>
 

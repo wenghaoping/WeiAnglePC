@@ -3,7 +3,6 @@
     </div>
 </template>
 
-
 <script type="text/ecmascript-6">
   export default {
     data () {
@@ -11,7 +10,6 @@
         loading: false
       };
     },
-    methods: {},
     created () {
       this.loading = true;
       var a = '';
@@ -41,6 +39,3 @@
   };
 </script>
 
-<style scoped lang="less">
-
-</style>

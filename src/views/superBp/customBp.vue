@@ -116,7 +116,6 @@
         stageId: state => state.superBp.stageId
       })
     },
-    mounted () {},
     // 组件
     components: {
       singleUpload
@@ -266,8 +265,7 @@
       utils.getTop();
       this.getType();
       this.setFirstData();
-    },
-    watch: {}
+    }
   };
 </script>
 

@@ -8,7 +8,6 @@
           ref="upload"
           size="large"
           :action="uploadAddress"
-          :on-preview="handlePreview"
           :on-change="handleChange"
           :on-success="uploadsuccess"
           :on-progress="handleProgress"
@@ -30,7 +29,6 @@
               </i>
           </div>
           </div>
-
         </el-upload>
         <div class="uploadForm" style="padding-top: 32px;">
           <el-form :model="dateForm" ref="dateForm" label-width="100px" class="demo-dynamic" label-position="top">
@@ -100,7 +98,6 @@
       return {
         uploadAddress: this.URL.weitianshiLine + this.URL.projectUpload + localStorage.token, // 上传地址
         num: 0, // 控制一次最多选择个数
-//      dialogUploadVisible: false,//第一个弹窗的控制
         dialogUpload2Visible: false, // 第二个弹窗的控制
         status: '', // 状态success/exception
         percentage: 0, // 进度
@@ -144,9 +141,6 @@
       uploaderror (err, file, fileList) {
         console.log(err);
         error('上传失败');
-      },
-      handlePreview (file) {
-//        console.log(file);
       },
       beforeUpload (file) {
         this.num++;
@@ -297,11 +291,7 @@
       },
       handleClose () {
         this.$emit('uploadDisplayChange', false);
-//      this.dialogUpload2Visible=false;
       }
-    },
-    created () {
-
     },
     computed: {
       //* 有上传中的文件吗
@@ -327,5 +317,4 @@
 
 <style lang="less">
   @import '../../../assets/css/alertUpload.less';
-
 </style>

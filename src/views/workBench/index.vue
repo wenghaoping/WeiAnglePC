@@ -17,19 +17,6 @@
 
   </div>
 </template>
-
-<script type="text/ecmascript-6">
-  export default {
-    data () {
-      return {};
-    },
-    computed: {},
-    methods: {},
-    created () {},
-    watch: {}
-  };
-</script>
-
 <style lang="less">
 #workBench{
   width: 1263px;

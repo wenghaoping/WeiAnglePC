@@ -17,7 +17,6 @@
 
 <script type="text/ecmascript-6">
   import a from '../../../static/images/maifangFA.png';
-//  import b from '../../../static/images/maifangFA.png';
   import c from '../../../static/images/touzifang.png';
   import d from '../../../static/images/chuangyezhe.png';
   import e from '../../../static/images/qita.png';

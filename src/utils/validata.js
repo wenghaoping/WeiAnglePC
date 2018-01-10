@@ -30,7 +30,7 @@ export function simpleClone (myObj) {
   if (typeof (myObj) !== 'object') return myObj;
   if (myObj == null) return myObj;
   let myNewObj = {};
-  for (var i in myObj) { myNewObj[i] = myObj[i]; }
+  for (let i in myObj) { myNewObj[i] = myObj[i]; }
   return myNewObj;
 }
 
@@ -94,4 +94,12 @@ export function checkPhoneNumber1 (value) {
     check = true;
   }
   return check;
+}
+// 密码长度认证(6-20)
+export function checkPassword (data) {
+  if (data.length > 20 || data.length < 6) {
+    return true;
+  } else {
+    return false;
+  }
 }
