@@ -220,7 +220,7 @@ export default
   mail_getProjectDetail_scrapy: '/api/mobile/scrapyProject', // 爬虫怕取的项目详情
   mail_createInterview: '/api/mobile/createInterview', // 项目约谈
   mail_createInterview2: 'api/mobile/createSourceInterview', // 项目约谈_爬虫项目
-  mail_sendBp: '/api/mobile/emailForBp' // 发送BP
+  mail_sendBp: '/api/mobile/emailForBp', // 发送BP
 
   // 我的活动
   uploadImage: 'api/activity/uploadImage?token=', // 我的活动上传图片

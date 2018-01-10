@@ -400,7 +400,7 @@
     },
     created () {
 //      localStorage.clear();
-//      this.getprojectId();
+      this.getprojectId();
       this.getProjectDetail();
       console.log(this);
     },
