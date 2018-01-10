@@ -565,18 +565,18 @@
       }
     },
     created () {
-      getTop();
-      this.getRouterData();
-      this.loading = true;
-      this.is_competition = localStorage.is_competition;
-      this.$global.func.getWxProjectCategory()
-        .then((data) => {
-          return this.getWxProjectCategory();
-        })
-        .then((data) => {
-          return this.filterChangeCurrent(this.currentPage || 1);
-        });
-      this.titleSift();
+//      getTop();
+//      this.getRouterData();
+//      this.loading = true;
+//      this.is_competition = localStorage.is_competition;
+//      this.$global.func.getWxProjectCategory()
+//        .then((data) => {
+//          return this.getWxProjectCategory();
+//        })
+//        .then((data) => {
+//          return this.filterChangeCurrent(this.currentPage || 1);
+//        });
+//      this.titleSift();
     }
   };
 </script>

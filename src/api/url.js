@@ -219,5 +219,6 @@ export default
   uploadImage: 'api/activity/uploadImage?token=', // 我的活动上传图片
   deleteActivityImage: 'api/activity/deleteImage', // 删除图片
   getActivity: 'api/activity/getActivity', // 获取活动基本信息
-  editActivity: 'api/activity/editActivity' // 创建 / 编辑活动
+  editActivity: 'api/activity/editActivity', // 创建 / 编辑活动
+  getActivityApplyUser: 'api/activity/getActivityApplyUser' // 活动报名签到成员
 };

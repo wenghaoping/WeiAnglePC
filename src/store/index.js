@@ -9,6 +9,7 @@ import dialogDisplay from './modules/dialogDisplay.js'; // 全局公用弹框控
 import projectDetails from './modules/projectDetails.js'; // 项目详情页面所有数据集合
 import contactsDetails from './modules/contactsDetails.js'; // 人脉详情页面
 import syncData from './modules/syncData.js'; // 同步数据使用的
+import myActivity from './modules/myActivity.js'; // 我的活动使用
 Vue.use(Vuex);
 
 const state = {
@@ -25,6 +26,7 @@ export default new Vuex.Store({
     superBp: superBp,
     dialogDisplay: dialogDisplay,
     projectDetails: projectDetails,
-    contactsDetails: contactsDetails
+    contactsDetails: contactsDetails,
+    myActivity: myActivity
   }
 });

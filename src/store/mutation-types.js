@@ -9,6 +9,7 @@ export const CONTACT_CHANGE = 'CONTACT_CHANGE'; // 项目详情 / 跟进列表 =
 export const FOLLOWUP_CHANGE = 'FOLLOWUP_CHANGE'; // 项目详情 => 跟进弹框
 export const ALERT_PROJECT_CHANGE = 'ALERT_PROJECT_CHANGE'; // 人脉详情 => 项目详情弹框
 
+
 // 项目推送相关弹框
 export const PROJECT_PUSH_TO_PRO_CHANGE = 'PROJECT_PUSH_TO_PRO_CHANGE'; // 项目推送项目入口（多选）
 export const PROJECT_PUSH_TO_CON_CHANGE = 'PROJECT_PUSH_TO_CON_CHANGE'; // 项目推送人脉入口（单选）
@@ -45,3 +46,6 @@ export const SET_INDUSTRY = 'SET_INDUSTRY'; // 行业存储
 export const SET_LOGIN_DATA = 'SET_LOGIN_DATA'; // 设置登陆参数
 export const SET_GROUP_NAME = 'SET_GROUP_NAME'; // 设置身份认证
 export const SET_USER_REAL_NAME = 'SET_USER_REAL_NAME'; // 设置真实名字（退出登陆的时候需要清空数据）
+
+// 我的活动
+export const MEMBER_CHANGE = 'MEMBER_CHANGE'; // 我的活动 => 报名成员弹框
