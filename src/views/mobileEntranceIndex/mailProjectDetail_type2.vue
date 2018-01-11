@@ -198,7 +198,7 @@
   export default {
     data () {
       return {
-        loading: false,
+        loading: true,
         moreOrless: '更多',
         show_moreOrless: false,
         dialogVisible: false,
@@ -267,6 +267,7 @@
       // 获取项目详情数据
       async getProjectDetail () {
         return new Promise((resolve, reject) => {
+          this.loading = true;
           // 做一些异步操作
           this.$http.post(this.URL.mail_getProjectDetail_scrapy, {user_id: localStorage.user_id, project_id: this.project_id, scene: 'mobile'})
             .then(res => {
@@ -283,6 +284,7 @@
             })
             .catch(err => {
               console.log(err);
+              this.loading = false;
             });
         });
       },

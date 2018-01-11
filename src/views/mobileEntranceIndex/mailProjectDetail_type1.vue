@@ -228,7 +228,7 @@
   export default {
     data () {
       return {
-        loading: false,
+        loading: true,
         dialogVisible: false,
         bpMethod: false,
         getEmail: false,
