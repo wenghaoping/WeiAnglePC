@@ -24,7 +24,7 @@
           </div>
         </div>
         <!--投资亮点-->
-        <div class="textBlock size_14 color_3">
+        <div class="textBlock size_14 color_3" v-if="projectDetail.pro_goodness.length !== 0">
           <div class="text_title weight">投资亮点</div>
           <div class="text_content" v-for="goodness in projectDetail.pro_goodness">
             <span class="goodness_title color_3">·&nbsp;{{goodness.goodness_title}} :</span>
@@ -32,7 +32,7 @@
           </div>
         </div>
         <!--市场概况-->
-        <div class="textBlock size_14 color_3">
+        <div class="textBlock size_14 color_3" v-if="projectDetail.pro_market_genera.length !== 0">
           <div class="text_title weight">市场概况</div>
           <div class="text_content" v-for="marketGenera in projectDetail.pro_market_genera">
             <span class="goodness_title color_3">· &nbsp;{{marketGenera.goodness_title}} :</span>
@@ -40,7 +40,7 @@
           </div>
         </div>
         <!--产品概况-->
-        <div class="textBlock size_14 color_3">
+        <div class="textBlock size_14 color_3" v-if="projectDetail.pro_service.length !== 0">
           <div class="text_title weight">产品概况</div>
           <div class="text_content" v-for="pro_service in projectDetail.pro_service">
             <span class="goodness_title color_3">· &nbsp;{{pro_service.goodness_title}} :</span>
@@ -50,7 +50,7 @@
         <!--基本介绍-->
         <div class="project_intro">
           <div class="size_15">基本介绍</div>
-          <div class="intro_tags flex">
+          <div class="intro_tags flex" v-if='projectDetail.tag.length !== 0'>
             <div class="tag" v-if="tag.type === 0" v-for="tag in projectDetail.tag">{{tag.tag_name}}</div>
           </div>
           <div class="intro_item">
@@ -75,7 +75,7 @@
           </div>
         </div>
         <!--产品-->
-        <div class="brandList">
+        <div class="brandList" v-if="projectDetail.brand.length !== 0">
           <div class="main_title flex">
             <div class="text_title ">产品</div>
             <div class="showAll">全部&nbsp;({{projectDetail.brand.length}})</div>
@@ -94,7 +94,7 @@
           </div>
         </div>
         <!--历史融资-->
-        <div class="financing">
+        <div class="financing" v-if="projectDetail.pro_history_finance.length !== 0">
           <div class="main_title flex">
             <div class="text_title ">历史融资</div>
             <div class="showAll">全部&nbsp;({{projectDetail.pro_history_finance.length}})</div>
@@ -136,13 +136,13 @@
               <div class="size_13" style="color: #f6a623;margin-top: .4rem;">{{projectDetail.pro_finance_value}}</div>
             </div>
           </div>
-          <div class="size_15" style="margin-top: 1rem;">资金用途</div>
-          <div class="financingUseFor size_14 color_6">
+          <div class="size_15" style="margin-top: 1rem;" v-if="projectDetail.pro_finance_use">资金用途</div>
+          <div class="financingUseFor size_14 color_6" v-if="projectDetail.pro_finance_use">
             {{projectDetail.pro_finance_use}}
           </div>
         </div>
         <!--核心团队-->
-        <div class="coreTeam">
+        <div class="coreTeam" v-if="projectDetail.core_users.length !== 0">
           <div class="main_title flex">
             <div class="text_title ">核心团队</div>
             <div class="showAll">全部&nbsp;({{projectDetail.core_users.length}})</div>
@@ -172,7 +172,7 @@
           </div>
         </div>
         <!--里程碑-->
-        <div class="milepost">
+        <div class="milepost" v-if="projectDetail.pro_develop.length !== 0">
           <div class="main_title flex">
             <div class="text_title ">里程碑</div>
             <div class="showAll">全部&nbsp;({{projectDetail.pro_develop.length}})</div>
@@ -327,11 +327,13 @@
       },
       // 打开弹窗_查看Bp
       previewBp () {
-        if (this.projectDetail.pro_BP === '') {
-          warning('该项目并没有上传BP');
-        } else {
-          this.bpMethod = true;
-        }
+        this.checkLoginStatus(x => {
+          if (this.projectDetail.pro_BP === '') {
+            warning('该项目并没有上传BP');
+          } else {
+            this.bpMethod = true;
+          }
+        });
       },
       // 关闭弹窗_查看Bp
       bpMethodClose () {
@@ -395,7 +397,7 @@
       },
       // BP预览
       preview () {
-        window.location.href = 'https://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/test_file/20170628/T3tUw8gw5FoQ32IRBJHVVPIRikbmIKtjOWHBrryY.pdf';
+        window.location.href = this.projectDetail.pro_BP.file_url;
       }
     },
     created () {

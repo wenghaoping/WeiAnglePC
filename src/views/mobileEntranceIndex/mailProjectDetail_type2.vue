@@ -33,7 +33,7 @@
           </div>
         </div>
         <!--项目介绍-->
-        <div class="projectIntro">
+        <div class="projectIntro" v-if="projectDetail.info.project_desc">
           <div class="size_15 ">项目介绍</div>
           <div class="projectIntroTitle size12 color_6">{{projectDetail.info.company_name}}</div>
           <div class="projectIntroContent size_14 color_6">
@@ -43,7 +43,7 @@
           </div>
         </div>
         <!--主要产品-->
-        <div class="brandList">
+        <div class="brandList" v-if="projectDetail.product_list.total_num !== 0">
           <div class="main_title flex">
             <div class="text_title ">主要产品</div>
             <div class="showAll">全部&nbsp;({{projectDetail.product_list.total_num}})</div>
@@ -64,7 +64,7 @@
           </div>
         </div>
         <!--历史融资-->
-        <div class="financing">
+        <div class="financing" v-if="projectDetail.history_finance.total_num !== 0">
           <div class="main_title flex">
             <div class="text_title ">历史融资</div>
             <div class="showAll">全部&nbsp;({{projectDetail.history_finance.total_num}})</div>
@@ -87,7 +87,7 @@
           </div>
         </div>
         <!--核心团队-->
-        <div class="coreTeam">
+        <div class="coreTeam" v-if="member in projectDetail.member_list.list !== 0">
           <div class="main_title flex">
             <div class="text_title ">核心团队</div>
             <div class="showAll">全部&nbsp;({{projectDetail.member_list.total_num}})</div>
@@ -121,7 +121,7 @@
         </div>
         <!--里程碑-->
         <div class="milepost">
-          <div class="main_title flex">
+          <div class="main_title flex" v-if="projectDetail.milestone_list.total_num !== 0">
             <div class="text_title ">里程碑</div>
             <div class="showAll">全部&nbsp;({{projectDetail.milestone_list.total_num}})</div>
           </div>
@@ -134,14 +134,14 @@
           </div>
         </div>
         <!--相似项目-->
-        <div class="competition_company_list">
+        <div class="competition_company_list" v-if="projectDetail.competition_company.total_num !== 0">
           <div class="main_title flex">
             <div class="text_title ">相似项目</div>
             <div class="showAll">全部&nbsp;({{projectDetail.competition_company.total_num}})</div>
           </div>
           <div class="competition_company flex" v-for="company in projectDetail.competition_company.list">
             <div class="left">
-              <img src="http://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/image/banner/email/default-logo.jpg" alt="">
+              <img :src="company.project_logo" alt="">
             </div>
             <div class="right">
               <div class="pro_name">
@@ -164,7 +164,7 @@
         </div>
         <!--媒体报道-->
         <div class="new_list">
-          <div class="main_title flex">
+          <div class="main_title flex" v-if="projectDetail.news_list.total_num !== 0">
             <div class="text_title ">媒体报道</div>
             <div class="showAll">全部&nbsp;({{projectDetail.news_list.total_num}})</div>
           </div>
@@ -308,7 +308,7 @@
       },
       // 关闭弹窗_获得联系方式
       closeGetContact (text) {
-        if (text) {
+        if (text !== 'morganfly') {
           this.checkLoginStatus(x => {
             this.$http.post(this.URL.mail_createInterview2, {
               user_id: localStorage.user_id,
