@@ -16,7 +16,7 @@
                  accept=".jpg, .png, .jpeg"
                  :before-upload="beforeUpload"
                  :data="uploadDate">
-        <i class="el-icon-plus" @click="aa"></i>
+        <i class="el-icon-plus"></i>
       </el-upload>
       <el-dialog v-model="dialogImg" size="small">
         <img width="100%" :src="dialogImageUrl" alt="">
@@ -26,7 +26,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { error, success, warning } from '@/utils/notification';
+  import { error, warning } from '@/utils/notification';
   export default {
     props: {
       uploadDate: {
@@ -50,13 +50,10 @@
         dialogImg: false, // 预览显示
         dialogImageUrl: '', // 预览地址
         PlanButton: true // 控制上传按钮的显示
-        // planList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+//        planList: []
       };
     },
     methods: {
-      aa () {
-        console.log(123);
-      },
       handlePicturePreview (file) {
         this.dialogImageUrl = file.url;
         this.dialogImg = true;
@@ -85,8 +82,7 @@
           error(`${file.name}超过${Number.parseInt(this.size / 1024) / 1024}M大小哦`);
           return false;
         };
-        console.log(this.planList.length);
-        if (this.planList.length === 5) {
+        if (this.planList.length === 20) {
           warning('当前最多上传20张');
           return false;
         }
@@ -94,16 +90,16 @@
       // 上传名片======================================================
       PlanChange (file, fileList) {
         this.$emit('planChange', file);
-        if (fileList.length > 4) {
-          this.$refs.upload.abort(file);
-        }
         if (file.status === 'fail') this.PlanButton = true;
         else this.PlanButton = false;
+        console.log(file, 1);
+        console.log(fileList, 1);
       },
       // 上传成功后添加字段
       Planuploadsuccess (response, file, fileList) {
         this.$emit('success', response);
-        success('上传成功');
+        console.log(file, 2);
+        console.log(fileList, 2);
       },
       // 删除文件
       PlanRemove (file, fileList) {
@@ -122,8 +118,10 @@
       },
       // 取消上传
       cancelUpload (file) {
-        console.log('掉我了');
         this.$refs.upload.abort(file);
+      },
+      test (e) {
+        console.log(e);
       }
     }
   };

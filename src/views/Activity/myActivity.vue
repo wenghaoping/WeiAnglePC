@@ -166,7 +166,8 @@
     computed: {
       ...mapState({
         activeSearch: state => state.myActivity.activeSearch || '',
-        activeCurrentPage: state => state.myActivity.activeCurrentPage || 1
+        activeCurrentPage: state => state.myActivity.activeCurrentPage || 1,
+        importRegistrationDisplay: state => state.myActivity.importRegistrationDisplay
       })
     },
     components: { alertMember, importRegistration, qrCodeActivity },
@@ -300,9 +301,15 @@
     },
     created () {
       getTop();
-      this.loading = true;
       this.searchinput = this.activeSearch;
       this.filterChangeCurrent(this.activeCurrentPage || 1);
+    },
+    watch: {
+      importRegistrationDisplay: function (e) {
+        if (!e) {
+          this.filterChangeCurrent(1);
+        }
+      }
     }
   };
 </script>

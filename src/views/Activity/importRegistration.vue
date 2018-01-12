@@ -25,8 +25,7 @@
       </div>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel" size="large">取消</el-button>
-        <el-button type="primary" @click="next" size="large">导入</el-button>
+        <el-button type="primary" @click="cancel" size="large">完成</el-button>
       </div>
     </el-dialog>
   </div>
@@ -69,7 +68,6 @@
       },
       // 下一步
       next () {
-        console.log(this.uploadShow);
         if (!this.submitButton) {
           warning('请等待上传完毕再提交');
         } else if (this.uploadShow.length === 0) {

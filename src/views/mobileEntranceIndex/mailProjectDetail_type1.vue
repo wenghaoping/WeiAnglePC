@@ -315,8 +315,6 @@
                 this.$router.push({name: 'index'});// 路由传参
               } else {
                 let data = res.data.data;
-                console.log(data);
-                console.log(res.data.user);
                 this.projectUser = res.data.user;
                 this.projectDetail = data;
                 this.loading = false;
@@ -329,7 +327,6 @@
       },
       // 检查登录态
       checkLoginStatus (callBack) {
-        console.log(localStorage.user_id);
         if (localStorage.user_id === 0 || localStorage.user_id === undefined) {
           this.$router.push({name: 'mailProjectLogin'});
         } else {
@@ -418,13 +415,8 @@
       }
     },
     created () {
-//      localStorage.clear();
       this.getprojectId();
       this.getProjectDetail();
-      console.log(this);
-    },
-    watch: {
-
     }
   };
 </script>

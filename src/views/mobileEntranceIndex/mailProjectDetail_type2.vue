@@ -294,7 +294,6 @@
                 this.$router.push({name: 'index'});// 路由传参
               } else {
                 let data = res.data.data;
-                console.log(data);
                 this.projectDetail = data;
                 this.loading = false;
               }
@@ -358,10 +357,6 @@
     created () {
       this.getprojectId();
       this.getProjectDetail();
-      console.log(this);
-    },
-    watch: {
-
     }
   };
 </script>

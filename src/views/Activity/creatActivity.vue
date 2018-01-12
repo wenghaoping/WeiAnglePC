@@ -169,8 +169,8 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="24">
-                        <span class="f-title">活动配图（支持图片格式：jpg、png、jpeg，大小不超过2M，建议尺寸：750*556）</span>
-                        <card-more-upload :ref="'moreUpload.' + index"
+                        <span class="f-title" @click="test(index)">活动配图（支持图片格式：jpg、png、jpeg，大小不超过2M，建议尺寸：750*556）</span>
+                        <card-more-upload :ref="'moreUpload' + index"
                                           :uploadAddress="uploadActiveAddress"
                                           :uploadDate="uploadDate"
                                           :planList="has_many_detail.belongs_to_many_images_url"
@@ -342,12 +342,8 @@
         area2: [],
         //* 所属地区区级
         area3: [],
-        ActiveDateRule: [{ validator: endDateRule, trigger: 'change' }, { type: 'date', message: '请选择时间', trigger: 'change' }] // 活动结束时间判断
+        ActiveDateRule: [{ validator: endDateRule, trigger: 'change', type: 'date' }] // 活动结束时间判断
       };
-    },
-    computed: {},
-    mounted () {
-
     },
     // 组件
     components: {
@@ -514,6 +510,8 @@
         this.$http.post(this.URL.deleteActivityImage, {user_id: localStorage.user_id, image_id: file.image_id})
           .then(res => {
             if (res.data.status_code === 2000000) {
+              let arr = this.activity.has_many_details[index].belongs_to_many_images_url;
+              arr.splice(arr.findIndex((value, index, arr) => value.image_id === file.image_id), 1);
               this.loading = false;
               success('删除成功');
             }
@@ -525,6 +523,7 @@
       },
       // 活动配图上传成功后
       planuploadsuccess (response, index) {
+        console.log(response, index);
         this.activity.has_many_details[index].belongs_to_many_images_url.push({image_id: response.image_id, url: response.image_src});
       },
       // 获取所有下拉框的数据
@@ -540,6 +539,10 @@
       // 获取id
       getActivityId () {
         this.activity_id = this.$route.query.activity_id;
+      },
+      test (e) {
+        console.log(this.$refs);
+        this.$refs.moreUpload0.test(e);
       }
     },
     // 当dom一创建时
@@ -552,8 +555,7 @@
         .then((data) => {
           return this.getActivity();
         });
-    },
-    watch: {}
+    }
   };
 </script>
 
