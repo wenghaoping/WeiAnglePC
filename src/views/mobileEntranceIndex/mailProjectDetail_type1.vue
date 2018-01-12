@@ -20,15 +20,15 @@
         <!--用户名片-->
         <div class='userCard flex'>
           <img :src = 'projectUser.user_avatar_url' alt="">
-          <div>
+          <div class="userName" style="margin-top: 1rem;line-height: 20px;">
             <div class="name">{{projectUser.user_name}}</div>
             <div class="careerAndcompany size_12 color_6">{{projectUser.user_career}}·{{projectUser.user_company}}</div>
           </div>
         </div>
         </div>
-        <div class="white1" style="margin-top: 16px">
+        <div class="white1" v-if="projectDetail.pro_goodness.length !== 0" style="margin-top: 16px">
         <!--投资亮点-->
-        <div class="textBlock size_14 color_3" v-if="projectDetail.pro_goodness.length !== 0">
+        <div class="textBlock size_14 color_3" >
           <div class="text_title weight">投资亮点</div>
           <div class="text_content" v-for="goodness in projectDetail.pro_goodness">
             <span class="goodness_title color_3">·&nbsp;{{goodness.goodness_title}} :</span>
@@ -82,8 +82,8 @@
         </div>
         </div>
         <!--产品-->
-        <div class="white1" style="margin-top: 16px">
-        <div class="brandList" v-if="projectDetail.brand.length !== 0">
+        <div class="white1" v-if="projectDetail.brand.length !== 0" style="margin-top: 16px">
+        <div class="brandList" >
           <div class="main_title flex" >
             <div class="text_title" style="margin: 0;">产品</div>
             <div class="showAll" v-if="projectDetail.brand.length >3">全部&nbsp;({{projectDetail.brand.length}})</div>
@@ -103,8 +103,8 @@
         </div>
         </div>
         <!--历史融资-->
-        <div class="white1" style="margin-top: 16px">
-        <div class="financing" v-if="projectDetail.pro_history_finance.length !== 0">
+        <div class="white1" v-if="projectDetail.pro_history_finance.length !== 0" style="margin-top: 16px">
+        <div class="financing" >
           <div class="main_title flex">
             <div class="text_title ">历史融资</div>
             <div class="showAll" v-if="projectDetail.pro_history_finance.length >3">全部&nbsp;({{projectDetail.pro_history_finance.length}})</div>
@@ -155,8 +155,8 @@
         </div>
         </div>
         <!--核心团队-->
-        <div class="white1" style="margin-top: 16px">
-        <div class="coreTeam" v-if="projectDetail.core_users.length !== 0">
+        <div class="white1" v-if="projectDetail.core_users.length !== 0" style="margin-top: 16px">
+        <div class="coreTeam" >
           <div class="main_title flex">
             <div class="text_title ">核心团队</div>
             <div class="showAll" v-if="projectDetail.core_users.length >3">全部&nbsp;({{projectDetail.core_users.length}})</div>
@@ -167,7 +167,9 @@
           <div class="teamMember" v-for='member in projectDetail.core_users'>
             <div class="top flex">
               <!--<img class="left" src="" alt="">-->
-              <div class="left headPic" style="margin-right: .75rem;">{{member.ct_member_name.substring(0,1)}}</div>
+              <div class="left " style="margin-right: .75rem;">
+                <div class="headPic"> {{member.ct_member_name.substring(0,1)}}</div>
+              </div>
               <div class="right">
                 <div style="margin-bottom: .3rem;">
                   <span class="name size_15 ">{{member.ct_member_name}}</span>
@@ -187,8 +189,8 @@
         </div>
         </div>
         <!--里程碑-->
-        <div class="white1" style="margin-top: 16px">
-        <div class="milepost" v-if="projectDetail.pro_develop.length !== 0">
+        <div class="white1" v-if="projectDetail.pro_develop.length !== 0" style="margin-top: 16px">
+        <div class="milepost" >
           <div class="main_title flex">
             <div class="text_title ">里程碑</div>
             <div class="showAll" v-if="projectDetail.pro_develop.length >3">全部&nbsp;({{projectDetail.pro_develop.length}})</div>
@@ -236,6 +238,7 @@
     </el-dialog>
   </div>
 </template>
+
 
 <script type="text/ecmascript-6">
   import * as validata from '@/utils/validata';
@@ -314,6 +317,8 @@
                 this.$router.push({name: 'index'});// 路由传参
               } else {
                 let data = res.data.data;
+                console.log(data);
+                console.log(res.data.user);
                 this.projectUser = res.data.user;
                 this.projectDetail = data;
                 this.loading = false;
@@ -415,8 +420,13 @@
       }
     },
     created () {
+//      localStorage.clear();
       this.getprojectId();
       this.getProjectDetail();
+      console.log(this);
+    },
+    watch: {
+
     }
   };
 </script>
@@ -428,6 +438,8 @@
   }
   #mailProjectDetail_type1 {
     width: 100%;
+    max-width: 750px;
+    margin: auto;
     /*padding: 1rem;*/
     /*margin: 0 auto;*/
     position: relative;
@@ -514,9 +526,8 @@
       font-weight: bold;
     }
     .showAll{
-      cursor: pointer;
       font-size: .75rem;
-      color: #3378e0;
+      color: #ccc;
     }
     .flex {
       display: flex;
@@ -540,20 +551,22 @@
       color: #666;
     }
     .userCard{
-      margin-top: 10/16rem;
       img{
         border-radius: 50%;
         width: 2.25rem;
         height: 2.25rem;
         display: block;
         margin-right: .5rem;
+        margin-top: 1rem;
       }
       .name{
         font-size: 14/16rem;
         color: #333;
       }
       .careerAndcompany {
-        margin-top: 3/16rem;
+        margin-top: 2/16rem;
+        font-size: 12px;
+        line-height: 17px;
       }
     }
     .textBlock{
@@ -574,7 +587,7 @@
       padding: 1rem;
       .intro_tags {
         margin-top: 1.25rem;
-        margin-bottom: 1.25rem;
+        margin-bottom: 1rem;
         flex-wrap:wrap;
         .tag{
           padding: .25rem .5rem;
@@ -713,9 +726,11 @@
           border-radius: 50%;
           background:#f5f5f5;
           text-align: center;
+          width: 52/16rem;
           height: 52/16rem;
           line-height: 52/16rem;
           font-size: 20px;
+          margin: auto;
         }
         .name{
           margin-right: 7/16rem;
