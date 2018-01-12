@@ -16,7 +16,7 @@
                  accept=".jpg, .png, .jpeg"
                  :before-upload="beforeUpload"
                  :data="uploadDate">
-        <i class="el-icon-plus"></i>
+        <i class="el-icon-plus" @click="aa"></i>
       </el-upload>
       <el-dialog v-model="dialogImg" size="small">
         <img width="100%" :src="dialogImageUrl" alt="">
@@ -26,7 +26,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { error, success } from '@/utils/notification';
+  import { error, success, warning } from '@/utils/notification';
   export default {
     props: {
       uploadDate: {
@@ -54,6 +54,9 @@
       };
     },
     methods: {
+      aa () {
+        console.log(123);
+      },
       handlePicturePreview (file) {
         this.dialogImageUrl = file.url;
         this.dialogImg = true;
@@ -61,7 +64,6 @@
       // 上传前的验证
       beforeUpload (file) {
         this.$emit('changeUploadData', file);
-        console.log('掉我了2');
         let filetypes = ['.jpg', '.png', '.jpeg'];
         let name = file.name;
         let fileend = name.substring(name.lastIndexOf('.')).toLowerCase();
@@ -76,17 +78,25 @@
         }
         this.loading = false;
         if (!isnext) {
-          error(file.name + '是不支持的文件格式');
+          error(`${file.name}是不支持的文件格式`);
           return false;
         }
-        if (parseInt(file.size) > parseInt(this.size)) {
+        if (Number.parseInt(file.size) > Number.parseInt(this.size)) {
           error(`${file.name}超过${Number.parseInt(this.size / 1024) / 1024}M大小哦`);
           return false;
         };
+        console.log(this.planList.length);
+        if (this.planList.length === 5) {
+          warning('当前最多上传20张');
+          return false;
+        }
       },
       // 上传名片======================================================
       PlanChange (file, fileList) {
-        this.$emit('planChange', fileList);
+        this.$emit('planChange', file);
+        if (fileList.length > 4) {
+          this.$refs.upload.abort(file);
+        }
         if (file.status === 'fail') this.PlanButton = true;
         else this.PlanButton = false;
       },
@@ -137,10 +147,8 @@
       bottom: 0;
       margin: auto;
     }
-/*    .uploadImg{
-      !*height: 148px;*!
-      !*width: 308px;*!
-      overflow: hidden;
-    }*/
+    .el-dialog{
+      top: 0px;
+    }
   }
 </style>

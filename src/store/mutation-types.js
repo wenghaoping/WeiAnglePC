@@ -48,3 +48,7 @@ export const SET_USER_REAL_NAME = 'SET_USER_REAL_NAME'; // 设置真实名字（
 
 // 我的活动
 export const MEMBER_CHANGE = 'MEMBER_CHANGE'; // 我的活动 => 报名成员弹框
+export const SER_ACTIVITY_DATA = 'SER_ACTIVITY_DATA'; // 我的活动 => 设置需要的数据
+export const IMPORT_REGISTRATION_CHANGE = 'IMPORT_REGISTRATION_CHANGE'; // 我的活动 => 导入名单
+export const QR_CODE_ACTIVITY_CHANGE = 'QR_CODE_ACTIVITY_CHANGE'; // 我的活动 => 二维码
+export const SET_UP_SEARCH = 'SET_UP_SEARCH'; // 我的活动 => 搜索参数

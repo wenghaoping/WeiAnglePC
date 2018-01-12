@@ -15,7 +15,7 @@
                    :before-upload="beforeUpload"
                    :file-list="planList"
                    :auto-upload="autoUpload"
-                   accept=".doc, .ppt, .pdf, .zip, .rar, .docx, .pptx"
+                   :accept="uploadTypeAll"
                    :data="uploadDate">
           <el-button slot="trigger" type="primary" v-show="planButton">
             <slot></slot>
@@ -50,6 +50,15 @@
       fileName: {
         type: String,
         default: 'file'
+      },
+      uploadType: {
+        type: Array,
+        default: ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.zip', '.rar']
+      }
+    },
+    computed: {
+      uploadTypeAll () {
+        return this.uploadType.join();
       }
     },
     data () {
@@ -66,7 +75,7 @@
       // 上传前的验证
       beforeUpload (file) {
         this.$emit('changeUploadData', file);
-        let filetypes = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.zip', '.rar'];
+        let filetypes = this.uploadType;
         let name = file.name;
         let fileend = name.substring(name.lastIndexOf('.')).toLowerCase();
         let isnext = false;
@@ -125,6 +134,7 @@
         error('上传失败,请联系管理员');
         this.uploadLoading = false;
         this.submitButton = false;
+        this.$emit('error', err);
       },
       // 当不自动上传时，调用函数启用上传
       submitUpload (e) {

@@ -1,15 +1,32 @@
 <template>
-  <!--BP支付弹框-->
+  <!--名单导入-->
   <div class="importRegistration">
-    <el-dialog :visible="payBpDisplay" :before-close="handClose" close-on-press-escape close-on-click-modal lock-scroll
-               :close-on-click-modal="showList" :close-on-press-escape="showList" size="large">
-      <div slot="title" class="title">
-
+    <el-dialog :visible="importRegistrationDisplay" :before-close="cancel" close-on-press-escape close-on-click-modal lock-scroll
+               :close-on-click-modal="showList" :close-on-press-escape="showList" size="large" :show-close="showList">
+      <div slot="title" class="title">导入报名名单</div>
+      <div class="smalTitle">仅支持excel格式文件</div>
+      <el-steps :space="100" direction="vertical">
+        <el-step title="下载报名名单的模板"></el-step>
+        <el-step title="在模板里填写相关信息"></el-step>
+        <el-step title="上传表格"></el-step>
+      </el-steps>
+      <div class="uploadsing absolute">
+        <el-button type="primary" @click="downloadIng">下载模板</el-button>
+      </div>
+      <div style="margin-left: 40px;">
+        <single-Upload :uploadType="['.xls', '.xlsx', '.xlsm', '.xlt', '.xltx', '.xltm']"
+                       :uploadAddress="uploadAddress" :uploadDate="uploadDate"
+                       :planList="planList"
+                       @delete="planRemove" @changeUploadData="changeUploadData"
+                       @cancelUpload="cancelUpload"
+                       @success="planuploadsuccess" @error="cancelUpload">
+          我有模板，直接上传
+        </single-Upload>
       </div>
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel" size="large">取消</el-button>
-        <el-button type="primary" @click="next" size="large">立即下载</el-button>
+        <el-button type="primary" @click="next" size="large">导入</el-button>
       </div>
     </el-dialog>
   </div>
@@ -17,45 +34,122 @@
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex';
+  import singleUpload from '@/components/upload/singleUpload.vue';
+  import { error, success, warning } from '@/utils/notification';
   export default {
     data () {
       return {
         loading: false,
-        showList: false
+        showList: false,
+        uploadAddress: this.URL.weitianshiLine + this.URL.importApplyUser + localStorage.token, // 上传地址
+        uploadDate: {user_id: localStorage.user_id},
+        planList: [], // 计划书上传展示列表
+        uploadShow: [], // 计划书上传列表,需要存数据啦
+        submitButton: true // 默认true
       };
+    },
+    // 组件
+    components: {
+      singleUpload
     },
     computed: {
       ...mapState({
-        payBpDisplay: state => state.superBp.payBpDisplay,
-        bpBannerUrl: state => state.superBp.bpBannerUrl,
-        bpId: state => state.superBp.bpId,
-        industryId: state => state.superBp.industryId,
-        stageId: state => state.superBp.stageId,
-        industry: state => state.superBp.industry
+        importRegistrationDisplay: state => state.myActivity.importRegistrationDisplay,
+        activityId: state => state.myActivity.activityData.activityId
       })
     },
     methods: {
-      handClose () {
-        this.$store.dispatch('AllControl', false);
-      },
       // 上一步
-      prev () {
-        this.$store.dispatch('payBpControl', false);
-        this.$store.dispatch('bpPreviewControl', true);
+      cancel () {
+        if (!this.submitButton) {
+          warning('请等待上传完毕再取消或者取消上传');
+        } else {
+          this.$store.dispatch('importRegistrationControl', false);
+        }
       },
       // 下一步
       next () {
-        this.downloadIng();
-        this.$store.dispatch('AllControl', false);
+        console.log(this.uploadShow);
+        if (!this.submitButton) {
+          warning('请等待上传完毕再提交');
+        } else if (this.uploadShow.length === 0) {
+          warning('请上传名单');
+        } else {
+          alert('过');
+        }
       },
       downloadIng () {
-        const url = this.URL.weitianshi + this.URL.superBpDownload + '?user_id=' + localStorage.user_id + '&bp_id=' + this.bpId + '&industry=' + this.industryId + '&stage=' + this.stageId;
+        const url = this.URL.weitianshi + this.URL.exportApplyUser + '?user_id=' + localStorage.user_id + '&activity_id=' + this.activityId;
         window.open(url);
+      },
+      // 删除文件
+      planRemove (file) {
+        this.$http.post(this.URL.deleteInquiryFile, {user_id: localStorage.user_id, inquiry_id: this.uploadShow[0].inquiry_id})
+          .then(res => {
+            this.loading = false;
+            if (res.data.status_code === 2000000) {
+              success('删除成功');
+              this.uploadShow = [];
+            } else {
+              this.submitButton = true;
+              this.uploadShow = [];
+            }
+          })
+          .catch(err => {
+            this.loading = false;
+            error('提交失败');
+            console.log(err);
+          });
+      },
+      // 上传前更改上传数据
+      changeUploadData (e) {
+        this.submitButton = false;
+        this.uploadDate.activity_id = this.activityId;
+      },
+      // 取消上传
+      cancelUpload (Boolean) {
+        this.submitButton = true;
+        this.uploadShow = [];
+      },
+      // 上传成功
+      planuploadsuccess (res) {
+        this.submitButton = true;
+        this.uploadShow.push({inquiry_id: res.inquiry_id});
+      }
+    },
+    watch: {
+      importRegistrationDisplay: function (e) {
+        if (e) {
+//          this.filterChangeCurrent(1);
+        } else {
+          this.$store.dispatch('AllMemberControl', false);
+        }
       }
     }
   };
 </script>
 
 <style lang="less">
-
+.importRegistration{
+  .el-dialog{
+    width: 488px;
+  }
+  .title{
+    font-size:20px;
+    color:#1f2d3d;
+  }
+  .smalTitle{
+    font-size:14px;
+    color:#8492a6;
+    margin-bottom: 48px;
+  }
+  .uploadsing{
+    top: 180px;
+    left: 61px;
+  }
+  .el-step__line.is-vertical{
+    top: 28px;
+    left: 13px;
+  }
+}
 </style>

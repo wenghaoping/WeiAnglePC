@@ -119,6 +119,10 @@ input[type='text']{
 button{
   border-radius: 2px !important;
 }
+.innImg img{
+    width: 100%;
+}
+
 
 .position_auto{
   top: 0;

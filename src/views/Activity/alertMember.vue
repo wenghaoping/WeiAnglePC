@@ -93,6 +93,7 @@
 <script type="text/ecmascript-6">
     import * as formatData from '@/utils/formatData';
     import { mapState } from 'vuex';
+    import { error } from '@/utils/notification';
     export default {
       props: {},
       computed: {
@@ -142,7 +143,6 @@
         },
         // 控制页码
         filterChangeCurrent (page = 1) {
-          delete this.getCon.page;
           this.loading = true;
           this.getCon.user_id = localStorage.user_id;
           this.getCon.activity_id = this.activityId;
@@ -150,9 +150,13 @@
           this.getCon.page = page;// 控制当前页码
           this.$http.post(this.URL.getActivityApplyUser, this.getCon)
             .then(res => {
-              let data = res.data.data;
-              this.tableData = this.setApplyUserList(data);
-              this.totalData = res.data.count;
+              if (res.data.status_code === 2000000) {
+                let data = res.data.data;
+                this.tableData = this.setApplyUserList(data);
+                this.totalData = res.data.count;
+              } else {
+                error(res.data.error_msg);
+              }
               this.loading = false;
             })
             .catch(err => {

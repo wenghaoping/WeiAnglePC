@@ -94,6 +94,9 @@ export default new Router({
       path: '/myActivity', name: 'myActivity', component: _import('Activity/myActivity') // 我的活动
     },
     {
+      path: '/successActivity', name: 'successActivity', component: _import('Activity/successActivity') // 我的活动
+    },
+    {
       path: '/test', name: 'test', component: checkone
     }
   ]

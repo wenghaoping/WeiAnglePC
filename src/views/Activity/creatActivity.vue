@@ -17,18 +17,18 @@
                   <div class="block-info block-cc-file clearfix" style="height: 149px;">
                     <span class="f-title fl">活动主图</span>
                     <cardUpload :uploadCardAddress="uploadActiveAddress"
-                                :uploadDate="uploadDate" :cardplanList="[activity.has_one_theme_image_url]"
+                                :uploadDate="uploadDate" :cardplanList="activity.has_one_theme_image_url"
                                 @delete="planRemove" @success="HeadPlanuploadsuccess"
                                 :size="2097160">
                     </cardUpload>
                   </div>
-                  <span class="f-title">支持图片格式：jpg、png、jpeg，大小不超过2M，建议尺寸：162</span>
-                  <el-form :model="activity" ref="activity" label-width="100px" class="padding" label-position="top">
+                  <span class="f-title">支持图片格式：jpg、png、jpeg，大小不超过2M，建议尺寸：750*556</span>
+                  <el-form :model="activity" ref="activity1" label-width="100px" class="padding" label-position="top">
                     <el-row :span="24" :gutter="32">
                       <el-col :span="12">
                         <el-form-item
                           label="活动主题"
-                          :rules="[{required: true, message: '活动主题不能为空', trigger: 'blur'}, {max:40,message: '最大40个字符'}]"
+                          :rules="[{required: true, message: '活动主题不能为空', trigger: 'blur'}, {min:1, max:40,message: '最大40个字符'}]"
                           prop="activity_title">
                           <el-input placeholder="请输入活动主题" v-model="activity.activity_title"></el-input>
                         </el-form-item>
@@ -36,7 +36,7 @@
                       <el-col :span="12">
                         <el-form-item
                           label="活动主办方"
-                          :rules="[{max:40,message: '最大40个字符'}]"
+                          :rules="[{max:40,message: '最大40个字符', trigger: 'blur'}]"
                           prop="activity_user">
                           <el-input placeholder="请输入主办方" v-model="activity.activity_user"></el-input>
                         </el-form-item>
@@ -60,7 +60,7 @@
                       <el-col :span="12">
                         <el-form-item
                           label="活动结束时间"
-                          :rules="[{ type: 'date', message: '请选择时间', trigger: 'change' }]"
+                          :rules="ActiveDateRule"
                           prop="end_time">
                           <el-date-picker
                             type="datetime"
@@ -70,6 +70,7 @@
                           </el-date-picker>
                         </el-form-item>
                       </el-col>
+                      <span class="absolute icon_">~</span>
                     </el-row>
 
                     <el-row :span="24" :gutter="32">
@@ -151,7 +152,7 @@
               </div>
               <el-collapse-transition>
                 <div v-show="activityDeatilShow">
-                  <el-form :model="activity" ref="activity" label-width="100px" class="padding" label-position="top">
+                  <el-form :model="activity" ref="activity2" label-width="100px" class="padding" label-position="top">
                     <el-row :span="24" v-for="(has_many_detail, index) in activity.has_many_details" :key="index">
                       <el-col :span="24">
                         <el-form-item
@@ -168,13 +169,12 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="24">
-                        <span class="f-title">活动配图（支持图片格式：jpg、png、jpeg，大小不超过2M，）</span>
-                        <card-more-upload :ref="'moreUpload' + index"
+                        <span class="f-title">活动配图（支持图片格式：jpg、png、jpeg，大小不超过2M，建议尺寸：750*556）</span>
+                        <card-more-upload :ref="'moreUpload.' + index"
                                           :uploadAddress="uploadActiveAddress"
                                           :uploadDate="uploadDate"
                                           :planList="has_many_detail.belongs_to_many_images_url"
-                                          @changeUploadData="changeUploadData($event, index)"
-                                          @delete="planRemove" @success="planuploadsuccess($event, index)">
+                                          @delete="planRemove($event, index)" @success="planuploadsuccess($event, index)">
                         </card-more-upload>
                         <div style="height: 30px;"></div>
                       </el-col>
@@ -199,15 +199,30 @@
 <script type="text/ecmascript-6">
   import cardUpload from '@/components/upload/cardUpload.vue';
   import cardMoreUpload from '@/components/upload/cardMoreUpload.vue';
-  import { success, error, warning } from '@/utils/notification';
+  import { success, error } from '@/utils/notification';
   import { getCity } from '@/utils/setSelect';
   import * as formatData from '@/utils/formatData';
+  import * as validata from '@/utils/validata';
   export default {
     data () {
+      var endDateRule = (rule, value, callback) => {
+        if (!validata.getNull(value)) {
+          setTimeout(() => {
+            if (value < this.activity.start_time) {
+              callback(new Error('结束时间必须晚于开始时间'));
+            } else {
+              callback();
+            }
+          }, 100);
+        } else {
+          callback();
+        }
+      };// 电话号码正则判断
       return {
         loading: false,
         activity_id: '', // 获取路由过来的数据
-        activityMust: false, // 验证
+        activity1Must: false, // 验证
+        activity2Must: false, // 验证
         activityShow: true, // 活动显示隐藏
         activityDeatilShow: true, // 活动详情显示隐藏
         submitButton: false, // 是否允许提交false允许/true不允许
@@ -230,15 +245,81 @@
             image_src: ''
           },
           // 修改的封面图片数据
-          has_one_theme_image_url: {
-            image_id: '',
-            url: ''
-          },
+          has_one_theme_image_url: [
+//              {
+//            image_id: '',
+//            url: ''
+//          }
+          ],
           start_time: '', // 活动开始时间
           end_time: '', // 活动结束时间
           has_many_details: [
             {
-              detail_description: '暂无数据',
+              detail_description: '',
+              belongs_to_many_images: [
+//                {
+//                  image_id: 5412,
+//                  image_uid: 182190,
+//                  image_src: 'http://cdn.weitianshi.cn/test_file/20171128/Zo8oCgCILYifRBP5RlOY1821905a1cd41de7212.jpg'
+//                }
+              ],
+              belongs_to_many_images_url: [
+//                {
+//                  image_id: 5412,
+//                  url: 'http://cdn.weitianshi.cn/test_file/20171128/Zo8oCgCILYifRBP5RlOY1821905a1cd41de7212.jpg'
+//                }
+              ]
+            },
+            {
+              detail_description: '',
+              belongs_to_many_images: [
+//                {
+//                  image_id: 5412,
+//                  image_uid: 182190,
+//                  image_src: 'http://cdn.weitianshi.cn/test_file/20171128/Zo8oCgCILYifRBP5RlOY1821905a1cd41de7212.jpg'
+//                }
+              ],
+              belongs_to_many_images_url: [
+//                {
+//                  image_id: 5412,
+//                  url: 'http://cdn.weitianshi.cn/test_file/20171128/Zo8oCgCILYifRBP5RlOY1821905a1cd41de7212.jpg'
+//                }
+              ]
+            },
+            {
+              detail_description: '',
+              belongs_to_many_images: [
+//                {
+//                  image_id: 5412,
+//                  image_uid: 182190,
+//                  image_src: 'http://cdn.weitianshi.cn/test_file/20171128/Zo8oCgCILYifRBP5RlOY1821905a1cd41de7212.jpg'
+//                }
+              ],
+              belongs_to_many_images_url: [
+//                {
+//                  image_id: 5412,
+//                  url: 'http://cdn.weitianshi.cn/test_file/20171128/Zo8oCgCILYifRBP5RlOY1821905a1cd41de7212.jpg'
+//                }
+              ]
+            },
+            {
+              detail_description: '',
+              belongs_to_many_images: [
+//                {
+//                  image_id: 5412,
+//                  image_uid: 182190,
+//                  image_src: 'http://cdn.weitianshi.cn/test_file/20171128/Zo8oCgCILYifRBP5RlOY1821905a1cd41de7212.jpg'
+//                }
+              ],
+              belongs_to_many_images_url: [
+//                {
+//                  image_id: 5412,
+//                  url: 'http://cdn.weitianshi.cn/test_file/20171128/Zo8oCgCILYifRBP5RlOY1821905a1cd41de7212.jpg'
+//                }
+              ]
+            },
+            {
+              detail_description: '',
               belongs_to_many_images: [
 //                {
 //                  image_id: 5412,
@@ -260,7 +341,8 @@
         //* 所属地区2市级选项
         area2: [],
         //* 所属地区区级
-        area3: []
+        area3: [],
+        ActiveDateRule: [{ validator: endDateRule, trigger: 'change' }, { type: 'date', message: '请选择时间', trigger: 'change' }] // 活动结束时间判断
       };
     },
     computed: {},
@@ -288,9 +370,10 @@
                   this.activity_area = data.activity_area;
                   this.activity_city = data.activity_city;
                   this.activity_province = data.activity_province;
-                  data.has_one_theme_image_url = {};
-                  data.has_one_theme_image_url.image_id = data.has_one_theme_image.image_id || ''; // 主图处理
-                  data.has_one_theme_image_url.url = data.has_one_theme_image.image_src || '';
+                  data.has_one_theme_image_url = [];
+                  if (!validata.isOwnEmpty(data.has_one_theme_image)) {
+                    data.has_one_theme_image_url.push({image_id: data.has_one_theme_image.image_id || '', url: data.has_one_theme_image.image_src || ''});
+                  } // 主图处理
                   data.has_many_details.forEach(v => { // 详情的图片处理
                     v.belongs_to_many_images_url = [];
                     v.belongs_to_many_images.forEach(x => {
@@ -305,8 +388,9 @@
                       this.setActiveityFive();
                     }
                   }
-                  console.log(data);
                   this.loading = false;
+                } else {
+                  error(res.data.error_msg);
                 }
               })
               .catch(err => {
@@ -327,11 +411,11 @@
       },
       // 保存
       allSave () {
-        console.log(this.activity);
         const submit = () => {
           return new Promise((resolve, reject) => {
             // 做一些异步操作
-            this.submitForm('activity', 'activityMust');
+            this.submitForm('activity1', 'activity1Must');
+            this.submitForm('activity2', 'activity2Must');
             resolve(true);
           });
         };
@@ -340,7 +424,10 @@
           return new Promise((resolve, reject) => {
             // 做一些异步操作
             setTimeout(() => {
-              if (this.activityMust) {
+              if (this.activity1Must) {
+                resolve(false);
+              } else if (this.activity2Must) {
+                resolve(false);
               } else {
                 resolve(true);
               }
@@ -354,19 +441,24 @@
           })
           .then((data) => {
             if (data) {
-//              this.loading = true;
-
+              this.loading = true;
               let allData = this.activity;
-              console.log(allData);
-              allData.image_id = allData.has_one_theme_image_url.image_id; // 主图设置
+              allData.user_id = localStorage.user_id;
+              if (allData.has_one_theme_image_url.length !== 0) {
+                allData.image_id = allData.has_one_theme_image_url[0].image_id; // 主图设置
+              } else {
+                allData.image_id = '';
+              }
               allData.has_many_details.forEach(item => {
                 item.belongs_to_many_images = item.belongs_to_many_images_url.map(v => v.image_id).slice(0); // 主图设置
               });
               formatData.setReallyTimeToTime1(allData, 'start_time', 'start_time_stamp');// 标准时间转化为时间戳
               formatData.setReallyTimeToTime1(allData, 'end_time', 'end_time_stamp');// 标准时间转化为时间戳
-              console.log(allData);
               this.$http.post(this.URL.editActivity, allData)
                 .then(res => {
+                  if (res.data.status_code === 2000000) {
+                    this.$router.push({name: 'successActivity', query: {activity_title: allData.activity_title}});
+                  }
                   this.loading = false;
                 })
                 .catch(err => {
@@ -415,11 +507,10 @@
       HeadPlanuploadsuccess (response) {
         success('上传成功');
         this.submitButton = false;
-        this.activity.has_one_theme_image_url = {image_id: response.image_id, url: response.image_src};
+        this.activity.has_one_theme_image_url[0] = {image_id: response.image_id, url: response.image_src};
       },
       // 删除活动配图
-      planRemove (file) {
-        console.log(file);
+      planRemove (file, index) {
         this.$http.post(this.URL.deleteActivityImage, {user_id: localStorage.user_id, image_id: file.image_id})
           .then(res => {
             if (res.data.status_code === 2000000) {
@@ -435,19 +526,6 @@
       // 活动配图上传成功后
       planuploadsuccess (response, index) {
         this.activity.has_many_details[index].belongs_to_many_images_url.push({image_id: response.image_id, url: response.image_src});
-//        console.log(response);
-//        console.log(index);
-      },
-      //
-      changeUploadData (file, index) {
-//        console.log(file);
-//        console.log(index);
-        if (this.activity.has_many_details[index].belongs_to_many_images_url.length === 20) {
-          warning('当前最多上传20张');
-//          console.log(this.$refs);
-//          console.log(this.$refs['moreUpload' + index].cancelUpload());
-          this.$refs['moreUpload' + index].cancelUpload();
-        }
       },
       // 获取所有下拉框的数据
       getWxProjectCategory () {
@@ -461,8 +539,7 @@
       },
       // 获取id
       getActivityId () {
-//        this.activity_id = this.$route.query.activity_id;
-        this.activity_id = 'KQWNOp18';
+        this.activity_id = this.$route.query.activity_id;
       }
     },
     // 当dom一创建时
@@ -491,6 +568,10 @@
     .f-title{
       font-size:14px;
       color:#99a9bf;
+    }
+    .icon_{
+      top: 30px;
+      right: 386px;
     }
   }
 </style>

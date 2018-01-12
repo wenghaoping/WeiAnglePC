@@ -187,7 +187,7 @@
      -moz-osx-font-smoothing: grayscale;
     background: #f3f4f8;
     main {
-      min-height: 872px;
+      min-height: 864px;
     }
     font-family: "He`lvetica Neue", "PingFang SC", Arial, sans-serif;
     header {

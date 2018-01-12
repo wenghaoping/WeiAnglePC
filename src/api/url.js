@@ -229,6 +229,8 @@ export default
   editActivity: 'api/activity/editActivity', // 创建 / 编辑活动
   getActivityApplyUser: 'api/activity/getActivityApplyUser', // 活动报名签到成员
   getActivityList: 'api/activity/getActivityList', // 活动列表
-  deleteActivity: 'api/activity/deleteActivity' // 删除活动
+  deleteActivity: 'api/activity/deleteActivity', // 删除活动
+  exportApplyUser: 'api/activity/exportApplyUser', // 导出报名名单模板
+  importApplyUser: 'api/activity/importApplyUser?token=' // register
 
 };
