@@ -10,7 +10,7 @@ export function error (text, title = '') {
     title: title,
     message: text,
     offset: 300,
-    duration: 1500
+    duration: 3000
   });
 }
 // 成功弹窗(绿钩)
@@ -28,7 +28,7 @@ export function warning (text, title = '') {
     title: title,
     message: text,
     offset: 300,
-    duration: 3000
+    duration: 2000
   });
 }
 // 判断是不是IE(所有版本)

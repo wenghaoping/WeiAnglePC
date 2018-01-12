@@ -36,10 +36,10 @@
         type: String,
         required: true
       },
-      planList: {
-        type: Array,
-        default: []
-      },
+//      planList: {
+//        type: Array,
+//        default: []
+//      },
       size: {
         type: Number,
         default: 1048580
@@ -49,8 +49,8 @@
       return {
         dialogImg: false, // 预览显示
         dialogImageUrl: '', // 预览地址
-        PlanButton: true // 控制上传按钮的显示
-//        planList: []
+        PlanButton: true, // 控制上传按钮的显示
+        planList: []
       };
     },
     methods: {
@@ -92,14 +92,10 @@
         this.$emit('planChange', file);
         if (file.status === 'fail') this.PlanButton = true;
         else this.PlanButton = false;
-        console.log(file, 1);
-        console.log(fileList, 1);
       },
       // 上传成功后添加字段
       Planuploadsuccess (response, file, fileList) {
-        this.$emit('success', response);
-        console.log(file, 2);
-        console.log(fileList, 2);
+        this.$emit('success', {response: response, file: file});
       },
       // 删除文件
       PlanRemove (file, fileList) {
@@ -120,8 +116,8 @@
       cancelUpload (file) {
         this.$refs.upload.abort(file);
       },
-      test (e) {
-        console.log(e);
+      setPlanList (e) {
+        this.planList = e.slice(0);
       }
     }
   };

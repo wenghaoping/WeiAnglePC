@@ -169,11 +169,13 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="24">
-                        <span class="f-title" @click="test(index)">活动配图（支持图片格式：jpg、png、jpeg，大小不超过2M，建议尺寸：750*556）</span>
+                        <span class="f-title">活动配图（支持图片格式：jpg、png、jpeg，大小不超过2M，建议尺寸：750*556）</span>
                         <card-more-upload :ref="'moreUpload' + index"
                                           :uploadAddress="uploadActiveAddress"
                                           :uploadDate="uploadDate"
+                                          :size="2097160"
                                           :planList="has_many_detail.belongs_to_many_images_url"
+                                          @changeUploadData="changeUploadData($event, index)"
                                           @delete="planRemove($event, index)" @success="planuploadsuccess($event, index)">
                         </card-more-upload>
                         <div style="height: 30px;"></div>
@@ -185,7 +187,7 @@
             </div>
             <div class="ul-lists list tc"  style="padding:0">
               <div class="toButton" style="padding-left: 0;z-index: 111">
-                <el-button type="primary" size="large" @click="allSave" :disabled="submitButton" style="margin: 0 auto">
+                <el-button type="primary" size="large" @click="allSave" :disabled="submitButton !== -1" style="margin: 0 auto">
                   发布
                 </el-button>
               </div>
@@ -225,7 +227,6 @@
         activity2Must: false, // 验证
         activityShow: true, // 活动显示隐藏
         activityDeatilShow: true, // 活动详情显示隐藏
-        submitButton: false, // 是否允许提交false允许/true不允许
         uploadActiveAddress: this.URL.weitianshiLine + this.URL.uploadImage + localStorage.token, // 上传地址
         uploadDate: {user_id: localStorage.user_id}, // 名片上传所带的额外的参数
         activity_area: '', // 本页面地区，切换时参照
@@ -350,6 +351,15 @@
       cardUpload,
       cardMoreUpload
     },
+    computed: {
+      // 是否允许提交false允许/true不允许
+      submitButton () {
+        let arr = this.activity.has_many_details.slice(0);
+        let lastArr = [];
+        arr.forEach(item => { item.belongs_to_many_images_url.map(v => lastArr.push(v.type)); });
+        return lastArr.findIndex((value, index, arr) => value === false);
+      }
+    },
     methods: {
       // 获取详情
       getActivity () {
@@ -370,11 +380,12 @@
                   if (!validata.isOwnEmpty(data.has_one_theme_image)) {
                     data.has_one_theme_image_url.push({image_id: data.has_one_theme_image.image_id || '', url: data.has_one_theme_image.image_src || ''});
                   } // 主图处理
-                  data.has_many_details.forEach(v => { // 详情的图片处理
+                  data.has_many_details.forEach((v, index) => { // 详情的图片处理
                     v.belongs_to_many_images_url = [];
                     v.belongs_to_many_images.forEach(x => {
-                      v.belongs_to_many_images_url.push({image_id: x.image_id, url: x.image_src});
+                      v.belongs_to_many_images_url.push({image_id: x.image_id, url: x.image_src, type: true});
                     });
+                    this.$refs['moreUpload' + index][0].setPlanList(v.belongs_to_many_images_url);
                   });
                   formatData.setTimeToReallyTime1(data, 'start_time');
                   formatData.setTimeToReallyTime1(data, 'end_time');
@@ -436,14 +447,17 @@
             return check();
           })
           .then((data) => {
-            if (data) {
+            if (data && this.submitButton === -1) {
               this.loading = true;
               let allData = this.activity;
               allData.user_id = localStorage.user_id;
+              allData.activity_area = allData.activity_area === '' ? 0 : allData.activity_area;
+              allData.activity_city = allData.activity_city === '' ? 0 : allData.activity_city;
+              allData.activity_province = allData.activity_province === '' ? 0 : allData.activity_province;
               if (allData.has_one_theme_image_url.length !== 0) {
                 allData.image_id = allData.has_one_theme_image_url[0].image_id; // 主图设置
               } else {
-                allData.image_id = '';
+                allData.image_id = 0;
               }
               allData.has_many_details.forEach(item => {
                 item.belongs_to_many_images = item.belongs_to_many_images_url.map(v => v.image_id).slice(0); // 主图设置
@@ -522,9 +536,17 @@
           });
       },
       // 活动配图上传成功后
-      planuploadsuccess (response, index) {
-        console.log(response, index);
-        this.activity.has_many_details[index].belongs_to_many_images_url.push({image_id: response.image_id, url: response.image_src});
+      planuploadsuccess (data, index) {
+        this.activity.has_many_details[index].belongs_to_many_images_url.forEach(item => {
+          if (item.uid === data.file.uid) {
+            item.image_id = data.response.image_id;
+            item.url = data.response.image_src;
+            item.type = true;
+          }
+        });
+      },
+      changeUploadData (file, index) {
+        this.activity.has_many_details[index].belongs_to_many_images_url.push({uid: file.uid, type: false});
       },
       // 获取所有下拉框的数据
       getWxProjectCategory () {
@@ -539,10 +561,6 @@
       // 获取id
       getActivityId () {
         this.activity_id = this.$route.query.activity_id;
-      },
-      test (e) {
-        console.log(this.$refs);
-        this.$refs.moreUpload0.test(e);
       }
     },
     // 当dom一创建时

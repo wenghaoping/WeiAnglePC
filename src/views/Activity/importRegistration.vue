@@ -121,6 +121,7 @@
 //          this.filterChangeCurrent(1);
         } else {
           this.$store.dispatch('AllMemberControl', false);
+          this.planList = [];
         }
       }
     }
