@@ -5,6 +5,7 @@
       <!--项目详情-->
       <div class="projectMaid">
         <!--项目卡片-->
+        <div class="white">
         <div class="projectCard">
           <div class="mainCard flex">
             <div class="left">
@@ -15,11 +16,10 @@
               <div class="pro_intro size_12 color_9">{{projectDetail.info.project_intro}}</div>
               <div class="pro_industry flex">
                 <div class="tag" v-for="(tag,index) in projectDetail.info.industry_list">
-                  <span class="size_12 color_6">{{tag.industry_name}}</span>
-                  <span :hidden='index + 1 === projectDetail.info.industry_list.length'>|</span>
+                  <span class="size_12 color_6 i_tag" style="color: #666;" >{{tag.industry_name}}</span>
                 </div>
               </div>
-              <div class="stageAndCity color_6">
+              <div class="stageAndCity color_6" style="color: #666;">
                 <span>{{projectDetail.info.stage_name}}</span>
                 &nbsp;·&nbsp;
                 <span>{{projectDetail.info.area_name}}</span>
@@ -32,8 +32,10 @@
             </div>
           </div>
         </div>
+        </div>
         <!--项目介绍-->
-        <div class="projectIntro">
+        <div class="white1" style="margin-top: 16px">
+        <div class="projectIntro" v-if="projectDetail.info.project_desc">
           <div class="size_15 ">项目介绍</div>
           <div class="projectIntroTitle size12 color_6">{{projectDetail.info.company_name}}</div>
           <div class="projectIntroContent size_14 color_6">
@@ -42,11 +44,13 @@
             <div class="show_moreOrless" @click = 'textLengthChange' v-if = 'show_moreOrless'>{{moreOrless}}</div>
           </div>
         </div>
+        </div>
         <!--主要产品-->
-        <div class="brandList">
+        <div class="white1" style="margin-top: 16px">
+        <div class="brandList" v-if="projectDetail.product_list.total_num !== 0">
           <div class="main_title flex">
             <div class="text_title ">主要产品</div>
-            <div class="showAll">全部&nbsp;({{projectDetail.product_list.total_num}})</div>
+            <div class="showAll" v-if="projectDetail.product_list.length >3">全部&nbsp;({{projectDetail.product_list.total_num}})</div>
           </div>
           <div class="brand flex" v-for="brand in projectDetail.product_list.list">
             <div class="left">
@@ -58,22 +62,24 @@
                   <div class="brand_name size_15">{{brand.product_name}}</div>
                   <div class="brand_type size_12">{{brand.product_type || '应用'}}</div>
                 </div>
-                <div class="brand_desc size_12 color_6">{{brand.product_introduce}}</div>
+                <div class="brand_desc size_12 color_9">{{brand.product_introduce}}</div>
               </div>
             </div>
           </div>
         </div>
+        </div>
         <!--历史融资-->
-        <div class="financing">
+        <div class="white1" style="margin-top: 16px">
+        <div class="financing" v-if="projectDetail.history_finance.total_num !== 0">
           <div class="main_title flex">
             <div class="text_title ">历史融资</div>
-            <div class="showAll">全部&nbsp;({{projectDetail.history_finance.total_num}})</div>
+            <div class="showAll" v-if="projectDetail.history_finance.length >3">全部&nbsp;({{projectDetail.history_finance.total_num}})</div>
           </div>
           <div class="pro_history_finance" v-for="( finance,index) in projectDetail.history_finance.list" :key = index>
             <div class="flex size_14" style="margin-bottom: .75rem;">
               <div class="finance_left finacingTime size_14 color_6">{{financingTime[index]}}</div>
               <div class="finance_middle"><img src="../../assets/images/img-dianxx.png" alt=""></div>
-              <div class="finance_right finacingMoney size_14">{{finance.finance_money}}</div>
+              <div class="finance_right finacingMoney size_14" style="color:#fc703e;">{{finance.finance_money}}</div>
             </div>
             <div class='flex'>
               <div class="finance_left financingStage size_14 color_3 weight">{{finance.stage_name}}</div>
@@ -86,18 +92,20 @@
             </div>
           </div>
         </div>
+        </div>
         <!--核心团队-->
-        <div class="coreTeam">
+        <div class="white1" style="margin-top: 16px">
+        <div class="coreTeam" v-if="projectDetail.member_list.list !== 0">
           <div class="main_title flex">
-            <div class="text_title ">核心团队</div>
-            <div class="showAll">全部&nbsp;({{projectDetail.member_list.total_num}})</div>
+            <div class="text_title " style="margin-bottom: 1.25rem;">核心团队</div>
+            <div class="showAll" v-if="projectDetail.member_list.length >3">全部&nbsp;({{projectDetail.member_list.total_num}})</div>
           </div>
           <div class="teamMember" v-for='member in projectDetail.member_list.list'>
             <div class="top flex">
               <img class="left headPic" v-if = 'member.member_avatar' :src="member.member_avatar" alt="">
               <div class="left headPic" v-else>{{member.member_avatar_text}}</div>
-              <div class="right size_12 color_6 ">
-                <div style="margin-bottom: .75rem">
+              <div class="right size_12 color_6">
+                <div style="margin-bottom: .75rem;margin-top: .25rem;">
                   <span class="name size_15 ">{{member.member_name}}</span>
                   <span class="career size_12 color_6">{{member.member_position}}</span>
                 </div>
@@ -108,40 +116,44 @@
                   </div>
                   <div>
                     <span class="company_numText">拥有公司:</span>
-                    <span class="company_num">{{member.company_num}}</span>
+                    <span class="company_num">{{member.company_num}}家</span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="bottom flex">
               <div class="left"></div>
-              <div class="right size_12 color_6" style="line-height: 1rem;">{{member.member_introduce}}</div>
+              <div class="right size_12 color_9" style="line-height: 1rem;background: #fafafa;padding: .75rem;">{{member.member_introduce}}</div>
             </div>
           </div>
         </div>
+        </div>
         <!--里程碑-->
+        <div class="white1" style="margin-top: 16px">
         <div class="milepost">
-          <div class="main_title flex">
+          <div class="main_title flex" v-if="projectDetail.milestone_list.total_num !== 0">
             <div class="text_title ">里程碑</div>
-            <div class="showAll">全部&nbsp;({{projectDetail.milestone_list.total_num}})</div>
+            <div class="showAll"  v-if="projectDetail.milestone_list.length >3">全部&nbsp;({{projectDetail.milestone_list.total_num}})</div>
           </div>
           <div class="pro_develop size_14 flex" v-for='(milestone,index) in projectDetail.milestone_list.list'>
-            <div class='left'>{{mileStomeTime[index]}}</div>
+            <div class='left color_6' style="margin-left: .5rem;">{{mileStomeTime[index]}}</div>
             <div class='middle'>
               <img src="../../assets/images/img-dianxx.png" alt="">
             </div>
             <div class='right'>{{milestone.milestone_event}}</div>
           </div>
         </div>
+        </div>
         <!--相似项目-->
-        <div class="competition_company_list">
+        <div class="white1" style="margin-top: 16px">
+        <div class="competition_company_list" v-if="projectDetail.competition_company.total_num !== 0">
           <div class="main_title flex">
-            <div class="text_title ">相似项目</div>
-            <div class="showAll">全部&nbsp;({{projectDetail.competition_company.total_num}})</div>
+            <div class="text_title" style="margin-bottom: 0;">相似项目</div>
+            <div class="showAll" v-if="projectDetail.competition_company.length >3">全部&nbsp;({{projectDetail.competition_company.total_num}})</div>
           </div>
           <div class="competition_company flex" v-for="company in projectDetail.competition_company.list">
             <div class="left">
-              <img src="http://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/image/banner/email/default-logo.jpg" alt="">
+              <img :src="company.project_logo" alt="">
             </div>
             <div class="right">
               <div class="pro_name">
@@ -162,11 +174,13 @@
             </div>
           </div>
         </div>
+        </div>
         <!--媒体报道-->
+        <div class="white1" style="margin-top: 16px">
         <div class="new_list">
-          <div class="main_title flex">
-            <div class="text_title ">媒体报道</div>
-            <div class="showAll">全部&nbsp;({{projectDetail.news_list.total_num}})</div>
+          <div class="main_title flex" v-if="projectDetail.news_list.total_num !== 0">
+            <div class="text_title" style="margin-bottom: 0;">媒体报道</div>
+            <div class="showAll" v-if="projectDetail.news_list.length >3">全部&nbsp;({{projectDetail.news_list.total_num}})</div>
           </div>
           <div class="competition_company flex" v-for="(news, index) in projectDetail.news_list.list" :key = index>
             <div class="new_time">{{newTime[index]}}</div>
@@ -175,6 +189,7 @@
               <div v-for="tag in mediaTag[index]">{{tag}}</div>
             </div>
           </div>
+        </div>
         </div>
         <!--留空div-->
         <div style='height: 4rem;'></div>
@@ -198,7 +213,7 @@
   export default {
     data () {
       return {
-        loading: false,
+        loading: true,
         moreOrless: '更多',
         show_moreOrless: false,
         dialogVisible: false,
@@ -210,7 +225,9 @@
           info: {
             project_desc: ''
           },
-          member_list: {},
+          member_list: {
+            list: {}
+          },
           milestone_list: {},
           news_list: {},
           product_list: {}
@@ -267,6 +284,7 @@
       // 获取项目详情数据
       async getProjectDetail () {
         return new Promise((resolve, reject) => {
+          this.loading = true;
           // 做一些异步操作
           this.$http.post(this.URL.mail_getProjectDetail_scrapy, {user_id: localStorage.user_id, project_id: this.project_id, scene: 'mobile'})
             .then(res => {
@@ -283,6 +301,7 @@
             })
             .catch(err => {
               console.log(err);
+              this.loading = false;
             });
         });
       },
@@ -308,7 +327,7 @@
       },
       // 关闭弹窗_获得联系方式
       closeGetContact (text) {
-        if (text) {
+        if (text !== 'close') {
           this.checkLoginStatus(x => {
             this.$http.post(this.URL.mail_createInterview2, {
               user_id: localStorage.user_id,
@@ -350,6 +369,11 @@
 <style scoped lang="less">
   @import '../../assets/css/mobileEntrance.less';
   #mailProjectDetail_type2 {
+    width: 100%;
+    /*padding: 1rem;*/
+    /*margin: 0 auto;*/
+    position: relative;
+    background: #f3f4f8;
     .getContact{
       .el-dialog{
         width: 286px;
@@ -363,10 +387,18 @@
       line-height: 1em;
       color: #333;
     }
-    width: 343px;
-    padding: 1rem;
-    margin: 0 auto;
+    /*width: 343px;*/
+    /*padding: 1rem;*/
+    /*margin: 0 auto;*/
     position: relative;
+    .white{
+      padding:1rem;
+      background: white;
+    }
+    .white1{
+      padding:0.5rem;
+      background: white;
+    }
     .size_11{
       font-size:11/16rem;
     }
@@ -417,7 +449,6 @@
       flex-wrap:wrap;
     }
     .projectCard{
-      padding: 1rem;
       .left{
         flex:94;
         img{
@@ -439,11 +470,18 @@
         .pro_industry{
           margin-top: .75rem;
           .tag{
+            line-height: 1rem;
             span:last-child{
               color: #999;
               font-size: .75rem;
               margin-right: 7/16rem;
             }
+            border-right: 1px solid #999;
+            margin-right: 7/16rem;
+          }
+          .tag:last-child{
+            border-right: none;
+            margin-right: 7/16rem;
           }
         }
         .stageAndCity{
@@ -474,7 +512,7 @@
 
       }
       .projectIntroContent{
-        margin-top: 11/16rem;
+        margin-top: 7/16rem;
         .content{
           line-height: 22/16rem;
           text-overflow: ellipsis;
@@ -505,7 +543,7 @@
         margin-top: 1.25rem;
         margin-bottom: 1.25rem;
         .left{
-          flex:66;
+          flex:58;
           margin-right: 1rem;
           img{
             width: 52px;
@@ -530,14 +568,17 @@
           }
         }
       }
+      .brand:last-child{
+        margin-bottom: 0;
+      }
     }
     .financing{
       padding: 1rem;
       .pro_history_finance {
         margin-bottom: 1.25rem;
         .finance_left {
-          flex: 56;
-          text-align: center;
+          flex: 58;
+          text-align: right;
         }
         .finance_middle {
           flex: 33;
@@ -550,14 +591,14 @@
         }
         .finance_right {
           flex: 246;
-          .financingMoney {
-            color: #fc703e;
-          }
-          .tag {
-            margin-right: 1rem;
-            margin-bottom: .75rem;
-          }
         }
+        .tag {
+          margin-right: 1rem;
+          margin-bottom: .75rem;
+        }
+      }
+      .pro_history_finance:last-child{
+        margin-bottom: 0;
       }
     }
     .coreTeam{
@@ -593,19 +634,20 @@
           color: #F6A623;
         }
         .left{
-          flex: 53;
+          flex: 49;
         }
         .right{
-          flex: 256;
+          flex: 248;
           padding-left: .75rem;
           .stock_scale,.company_num{
-            padding-left: .5rem;
             color: #fc703e;
           }
         }
         .bottom{
-          margin-top: .5rem;
         }
+      }
+      .teamMember:last-child{
+        margin: 0;
       }
     }
     .milepost{
@@ -628,8 +670,11 @@
         flex: 252;
         font-size:14px;
         color:#333333;
-        line-height: 1rem;
+        line-height: 1.25rem;
       }
+      }
+      .pro_develop:last-child{
+        padding-bottom: 0;
       }
     }
     .competition_company_list{
@@ -638,7 +683,7 @@
         padding: 1.5rem 0;
         border-bottom: 1px solid #e6e6e6;
       .left{
-        flex:66;
+        flex:56;
         margin-right: 1rem;
         img{
           width: 52px;
@@ -665,7 +710,7 @@
           text-align:left;
         }
         .pro_intro{
-          margin-top: 11/16rem;
+          margin-top: 8/16rem;
           line-height: 4/3em;
           overflow:hidden;
           display: -webkit-box;
@@ -675,7 +720,7 @@
           max-width: 273px;
         }
         .pro_industry{
-          margin-top: .75rem;
+          margin-top: 10/16rem;
           .tag{
             span:last-child{
               color: #999;
@@ -700,10 +745,11 @@
     }
       .competition_company:last-of-type{
         border:none;
+        padding-bottom: 0;
       }
     }
     .new_list{
-      padding:1rem;
+      padding:1.25rem;
       .competition_company{
         padding:1rem 0;
         border-bottom: 1px solid #e6e6e6;
@@ -715,7 +761,7 @@
         font-size:14px;
         color:#333333;
         letter-spacing:0;
-        line-height:1.5rem;
+        line-height:1.25rem;
         text-align:left;
         display: -webkit-box;
         -webkit-box-orient: vertical;
@@ -726,6 +772,7 @@
       }
       .competition_company:last-of-type{
         border:none;
+        padding-bottom: 0;
       }
       .new_tag{
         font-size:10/16px;
@@ -741,8 +788,7 @@
       position: fixed;
       left: 50%;
       bottom: 0;
-      padding: 0 1rem;
-      width: 343/16rem;
+      width: 100%;
       height: 44/16rem;
       text-align: center;
       background: white;
@@ -759,6 +805,9 @@
         color: white;
         background: #293b55;
         border-radius:2px;
+      }
+      .contact:hover{
+        background: rgba(36,52,76,1);
       }
     }
   }

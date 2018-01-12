@@ -38,7 +38,9 @@ Vue.filter('timeToReallTime_pointType', (value) => {
   return y + '.' + m;/* +' '+h+':'+minute+':'+second; */
 });
 Vue.filter('timeToReallTime_lineTopoint', (value) => {
-  return value.substr(0, 4) + '.' + value.substr(5, 2);
+  if (value) {
+    return value.substr(0, 4) + '.' + value.substr(5, 2);
+  }
 });
 
 Vue.filter('timeToReallTimeAll', (value) => {

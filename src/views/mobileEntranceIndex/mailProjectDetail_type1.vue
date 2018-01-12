@@ -3,6 +3,7 @@
     <!--项目详情-->
     <div >
       <div class="projectMaid">
+        <div class="white">
         <h1 style="font-size: 1rem;">{{projectDetail.pro_intro}}</h1>
         <!--项目标签-->
         <div class="flex industryList">
@@ -11,10 +12,11 @@
           </div>
         </div>
         <div class="flex tags">
-          <div class="tag">{{ projectDetail.pro_scale.scale_money }}</div>
-          <div class="tag">{{ projectDetail.pro_stage.stage_name}}</div>
-          <div class="tag">{{ projectDetail.pro_area.area_title}}</div>
+          <div class="tag1">{{ projectDetail.pro_scale.scale_money }}&nbsp;·</div>
+          <div class="tag1">{{ projectDetail.pro_stage.stage_name}}&nbsp;·</div>
+          <div class="tag1">{{ projectDetail.pro_area.area_title}}</div>
         </div>
+          <div class="xian"></div>
         <!--用户名片-->
         <div class='userCard flex'>
           <img :src = 'projectUser.user_avatar_url' alt="">
@@ -23,8 +25,10 @@
             <div class="careerAndcompany size_12 color_6">{{projectUser.user_career}}·{{projectUser.user_company}}</div>
           </div>
         </div>
+        </div>
+        <div class="white1" style="margin-top: 16px">
         <!--投资亮点-->
-        <div class="textBlock size_14 color_3">
+        <div class="textBlock size_14 color_3" v-if="projectDetail.pro_goodness.length !== 0">
           <div class="text_title weight">投资亮点</div>
           <div class="text_content" v-for="goodness in projectDetail.pro_goodness">
             <span class="goodness_title color_3">·&nbsp;{{goodness.goodness_title}} :</span>
@@ -32,7 +36,7 @@
           </div>
         </div>
         <!--市场概况-->
-        <div class="textBlock size_14 color_3">
+        <div class="textBlock size_14 color_3" v-if="projectDetail.pro_market_genera.length !== 0">
           <div class="text_title weight">市场概况</div>
           <div class="text_content" v-for="marketGenera in projectDetail.pro_market_genera">
             <span class="goodness_title color_3">· &nbsp;{{marketGenera.goodness_title}} :</span>
@@ -40,45 +44,49 @@
           </div>
         </div>
         <!--产品概况-->
-        <div class="textBlock size_14 color_3">
+        <div class="textBlock size_14 color_3" v-if="projectDetail.pro_service.length !== 0">
           <div class="text_title weight">产品概况</div>
           <div class="text_content" v-for="pro_service in projectDetail.pro_service">
             <span class="goodness_title color_3">· &nbsp;{{pro_service.goodness_title}} :</span>
             <span class="goodness_desc color_6">{{pro_service.goodness_desc}}</span>
           </div>
         </div>
+        </div>
         <!--基本介绍-->
+        <div class="white1" style="margin-top: 16px">
         <div class="project_intro">
-          <div class="size_15">基本介绍</div>
-          <div class="intro_tags flex">
-            <div class="tag" v-if="tag.type === 0" v-for="tag in projectDetail.tag">{{tag.tag_name}}</div>
+          <div class="text_title">基本介绍</div>
+          <div class="intro_tags flex" v-if='projectDetail.tag.length !== 0' style="margin-bottom: .625rem;">
+            <div class="tag" style="margin-top: 0;" v-if="tag.type === 0" v-for="tag in projectDetail.tag">{{tag.tag_name}}</div>
           </div>
-          <div class="intro_item">
+          <div class="intro_item" v-if="projectDetail.pro_name">
             <span class="color_9">项目名称</span>
-            <span class="color_3">{{projectDetail.pro_name  || '暂无'}}</span>
+            <span class="color_3">{{projectDetail.pro_name}}</span>
           </div>
-          <div class="intro_item">
+          <div class="intro_item" v-if="projectDetail.pro_company_name">
             <span class="color_9">公司名称</span>
-            <span class="color_3">{{projectDetail.pro_company_name  || '暂无'}}</span>
+            <span class="color_3">{{projectDetail.pro_company_name}}</span>
           </div>
-          <div class="intro_item">
+          <div class="intro_item" v-if="projectDetail.pro_status.status_name">
             <span class="color_9">运营状态</span>
-            <span class="color_3">{{projectDetail.pro_status.status_name  || '暂无'}}</span>
+            <span class="color_3">{{projectDetail.pro_status.status_name}}</span>
           </div>
-          <div class="intro_item">
+          <div class="intro_item" v-if="projectDetail.pro_company_scale.comp_scale_value">
             <span class="color_9">公司规模</span>
-            <span class="color_3">{{projectDetail.pro_company_scale.comp_scale_value  || '暂无'}}</span>
+            <span class="color_3">{{projectDetail.pro_company_scale.comp_scale_value}}</span>
           </div>
-          <div class="intro_item">
+          <div class="intro_item" v-if="projectDetail.pro_website">
             <span class="color_9">产品链接</span>
-            <span class="color_3">{{projectDetail.pro_website  || '暂无'}}</span>
+            <span class="color_3">{{projectDetail.pro_website}}</span>
           </div>
         </div>
+        </div>
         <!--产品-->
-        <div class="brandList">
-          <div class="main_title flex">
-            <div class="text_title ">产品</div>
-            <div class="showAll">全部&nbsp;({{projectDetail.brand.length}})</div>
+        <div class="white1" style="margin-top: 16px">
+        <div class="brandList" v-if="projectDetail.brand.length !== 0">
+          <div class="main_title flex" >
+            <div class="text_title" style="margin: 0;">产品</div>
+            <div class="showAll" v-if="projectDetail.brand.length >3">全部&nbsp;({{projectDetail.brand.length}})</div>
           </div>
           <div class="brand flex" v-for="brand in projectDetail.brand">
             <img src="http://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/image/banner/email/default-logo.jpg" alt="">
@@ -93,17 +101,19 @@
             </div>
           </div>
         </div>
+        </div>
         <!--历史融资-->
-        <div class="financing">
+        <div class="white1" style="margin-top: 16px">
+        <div class="financing" v-if="projectDetail.pro_history_finance.length !== 0">
           <div class="main_title flex">
             <div class="text_title ">历史融资</div>
-            <div class="showAll">全部&nbsp;({{projectDetail.pro_history_finance.length}})</div>
+            <div class="showAll" v-if="projectDetail.pro_history_finance.length >3">全部&nbsp;({{projectDetail.pro_history_finance.length}})</div>
           </div>
           <div class="pro_history_finance" v-for="(finance, index) in projectDetail.pro_history_finance">
             <div class="flex size_14">
-              <div class="finance_left">{{finance.finance_time | timeToReallTime_pointType}}</div>
+              <div class="finance_left color_6">{{finance.finance_time | timeToReallTime_pointType}}</div>
               <div class="finance_middle"><img src="../../assets/images/img-dianxx.png" alt=""></div>
-              <div class="finance_right">{{finance.pro_finance_scale}}</div>
+              <div class="finance_right financingMoney">{{finance.pro_finance_scale}}</div>
             </div>
             <div class='flex' style="margin-top: 6px;">
               <div class="finance_left financingStage size_14 color_3 weight">{{finance.belongs_to_stage.stage_name}}</div>
@@ -119,33 +129,37 @@
             </div>
           </div>
         </div>
+        </div>
         <!--融资信息-->
+        <div class="white1" style="margin-top: 16px">
         <div class="financingInfo">
-          <div class="size_15">融资信息</div>
+          <div class="text_title">融资信息</div>
           <div class="financingDetail flex">
             <div class="financingDetailItem">
               <div class="size_11 color_6">期望融资</div>
-              <div class="size_13" style="color: #f6a623;margin-top: .4rem;">{{projectDetail.pro_scale.scale_money}}</div>
+              <div class="size_13" style="color: #f6a623;margin-top: .4rem;">{{projectDetail.pro_scale.scale_money||'暂未透露'}}</div>
             </div>
             <div class="financingDetailItem">
               <div class="size_11 color_6">投后股份</div>
-              <div class="size_13" style="color: #f6a623;margin-top: .4rem;">{{projectDetail.pro_finance_stock_after}}</div>
+              <div class="size_13" style="color: #f6a623;margin-top: .4rem;">{{projectDetail.pro_finance_stock_after||'暂未透露'}}</div>
             </div>
             <div class="financingDetailItem">
               <div class="size_11 color_6">估值</div>
-              <div class="size_13" style="color: #f6a623;margin-top: .4rem;">{{projectDetail.pro_finance_value}}</div>
+              <div class="size_13" style="color: #f6a623;margin-top: .4rem;">{{projectDetail.pro_finance_value||'暂未透露'}}</div>
             </div>
           </div>
-          <div class="size_15" style="margin-top: 1rem;">资金用途</div>
-          <div class="financingUseFor size_14 color_6">
+          <div class="text_title" style="margin-top: 2rem;" v-if="projectDetail.pro_finance_use">资金用途</div>
+          <div class="financingUseFor size_14 color_6" v-if="projectDetail.pro_finance_use">
             {{projectDetail.pro_finance_use}}
           </div>
         </div>
+        </div>
         <!--核心团队-->
-        <div class="coreTeam">
+        <div class="white1" style="margin-top: 16px">
+        <div class="coreTeam" v-if="projectDetail.core_users.length !== 0">
           <div class="main_title flex">
             <div class="text_title ">核心团队</div>
-            <div class="showAll">全部&nbsp;({{projectDetail.core_users.length}})</div>
+            <div class="showAll" v-if="projectDetail.core_users.length >3">全部&nbsp;({{projectDetail.core_users.length}})</div>
           </div>
           <div class="intro_tags flex">
             <div class="tag" v-if="tag.type === 1" v-for="tag in projectDetail.tag">{{tag.tag_name}}</div>
@@ -153,40 +167,43 @@
           <div class="teamMember" v-for='member in projectDetail.core_users'>
             <div class="top flex">
               <!--<img class="left" src="" alt="">-->
-              <div class="left headPic">{{member.ct_member_name.substring(0,1)}}</div>
+              <div class="left headPic" style="margin-right: .75rem;">{{member.ct_member_name.substring(0,1)}}</div>
               <div class="right">
                 <div style="margin-bottom: .3rem;">
                   <span class="name size_15 ">{{member.ct_member_name}}</span>
                   <span class="career size_12 color_6">{{member.ct_member_career}}</span>
                 </div>
                 <div class="size_12">
-                  <span class="stock_scaleText">股权比例 &nbsp;:</span>
+                  <span class="stock_scaleText color_6">股权比例:</span>
                   <span class="stock_scale">{{member.stock_scale}}%</span>
                 </div>
               </div>
             </div>
             <div class="bottom flex">
-              <div class="left"></div>
-              <div class="right size_13 color_6">{{member.ct_member_intro}}</div>
+              <div class="left"  style="margin-right: .75rem;"></div>
+              <div class="right size_13 color_6" style="padding: .75rem;background:#f5f5f5;border-radius:2px;">{{member.ct_member_intro}}</div>
             </div>
           </div>
         </div>
+        </div>
         <!--里程碑-->
-        <div class="milepost">
+        <div class="white1" style="margin-top: 16px">
+        <div class="milepost" v-if="projectDetail.pro_develop.length !== 0">
           <div class="main_title flex">
             <div class="text_title ">里程碑</div>
-            <div class="showAll">全部&nbsp;({{projectDetail.pro_develop.length}})</div>
+            <div class="showAll" v-if="projectDetail.pro_develop.length >3">全部&nbsp;({{projectDetail.pro_develop.length}})</div>
           </div>
           <div class="pro_develop size_14 flex" v-for='item in projectDetail.pro_develop'>
             <div class='left size_14 color_6'>{{item.created_at | timeToReallTime_lineTopoint}}</div>
             <div class='middle'>
               <img src="../../assets/images/img-dianxx.png" alt="">
             </div>
-            <div class='right size_13 color_3'>{{item.dh_event}}</div>
+            <div class='right size_14 color_3'>{{item.dh_event}}</div>
           </div>
         </div>
+        </div>
         <!--留空div-->
-        <div style='height: 4rem;'></div>
+        <div style='height: 4rem;background: #f3f4f8'></div>
       </div>
       <!--操作按钮-->
       <div class="btn_group size_15 flex">
@@ -228,7 +245,7 @@
   export default {
     data () {
       return {
-        loading: false,
+        loading: true,
         dialogVisible: false,
         bpMethod: false,
         getEmail: false,
@@ -327,11 +344,13 @@
       },
       // 打开弹窗_查看Bp
       previewBp () {
-        if (this.projectDetail.pro_BP === '') {
-          warning('该项目并没有上传BP');
-        } else {
-          this.bpMethod = true;
-        }
+        this.checkLoginStatus(x => {
+          if (this.projectDetail.pro_BP === '') {
+            warning('该项目并没有上传BP');
+          } else {
+            this.bpMethod = true;
+          }
+        });
       },
       // 关闭弹窗_查看Bp
       bpMethodClose () {
@@ -374,7 +393,7 @@
       },
       // 关闭弹窗_获得联系方式
       closeGetContact (text) {
-        if (text) {
+        if (text !== 'close') {
           this.checkLoginStatus(x => {
             this.$http.post(this.URL.mail_createInterview, {
               user_id: localStorage.user_id,
@@ -395,7 +414,7 @@
       },
       // BP预览
       preview () {
-        window.location.href = 'https://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/test_file/20170628/T3tUw8gw5FoQ32IRBJHVVPIRikbmIKtjOWHBrryY.pdf';
+        window.location.href = this.projectDetail.pro_BP.file_url;
       }
     },
     created () {
@@ -416,10 +435,24 @@
     width: 75%;
   }
   #mailProjectDetail_type1 {
-    width: 343px;
-    padding: 1rem;
-    margin: 0 auto;
+    width: 100%;
+    /*padding: 1rem;*/
+    /*margin: 0 auto;*/
     position: relative;
+    background: #f3f4f8;
+    .white{
+      padding:1rem;
+      background: white;
+    }
+    .white1{
+      background: white;
+    }
+.xian{
+  width:100%;
+  height:1px;
+  background: #f0f0f0;
+  margin-top: 10px;
+}
     .getEmail{
       padding: .5rem 0;
       align-items: center;
@@ -486,6 +519,7 @@
     .text_title{
       font-size: 15/16rem;
       margin-bottom: 1rem;
+      font-weight: bold;
     }
     .showAll{
       cursor: pointer;
@@ -498,15 +532,23 @@
     .industryItem,.tag{
       padding: 0.25rem 0.5rem;
       font-size: 0.75rem;
-      margin-top: 10/16rem;
       margin-right: 7/16rem;
       background-color:#f5f5f5;
       border-radius:2/16rem;
       color: #666;
     }
+    .tag{
+      background: white;
+    }
+    .industryItem,.tag1{
+
+      font-size: 0.75rem;
+      margin-top: 10/16rem;
+      margin-right: 7/16rem;
+      color: #666;
+    }
     .userCard{
       margin-top: 10/16rem;
-      padding: 1rem 21/16rem 1rem 1rem;
       img{
         border-radius: 50%;
         width: 2.25rem;
@@ -559,6 +601,9 @@
           margin-right: 1rem;
         }
       }
+      .intro_item:last-child{
+        margin-bottom: 0;
+      }
     }
     .brandList{
       padding: 1rem;
@@ -588,8 +633,11 @@
           padding: .25rem .5rem;
         }
         .brand_desc{
-          margin-top: 11/16rem;
+          margin-top: 7/16rem;
         }
+      }
+      .brand:last-child{
+        margin-bottom: 0;
       }
     }
     .financing{
@@ -599,7 +647,7 @@
         div{
           align-items: center;
         }
-        margin-bottom: 1.25rem;
+        margin-bottom: 26/16rem;
         .finance_left {
           flex: 56;
           text-align: right;
@@ -623,6 +671,12 @@
             margin-bottom: .75rem;
           }
         }
+        .financingMoney {
+          color: #f6a623;
+        }
+      }
+      .pro_history_finance:last-child{
+        margin-bottom: 0;
       }
     }
     .financingInfo{
@@ -633,6 +687,8 @@
       };
       .financingDetail{
         padding: 9/8rem 0;
+        border:1px solid #f0f0f0;
+        border-radius:2px;
         text-align: center;
         .financingDetailItem{
           flex: 1;
@@ -643,7 +699,7 @@
       padding: 1rem;
       margin-top: 1rem;
       .intro_tags {
-        margin-bottom: 25/16rem;
+        margin-bottom: 20/16rem;
         flex-wrap: wrap;
         .tag{
           padding: .25rem .5rem;
@@ -656,7 +712,7 @@
         }
       }
       .teamMember{
-        margin-bottom: 42/16rem;
+        margin-bottom: 32/16rem;
         img{
           display: block;
           border-radius: 50%;
@@ -665,13 +721,16 @@
           border-radius: 50%;
           background:#f5f5f5;
           text-align: center;
+          height: 52/16rem;
+          line-height: 52/16rem;
+          font-size: 20px;
         }
         .name{
           margin-right: 7/16rem;
         }
         .stock_scale{
           color: #F6A623;
-          margin-left: 1rem;
+          margin-left: .25rem;
         }
         .left{
           flex: 53;
@@ -681,17 +740,21 @@
           flex: 256;
         }
         .bottom{
-          margin-top: 18/16rem;
+
         }
+      }
+      .teamMember:last-child{
+        margin-bottom: 0;
       }
     }
     .milepost{
       padding: 1rem;
       .left{
-        flex: 48;
+        flex: 56;
+        text-align: right;
       }
       .middle{
-        flex: 36;
+        flex: 33;
         img{
           margin: 0 auto;
           display: block;
@@ -700,11 +763,15 @@
         }
       }
       .right{
-        flex: 252;
+        flex: 246;
         line-height: 1.25rem;
       }
       .pro_develop{
         align-items: center;
+        margin-bottom: 26/16rem;
+      }
+      .pre_develop:last-child{
+        margin-bottom: 0;
       }
     }
     .btn_group{
@@ -724,11 +791,17 @@
         flex: 108;
         margin-right: 1rem;
       }
+      .preview:hover{
+        background: rgba(242,243,244,1);
+      }
       .contact{
         flex: 219;
         color: white;
         background: #293b55;
         border-radius:2px;
+      }
+      .contact:hover{
+        background: rgba(36,52,76,1);
       }
     }
   }

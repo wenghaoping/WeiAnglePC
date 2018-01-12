@@ -33,7 +33,7 @@
         if (i === 1) {
           this.$emit('closeGetContact', this.contactText);
         } else {
-          this.$emit('closeGetContact');
+          this.$emit('closeGetContact', 'close');
         }
       }
     },
