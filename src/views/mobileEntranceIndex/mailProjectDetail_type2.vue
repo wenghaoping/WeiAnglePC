@@ -77,13 +77,13 @@
             <div class="text_title ">历史融资</div>
             <div class="showAll" v-if="projectDetail.history_finance.length >3">全部&nbsp;({{projectDetail.history_finance.total_num}})</div>
           </div>
-          <div class="pro_history_finance" v-for="( finance,index) in projectDetail.history_finance.list" :key = index>
-            <div class="flex size_14" style="margin-bottom: .75rem;">
+          <div class="pro_history_finance"  v-for="( finance,index) in projectDetail.history_finance.list" :key = index>
+            <div class="flex size_14" style="margin-bottom: .75rem;flex-wrap: nowrap;">
               <div class="finance_left finacingTime size_14 color_6">{{financingTime[index]}}</div>
               <div class="finance_middle"><img src="../../assets/images/img-dianxx.png" alt=""></div>
               <div class="finance_right finacingMoney size_14" style="color:#fc703e;">{{finance.finance_money}}</div>
             </div>
-            <div class='flex'>
+            <div class='flex' style="flex-wrap: nowrap;">
               <div class="finance_left financingStage size_14 color_3 weight">{{finance.stage_name}}</div>
               <div class="finance_middle"></div>
               <div class="finance_right financingTag flex">
@@ -130,7 +130,7 @@
             </div>
             <div class="bottom flex">
               <div class="left"></div>
-              <div class="right size_12 color_9" style="line-height: 1rem;background: #fafafa;padding: .75rem;margin-left: 0.75rem">{{member.member_introduce}}</div>
+              <div class="right size_12 color_9" style="line-height: 1rem;background: #fafafa;padding: .75rem;margin-left:4.2rem;">{{member.member_introduce}}</div>
             </div>
           </div>
         </div>
@@ -142,7 +142,7 @@
             <div class="text_title ">里程碑</div>
             <div class="showAll"  v-if="projectDetail.milestone_list.length >3">全部&nbsp;({{projectDetail.milestone_list.total_num}})</div>
           </div>
-          <div class="pro_develop size_14 flex" v-for='(milestone,index) in projectDetail.milestone_list.list'>
+          <div class="pro_develop size_14 flex" style="flex-wrap: nowrap;" v-for='(milestone,index) in projectDetail.milestone_list.list'>
             <div class='left color_6' style="margin-left: .5rem;">{{mileStomeTime[index]}}</div>
             <div class='middle'>
               <img src="../../assets/images/img-dianxx.png" alt="">
@@ -189,7 +189,7 @@
             <div class="text_title" style="margin-bottom: 0;">媒体报道</div>
             <div class="showAll" v-if="projectDetail.news_list.length >3">全部&nbsp;({{projectDetail.news_list.total_num}})</div>
           </div>
-          <div class="competition_company flex" v-for="(news, index) in projectDetail.news_list.list" :key = index>
+          <div class="competition_company" v-for="(news, index) in projectDetail.news_list.list" :key = index>
             <div class="new_time">{{newTime[index]}}</div>
             <div class="new_content">{{news.news_title}}</div>
             <div class="new_tag flex">
@@ -377,6 +377,7 @@
   @import '../../assets/css/mobileEntrance.less';
   #mailProjectDetail_type2 {
     width: 100%;
+    -webkit-max-width: 750px;
     /*padding: 1rem;*/
     margin: 0 auto;
     position: relative;
@@ -390,7 +391,7 @@
         text-align: center;
       }
     }
- .xian123{
+    .xian123{
    width:90%;
    height:1px;
    background: #f0f0f0;
@@ -464,7 +465,6 @@
     }
     .projectCard{
       .left{
-        flex:74;
         img{
           width: 66/16rem;
           height: 66/16rem;
@@ -473,7 +473,6 @@
         }
       }
       .right{
-        flex: 293;
         padding-left: .75rem;
         .pro_name{
           font-size: 1rem;
@@ -556,8 +555,8 @@
       .brand{
         /*margin-top: 1.25rem;*/
         margin-bottom: 1.25rem;
+        flex-wrap: nowrap;
         .left{
-          flex: 52;
           margin-right: 1rem;
           img{
             width: 52px;
@@ -566,7 +565,7 @@
           }
         }
         .right{
-          flex: 276;
+          width: 70%;
           align-items: center;
           .brand_type{
             font-size: .75rem;
@@ -591,11 +590,11 @@
       .pro_history_finance {
         margin-bottom: 1.25rem;
         .finance_left {
-          flex: 58;
+          width: 60/16rem;
           text-align: right;
         }
         .finance_middle {
-          flex: 33;
+          width: 36/16rem;
           img {
             display: block;
             width: 12/16rem;
@@ -604,7 +603,7 @@
           }
         }
         .finance_right {
-          flex: 246;
+          width: 80%;
         }
         .tag {
           margin-right: 1rem;
@@ -648,11 +647,9 @@
           color: #F6A623;
         }
         .left{
-          flex: 49;
+          margin-right: 1rem;
         }
         .right{
-          flex: 248;
-          width:90%;
           padding-left: .75rem;
           .stock_scale,.company_num{
             color: #fc703e;
@@ -670,10 +667,11 @@
       .pro_develop{
         padding-bottom: 26/16rem;
       .left{
-        flex: 48;
+        width: 3rem;
+        padding-left: .5rem;
       }
       .middle{
-        flex: 36;
+        width: 36/16rem;
         img{
           margin: 0 auto;
           display: block;
@@ -682,7 +680,7 @@
         }
       }
       .right{
-        flex: 252;
+        width: 70%;
         font-size:14px;
         color:#333333;
         line-height: 1.25rem;
@@ -699,7 +697,6 @@
         padding: 1.5rem 0;
         border-bottom: 1px solid #e6e6e6;
       .left{
-        flex:56;
         margin-right: 1rem;
         img{
           width: 52px;
@@ -708,7 +705,6 @@
         }
       }
       .right{
-        flex: 276;
         align-items: center;
         .comSta{
           font-size: .75rem;
