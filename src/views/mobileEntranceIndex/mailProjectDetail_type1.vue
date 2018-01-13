@@ -183,7 +183,7 @@
             </div>
             <div class="bottom flex">
               <div class="left"  style="margin-right: .75rem;"></div>
-              <div class="right size_13 color_6" style="padding: .75rem;background:#f5f5f5;border-radius:2px;">{{member.ct_member_intro}}</div>
+              <div class="right size_13 color_6" style="padding: .75rem;background:#f5f5f5;border-radius:2px;margin-left: 3rem;">{{member.ct_member_intro}}</div>
             </div>
           </div>
         </div>
@@ -436,8 +436,8 @@
   .el-dialog--small{
     width: 75%;
   }
-  #mailProjectDetail_type1 {
-    width: 100%;
+  #mailProjectDetail_type1{
+    -webkit-max-width: 750px;
     max-width: 750px;
     margin: auto;
     /*padding: 1rem;*/
@@ -451,12 +451,12 @@
     .white1{
       background: white;
     }
-.xian{
-  width:100%;
-  height:1px;
-  background: #f0f0f0;
-  margin-top: 10px;
-}
+    .xian{
+      width:100%;
+      height:1px;
+      background: #f0f0f0;
+      margin-top: 10px;
+    }
     .getEmail{
       padding: .5rem 0;
       align-items: center;
@@ -654,11 +654,11 @@
         }
         margin-bottom: 26/16rem;
         .finance_left {
-          flex: 56;
+          width: 49/16rem;
           text-align: right;
         }
         .finance_middle {
-          flex: 33;
+          width: 36/18rem;
           img {
             display: block;
             width: 12/16rem;
@@ -667,7 +667,7 @@
           }
         }
         .finance_right {
-          flex: 246;
+          width: 70%;
           .financingMoney {
             color: #fc703e;
           }
@@ -740,11 +740,10 @@
           margin-left: .25rem;
         }
         .left{
-          flex: 53;
           margin-right: 23/16rem;
         }
         .right{
-          flex: 256;
+          width: 70%;
         }
         .bottom{
 
@@ -757,11 +756,12 @@
     .milepost{
       padding: 1rem;
       .left{
-        flex: 56;
+        width: 3rem;
+        padding-left: .5rem;
         text-align: right;
       }
       .middle{
-        flex: 33;
+        width: 36/16rem;
         img{
           margin: 0 auto;
           display: block;
@@ -770,7 +770,7 @@
         }
       }
       .right{
-        flex: 246;
+        width: 70%;
         line-height: 1.25rem;
       }
       .pro_develop{
