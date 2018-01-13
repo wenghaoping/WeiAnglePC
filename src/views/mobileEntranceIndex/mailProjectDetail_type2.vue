@@ -763,7 +763,6 @@
     .new_list{
       .competition_company{
         padding:1rem 0;
-        border-bottom: 1px solid #;
       .new_time{
         font-size:12px;
         color:#fc703e;
