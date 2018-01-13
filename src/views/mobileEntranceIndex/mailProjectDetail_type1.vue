@@ -383,6 +383,11 @@
               this.getEmail = false;
               this.bpMethod = false;
               this.loading = false;
+            } else {
+              warning(res.data.error_msg);
+              this.getEmail = false;
+              this.bpMethod = false;
+              this.loading = false;
             }
           });
         }
