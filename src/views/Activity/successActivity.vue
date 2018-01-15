@@ -4,11 +4,12 @@
       <div class="center position_center_auto relative">
         <div class="el-notification absolute">
           <i class="el-notification__icon el-icon-circle-check"></i>
-          <div class="el-notification__group is-with-icon"><h2 class="el-notification__title"></h2>
-            <div class="el-notification__content">{{activityTitle}}</div>
+          <div class="el-notification__group is-with-icon">
           </div>
         </div>
-
+        <div class="message relative position_center_auto">
+          {{activityTitle}}
+        </div>
         <div class="img innImg relative position_center_auto">
           <img src="../../assets/images/weixin.jpg">
         </div>
@@ -55,14 +56,14 @@
   .createSuccessActivity {
     background: #ffffff;
     width: 880px;
-    height: 538px;
+    height: 601px;
     margin-top: 64px;
     .center{
       width: 260px;
     }
     .el-notification{
       top: 40px;
-      width: 200px;
+      width: 80px;
       box-shadow: none;
       .el-notification__content{
         font-size:16px;
@@ -77,12 +78,15 @@
     .title{
       font-size:14px;
       color:#5e6d82;
-      top: 200px;
+      top: 183px;
       font-family:PingFangSC-Regular;
     }
     .btn{
-      top: 242px;
+      top: 255px;
       left: 72px;
+    }
+    .message{
+      top: 120px;
     }
   }
 </style>

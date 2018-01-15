@@ -17,7 +17,7 @@
                    :auto-upload="autoUpload"
                    :accept="uploadTypeAll"
                    :data="uploadDate">
-          <el-button slot="trigger" type="primary" v-show="planButton">
+          <el-button slot="trigger" :type="btnType" v-show="planButton" :plain="btnType !== 'primary'">
             <slot></slot>
           </el-button>
         </el-upload>
@@ -54,6 +54,14 @@
       uploadType: {
         type: Array,
         default: ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.zip', '.rar']
+      },
+      btnType: {
+        type: String,
+        default: 'primary'
+      },
+      size: {
+        type: Number,
+        default: 52428810
       }
     },
     computed: {
@@ -89,11 +97,13 @@
         }
         this.loading = false;
         if (!isnext) {
+          this.$emit('unSupport', file);
           error(file.name + '是不支持的文件格式');
           return false;
         }
-        if (parseInt(file.size) > parseInt(52428810)) {
-          error('暂不支持超过50M文件上传哦');
+        if (parseInt(file.size) > parseInt(this.size)) {
+          this.$emit('unSupport', file);
+          error(`${file.name}超过${Number.parseInt(this.size / 1024) / 1024}M大小哦`);
           return false;
         };
         this.uploadLoading = true;
@@ -109,7 +119,6 @@
         this.$emit('success', response);
         success('上传成功');
         this.uploadLoading = false;
-        this.submitButton = false;
       },
       // 删除文件
       planRemove (file, fileList) {
@@ -133,12 +142,18 @@
         console.log(err);
         error('上传失败,请联系管理员');
         this.uploadLoading = false;
-        this.submitButton = false;
         this.$emit('error', err);
       },
       // 当不自动上传时，调用函数启用上传
       submitUpload (e) {
         this.$refs.upload.submit();
+      }
+    },
+    watch: {
+      planList: function (e) {
+        if (e.length === 0) {
+          this.planButton = true;
+        }
       }
     }
   };

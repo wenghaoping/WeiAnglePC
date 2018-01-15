@@ -3,11 +3,12 @@
       <el-dialog :visible="memberDisplay" custom-class="dialogFollow" :before-close="handleClose"
                  close-on-press-escape close-on-click-modal lock-scroll
                  :close-on-click-modal="showList" :close-on-press-escape="showList" size="small">
-        <p class="tc" style="font-size:24px;color:#1f2d3d;margin-bottom: 24px;">— {{title}} —</p>
+        <p class="tc" style="font-size:24px;color:#1f2d3d;margin-bottom: 24px;font-weight: bolder">— {{title}} —</p>
         <el-table :data="tableData"
                   v-loading="loading"
+                  :row-class-name="tableRowClassName"
                   element-loading-text="拼命加载中">
-          <el-table-column prop="user_real_name" label="成员" min-width="310" show-overflow-tooltip>
+          <el-table-column prop="user_real_name" label="成员" width="310">
             <template slot-scope="scope">
               <div class="heardimg fl">
                 <img v-if="scope.row.user_avatar!=''" :src="scope.row.user_avatar">
@@ -18,13 +19,19 @@
                   <div slot="content">
                     <div class="tips-txt">{{scope.row.user_name}}</div>
                   </div>
-                  <div class="name">
+                  <div class="name nowrap" style="max-width: 80px;">
                     {{scope.row.user_name | nullTo_}}
                   </div>
                 </el-tooltip>
-                <div class="name nowrap" style="padding-left: 11px;">
-                  ( {{scope.row.user_company_career | nullTo_}} )
-                </div>
+                <el-tooltip class="fl" placement="top" :disabled="scope.row.user_company_career.length > 4 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.user_company_career}}</div>
+                  </div>
+                  <div class="name nowrap" style="padding-left: 11px;max-width: 105px;font-weight: normal">
+                    ( {{scope.row.user_company_career | nullTo_}} )
+                  </div>
+                </el-tooltip>
+
                 <p class="company">
                   {{scope.row.user_brand !== '' ? scope.row.user_brand : scope.row.user_company_name | nullTo_}}
                 </p>
@@ -43,7 +50,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="user_email" label="邮箱" show-overflow-tooltip width="200">
+          <el-table-column prop="user_email" label="邮箱" show-overflow-tooltip width="195">
             <template slot-scope="scope">
               <el-tooltip placement="top" :disabled="scope.row.user_email.length > 15 ? false:true">
                 <div slot="content">
@@ -64,7 +71,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="is_sign" label="状态" show-overflow-tooltip width="80">
+          <el-table-column prop="is_sign" label="状态" show-overflow-tooltip width="92">
             <template slot-scope="scope">
               <div class="noSign" v-if="scope.row.is_sign === 0">
                 未签到
@@ -76,7 +83,7 @@
           </el-table-column>
 
         </el-table>
-        <div class="pagenav" v-if="totalData > 10">
+        <div class="pagenav fr" v-if="totalData > 10" style="margin-bottom: 31px;margin-top: 12px;">
           <el-pagination
             small
             @current-change="filterChangeCurrent"
@@ -178,10 +185,18 @@
             obj.user_mobile = list[i].user_mobile;// 手机
             obj.user_email = list[i].user_email;// 邮箱
             obj.apply_time = list[i].apply_time;// 活跃时间
+            obj.user_wechat = list[i].user_wechat;// 活跃时间
             obj.is_sign = list[i].is_sign;// 是否是评委
             arr.push(obj);
           }
           return arr;
+        },
+        // 设置颜色
+        tableRowClassName (row, index) {
+          if (index % 2 === 1) {
+            return 'info';
+          }
+          return '';
         }
       },
       watch: {
@@ -198,17 +213,39 @@
 
 <style lang="less">
 .alertMember{
+  .el-table--enable-row-hover .el-table__body tr:hover>td{
+    background: #FFFFFF!important;
+  }
   .el-dialog{
-    width: 860px;
+    width: 818px;
+  }
+  .el-table thead tr{
+    background:#e5e9f2!important;
+    height: 50px;
+  }
+  .el-table .info {
+    background: #F9FAFC;
   }
   .el-table{
+    margin-top: 24px;
     .el-table__body-wrapper{
       .el-table__row{
         height:92px;
       }
     }
+    .el-table__header{
+      thead{
+        tr{
+          th{
+            font-size:13px;
+            color:#475669;
+          }
+        }
+      }
+    }
+
     thead th:nth-child(1){
-      padding-left: 67px;
+      padding-left: 78px;
     }
     thead {
       .cell{
@@ -218,6 +255,7 @@
     }
   }
   .heardimg{
+    margin-left: 10px;
     width: 53px;
     height: 53px;
     border-radius: 50%;
@@ -225,8 +263,8 @@
     line-height: 53px;
     text-align: center;
     font-size:18px;
-    color:#40587a;
     overflow: hidden;
+    color:#1f2d3d;
     img{
       width: 100%;
     }
@@ -234,6 +272,7 @@
   .name{
     font-size:16px;
     color:#333333;
+    font-weight: bold;
   }
   .company{
     font-size:14px;
@@ -252,5 +291,9 @@
     font-size:14px;
     color:#c0ccda;
   }
+  .el-dialog__body{
+    padding: 0px;
+  }
+
 }
 </style>

@@ -11,21 +11,23 @@
         <el-step title="上传表格"></el-step>
       </el-steps>
       <div class="uploadsing absolute">
-        <el-button type="primary" @click="downloadIng">下载模板</el-button>
+        <el-button @click="downloadIng">下载模板</el-button>
       </div>
-      <div style="margin-left: 40px;">
+      <div style="margin: 12px 0 80px 29px;">
         <single-Upload :uploadType="['.xls', '.xlsx', '.xlsm', '.xlt', '.xltx', '.xltm']"
                        :uploadAddress="uploadAddress" :uploadDate="uploadDate"
                        :planList="planList"
                        @delete="planRemove" @changeUploadData="changeUploadData"
                        @cancelUpload="cancelUpload"
+                       :btnType="info" @unSupport="unSupport"
                        @success="planuploadsuccess" @error="cancelUpload">
           我有模板，直接上传
         </single-Upload>
       </div>
 
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="cancel" size="large">完成</el-button>
+        <el-button @click="cancel" size="large">取消</el-button>
+        <el-button type="primary" @click="cancel" size="large" :disabled="!submitButton">完成</el-button>
       </div>
     </el-dialog>
   </div>
@@ -44,7 +46,8 @@
         uploadDate: {user_id: localStorage.user_id},
         planList: [], // 计划书上传展示列表
         uploadShow: [], // 计划书上传列表,需要存数据啦
-        submitButton: true // 默认true
+        submitButton: true, // 默认true
+        info: 'info'
       };
     },
     // 组件
@@ -99,6 +102,9 @@
             console.log(err);
           });
       },
+      unSupport (e) {
+        this.submitButton = true;
+      },
       // 上传前更改上传数据
       changeUploadData (e) {
         this.submitButton = false;
@@ -133,9 +139,13 @@
   .el-dialog{
     width: 488px;
   }
+  .el-dialog__body{
+    padding-top: 14px;
+  }
   .title{
     font-size:20px;
     color:#1f2d3d;
+    font-weight: bolder;
   }
   .smalTitle{
     font-size:14px;
@@ -143,12 +153,30 @@
     margin-bottom: 48px;
   }
   .uploadsing{
-    top: 180px;
-    left: 61px;
+    top: 160px;
+    left: 53px;
   }
   .el-step__line.is-vertical{
-    top: 28px;
-    left: 13px;
+    top: 20px;
+    left: 10px;
+    background: #EFF2F7;
+    width: 1px;
+  }
+  .el-step__head.is-text.is-wait{
+    background:#e6e0ed;
+    width:20px;
+    height:20px;
+    border: none;
+  }
+  .el-step__icon{
+    line-height: 20px;
+    font-size:12px;
+    color:#475669;
+  }
+  .el-step__title.is-wait{
+    font-size:14px;
+    color:#475669!important;
+    line-height: 20px;
   }
 }
 </style>

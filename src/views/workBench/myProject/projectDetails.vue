@@ -577,7 +577,7 @@
     <projectpushtopro :emitPush="emitPush"></projectpushtopro>
 
     <!--项目推送弹窗,人脉入口弹窗============================-->
-    <projectpush></projectpush>
+    <projectpush enterType="atlas"></projectpush>
 
     <!--项目预览弹窗-->
     <projectpreview></projectpreview>

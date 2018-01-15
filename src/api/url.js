@@ -231,6 +231,8 @@ export default
   getActivityList: 'api/activity/getActivityList', // 活动列表
   deleteActivity: 'api/activity/deleteActivity', // 删除活动
   exportApplyUser: 'api/activity/exportApplyUser', // 导出报名名单模板
-  importApplyUser: 'api/activity/importApplyUser?token=' // register
+  importApplyUser: 'api/activity/importApplyUser?token=', // register
+  getSignQrCode: 'api/activity/getSignQrCode', // 获取签到二维码
+  downloadQrCode: 'api/activity/downloadQrCode' // 下载签到二维码
 
 };

@@ -13,16 +13,16 @@
           </el-input>
         </div>
         <div class="btns-box fr">
-          <el-button type="primary" size="large" @click="creatActivity">创建活动</el-button>
+          <el-button type="primary" size="large" @click="creatActivity">发布活动</el-button>
         </div>
       </div>
-      <div class="top-lists" v-if="tableData.length !== 0">
+      <div class="top-lists clearfix" v-if="tableData.length !== 0">
         <template>
           <el-table :data="tableData"
                     :show-header="false"
                     v-loading="loading"
                     element-loading-text="拼命加载中">
-            <el-table-column label="图片" width="170">
+            <el-table-column label="图片" width="180">
               <template slot-scope="scope">
                 <div class="my_heardimg relative">
                   <img :src="scope.row.activity_theme_image" v-if="scope.row.activity_theme_image !== ''">
@@ -35,7 +35,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="题目" width="673">
+            <el-table-column label="题目" width="645">
               <template slot-scope="scope">
                 <p class="my_title">{{scope.row.activity_title | nullToB}}</p>
                 <p class="my_small_title">主办方：{{scope.row.activity_user | nullToB}}</p>
@@ -44,24 +44,22 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="报名" width="110">
+            <el-table-column label="报名" width="120">
               <template slot-scope="scope">
                 <p class="my_sign tc">{{scope.row.activity_apply | nullToB}}</p>
                 <p class="is_sign tc cursor" @click="toMember(scope.row, 0)">已报名</p>
                 <div class="position_center_auto relative">
-                  <!--<p class="is_img tc cursor fl"><img :src="scope.row.activity_theme_image"></p>-->
-                  <el-button type="text" :disabled="true" @click="getQrAcitivity(scope.row, 0)">报名二维码</el-button>
+                  <el-button type="text" :disabled="true" @click="getQrAcitivity(scope.row, 0)" class="hoverNoBtn no_img">报名二维码</el-button>
                 </div>
               </template>
             </el-table-column>
 
-            <el-table-column label="报名2" width="110">
+            <el-table-column label="报名2" width="120">
               <template slot-scope="scope">
                 <p class="my_sign tc">{{scope.row.activity_sign | nullToB}}</p>
                 <p class="is_sign tc cursor" @click="toMember(scope.row, 1)">已签到</p>
                 <div class="position_center_auto relative">
-                  <!--<p class="is_img tc cursor fl"><img :src="scope.row.activity_theme_image"></p>-->
-                  <el-button type="text" @click="getQrAcitivity(scope.row, 1)">签到二维码</el-button>
+                  <el-button type="text" @click="getQrAcitivity(scope.row, 1)" class="hoverBtn is_img">签到二维码</el-button>
                 </div>
               </template>
             </el-table-column>
@@ -69,31 +67,33 @@
             <el-table-column
               prop="reset"
               label="重置"
-              width="220" class="edits-btn btn-cur">
+              width="220" class="edits-btn btn-cur ">
               <template slot-scope="scope">
-                <el-button
-                  type="text"
-                  @click="handleEdit(scope.row)"
-                  size="small">
-                  编辑
-                </el-button>
-                <el-button
-                  type="text"
-                  @click="handleDelete(scope.row)"
-                  size="small">
-                  删除
-                </el-button>
-                <el-button
-                  type="text"
-                  @click="importRegistration(scope.row)"
-                  size="small">
-                  导入报名名单
-                </el-button>
+                <div class="editBtn relative">
+                  <el-button
+                    type="text"
+                    @click="handleEdit(scope.row)"
+                    size="small">
+                    编辑
+                  </el-button>
+                  <el-button
+                    type="text"
+                    @click="handleDelete(scope.row)"
+                    size="small">
+                    删除
+                  </el-button>
+                  <el-button
+                    type="text"
+                    @click="importRegistration(scope.row)"
+                    size="small">
+                    导入报名名单
+                  </el-button>
+                </div>
               </template>
             </el-table-column>
 
           </el-table>
-          <div class="pagenav" v-if="totalData > 5">
+          <div class="pagenav fr" v-if="totalData > 5" style="margin: 5px 0;">
             <el-pagination
               small
               @current-change="filterChangeCurrent"
@@ -105,7 +105,7 @@
           </div>
         </template>
       </div>
-      <div class="emptyType" v-else>
+      <div class="emptyType" v-else v-loading="loading" element-loading-text="拼命加载中">
         <div class="position_auto absolute" style="width: 150px;height: 180px;">
           <div class="shape innImg absolute position_center_auto" v-if="emptyType">
             <img src="../../assets/images/shape.png">
@@ -316,6 +316,34 @@
 
 <style type="text/css" lang="less">
   .myActivity{
+    .el-table--enable-row-hover .el-table__body tr:hover>td{
+      background: #FFFFFF!important;
+    }
+    .bground{
+      background: #FFFFFF;
+    }
+    .hoverBtn{
+      padding-left: 20px;
+      line-height: 20px;
+      span{
+        color:#8492a6;
+        font-size:14px;
+        &:hover{
+          color:#009eff;
+        }
+      }
+    }
+    .hoverNoBtn{
+      padding-left: 20px;
+      line-height: 20px;
+      span{
+        font-size:14px;
+      }
+    }
+    .editBtn{
+      top: 0px;
+      right: -45px;
+    }
     .wrap-left{
       margin: 24px auto 0;
       width: 1336px;
@@ -381,12 +409,14 @@
       line-height:26px;
       max-width: 623px;
       height: 52px;
-      margin-bottom: 6px;
+      margin: 4px 0 10px;
     }
     .my_small_title{
       font-size:13px;
       color:#8492a6;
       max-width: 623px;
+      line-height: 18px;
+      margin-bottom: 4px;
     }
     .my_sign{
       font-size:28px;
@@ -399,13 +429,22 @@
       text-decoration: underline;
     }
     .is_img{
-      width: 18px;
-      height: 18px;
-      margin-top: 8px;
-      img{
-        width: 100%;
+      background: url(../../assets/images/icon-qiandao.png) no-repeat left center;
+      background-size:13px 13px;
+      &:hover {
+        background: url(../../assets/images/icon-qiandao-s.png) no-repeat left center;
+        background-size:13px 13px;
       }
     }
+    .no_img{
+      background: url(../../assets/images/icon-baoming.png) no-repeat left center;
+      background-size:13px 13px;
+      &:hover {
+        background: url(../../assets/images/icon-baoming.png) no-repeat left center;
+        background-size:13px 13px;
+      }
+    }
+    /*background: url(../../assets/images/icon-baoming.png) no-repeat left center;*/
     .emptyType{
       width:1289px;
       height:744px;

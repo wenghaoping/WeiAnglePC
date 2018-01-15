@@ -50,7 +50,8 @@
         dialogImg: false, // 预览显示
         dialogImageUrl: '', // 预览地址
         PlanButton: true, // 控制上传按钮的显示
-        planList: []
+        planList: [],
+        uploadLenth: 0
       };
     },
     methods: {
@@ -76,19 +77,24 @@
         this.loading = false;
         if (!isnext) {
           error(`${file.name}是不支持的文件格式`);
+          this.$emit('unSupport', file);
           return false;
         }
         if (Number.parseInt(file.size) > Number.parseInt(this.size)) {
           error(`${file.name}超过${Number.parseInt(this.size / 1024) / 1024}M大小哦`);
+          this.$emit('unSupport', file);
           return false;
         };
-        if (this.planList.length === 20) {
+        console.log(this.uploadLenth);
+        if (this.uploadLenth > 20) {
           warning('当前最多上传20张');
+          this.$emit('unSupport', file);
           return false;
         }
       },
       // 上传名片======================================================
       PlanChange (file, fileList) {
+        this.uploadLenth = fileList.length;
         this.$emit('planChange', file);
         if (file.status === 'fail') this.PlanButton = true;
         else this.PlanButton = false;

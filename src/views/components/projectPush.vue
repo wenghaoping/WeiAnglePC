@@ -126,6 +126,12 @@
   import * as validata from '@/utils/validata';
   import { error, success, warning } from '@/utils/notification';
   export default {
+    props: {
+      enterType: {
+        type: String,
+        default: 'list' // atlas
+      }
+    },
     computed: {
       ...mapState({
         projectPushToConDisplay: state => state.pushProject.projectPushToConDisplay,
@@ -298,9 +304,12 @@
           this.loading = true;
           this.currentPageMatchProject = 1;
           this.searchProject.user_id = localStorage.user_id;
-          this.searchProject.investor_id = this.userMessage.investor_id || 0;
-          this.searchProject.card_id = this.userMessage.card_id || 0;
-          this.searchProject.search = query || '';
+          if (this.enterType === 'atlas') {
+            this.searchProject.investor_id = this.userMessage.investor_id || 0; // 买家图谱
+          } else {
+            this.searchProject.card_id = this.userMessage.card_id || 0; // 人脉列表
+          }
+          this.searchProject.pro_intro = query || '';
           this.searchProject.page = 1;
           this.$http.post(this.URL.getPushProjects, this.searchProject)
             .then(res => {
@@ -322,8 +331,8 @@
         this.loading = true;
         this.searchProject.page = page;
         this.searchProject.investor_id = this.userMessage.investor_id;
-        this.searchProject.search = this.searchProjectInput;
-        this.$http.post(this.URL.getPushProjects, this.searchProject)
+        this.searchProject.pro_intro = this.searchProjectInput;
+        this.$http.post(this.URL.matchProject, this.searchProject)
           .then(res => {
             let data = res.data.data;
             this.tableData3 = data;

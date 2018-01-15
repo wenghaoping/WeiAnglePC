@@ -140,13 +140,16 @@ button{
 
 .relative {
   position: relative;
+  -webkit-position: relative;
 }
 
 .absolute {
   position: absolute;
+  -webkit-position: absolute;
 }
 
 .positionFixed{
+  -webkit-position: fixed;
   position: fixed;
 }
 

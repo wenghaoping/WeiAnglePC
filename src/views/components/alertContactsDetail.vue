@@ -28,9 +28,9 @@
               <div class="item com"><img src="../../assets/images/phone.png">{{contacts.user_mobile}}</div>
               <div class="item com" style="width: 780px;">
                 <img src="../../assets/images/email.png">{{contacts.user_email}}
-                <div class="fr" v-if="contacts.import_user_name !== ''" style="color: #8492A6">
-                  来源: {{contacts.import_user_name}}
-                </div>
+                <!--<div class="fr" v-if="contacts.import_user_name !== ''" style="color: #8492A6">-->
+                  <!--来源: {{contacts.import_user_name}}-->
+                <!--</div>-->
               </div>
             </div>
             <div class="item-list item-list-main">
@@ -450,10 +450,13 @@
           } else {
             this.user_resource = true;// 投资需求
           }
+          data.import_user_name = data.import_user_name === undefined ? '' : data.import_user_name;
           this.tagsValue = formatData.setIdToArr(data.user_invest_tag, 'tag_id');
           this.tags.changecont = formatData.setIdToArr(data.user_invest_tag, 'tag_id');
         }
         this.contacts = data;
+        console.log(data.import_user_name);
+        console.log(this.contacts);
       }
     },
     computed: {

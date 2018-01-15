@@ -6,9 +6,10 @@
       <div class="side fl">
         <div class="title">可放于签到处</div>
         <div class="title">让嘉宾自行扫码签到</div>
-        <div class="img innImg">
-          <img v-lazy="qrUrl" v-if="qrUrl !== ''">
-          <img src="../../assets/images/weixin.jpg" v-else>
+        <div class="img innImg" v-loading.body="loading"
+             element-loading-text="拼命加载中">
+          <img :src="qrUrl" v-if="qrUrl !== ''">
+          <img src="../../assets/images/zanwuerweima.jpg" v-else>
         </div>
       </div>
       <div class="side fl relative">
@@ -18,7 +19,7 @@
           <el-step title="报名成功，跳出“活动凭证”"></el-step>
         </el-steps>
         <div class="uploadsing absolute">
-          <el-button type="primary" @click="downloadIng" size="large">下载</el-button>
+          <el-button @click="downloadIng" size="large">下载</el-button>
         </div>
         <div class="icon innImg absolute cursor">
           <img src="../../assets/images/why.png"/>
@@ -39,7 +40,7 @@
       return {
         loading: false,
         showList: false,
-        qrUrl: 'https://i.imgur.com/SgDpf8x.jpg'
+        qrUrl: ''
       };
     },
     computed: {
@@ -55,12 +56,13 @@
         this.$store.dispatch('qrCodeActivityControl', false);
       },
       downloadIng () {
-        const url = this.URL.weitianshi + this.URL.superBpDownload + '?user_id=' + localStorage.user_id + '&activity_id=' + this.activityId + '&is_sign=' + this.isSign;
+        const url = this.URL.weitianshi + this.URL.downloadQrCode + '?user_id=' + localStorage.user_id + '&activity_id=' + this.activityId; //  + '&is_sign=' + this.isSign
         window.open(url);
       },
-      // 删除文件
+      // 获取二维码
       getQr () {
-        this.$http.post(this.URL.deleteInquiryFile, {user_id: localStorage.user_id, activity_id: this.activityId, is_sign: this.isSign})
+        this.loading = true;
+        this.$http.post(this.URL.getSignQrCode, {user_id: localStorage.user_id, activity_id: this.activityId}) // , is_sign: this.isSign
           .then(res => {
             this.loading = false;
             if (res.data.status_code === 2000000) {
@@ -113,16 +115,38 @@
     color:#475669;
   }
   .el-step{
-    height: 80px!important;
+    height: 93px!important;
+  }
+  .el-step__line.is-vertical{
+    top: 20px;
+    left: 10px;
+    background: #EFF2F7;
+    width: 1px;
+  }
+  .el-step__head.is-text.is-wait{
+    background:#e6e0ed;
+    width:20px;
+    height:20px;
+    border: none;
+  }
+  .el-step__icon{
+    line-height: 20px;
+    font-size:12px;
+    color:#475669;
+  }
+  .el-step__title.is-wait{
+    font-size:14px;
+    color:#475669!important;
+    line-height: 20px;
   }
   .uploadsing{
-    top: 35px;
-    left: 39px;
+    top: 29px;
+    left: 33px;
   }
   .icon{
     width: 15px;
     height: 15px;
-    top: 170px;
+    top: 187px;
     left: 217px;
     &:hover + .pingzheng{
       opacity: 1;

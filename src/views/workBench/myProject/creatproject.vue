@@ -1016,13 +1016,13 @@
                   if (data.pro_finance_scale === 0) this.project.pro_finance_scale = '';
                   else this.project.pro_scale.scale_id = data.pro_finance_scale;
                   if (data.pro_finance_stage === 0) this.project.pro_stage = {stage_id: ''};
-                  else this.project.pro_stage.stage_id = Number.parseInt(data.pro_finance_stage);
-                  this.project.goodness = {
-                    pro_goodness: {goodness_title: '项目亮点', goodness_desc: data.pro_goodness},
-                    pro_market_genera: {goodness_title: '', goodness_desc: ''},
-                    pro_business_model: {goodness_title: '', goodness_desc: ''},
-                    pro_service: {goodness_title: '', goodness_desc: ''}
-                  };
+                  else this.project.pro_stage.stage_id = data.pro_finance_stage;
+//                  this.project.goodness = {
+//                    pro_goodness: {goodness_title: '项目亮点', goodness_desc: data.pro_goodness},
+//                    pro_market_genera: {goodness_title: '', goodness_desc: ''},
+//                    pro_business_model: {goodness_title: '', goodness_desc: ''},
+//                    pro_service: {goodness_title: '', goodness_desc: ''}
+//                  };
                   this.project.pro_intro = data.pro_intro || '';
                   this.project.pro_name = data.pro_name || '';
                   this.project.pro_company_name = data.pro_company_name || '';

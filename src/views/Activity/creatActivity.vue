@@ -22,7 +22,7 @@
                                 :size="2097160">
                     </cardUpload>
                   </div>
-                  <span class="f-title">支持图片格式：jpg、png、jpeg，大小不超过2M，建议尺寸：750*556</span>
+                  <span class="f-title" style="margin-left: 73px;">支持图片格式：jpg、png、jpeg，大小不超过2M，建议尺寸：750*556</span>
                   <el-form :model="activity" ref="activity1" label-width="100px" class="padding" label-position="top">
                     <el-row :span="24" :gutter="32">
                       <el-col :span="12">
@@ -157,12 +157,11 @@
                       <el-col :span="24">
                         <el-form-item
                           :prop="'has_many_details.' + index + '.detail_description'"
-                          label="活动详情"
-                          prop="user_real_name">
+                          :rules="[{max:500, message: '最大500个字符', trigger: 'blur'}]"
+                          label="活动详情">
                           <el-input
                             type="textarea"
                             v-model="has_many_detail.detail_description"
-                            :rules="[{max:500,message: '最大500个字符',trigger: 'blur'}]"
                             :autosize="{ minRows: 5, maxRows: 10}"
                             placeholder="请具体描述活动内容">
                           </el-input>
@@ -176,6 +175,7 @@
                                           :size="2097160"
                                           :planList="has_many_detail.belongs_to_many_images_url"
                                           @changeUploadData="changeUploadData($event, index)"
+                                          @unSupport="unSupport($event, index)"
                                           @delete="planRemove($event, index)" @success="planuploadsuccess($event, index)">
                         </card-more-upload>
                         <div style="height: 30px;"></div>
@@ -516,7 +516,7 @@
       // 上传成功后添加字段
       HeadPlanuploadsuccess (response) {
         success('上传成功');
-        this.submitButton = false;
+//        this.submitButton = false;
         this.activity.has_one_theme_image_url[0] = {image_id: response.image_id, url: response.image_src};
       },
       // 删除活动配图
@@ -524,8 +524,10 @@
         this.$http.post(this.URL.deleteActivityImage, {user_id: localStorage.user_id, image_id: file.image_id})
           .then(res => {
             if (res.data.status_code === 2000000) {
-              let arr = this.activity.has_many_details[index].belongs_to_many_images_url;
-              arr.splice(arr.findIndex((value, index, arr) => value.image_id === file.image_id), 1);
+              if (index !== undefined) {
+                let arr = this.activity.has_many_details[index].belongs_to_many_images_url;
+                arr.splice(arr.findIndex((value, index, arr) => value.image_id === file.image_id), 1);
+              }
               this.loading = false;
               success('删除成功');
             }
@@ -541,6 +543,13 @@
           if (item.uid === data.file.uid) {
             item.image_id = data.response.image_id;
             item.url = data.response.image_src;
+            item.type = true;
+          }
+        });
+      },
+      unSupport (data, index) {
+        this.activity.has_many_details[index].belongs_to_many_images_url.forEach(item => {
+          if (item.uid === data.uid) {
             item.type = true;
           }
         });
