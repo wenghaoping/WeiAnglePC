@@ -41,7 +41,9 @@
       },
       planList: {
         type: Array,
-        default: []
+        default: function () {
+          return [];
+        }
       },
       autoUpload: {
         type: Boolean,
@@ -53,7 +55,9 @@
       },
       uploadType: {
         type: Array,
-        default: ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.zip', '.rar']
+        default: function () {
+          return ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.zip', '.rar'];
+        }
       },
       btnType: {
         type: String,

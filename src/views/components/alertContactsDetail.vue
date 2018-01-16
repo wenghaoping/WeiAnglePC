@@ -455,8 +455,6 @@
           this.tags.changecont = formatData.setIdToArr(data.user_invest_tag, 'tag_id');
         }
         this.contacts = data;
-        console.log(data.import_user_name);
-        console.log(this.contacts);
       }
     },
     computed: {

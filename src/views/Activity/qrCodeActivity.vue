@@ -34,7 +34,7 @@
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex';
-  import { error } from '@/utils/notification';
+//  import { error } from '@/utils/notification';
   export default {
     data () {
       return {
@@ -72,14 +72,12 @@
           })
           .catch(err => {
             this.loading = false;
-            error('提交失败');
             console.log(err);
           });
       }
     },
     watch: {
       qrCodeActivityDisplay: function (e) {
-        console.log(e);
         if (e) {
           this.getQr();
         } else {

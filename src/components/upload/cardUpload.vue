@@ -38,7 +38,9 @@
       },
       cardplanList: {
         type: Array,
-        default: []
+        default: function () {
+          return [];
+        }
       },
       width: {
         type: Number,

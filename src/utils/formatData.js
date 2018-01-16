@@ -102,7 +102,7 @@ export function setUrlChange (url, name = '') {
 
 // 时间戳转化为正常时间yyyy-mm-dd-hh-m===========单个时间的处理
 export function formatDateTime (timeStamp) {
-  if (timeStamp === '') return '';
+  if (timeStamp === '' || timeStamp === null || timeStamp === undefined) return '';
   let date = new Date();
   if (timeStamp.length > 11) date.setTime(timeStamp);
   else date.setTime(timeStamp * 1000);

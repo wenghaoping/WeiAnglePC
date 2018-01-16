@@ -710,6 +710,7 @@
           this.pushTagMyConCheckAll = [];
           this.pushTagMyConCheck = [];
           this.contacts = {};
+          this.$store.dispatch('clearProjectMessage', true);
         }
       }
     }

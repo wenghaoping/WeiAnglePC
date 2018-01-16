@@ -445,6 +445,7 @@
               });
           } else {
             this.remoteMethod('');
+            this.$store.dispatch('clearProjectMessage', true);
           }
         }
         this.getpushCount();
