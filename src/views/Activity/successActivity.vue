@@ -1,13 +1,11 @@
 <template>
   <div id="successActivity" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     <div class="createSuccessActivity position_center_auto relative">
-      <div class="center position_center_auto relative">
+      <div class="center position_center_auto">
         <div class="el-notification absolute">
           <i class="el-notification__icon el-icon-circle-check"></i>
-          <div class="el-notification__group is-with-icon">
-          </div>
         </div>
-        <div class="message relative position_center_auto">
+        <div class="message relative position_center_auto tc">
           {{activityTitle}}
         </div>
         <div class="img innImg relative position_center_auto">
@@ -47,8 +45,7 @@
     // 当dom一创建时
     created () {
       this.getActivityId();
-    },
-    watch: {}
+    }
   };
 </script>
 
@@ -62,6 +59,7 @@
       width: 260px;
     }
     .el-notification{
+      position: absolute!important;
       top: 40px;
       width: 80px;
       box-shadow: none;

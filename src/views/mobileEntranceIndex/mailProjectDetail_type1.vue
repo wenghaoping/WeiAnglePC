@@ -20,15 +20,15 @@
         <!--用户名片-->
         <div class='userCard flex'>
           <img :src = 'projectUser.user_avatar_url' alt="">
-          <div>
+          <div class="userName" style="margin-top: 1rem;line-height: 20px;">
             <div class="name">{{projectUser.user_name}}</div>
             <div class="careerAndcompany size_12 color_6">{{projectUser.user_career}}·{{projectUser.user_company}}</div>
           </div>
         </div>
         </div>
-        <div class="white1" style="margin-top: 16px">
+        <div class="white1" v-if="projectDetail.pro_goodness.length !== 0" style="margin-top: 16px">
         <!--投资亮点-->
-        <div class="textBlock size_14 color_3" v-if="projectDetail.pro_goodness.length !== 0">
+        <div class="textBlock size_14 color_3" >
           <div class="text_title weight">投资亮点</div>
           <div class="text_content" v-for="goodness in projectDetail.pro_goodness">
             <span class="goodness_title color_3">·&nbsp;{{goodness.goodness_title}} :</span>
@@ -82,8 +82,8 @@
         </div>
         </div>
         <!--产品-->
-        <div class="white1" style="margin-top: 16px">
-        <div class="brandList" v-if="projectDetail.brand.length !== 0">
+        <div class="white1" v-if="projectDetail.brand.length !== 0" style="margin-top: 16px">
+        <div class="brandList" >
           <div class="main_title flex" >
             <div class="text_title" style="margin: 0;">产品</div>
             <div class="showAll" v-if="projectDetail.brand.length >3">全部&nbsp;({{projectDetail.brand.length}})</div>
@@ -103,8 +103,8 @@
         </div>
         </div>
         <!--历史融资-->
-        <div class="white1" style="margin-top: 16px">
-        <div class="financing" v-if="projectDetail.pro_history_finance.length !== 0">
+        <div class="white1" v-if="projectDetail.pro_history_finance.length !== 0" style="margin-top: 16px">
+        <div class="financing" >
           <div class="main_title flex">
             <div class="text_title ">历史融资</div>
             <div class="showAll" v-if="projectDetail.pro_history_finance.length >3">全部&nbsp;({{projectDetail.pro_history_finance.length}})</div>
@@ -155,8 +155,8 @@
         </div>
         </div>
         <!--核心团队-->
-        <div class="white1" style="margin-top: 16px">
-        <div class="coreTeam" v-if="projectDetail.core_users.length !== 0">
+        <div class="white1" v-if="projectDetail.core_users.length !== 0" style="margin-top: 16px">
+        <div class="coreTeam" >
           <div class="main_title flex">
             <div class="text_title ">核心团队</div>
             <div class="showAll" v-if="projectDetail.core_users.length >3">全部&nbsp;({{projectDetail.core_users.length}})</div>
@@ -167,7 +167,9 @@
           <div class="teamMember" v-for='member in projectDetail.core_users'>
             <div class="top flex">
               <!--<img class="left" src="" alt="">-->
-              <div class="left headPic" style="margin-right: .75rem;">{{member.ct_member_name.substring(0,1)}}</div>
+              <div class="left " style="margin-right: .75rem;">
+                <div class="headPic"> {{member.ct_member_name.substring(0,1)}}</div>
+              </div>
               <div class="right">
                 <div style="margin-bottom: .3rem;">
                   <span class="name size_15 ">{{member.ct_member_name}}</span>
@@ -181,14 +183,14 @@
             </div>
             <div class="bottom flex">
               <div class="left"  style="margin-right: .75rem;"></div>
-              <div class="right size_13 color_6" style="padding: .75rem;background:#f5f5f5;border-radius:2px;">{{member.ct_member_intro}}</div>
+              <div class="right size_13 color_6" style="padding: .75rem;background:#f5f5f5;border-radius:2px;margin-left: 3rem;">{{member.ct_member_intro}}</div>
             </div>
           </div>
         </div>
         </div>
         <!--里程碑-->
-        <div class="white1" style="margin-top: 16px">
-        <div class="milepost" v-if="projectDetail.pro_develop.length !== 0">
+        <div class="white1" v-if="projectDetail.pro_develop.length !== 0" style="margin-top: 16px">
+        <div class="milepost" >
           <div class="main_title flex">
             <div class="text_title ">里程碑</div>
             <div class="showAll" v-if="projectDetail.pro_develop.length >3">全部&nbsp;({{projectDetail.pro_develop.length}})</div>
@@ -251,7 +253,7 @@
         getEmail: false,
         email: '',
         user_id: 0,
-        project_id: '2rzVAMr3',
+        project_id: '',
         projectDetail: {
           brand: {},
           company_open_status: {},
@@ -292,12 +294,9 @@
         projectUser: ''
       };
     },
-    computed: {},
     components: {
       getContact
     },
-    // Echart组件
-    mounted () {},
     methods: {
       // 获取项目详情数据
       async getProjectDetail () {
@@ -378,6 +377,11 @@
               this.getEmail = false;
               this.bpMethod = false;
               this.loading = false;
+            } else {
+              warning(res.data.error_msg);
+              this.getEmail = false;
+              this.bpMethod = false;
+              this.loading = false;
             }
           });
         }
@@ -426,8 +430,10 @@
   .el-dialog--small{
     width: 75%;
   }
-  #mailProjectDetail_type1 {
-    width: 100%;
+  #mailProjectDetail_type1{
+    -webkit-max-width: 375px;
+    max-width: 375px;
+    margin: auto;
     /*padding: 1rem;*/
     /*margin: 0 auto;*/
     position: relative;
@@ -439,12 +445,12 @@
     .white1{
       background: white;
     }
-.xian{
-  width:100%;
-  height:1px;
-  background: #f0f0f0;
-  margin-top: 10px;
-}
+    .xian{
+      width:100%;
+      height:1px;
+      background: #f0f0f0;
+      margin-top: 10px;
+    }
     .getEmail{
       padding: .5rem 0;
       align-items: center;
@@ -514,9 +520,8 @@
       font-weight: bold;
     }
     .showAll{
-      cursor: pointer;
       font-size: .75rem;
-      color: #3378e0;
+      color: #ccc;
     }
     .flex {
       display: flex;
@@ -540,20 +545,22 @@
       color: #666;
     }
     .userCard{
-      margin-top: 10/16rem;
       img{
         border-radius: 50%;
         width: 2.25rem;
         height: 2.25rem;
         display: block;
         margin-right: .5rem;
+        margin-top: 1rem;
       }
       .name{
         font-size: 14/16rem;
         color: #333;
       }
       .careerAndcompany {
-        margin-top: 3/16rem;
+        margin-top: 2/16rem;
+        font-size: 12px;
+        line-height: 17px;
       }
     }
     .textBlock{
@@ -574,7 +581,7 @@
       padding: 1rem;
       .intro_tags {
         margin-top: 1.25rem;
-        margin-bottom: 1.25rem;
+        margin-bottom: 1rem;
         flex-wrap:wrap;
         .tag{
           padding: .25rem .5rem;
@@ -641,11 +648,11 @@
         }
         margin-bottom: 26/16rem;
         .finance_left {
-          flex: 56;
+          width: 49/16rem;
           text-align: right;
         }
         .finance_middle {
-          flex: 33;
+          width: 36/18rem;
           img {
             display: block;
             width: 12/16rem;
@@ -654,7 +661,7 @@
           }
         }
         .finance_right {
-          flex: 246;
+          width: 70%;
           .financingMoney {
             color: #fc703e;
           }
@@ -713,9 +720,11 @@
           border-radius: 50%;
           background:#f5f5f5;
           text-align: center;
+          width: 52/16rem;
           height: 52/16rem;
           line-height: 52/16rem;
           font-size: 20px;
+          margin: auto;
         }
         .name{
           margin-right: 7/16rem;
@@ -725,11 +734,10 @@
           margin-left: .25rem;
         }
         .left{
-          flex: 53;
           margin-right: 23/16rem;
         }
         .right{
-          flex: 256;
+          width: 70%;
         }
         .bottom{
 
@@ -742,11 +750,12 @@
     .milepost{
       padding: 1rem;
       .left{
-        flex: 56;
+        width: 3rem;
+        padding-left: .5rem;
         text-align: right;
       }
       .middle{
-        flex: 33;
+        width: 36/16rem;
         img{
           margin: 0 auto;
           display: block;
@@ -755,7 +764,7 @@
         }
       }
       .right{
-        flex: 246;
+        width: 70%;
         line-height: 1.25rem;
       }
       .pro_develop{

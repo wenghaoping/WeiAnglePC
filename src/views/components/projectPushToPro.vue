@@ -521,7 +521,7 @@
               tag.id = res.data.card_id;
               tag.conType = 'card';
               tag.user_email = form.email;
-              tag.investor_id = res.data.card_id + '-' + res.data.investor_id;
+              tag.investor_id = '';
               this.pushTagMyConCheck.push(tag.investor_id);
               this.pushTagMyCon.push(tag);
               success('人脉添加成功');

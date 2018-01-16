@@ -155,7 +155,11 @@ export function setReallyTimeToTime (time, title, title2) {
 export function setTimeToReallyTime (time, title) {
   if (isArray(time)) {
     time.forEach((x) => {
-      x[title] = new Date(x[title].length > 11 ? x[title] : x[title] * 1000);
+      if (x[title] !== null) {
+        x[title] = new Date(x[title].length > 11 ? x[title] : x[title] * 1000);
+      } else {
+        x[title] = '';
+      }
     });
   } else {
     return time;

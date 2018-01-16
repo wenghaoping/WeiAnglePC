@@ -36,8 +36,6 @@
           this.$emit('closeGetContact', 'close');
         }
       }
-    },
-    mounted () {
     }
   };
 </script>

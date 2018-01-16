@@ -276,7 +276,8 @@
                   title: this.email.title,
                   body: this.email.body,
                   email: this.email2.nameEmail,
-                  receive_users: [this.userMessage.investor_id]
+                  receive_users: [this.userMessage.investor_id],
+                  card_id: [this.userMessage.card_id]
                 }).then(res => {
                   if (res.data.status_code === 2000000) {
                     success('推送成功');

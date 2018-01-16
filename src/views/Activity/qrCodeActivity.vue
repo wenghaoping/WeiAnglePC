@@ -64,11 +64,11 @@
         this.loading = true;
         this.$http.post(this.URL.getSignQrCode, {user_id: localStorage.user_id, activity_id: this.activityId}) // , is_sign: this.isSign
           .then(res => {
-            this.loading = false;
             if (res.data.status_code === 2000000) {
-              let data = res.data.data;
+              let data = res.data.data || '';
               this.qrUrl = data || '';
             }
+            this.loading = false;
           })
           .catch(err => {
             this.loading = false;
@@ -78,9 +78,10 @@
       }
     },
     watch: {
-      importRegistrationDisplay: function (e) {
+      qrCodeActivityDisplay: function (e) {
+        console.log(e);
         if (e) {
-//          this.getQr();
+          this.getQr();
         } else {
           this.$store.dispatch('AllMemberControl', false);
         }

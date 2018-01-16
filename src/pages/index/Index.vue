@@ -28,9 +28,6 @@
         identityDisplay: false // 显示认证弹框
       };
     },
-    mounted () {
-
-    },
     methods: {
       // 检查localStorage.user_id
       checkUser () {
@@ -100,7 +97,7 @@
     // 当dom一创建时
     created () {
       this.user_name = localStorage.user_real_name;
-      this.zgIdentify(localStorage.user_id, {name: localStorage.user_real_name});
+//      this.zgIdentify(localStorage.user_id, {name: localStorage.user_real_name});
       this.getCheckUserInfo(localStorage.user_id);
       this.getUserGroupByStatusName(localStorage.user_id);
       if (IEVersion() !== -1) { alert('请不要使用IE浏览器，建议使用谷歌浏览器及其他浏览器，以获得更好体验'); };

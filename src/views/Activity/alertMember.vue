@@ -216,8 +216,26 @@
   .el-table--enable-row-hover .el-table__body tr:hover>td{
     background: #FFFFFF!important;
   }
+  .table-thead{
+    background:#e5e9f2;
+    width:100%;
+    height:50px;
+    .thead-item{
+      text-align: left;
+      line-height: 50px;
+      font-size: 12px;
+      color:#475669;
+      padding-left:16px;
+      font-weight: 100;
+      box-sizing: border-box;
+    }
+  }
+  .el-table td, .el-table th.is-leaf{
+    border: none;
+  }
   .el-dialog{
     width: 818px;
+
   }
   .el-table thead tr{
     background:#e5e9f2!important;

@@ -58,14 +58,6 @@
     </div>
   </div>
 </template>
-<script type="text/ecmascript-6">
-  import { getTop } from '@/utils';
-  export default {
-    created () {
-      getTop();
-    }
-  };
-</script>
 <style scoped lang="less">
   .contact_img{
     width:16px;
