@@ -21,6 +21,7 @@ Vue.filter('timeToReallTime', (value) => {
   // second = second < 10 ? ('0' + second) : second;
   return y + '-' + m + '-' + d;/* +' '+h+':'+minute+':'+second; */
 });
+
 Vue.filter('timeToReallTime_pointType', (value) => {
   if (value === '' || value === undefined || value === null) return '';
   var date = new Date();
@@ -37,6 +38,7 @@ Vue.filter('timeToReallTime_pointType', (value) => {
   // second = second < 10 ? ('0' + second) : second;
   return y + '.' + m;/* +' '+h+':'+minute+':'+second; */
 });
+
 Vue.filter('timeToReallTime_lineTopoint', (value) => {
   if (value) {
     return value.substr(0, 4) + '.' + value.substr(5, 2);

@@ -129,7 +129,7 @@
   };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .tab{
   width: 100px;
   height: 50px;

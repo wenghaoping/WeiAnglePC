@@ -343,7 +343,7 @@
         area2: [],
         //* 所属地区区级
         area3: [],
-        ActiveDateRule: [{ validator: endDateRule, trigger: 'change', type: 'date' }] // 活动结束时间判断
+        ActiveDateRule: [{ validator: endDateRule, trigger: 'change', type: 'date', message: '请输入正确的时间' }] // 活动结束时间判断
       };
     },
     // 组件

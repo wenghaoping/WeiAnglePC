@@ -85,7 +85,6 @@
           this.$emit('unSupport', file);
           return false;
         };
-        console.log(this.uploadLenth);
         if (this.uploadLenth > 20) {
           warning('当前最多上传20张');
           this.$emit('unSupport', file);

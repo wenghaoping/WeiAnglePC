@@ -379,7 +379,8 @@
         this.$http.post(this.URL.getOneUserInfo, {
           user_id: localStorage.user_id,
           card_id: this.contactDeatil.cardId,
-          investor_user_id: this.contactDeatil.userId})
+          investor_user_id: this.contactDeatil.userId,
+          type: this.contactDeatil.userType})
           .then(res => {
             let data = res.data.data;
             if (res.data.status_code === 2000000) {

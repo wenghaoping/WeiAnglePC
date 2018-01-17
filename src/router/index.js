@@ -6,7 +6,6 @@ Vue.use(Router);
 
 // 测试页面
 const checkone = r => require.ensure([], () => r(require('@/test/checkone.vue')), 'checkone');
-// const checkone = r => require.ensure([], () => r(require('@/components/tinymce.vue')), 'tinymce');
 
 // 配置路由
 export default new Router({

@@ -4,7 +4,7 @@
 // 全局函数
 /* eslint-disable */
 import Vue from 'vue';
-import { getIntervalTime, srtIntervalClearTime } from '@/utils';
+// import { getIntervalTime, srtIntervalClearTime } from '@/utils';
 import { error } from './notification';
 let int = null;// 时间设置
 let time = '';
@@ -40,7 +40,7 @@ Vue.mixin({
     //属性名称不能超过255个字符，属性值不能超过200个字符
     */
     zgClick (name, event = {}) {
-      zhuge.track(name, event);
+      // zhuge.track(name, event);
     },
 
     /* 识别用户
@@ -52,31 +52,31 @@ Vue.mixin({
      '行业': '互联⽹网' //⾃自定义属性  Object
     */
     zgIdentify (userName, event = {}) {
-      zhuge.identify(userName, event);
+      // zhuge.identify(userName, event);
     },
 
     // 路由进入计时
     zgTimeIn () {
-      int = setInterval(() => { time = getIntervalTime(); /* console.log(time) */; }, 2000);
+      // int = setInterval(() => { time = getIntervalTime(); /* console.log(time) */; }, 2000);
     },
 
     // 路由出去时停止计时
     zgTimeOut (name) {
-      clearInterval(int);
-      let ReallyName = this.zgChangeString(name);
-      if (ReallyName) {
-        this.zgClick(ReallyName, {time: time});
-      }
-      time = '';
-      srtIntervalClearTime();
+      // clearInterval(int);
+      // let ReallyName = this.zgChangeString(name);
+      // if (ReallyName) {
+      //   this.zgClick(ReallyName, {time: time});
+      // }
+      // time = '';
+      // srtIntervalClearTime();
     },
 
     zgChangeString (name) {
-      for (let key in Json) {
-        if (name === key) {
-          return Json[key];
-        }
-      }
+      // for (let key in Json) {
+      //   if (name === key) {
+      //     return Json[key];
+      //   }
+      // }
     },
 
     // 公用函数(设置登陆用户的所有信息)

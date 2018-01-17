@@ -492,7 +492,7 @@
       // 跳转人脉详情
       contanctDetail (row) {
         console.log(row);
-        this.$store.dispatch('setConnectDeatil', {cardId: row.card_id, userId: row.user_id, type: 'userInfo'});
+        this.$store.dispatch('setConnectDeatil', {cardId: row.card_id, userId: row.user_id, type: 'userInfo', userType: row.type});
         this.$store.dispatch('contactControl', true);
       }
     },

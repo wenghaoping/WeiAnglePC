@@ -5,7 +5,6 @@ import router from '../../router/mobileEntranceRouter.js'; // 路由设置
 import store from '../../store';
 import Element from 'element-ui'; // element
 import 'element-ui/lib/theme-default/index.css'; // element样式
-import zhuge from '../../global/zhuge.js'; // 诸葛io
 import '../../utils/miXins.js';  // 全局函数
 import axios from '../../api/api.js';// axios请求配置
 import URL_ from '../../api/url.js';// URL请求地址汇总
@@ -17,7 +16,6 @@ Vue.prototype.$global = global;
 Vue.prototype.$http = axios;
 Vue.prototype.URL = URL_;
 Vue.use(Element); // UI库
-Vue.use(zhuge); // 诸葛io
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
