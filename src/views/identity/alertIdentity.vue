@@ -280,9 +280,6 @@
         });
       }
     },
-    created () {
-
-    },
     computed: {
       maiFang () {
         if (this.auth_info.identify_status === 1) {
@@ -297,7 +294,7 @@
         if (this.auth_info.identify_status === 1) {
           return '添加FA哥微信weitianshicn，加速审核';
         } else if (this.auth_info.identify_status === 2) {
-          return '认证会员将由微天使创始人直接服务，添加微信weitianshicn';
+          return '认证会员将由微天使直接服务，添加微信weitianshiFA';
         } else if (this.auth_info.identify_status === 3) {
           return '添加FA哥微信weitianshicn，重新审核';
         }

@@ -134,7 +134,6 @@
               if (res.data.status_code === 2000000) {
                 // 将user_id存入sessionStorge并跳转
                 localStorage.user_id = res.data.user_id;
-                console.log(localStorage.user_id);
                 this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
                 localStorage.user_real_name = res.data.user_real_name === '' ? '暂无姓名' : res.data.user_real_name;
                 localStorage.user_brand = res.data.user_brand;

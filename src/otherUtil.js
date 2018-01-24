@@ -18,6 +18,7 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach(() => {
+  window.scrollTo(0, 0); // 返回到顶部
   NProgress.done(); // 结束Progress
 });
 

@@ -1,4 +1,4 @@
-/**
+ /**
  * Created by WengHaoping on 2017/6/5.
  */
 import axios from 'axios';
@@ -7,9 +7,11 @@ import qs from 'qs';
 axios.defaults.timeout = 60000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-// axios.defaults.baseURL = 'https://pc.dev.weitianshi.cn';
-axios.defaults.baseURL = 'https://wts.weitianshi.cn';
-
+if (process.env.NODE_ENV === 'development') {
+  axios.defaults.baseURL = 'https://pc.dev.weitianshi.cn';
+} else {
+  axios.defaults.baseURL = 'https://wts.weitianshi.cn';
+}
 // POST传参序列化 http request 拦截器
 axios.interceptors.request.use((config) => {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;

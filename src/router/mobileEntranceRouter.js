@@ -14,6 +14,9 @@ export default new Router({
       path: '/', name: 'index', component: _import('mobileEntranceIndex/mailProjectDetail_type1')
     },
     {
+      path: '*', redirect: '/' // 默认回到首页
+    },
+    {
       path: '/mailProjectDetail_type1',
       name: 'mailProjectDetail_type1',
       component: _import('mobileEntranceIndex/mailProjectDetail_type1')

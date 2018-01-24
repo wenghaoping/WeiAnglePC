@@ -5,14 +5,24 @@
 /* const URL ='https://dev.weitianshi.cn/' */
 
 /* URL汇总 */
-
+let weitianshi = '';
+let weitianshiLine = '';
+if (process.env.NODE_ENV === 'development') {
+  weitianshi = 'https://pc.dev.weitianshi.cn/';
+  weitianshiLine = 'https://pc.dev.weitianshi.cn/';
+} else {
+  weitianshi = 'https://wts.weitianshi.cn/';
+  weitianshiLine = 'https://wts.weitianshi.cn/';
+}
 export default
 {
   /* 总地址,下载用的 */
   // weitianshi: 'https://pc.dev.weitianshi.cn/', // 下载用
   // weitianshiLine: 'https://pc.dev.weitianshi.cn/', // 上传
-  weitianshi: 'https://wts.weitianshi.cn/', // 上线接口下载用
-  weitianshiLine: 'https://wts.weitianshi.cn/', // 上线接口上传
+  // weitianshi: 'https://wts.weitianshi.cn/', // 上线接口下载用
+  // weitianshiLine: 'https://wts.weitianshi.cn/', // 上线接口上传
+  weitianshi: weitianshi,
+  weitianshiLine: weitianshiLine,
   openUrl: 'https://www.weitianshi.cn/workbench/#/API/DD', // 一键尽调对外接口
   oneUrl: 'https://www.weitianshi.cn/workbench/#/', // 一键尽调对内接口
   // 一键尽调跳转用接口

@@ -31,6 +31,9 @@ export default new Router({
       ]
     },
     {
+      path: '*', redirect: '/' // 默认回到首页
+    },
+    {
       path: '/', name: 'index', component: _import('index/index')
     },
     {

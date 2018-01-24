@@ -624,6 +624,8 @@
               if (res.data.status_code === 2000000) {
                 this.loading = false;
                 success('删除成功');
+              } else {
+                error(res.data.error_msg);
               }
             })
             .catch(err => {
@@ -841,9 +843,13 @@
               allData.user_id = localStorage.user_id;// 用户id
               this.$http.post(this.URL.editProject, allData)
                 .then(res => {
-                  let data = res.data;
-                  this.project.project_id = data.project_id;
-                  this.open2('创建成功', '完善项目资料，让投资人更全面得了解项目价值', '去完善', '跳过');
+                  if (res.data.status_code === 2000000) {
+                    let data = res.data;
+                    this.project.project_id = data.project_id;
+                    this.open2('创建成功', '完善项目资料，让投资人更全面得了解项目价值', '去完善', '跳过');
+                  } else {
+                    error(res.data.error_msg);
+                  }
                   this.loading = false;
                 })
                 .catch(err => {

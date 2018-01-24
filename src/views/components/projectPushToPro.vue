@@ -622,14 +622,14 @@
       pushTitle () {
         this.user_company_name = localStorage.user_company_name;
         this.user_brand = localStorage.user_brand;
-        this.user_company_career = localStorage.user_company_career === '' ? '' : localStorage.user_company_career + '-';
+        this.user_company_career = localStorage.user_company_career === '' ? '' : localStorage.user_company_career + '·';
         this.user_real_name = localStorage.user_real_name;
         if (!this.user_brand) {
-          this.pushbrand = this.user_company_name === '' ? '' : this.user_company_name + '-';
+          this.pushbrand = this.user_company_name === '' ? '' : this.user_company_name + '·';
         } else {
-          this.pushbrand = this.user_brand === '' ? '' : this.user_brand + '-';
+          this.pushbrand = this.user_brand === '' ? '' : this.user_brand + '·';
         }
-        return this.pushbrand + this.user_company_career + this.user_real_name + '推荐项目 | 微天使乐投平台—互联网化FA平台—AI驱动的智能云投行';
+        return '【' + this.pushbrand + this.user_company_career + this.user_real_name + '】给您推荐了一个投资项目';
       },
       doMouseMove (e, row) {
         this.getInvestorInfo(row);

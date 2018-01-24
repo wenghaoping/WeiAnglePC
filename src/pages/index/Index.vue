@@ -55,6 +55,8 @@
         setTimeout(function () {
           localStorage.clear();
           sessionStorage.clear();
+          this.$router.push({name: 'index'});
+          this.$store.dispatch('setUserRealName', '');
         }, 43200000);
       },
 

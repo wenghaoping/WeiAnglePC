@@ -8,7 +8,7 @@ export function getTop () {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
   window.pageYOffset = 0;
-}
+}// 回到顶部
 
 export function scrollTo (element, to, duration) {
   if (duration <= 0) return;

@@ -2454,10 +2454,14 @@
             project_ct_id: item.project_ct_id
           })
             .then(res => {
-              success('删除成功');
-              let index = this.team.core_users.indexOf(item);
-              if (index !== -1) {
-                this.team.core_users.splice(index, 1);
+              if (res.data.status_code === 2000000) {
+                success('删除成功');
+                let index = this.team.core_users.indexOf(item);
+                if (index !== -1) {
+                  this.team.core_users.splice(index, 1);
+                }
+              } else {
+                error(res.data.error_msg);
               }
             })
             .catch(err => {
@@ -2630,8 +2634,12 @@
 
               this.$http.post(this.URL.editProject, allData)
                 .then(res => {
+                  if (res.data.status_code === 2000000) {
+                    this.open2('项目编辑成功', '您当前的项目完整度为' + this.proportion + '%', '查看详情', '返回列表');
+                  } else {
+                    error(res.data.error_msg);
+                  }
                   this.loading = false;
-                  this.open2('项目编辑成功', '您当前的项目完整度为' + this.proportion + '%', '查看详情', '返回列表');
                 })
                 .catch(err => {
                   this.loading = false;
