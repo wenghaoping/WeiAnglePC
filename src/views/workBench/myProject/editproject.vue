@@ -1012,7 +1012,7 @@
                 <img src="../../../assets/images/arts.png" alt="">
               </span>
               <span class="block-tlt">项目介绍
-                <span class="tlt-tips" v-show="projectMust">项目介绍填写有误</span>
+                <span class="tlt-tips" v-show="projectMust">此模块填写有误</span>
               </span>
               <span class="check-flag">
                 <img v-if="projectPerfect" src="../../../assets/images/gou.png" alt="">
@@ -1543,7 +1543,8 @@
         timer: null,
         timer2: null,
         scrollTop: 0,
-        tagShow: 0// 控制标签显示隐藏
+        tagShow: 0, // 控制标签显示隐藏
+        saveControl: false // 控制是否保存
       };
     },
     computed: {
@@ -2639,6 +2640,7 @@
                   } else {
                     error(res.data.error_msg);
                   }
+                  this.saveControl = true;
                   this.loading = false;
                 })
                 .catch(err => {
@@ -2927,6 +2929,21 @@
             that.timer2 = false;
           }, 100);
         }
+      }
+    },
+    beforeRouteLeave (to, from, next) {
+      if (!this.saveControl) {
+        this.$confirm('当前页面还未保存, 是否离开?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          next();
+        }).catch(() => {
+
+        });
+      } else {
+        next();
       }
     }
   };

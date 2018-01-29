@@ -381,7 +381,8 @@
         },
         contactsMust: false,
         contacts1Must: false,
-        contacts2Must: false
+        contacts2Must: false,
+        saveControl: false
       };
     },
     methods: {
@@ -527,6 +528,7 @@
                   this.card_id = res.data.card_id;
                   this.loading = false;
                   this.open2('名片编辑成功', '是否返回', '查看详情', '返回人脉列表');
+                  this.saveControl = true;
 //              //路由传参
                 })
                 .catch(err => {
@@ -669,6 +671,21 @@
         .then((data) => {
           return this.getOneUserInfo();
         });
+    },
+    beforeRouteLeave (to, from, next) {
+      if (!this.saveControl) {
+        this.$confirm('当前页面还未保存, 是否离开?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          next();
+        }).catch(() => {
+
+        });
+      } else {
+        next();
+      }
     }
   };
 </script>

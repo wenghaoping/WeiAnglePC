@@ -438,7 +438,6 @@
   import * as formatData from '@/utils/formatData';
   import * as validata from '@/utils/validata';
   export default {
-    props: [],
     data () {
       var checkPhoneNumber = (rule, value, callback) => {
         if (!validata.getNull(value)) {
@@ -588,10 +587,10 @@
         CardUploadShow: {}, // 计划书上传列表,需要存数据啦
         submitButton: false, // 是否允许提交false允许/true不允许
         dialogImg: false, // 名片预览控制
-        dialogImageUrl: '' // 图片预览路径
+        dialogImageUrl: '', // 图片预览路径
+        saveControl: false
       };
     },
-    computed: {},
     mounted () {
 
     },
@@ -881,6 +880,7 @@
                   this.loading = false;
                   this.getCheckUserInfo(localStorage.user_id);
                   this.open2('信息编辑成功', '是否返回', '继续编辑', '返回上一页');
+                  this.saveControl = true;
                 })
                 .catch(err => {
                   error('编辑失败');
@@ -939,7 +939,21 @@
           return this.getUserBasicInfo();
         });
     },
-    watch: {}
+    beforeRouteLeave (to, from, next) {
+      if (!this.saveControl) {
+        this.$confirm('当前页面还未保存, 是否离开?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          next();
+        }).catch(() => {
+
+        });
+      } else {
+        next();
+      }
+    }
   };
 </script>
 

@@ -343,7 +343,8 @@
         area2: [],
         //* 所属地区区级
         area3: [],
-        ActiveDateRule: [{ validator: endDateRule, trigger: 'change', type: 'date', message: '请输入正确的时间' }] // 活动结束时间判断
+        ActiveDateRule: [{ validator: endDateRule, trigger: 'change', type: 'date', message: '请输入正确的时间' }], // 活动结束时间判断
+        saveControl: false
       };
     },
     // 组件
@@ -467,6 +468,7 @@
               this.$http.post(this.URL.editActivity, allData)
                 .then(res => {
                   if (res.data.status_code === 2000000) {
+                    this.saveControl = true;
                     this.$router.push({name: 'successActivity', query: {activity_title: allData.activity_title}});
                   }
                   this.loading = false;
@@ -582,6 +584,21 @@
         .then((data) => {
           return this.getActivity();
         });
+    },
+    beforeRouteLeave (to, from, next) {
+      if (!this.saveControl) {
+        this.$confirm('当前页面还未保存, 是否离开?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          next();
+        }).catch(() => {
+
+        });
+      } else {
+        next();
+      }
     }
   };
 </script>

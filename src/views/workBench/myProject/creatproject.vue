@@ -544,7 +544,8 @@
         queryData: {},
         NumberRule: { validator: checkHundred, trigger: 'blur' },
         mustGo: true,
-        syncCreatProjectDetailDisplay: false
+        syncCreatProjectDetailDisplay: false,
+        saveControl: false
       };
     },
     methods: {
@@ -850,6 +851,7 @@
                   } else {
                     error(res.data.error_msg);
                   }
+                  this.saveControl = true;
                   this.loading = false;
                 })
                 .catch(err => {
@@ -1063,6 +1065,21 @@
     },
     components: {
       synccreatprojectdetail
+    },
+    beforeRouteLeave (to, from, next) {
+      if (!this.saveControl) {
+        this.$confirm('当前页面还未保存, 是否离开?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          next();
+        }).catch(() => {
+
+        });
+      } else {
+        next();
+      }
     }
   };
 </script>

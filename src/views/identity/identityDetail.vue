@@ -524,7 +524,8 @@
 //                    {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
         ], // 名片上传列表
         cardPlanButton: true, // 控制上传按钮的显示
-        uploadDate: {user_id: localStorage.user_id, authenticate_id: localStorage.authenticate_id} // 名片上传所带的额外的参数
+        uploadDate: {user_id: localStorage.user_id, authenticate_id: localStorage.authenticate_id}, // 名片上传所带的额外的参数
+        saveControl: false
       };
     },
     components: {
@@ -587,6 +588,7 @@
                 if (res.data.status_code === 2000000) {
                   this.getCheckUserInfo(localStorage.user_id);
                   this.getUserGroupByStatusName(localStorage.user_id);
+                  this.saveControl = true;
                   if (localStorage.entrance === undefined) {
                     this.$router.push({name: 'myProject'});
                   } else {
@@ -844,6 +846,21 @@
         });
 
       this.group_id = localStorage.group_id;
+    },
+    beforeRouteLeave (to, from, next) {
+      if (!this.saveControl) {
+        this.$confirm('当前页面还未保存, 是否离开?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          next();
+        }).catch(() => {
+
+        });
+      } else {
+        next();
+      }
     }
   };
 </script>
