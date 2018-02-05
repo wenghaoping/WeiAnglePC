@@ -478,6 +478,7 @@
         }
         .pro_industry{
           margin-top: .75rem;
+          max-width: 13.75rem;
           .tag{
             line-height: 1rem;
             span:last-child{

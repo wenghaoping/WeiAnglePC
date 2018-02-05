@@ -451,6 +451,7 @@
         this.typein = item.type;
         let name = item.value;
         let na = item.na || '';
+        this.$store.dispatch('setConnectDeatil', {cardId: item.label});
         if (item.label === 0) {
           if (validata.getNull(na)) {
             error('名字不能为空');
@@ -479,6 +480,7 @@
               });
           }
         } else {
+          // 获取当前选择用户的信息
           this.loading = true;
           this.$http.post(this.URL.getEnjoyedInvestorBasicInfo, {card_id: this.follow.card_id, type: this.follow.type})
             .then(res => {
@@ -834,9 +836,6 @@
                 delete this.follow.files;
                 this.follow.user_id = localStorage.user_id;
                 this.follow.type = this.typein;
-                if (this.follow.type === 'user') {
-                  this.follow.card_id = this.userId;
-                }
                 this.loading = true;
                 this.$http.post(this.URL.add_follow_record, this.follow)
                   .then(res => {
@@ -886,7 +885,6 @@
         this.saveJumpData = this.follow;
       }
     },
-    created () {},
     watch: {
       followDisplay: function (e) {
         if (e) {

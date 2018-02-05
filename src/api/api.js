@@ -9,6 +9,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = 'https://pc.dev.weitianshi.cn';
+  // axios.defaults.baseURL = 'https://wts.weitianshi.cn';
 } else {
   axios.defaults.baseURL = 'https://wts.weitianshi.cn';
 }

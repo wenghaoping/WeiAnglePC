@@ -57,7 +57,8 @@
                 </el-col>
                 <el-tooltip class="item" effect="dark" placement="top-end">
                   <div slot="content">从微天使创投数据库自动获取公司行业，融资轮次<br/>历史融资，核心团队及里程碑等项目信息</div>
-                  <button class="tong" @click="syncOne">一键同步</button>
+                  <!--<button class="tong" @click.native="syncOne">一键同步</button>-->
+                  <input type="button" value="一键同步" class="tong" @click="syncOne">
                 </el-tooltip>
                 <span class="ques">
                         <el-tooltip placement="bottom-end">
