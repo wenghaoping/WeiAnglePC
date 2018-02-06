@@ -57,18 +57,17 @@
                 </el-col>
                 <el-tooltip class="item" effect="dark" placement="top-end">
                   <div slot="content">从微天使创投数据库自动获取公司行业，融资轮次<br/>历史融资，核心团队及里程碑等项目信息</div>
-                  <!--<button class="tong" @click.native="syncOne">一键同步</button>-->
-                  <input type="button" value="一键同步" class="tong" @click="syncOne">
+                  <input type="button" class="tong" @click="syncOne" value="一键同步">
                 </el-tooltip>
                 <span class="ques">
-                        <el-tooltip placement="bottom-end">
-                            <div slot="content">
-                              <div class="tips-txt">1、一键同步公司信息，快速创建项目</div>
-                              <div class="tips-txt" style="margin-top:5px;">2、可在项目详情查看尽调报告</div>
-                            </div>
-                            <img src="../../../assets/images/why.png" alt=""/>
-                        </el-tooltip>
-                      </span>
+                  <el-tooltip placement="bottom-end">
+                      <div slot="content">
+                        <div class="tips-txt">1、一键同步公司信息，快速创建项目</div>
+                        <div class="tips-txt" style="margin-top:5px;">2、可在项目详情查看尽调报告</div>
+                      </div>
+                      <img src="../../../assets/images/why.png" alt=""/>
+                  </el-tooltip>
+                </span>
               </el-row>
             </el-form>
           </div>
