@@ -164,7 +164,7 @@
           </div>
         </div>
         <!--相似项目-->
-        <div class="white1" v-if="projectDetail.competition_company.total_num !== 0" style="margin-top: 16px">
+        <div class="white1" v-if="projectDetail.competition_company.total_num !== 0" style="margin-top: 16px;cursor: pointer;">
           <div class="competition_company_list">
             <div class="main_title flex">
               <div class="text_title" style="margin-bottom: 0;">相似项目</div>
@@ -172,7 +172,7 @@
                 全部&nbsp;({{projectDetail.competition_company.total_num}})
               </div>
             </div>
-            <div class="competition_company flex" v-for="company in projectDetail.competition_company.list">
+            <div class="competition_company flex" @click="similarItem(company)" v-for="company in projectDetail.competition_company.list">
               <div class="left">
                 <img :src="company.project_logo" alt="">
               </div>
@@ -197,13 +197,13 @@
           </div>
         </div>
         <!--媒体报道-->
-        <div class="white1" v-if="projectDetail.news_list.total_num !== 0" style="margin-top: 16px">
+        <div class="white1" v-if="projectDetail.news_list.total_num !== 0" style="margin-top: 16px;cursor: pointer;">
           <div class="new_list">
             <div class="main_title flex">
               <div class="text_title" style="margin-bottom: 0;">媒体报道</div>
               <div class="showAll" v-if="projectDetail.news_list.length >3">全部&nbsp;({{projectDetail.news_list.total_num}})</div>
             </div>
-            <div class="competition_company" v-for="(news, index) in projectDetail.news_list.list" :key=index>
+            <div class="competition_company" @click="newsDetail(news)" v-for="(news, index) in projectDetail.news_list.list" :key=index>
               <div class="new_time">{{newTime[index]}}</div>
               <div class="new_content">{{news.news_title}}</div>
               <div class="new_tag flex">
@@ -227,6 +227,7 @@
     </getContact>
   </div>
 </template>
+
 
 <script type="text/ecmascript-6">
   import {success, warning} from '@/utils/notification';
@@ -299,8 +300,6 @@
     },
     components: {
       getContact
-    },
-    mounted () {
     },
     methods: {
       // 获取项目详情数据
@@ -385,14 +384,28 @@
         } else {
           if (callBack) callBack();
         }
+      },
+      // 相似项目跳转
+      similarItem (company) {
+        this.$router.push({name: 'mailProjectDetail_type2', query: {project_id: company.project_ori_id, investor_id: this.investor_id, user_id: this.user_id}});
+//        this.getprojectId();
+//        this.getProjectDetail();
+      },
+      // 媒体报道跳转
+      newsDetail (news) {
+        window.location.href = news.news_source;
       }
     },
     created () {
       this.getprojectId();
       this.getProjectDetail();
-      console.log(this);
     },
-    watch: {}
+    watch: {
+      '$route' (to, from) {
+        this.getprojectId();
+        this.getProjectDetail();
+      }
+    }
   };
 </script>
 
