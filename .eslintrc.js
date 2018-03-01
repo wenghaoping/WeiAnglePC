@@ -25,7 +25,9 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     // 强制语句结尾加上分号
     'semi':['error','always'],
-    //必须使用全等
-    "eqeqeq": 2
+    // 必须使用全等
+    "eqeqeq": 2,
+    // 方法名后面小括号前面要有空格
+    "space-before-function-paren":0,
   }
 }
