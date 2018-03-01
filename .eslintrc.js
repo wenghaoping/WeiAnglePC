@@ -27,7 +27,5 @@ module.exports = {
     'semi':['error','always'],
     // 必须使用全等
     "eqeqeq": 2,
-    // 方法名后面小括号前面要有空格
-    "space-before-function-paren":0,
   }
 }

@@ -265,7 +265,7 @@
   import getContact from './getContact';
 
   export default {
-    data() {
+    data () {
       return {
         loading: true,
         dialogVisible: false,
@@ -319,11 +319,11 @@
       getContact
     },
     // Echart组件
-    mounted() {
+    mounted () {
     },
     methods: {
       // 获取项目详情数据
-      async getProjectDetail() {
+      async getProjectDetail () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           this.$http.post(this.URL.mail_getProjectDetail, {
@@ -352,7 +352,7 @@
         });
       },
       // 检查登录态
-      checkLoginStatus(callBack) {
+      checkLoginStatus (callBack) {
         console.log(localStorage.user_id);
         if (localStorage.user_id === 0 || localStorage.user_id === undefined) {
           this.$router.push({name: 'mailProjectLogin'});
@@ -361,7 +361,7 @@
         }
       },
       // 获取项目id
-      getprojectId() {
+      getprojectId () {
         this.project_id = this.$route.query.project_id;
         this.activeFrom = this.$route.query.activeTo || 0;
         this.show = this.$route.query.show || 'detail';
@@ -373,7 +373,7 @@
         }
       },
       // 打开弹窗_查看Bp
-      previewBp() {
+      previewBp () {
         this.checkLoginStatus(x => {
           if (this.projectDetail.pro_BP === '') {
             warning('该项目并没有上传BP');
@@ -383,19 +383,19 @@
         });
       },
       // 关闭弹窗_查看Bp
-      bpMethodClose() {
+      bpMethodClose () {
         this.bpMethod = false;
       },
       // 打开弹窗_填写邮箱
-      inputEmail() {
+      inputEmail () {
         this.getEmail = true;
       },
       // 关闭弹窗_填写邮箱
-      inputEmailClose() {
+      inputEmailClose () {
         this.getEmail = false;
       },
       // 发送BP到邮箱
-      sendBpEmail() {
+      sendBpEmail () {
         if (!validata.checkEmail(this.email)) {
           warning('邮箱格式不正确');
         } else {
@@ -421,13 +421,13 @@
         }
       },
       // 打开弹窗_获得联系方式
-      openDialog() {
+      openDialog () {
         this.checkLoginStatus(x => {
           this.dialogVisible = true;
         });
       },
       // 关闭弹窗_获得联系方式
-      closeGetContact(text) {
+      closeGetContact (text) {
         if (text !== 'close') {
           this.checkLoginStatus(x => {
             this.$http.post(this.URL.mail_createInterview, {
@@ -448,11 +448,11 @@
         }
       },
       // BP预览
-      preview() {
+      preview () {
         window.location.href = this.projectDetail.pro_BP.file_url;
       }
     },
-    created() {
+    created () {
 //      localStorage.clear();
       this.getprojectId();
       this.getProjectDetail();

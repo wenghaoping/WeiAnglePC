@@ -234,7 +234,7 @@
   import getContact from './getContact';
 
   export default {
-    data() {
+    data () {
       return {
         loading: true,
         moreOrless: '更多',
@@ -258,7 +258,7 @@
       };
     },
     computed: {
-      financingTime() {
+      financingTime () {
         let financingTime = [];
         this.projectDetail.history_finance.list.forEach(x => {
           let time = x.finance_time.substring(0, 4) + '.' + x.finance_time.substring(5, 7);
@@ -266,7 +266,7 @@
         });
         return financingTime;
       },
-      mileStomeTime() {
+      mileStomeTime () {
         let milestoneTime = [];
         this.projectDetail.milestone_list.list.forEach(x => {
           let time = x.milestone_time.substring(0, 4) + '.' + x.milestone_time.substring(5, 7);
@@ -274,7 +274,7 @@
         });
         return milestoneTime;
       },
-      newTime() {
+      newTime () {
         let newTime = [];
         this.projectDetail.news_list.list.forEach(x => {
           let time = x.news_time.substring(0, 11);
@@ -282,14 +282,14 @@
         });
         return newTime;
       },
-      mediaTag() {
+      mediaTag () {
         let newTag = [];
         this.projectDetail.news_list.list.forEach(x => {
           newTag.push(x.news_label.split(','));
         });
         return newTag;
       },
-      new_projectIntro() {
+      new_projectIntro () {
         let i = 100;
         if (this.projectDetail.info.project_desc.length > i) {
           this.show_moreOrless = true;
@@ -302,11 +302,11 @@
     components: {
       getContact
     },
-    mounted() {
+    mounted () {
     },
     methods: {
       // 获取项目详情数据
-      async getProjectDetail() {
+      async getProjectDetail () {
         return new Promise((resolve, reject) => {
           this.loading = true;
           // 做一些异步操作
@@ -334,7 +334,7 @@
         });
       },
       // 获取项目id
-      getprojectId() {
+      getprojectId () {
         this.project_id = this.$route.query.project_id;
         this.activeFrom = this.$route.query.activeTo || 0;
         this.investor_id = this.$route.query.investor_id || 0;
@@ -346,7 +346,7 @@
         this.show = this.$route.query.show || 'detail';
       },
       // 项目介绍展开缩起
-      textLengthChange() {
+      textLengthChange () {
         if (this.moreOrless === '更多') {
           this.moreOrless = '缩起';
         } else if (this.moreOrless === '缩起') {
@@ -354,13 +354,13 @@
         }
       },
       // 打开弹窗_获得联系方式
-      openDialog() {
+      openDialog () {
         this.checkLoginStatus(x => {
           this.dialogVisible = true;
         });
       },
       // 关闭弹窗_获得联系方式
-      closeGetContact(text) {
+      closeGetContact (text) {
         if (text !== 'close') {
           this.checkLoginStatus(x => {
             this.$http.post(this.URL.mail_createInterview2, {
@@ -381,7 +381,7 @@
         }
       },
       // 检查登录态
-      checkLoginStatus(callBack) {
+      checkLoginStatus (callBack) {
         if (localStorage.user_id === 0 || localStorage.user_id === undefined) {
           this.$router.push({name: 'mailProjectLogin'});
         } else {
@@ -389,17 +389,17 @@
         }
       },
       // 相似项目跳转
-      similarItem(company) {
+      similarItem (company) {
         this.$router.push({name: 'mailProjectDetail_type2', query: {project_id: company.project_ori_id, investor_id: this.investor_id, user_id: this.user_id}});
 //        this.getprojectId();
 //        this.getProjectDetail();
       },
       // 媒体报道跳转
-      newsDetail(news) {
+      newsDetail (news) {
         window.location.href = news.news_source;
       }
     },
-    created() {
+    created () {
       this.getprojectId();
       this.getProjectDetail();
     },
@@ -842,6 +842,7 @@
       left: 50%;
       bottom: 0;
       width: 100%;
+      max-width: 750px;
       height: 44/16rem;
       text-align: center;
       background: white;
