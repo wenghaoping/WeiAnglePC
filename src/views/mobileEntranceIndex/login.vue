@@ -1,5 +1,5 @@
 <template>
-  <div id='mailLogin'>
+  <div id='mailLogin' class="container">
     <div class="flex">
       <!--登录头部-->
       <div class="tab" @click="toggle(index)" v-for="(tab,index) in tabs">

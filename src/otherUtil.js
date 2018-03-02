@@ -5,6 +5,7 @@
 import Vue from 'vue';
 import VueLazyload from 'vue-lazyload';
 import router from './router';
+import mobileEntranceRouter from './router/mobileEntranceRouter';
 import NProgress from 'nprogress'; // Progress 进度条
 import 'nprogress/nprogress.css';// Progress 进度条样式
 import loading from '../static/images/logoloding.png';
@@ -22,6 +23,17 @@ router.afterEach(() => {
   NProgress.done(); // 结束Progress
 });
 
+mobileEntranceRouter.afterEach(() => {
+  window.scrollTo(0, 0); // 返回到顶部
+  NProgress.done(); // 结束Progress
+});
+
+mobileEntranceRouter.beforeEach((to, from, next) => {
+  if (to) {
+    NProgress.start(); // 开启Progress
+  }
+  next();
+});
 // 懒加载图片
 Vue.use(VueLazyload, {
   preLoad: 1.3,

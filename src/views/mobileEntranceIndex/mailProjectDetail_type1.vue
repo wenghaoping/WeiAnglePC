@@ -1,8 +1,8 @@
 <template>
-  <div id='mailProjectDetail_type1' v-loading.fullscreen="loading" element-loading-text="拼命加载中">
+  <div id='mailProjectDetail_type1' v-loading.fullscreen="loading" element-loading-text="拼命加载中" class="container">
     <!--项目详情-->
     <div>
-      <div class="projectMaid">
+      <div class="projectMaid" style="margin-bottom: 5rem">
         <div class="white">
           <h1 style="font-size: 1rem;">{{projectDetail.pro_intro}}</h1>
           <!--项目标签-->
@@ -128,11 +128,6 @@
                 <div class="finance_right financingTag flex">
                   {{finance.pro_finance_investor}}
                 </div>
-                <!--<div class="finance_right financingTag flex">-->
-                <!--<div class="tag size_14 color_3" v-for="tag in finance.investment_list">-->
-                <!--{{tag.investment_name}}-->
-                <!--</div>-->
-                <!--</div>-->
               </div>
             </div>
           </div>
@@ -179,7 +174,6 @@
             </div>
             <div class="teamMember" v-for='member in projectDetail.core_users'>
               <div class="top flex">
-                <!--<img class="left" src="" alt="">-->
                 <div class="left " style="margin-right: .75rem;">
                   <div class="headPic"> {{member.ct_member_name.substring(0, 1)}}</div>
                 </div>
@@ -196,7 +190,7 @@
               </div>
               <div class="bottom flex">
                 <div class="left" style="margin-right: .75rem;"></div>
-                <div class="right size_13 color_6"
+                <div class="size_13 color_6"
                      style="padding: .75rem;background:#f5f5f5;border-radius:2px;margin-left: 3rem;">
                   {{member.ct_member_intro}}
                 </div>
@@ -205,7 +199,7 @@
           </div>
         </div>
         <!--里程碑-->
-        <div class="white1" v-if="projectDetail.pro_develop.length !== 0" style="margin-top: 16px">
+        <div class="white1" v-if="projectDetail.pro_develop.length !== 0" style="margin-top: 16px;">
           <div class="milepost">
             <div class="main_title flex">
               <div class="text_title ">里程碑</div>
@@ -222,14 +216,16 @@
             </div>
           </div>
         </div>
-        <!--留空div-->
-        <div style='height: 4rem;background: #f3f4f8'></div>
+      </div>
+      <!--留空div-->
+      <div style='height: 4rem;background: #ffffff;position: fixed;bottom: 0;' class="container">
+        <div class="btn_group size_15 flex container">
+          <button class="preview" @click="previewBp">查看BP</button>
+          <button class="contact" @click="openDialog">联系项目方</button>
+        </div>
       </div>
       <!--操作按钮-->
-      <div class="btn_group size_15 flex">
-        <button class="preview" @click="previewBp">查看BP</button>
-        <button class="contact" @click="openDialog">联系项目方</button>
-      </div>
+
     </div>
     <!--获取联系方式弹窗-->
     <getContact class="getContact" :dialogVisible='dialogVisible' :project_id='project_id'
@@ -460,18 +456,17 @@
 
 <style lang="less">
   @import '../../assets/css/mobileEntrance.less';
-
   .el-dialog--small {
     width: 75%;
   }
 
   #mailProjectDetail_type1 {
-    -webkit-max-width: 750px;
-    max-width: 750px;
-    margin: auto;
+    /*-webkit-max-width: 750px;*/
+    /*max-width: 750px;*/
+    /*margin: auto;*/
     /*padding: 1rem;*/
     /*margin: 0 auto;*/
-    position: relative;
+    /*position: relative;*/
     background: #f3f4f8;
     .white {
       padding: 1rem;
@@ -817,7 +812,7 @@
       bottom: 0;
       padding: 10/16rem 1rem;
       width: 343/16rem;
-      height: 44/16rem;
+      height: 3.75rem;
       text-align: center;
       background: white;
       transform: translateX(-50%);

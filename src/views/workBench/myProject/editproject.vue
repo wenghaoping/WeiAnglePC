@@ -2632,7 +2632,6 @@
 
               allData.company.pro_company_scale = allData.company.pro_company_scale.comp_scale_id;
               allData.company.pro_status = allData.company.pro_status.status_id;
-
               this.$http.post(this.URL.editProject, allData)
                 .then(res => {
                   if (res.data.status_code === 2000000) {
