@@ -1,5 +1,5 @@
 <template>
-  <div id='mailProjectDetail_type2' v-loading.fullscreen="loading" element-loading-text="拼命加载中">
+  <div id='mailProjectDetail_type2' v-loading.fullscreen="loading" element-loading-text="拼命加载中" class="container">
     <!--项目详情-->
     <div>
       <!--项目详情-->
@@ -216,7 +216,7 @@
         <div style='height: 4rem;'></div>
       </div>
       <!--操作按钮-->
-      <div class="btn_group size_15 flex">
+      <div class="btn_group size_15 flex container">
         <button class="contact" @click="openDialog">获得联系方式</button>
       </div>
     </div>
@@ -302,8 +302,6 @@
     components: {
       getContact
     },
-    mounted () {
-    },
     methods: {
       // 获取项目详情数据
       async getProjectDetail () {
@@ -322,7 +320,6 @@
               this.$router.push({name: 'index'});// 路由传参
             } else {
               let data = res.data.data;
-              console.log(data);
               this.projectDetail = data;
               this.loading = false;
             }
@@ -391,8 +388,6 @@
       // 相似项目跳转
       similarItem (company) {
         this.$router.push({name: 'mailProjectDetail_type2', query: {project_id: company.project_ori_id, investor_id: this.investor_id, user_id: this.user_id}});
-//        this.getprojectId();
-//        this.getProjectDetail();
       },
       // 媒体报道跳转
       newsDetail (news) {
@@ -414,15 +409,14 @@
 
 <style scoped lang="less">
   @import '../../assets/css/mobileEntrance.less';
-
   #mailProjectDetail_type2 {
     width: 100%;
-    -webkit-max-width: 750px;
+    /*-webkit-max-width: 750px;*/
     /*padding: 1rem;*/
-    margin: 0 auto;
-    position: relative;
+    /*margin: 0 auto;*/
+    /*position: relative;*/
     background: #f3f4f8;
-    max-width: 750px;
+    /*max-width: 750px;*/
     .getContact {
       .el-dialog {
         width: 286px;

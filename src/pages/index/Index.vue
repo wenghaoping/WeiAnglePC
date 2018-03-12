@@ -33,7 +33,7 @@
       checkUser () {
         this.user_id = localStorage.user_id;
         // 头部导航下标不对应问题解决
-        if (this.$route.path === '/workBench' || this.$route.path === '/workBench/') {
+        if (this.$route.path === '/workBench' || this.$route.path === '/workBench/myProject') {
           this.active = 1;
         }
         // 看是否需要加入项目库
@@ -103,6 +103,7 @@
       this.getCheckUserInfo(localStorage.user_id);
       this.getUserGroupByStatusName(localStorage.user_id);
       if (IEVersion() !== -1) { alert('请不要使用IE浏览器，建议使用谷歌浏览器及其他浏览器，以获得更好体验'); };
+      this.checkUser();
     },
     components: {
       alertIdentity,

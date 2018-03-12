@@ -1,22 +1,56 @@
 <template>
   <div>
-    <h1>mobileEntranceIndex</h1>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #293B55;">
+      <a class="navbar-brand">
+        <img src="../../assets/images/logoing.png" style="vertical-align:middle;">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item" :class="{'active' : activeName === 1}">
+            <a class="nav-link" @click="jump(1)">首页</a>
+          </li>
+          <li class="nav-item" :class="{'active' : activeName === 2}">
+            <a class="nav-link" @click="jump(2)">工作台</a>
+          </li>
+          <li class="nav-item" :class="{'active' : activeName === 3}">
+            <a class="nav-link" @click="jump(3)">超级BP</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div style="height: 3.5rem;"></div>
+    <router-view></router-view>
+
   </div>
 </template>
-
-
 <script type="text/ecmascript-6">
   export default {
     data () {
       return {
-        msg: ''
+        activeName: ''
       };
     },
-    methods: {},
-    mounted () {}
+    methods: {
+      // 切换tab
+      jump (i) {
+//        const url = 'http://192.168.9.19:8090/#/';
+        const url = 'https://www.weitianshi.cn/workbench/#/';
+        this.activeName = i;
+        if (i === 1) {
+          window.location.href = url;
+        } else if (i === 2) {
+          window.location.href = url + 'workBench/myProject';
+        } else if (i === 3) {
+          window.location.href = url + 'superBP';
+        }
+      }
+    }
   };
 </script>
-
 <style scoped lang="less">
   @import '../../assets/css/mobileEntrance.less';
 </style>

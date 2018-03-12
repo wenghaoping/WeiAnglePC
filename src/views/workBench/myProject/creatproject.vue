@@ -381,7 +381,6 @@
       </div>
     </div>
 
-
     <!--一键同步提示框-->
     <el-dialog
       :title="companyTitle"
@@ -522,7 +521,8 @@
               }
             ]
           }, // 亮点
-          is_exclusive: 1// 0其他 1独家 2非独家
+          is_exclusive: 1, // 0其他 1独家 2非独家
+          tag: []
         }, // 项目介绍
         multiplelimit: 5,
         /* 公司远程搜索 */
@@ -545,7 +545,48 @@
         NumberRule: { validator: checkHundred, trigger: 'blur' },
         mustGo: true,
         syncCreatProjectDetailDisplay: false,
-        saveControl: false
+        saveControl: false,
+        // 公司运营
+        company: {
+          pro_company_scale: {comp_scale_id: 1},
+          pro_status: {status_id: 3, status_name: '暂无内容'},
+          pro_website: ''
+        },
+        // 产品
+        brands: {
+          brand: []
+        },
+        // 核心团队
+        team: {
+          tag: [], // 团队标签
+          core_users: []
+        },
+        // 融资信息
+        financing: {
+          pro_finance_use: '', // 资金用途
+          // 历史融资信息
+          pro_history_finance: []
+        },
+        // 里程碑
+        milepost: {
+          pro_develop: []
+        },
+        // FA签约协议
+        pro_FA: {
+          is_exclusive: 1// 0其他 1独家 2非独家
+        },
+        // 仅自己可见信息
+        private: {
+          commission: '', // 签约佣金
+          contact_user_career: '',
+          pro_remark: '',
+          pro_source: [],
+          stock_follow: '',
+          stock_other: '',
+          stock_right: '', // 股权赠与
+          contact_user_mobile: '',
+          contact_user_name: ''
+        }
       };
     },
     methods: {
@@ -842,6 +883,7 @@
               delete allData.project.tag;
               allData.pro_FA = {is_exclusive: this.project.is_exclusive};
               allData.user_id = localStorage.user_id;// 用户id
+              allData.pro_total_score = this.proportion;// 完整度
               this.$http.post(this.URL.editProject, allData)
                 .then(res => {
                   if (res.data.status_code === 2000000) {
@@ -1046,6 +1088,91 @@
           }
         });
         // 微信进入的时候获取
+      }
+    },
+    computed: {
+      // 项目完整度判断
+      proportion () {
+        let number = 0;// 所有的空值数
+        let fileValue = this.planList;// 项目文件
+        let projectValue = this.project;// 项目详情
+        let companyValue = this.company;// 公司运营
+        let brandsValue = this.brands;// 产品
+        let teamValue = this.team;// 核心团队
+        let financingValue = this.financing;// 融资信息
+        let milepostValue = this.milepost;// 里程碑
+        let privateValue = this.private;// 仅自己可见信息
+
+        let sum = Object.keys(projectValue).length +// 所有数据的总长度
+          Object.keys(companyValue).length +
+          Object.keys(brandsValue).length +
+          Object.keys(teamValue).length +
+          Object.keys(financingValue).length +
+          Object.keys(milepostValue).length +
+          Object.keys(privateValue).length + 6;
+
+        // 判断所有为空的数值,包括数组内的第一组
+        function forFor (value) {
+          let inner = 0;// 每一次调用的空值
+          if (isArray(value)) {
+            if (value.length === 0) {
+              number++;
+              inner++;
+            };
+          } else {
+            for (let key in value) {
+              if (isArray(value[key])) {
+                if (value[key].length === 0) {
+                  number++;
+                  inner++;
+                }
+                /* else {
+                 for (let key2 in value[key][0]) {
+                 if (value[key][0][key2] == "") {
+                 number++;
+                 inner++;
+                 }
+                 }
+                 } */
+              } else if (value[key] === '') {
+                number++;
+                inner++;
+              }
+            }
+          }
+          return inner;
+        }
+
+        // 是否为数组
+        function isArray (o) {
+          return Object.prototype.toString.call(o) === '[object Array]';
+        }
+
+        if (forFor(fileValue) === 0) this.filePerfect = true;
+        else this.filePerfect = false;
+
+        if (forFor(projectValue) !== 0) this.projectPerfect = false;
+        else if (this.project.goodness.pro_goodness.goodness_desc === '' || this.project.goodness.pro_goodness.goodness_title === '') { this.projectPerfect = false; } else this.projectPerfect = true;
+
+        if (forFor(companyValue) === 0) this.companyPerfect = true;
+        else this.companyPerfect = false;
+
+        if (forFor(brandsValue) === 0) this.brandsPerfect = true;
+        else this.brandsPerfect = false;
+
+        if (forFor(teamValue) === 0) this.teamPerfect = true;
+        else this.teamPerfect = false;
+
+        if (forFor(financingValue) === 0) this.financingPerfect = true;
+        else this.financingPerfect = false;
+
+        if (forFor(milepostValue) === 0) this.milepostPerfect = true;
+        else this.milepostPerfect = false;
+
+        if (forFor(privateValue) === 0) this.privatePerfect = true;
+        else this.privatePerfect = false;
+
+        return parseInt(((sum - number) / sum) * 100);
       }
     },
     created () {

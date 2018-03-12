@@ -11,25 +11,33 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: '/', name: 'index', component: _import('mobileEntranceIndex/mailProjectDetail_type1')
+      path: '/',
+      component: _import('mobileEntranceIndex/index'),
+      redirect: '/mailProjectDetail_type1',
+      children: [
+        {
+          path: '/mailProjectDetail_type1',
+          name: 'index',
+          component: _import('mobileEntranceIndex/mailProjectDetail_type1')},
+        {
+          path: '/mailProjectDetail_type1',
+          name: 'mailProjectDetail_type1',
+          component: _import('mobileEntranceIndex/mailProjectDetail_type1')
+        },
+        {
+          path: '/mailProjectDetail_type2',
+          name: 'mailProjectDetail_type2',
+          component: _import('mobileEntranceIndex/mailProjectDetail_type2')
+        },
+        {
+          path: '/login',
+          name: 'mailProjectLogin',
+          component: _import('mobileEntranceIndex/login')
+        }
+      ]
     },
     {
-      path: '*', redirect: '/' // 默认回到首页
-    },
-    {
-      path: '/mailProjectDetail_type1',
-      name: 'mailProjectDetail_type1',
-      component: _import('mobileEntranceIndex/mailProjectDetail_type1')
-    },
-    {
-      path: '/mailProjectDetail_type2',
-      name: 'mailProjectDetail_type2',
-      component: _import('mobileEntranceIndex/mailProjectDetail_type2')
-    },
-    {
-      path: '/login',
-      name: 'mailProjectLogin',
-      component: _import('mobileEntranceIndex/login')
+      path: '*', redirect: '/login' // 默认回到首页
     }
   ]
 });
