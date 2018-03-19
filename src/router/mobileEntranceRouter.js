@@ -33,6 +33,11 @@ export default new Router({
           path: '/login',
           name: 'mailProjectLogin',
           component: _import('mobileEntranceIndex/login')
+        },
+        {
+          path: '/login',
+          name: 'login',
+          component: _import('mobileEntranceIndex/login')
         }
       ]
     },

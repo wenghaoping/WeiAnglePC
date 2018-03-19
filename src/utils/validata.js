@@ -103,3 +103,42 @@ export function checkPassword (data) {
     return false;
   }
 }
+// 电话号码正则判断element中使用
+export function checkPhoneNumberForElement (rule, value, callback){
+  if (!getNull(value)) {
+    setTimeout(() => {
+      if (!checkNumber(value)) {
+        callback(new Error('请输入数字值'));
+      } else {
+        if (!checkPhoneNumber(value)) {
+          callback(new Error('请输入正确的手机号'));
+        } else {
+          callback();
+        }
+      }
+    }, 100);
+  } else {
+    callback();
+  }
+};
+export function checkNull20ForElement (rule, value, callback){
+ if (!getNull(value)) {
+   setTimeout(() => {
+     if (value.length > 20) {
+       callback(new Error('最大长度为20'));
+     } else {
+       callback();
+     }
+   }, 100);
+ } else {
+   callback(new Error('不能为空'));
+ }
+};// 不为空,20
+// 不能为空
+export function checkNullForElement (rule, value, callback){
+ if (!getNull(value)) {
+   callback();
+ } else {
+   callback(new Error('不能为空'));
+ }
+};// 不为空,20

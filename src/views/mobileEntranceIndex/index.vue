@@ -24,21 +24,21 @@
     </nav>
     <div style="height: 3.5rem;"></div>
     <router-view></router-view>
-
   </div>
 </template>
 <script type="text/ecmascript-6">
   export default {
     data () {
       return {
-        activeName: ''
+        activeName: '',
+        oldPath: ''
       };
     },
     methods: {
       // 切换tab
       jump (i) {
-//        const url = 'http://192.168.9.19:8090/#/';
-        const url = 'https://www.weitianshi.cn/workbench/#/';
+        const url = 'http://192.168.8.223:8090/#/';
+//        const url = 'https://www.weitianshi.cn/workbench/#/';
         this.activeName = i;
         if (i === 1) {
           window.location.href = url;
@@ -47,6 +47,26 @@
         } else if (i === 3) {
           window.location.href = url + 'superBP';
         }
+      },
+      checkUser () {
+        this.user_id = localStorage.user_id;
+        if (!localStorage.user_id) {
+          this.$router.push({name: 'login', query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, old_path: this.oldPath}});// 路由传参
+        }
+      }
+    },
+    created () {
+//      console.log('先进入这里了user');
+      console.log(this.$route.path);
+      this.oldPath = this.$route.path.substring(1, this.$route.path.length);
+      console.log(this.oldPath);
+//      localStorage.investor_id = this.$route.query.investor_id;
+//      localStorage.project_id = this.$route.query.project_id;
+      this.checkUser();
+    },
+    watch: {
+      '$route' (to, from) {
+        this.checkUser();
       }
     }
   };

@@ -71,6 +71,8 @@
               localStorage.user_company_name = res.data.user_company_name;
               this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
               localStorage.token = res.data.token;
+              console.log(localStorage.token);
+              console.log(localStorage.user_id);
               // 重新获取个人标签(因为获取个人标签必须要有user_id)
               this.$global.func.getWxProjectCategory();
               this.getUserGroupByStatusName(localStorage.user_id);

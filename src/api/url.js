@@ -76,6 +76,7 @@ export default
   getAllFileType: 'api/category/getAllFileType',  // 文件分组设置选项(全)
   createFileType: 'api/category/createFileType',  // 添加文件分组设置
   updateProjectCompany: 'api/v/project/updateProjectCompany', // 更新公司,一键尽调的时候,是否将此公司作为自己的公司
+  uploadProjectLogo: 'api/project/uploadProjectLogo?token=', // 项目log上传
   getProjectAllData: 'api/dataTeam/getProjectAllData', // 一键同步,获取同步信息
   createDataCustomTag: 'api/category/createDataCustomTag', // 一键同步,项目标签的添加
 
@@ -243,6 +244,9 @@ export default
   exportApplyUser: 'api/activity/exportApplyUser', // 导出报名名单模板
   importApplyUser: 'api/activity/importApplyUser?token=', // register
   getSignQrCode: 'api/activity/getSignQrCode', // 获取签到二维码
-  downloadQrCode: 'api/activity/downloadQrCode' // 下载签到二维码
+  downloadQrCode: 'api/activity/downloadQrCode', // 下载签到二维码
 
+  // 手机端入口
+  checkUserByInteInvestorId: 'api/user/checkUserByInteInvestorId', // 获取相关信息investor_id
+  loginNonstop: 'api/auth/loginNonstop'
 };

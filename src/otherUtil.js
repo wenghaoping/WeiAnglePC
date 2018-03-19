@@ -17,13 +17,7 @@ router.beforeEach((to, from, next) => {
   }
   next();
 });
-
 router.afterEach(() => {
-  window.scrollTo(0, 0); // 返回到顶部
-  NProgress.done(); // 结束Progress
-});
-
-mobileEntranceRouter.afterEach(() => {
   window.scrollTo(0, 0); // 返回到顶部
   NProgress.done(); // 结束Progress
 });
@@ -33,6 +27,10 @@ mobileEntranceRouter.beforeEach((to, from, next) => {
     NProgress.start(); // 开启Progress
   }
   next();
+});
+mobileEntranceRouter.afterEach(() => {
+  window.scrollTo(0, 0); // 返回到顶部
+  NProgress.done(); // 结束Progress
 });
 // 懒加载图片
 Vue.use(VueLazyload, {

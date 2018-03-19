@@ -77,6 +77,15 @@
               <span class="b-title">项目介绍</span>
               <span class="b-line" style="width: 624px;"></span>
             </div>
+            <div class="block-info block-cc-file clearfix" style="height: 149px;">
+              <span class="f-title fl">项目Logo</span>
+              <cardUpload :uploadCardAddress="uploadLogoAddress"
+                          :uploadDate="uploadDateLogo" :cardplanList="project.pro_logo_url"
+                          @delete="planRemoveLogo" @success="HeadPlanuploadsuccessLogo"
+                          :width="150"
+                          :size="2097160">
+              </cardUpload>
+            </div>
             <el-form :model="project" ref="project" label-width="100px" class="padding" label-position="top">
               <el-row :span="24" :gutter="32">
                 <el-col :span="12">
@@ -404,6 +413,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import cardUpload from '@/components/upload/cardUpload.vue';
   import synccreatprojectdetail from '@/views/components/syncCreatProjectDetail.vue';
   import { getCity } from '@/utils/setSelect';
   import * as validata from '@/utils/validata';
@@ -442,6 +452,16 @@
         tagShow: 0, // 控制标签显示隐藏
         uploadDate: {user_id: localStorage.user_id}, // 商业计划书上传所带的额外的参数
         project: {
+          pro_logo: {
+            image_id: '',
+            image_src: ''
+          },
+          pro_logo_url: [
+//              {
+//            image_id: '',
+//            url: ''
+//          }
+          ],
           project_id: '',
           pro_name: '', // 项目名称
           pro_company_name: '', // 公司名称
@@ -586,7 +606,9 @@
           stock_right: '', // 股权赠与
           contact_user_mobile: '',
           contact_user_name: ''
-        }
+        },
+        uploadLogoAddress: this.URL.weitianshiLine + this.URL.uploadProjectLogo + localStorage.token, // 上传地址
+        uploadDateLogo: {user_id: localStorage.user_id} // 名片上传所带的额外的参数
       };
     },
     methods: {
@@ -884,6 +906,11 @@
               allData.pro_FA = {is_exclusive: this.project.is_exclusive};
               allData.user_id = localStorage.user_id;// 用户id
               allData.pro_total_score = this.proportion;// 完整度
+              if (allData.project.pro_logo_url.length !== 0) {
+                allData.project.pro_logo = allData.project.pro_logo_url[0].image_id; // 主图设置
+              } else {
+                allData.project.pro_logo = 0;
+              }
               this.$http.post(this.URL.editProject, allData)
                 .then(res => {
                   if (res.data.status_code === 2000000) {
@@ -1088,6 +1115,28 @@
           }
         });
         // 微信进入的时候获取
+      },
+      // 上传成功后添加字段
+      HeadPlanuploadsuccessLogo (response) {
+        success('上传成功');
+        this.project.pro_logo_url[0] = {image_id: response.data.image_id, url: response.data.image_src};
+        this.project.pro_logo = {image_id: response.data.image_id, image_src: response.data.image_src};
+      },
+      // 删除活动配图
+      planRemoveLogo (file, index) {
+        this.$http.post(this.URL.deleteActivityImage, {user_id: localStorage.user_id, image_id: this.project.pro_logo_url[0].image_id})
+          .then(res => {
+            if (res.data.status_code === 2000000) {
+              this.project.pro_logo_url.splice(0, 1);
+              this.project.pro_logo = {};
+              this.loading = false;
+              success('删除成功');
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            error('删除失败,请联系管理员');
+          });
       }
     },
     computed: {
@@ -1191,7 +1240,8 @@
       else this.planButton = true;
     },
     components: {
-      synccreatprojectdetail
+      synccreatprojectdetail,
+      cardUpload
     },
     beforeRouteLeave (to, from, next) {
       if (!this.saveControl) {
@@ -1331,6 +1381,11 @@
     }
     .addmemberimg :hover{
       transform: rotate(360deg);
+    }
+  }
+  .creatproject{
+    .is-success{
+      width: 150px!important;
     }
   }
 </style>

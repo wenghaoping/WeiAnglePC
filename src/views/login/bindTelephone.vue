@@ -73,6 +73,8 @@
               this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
               localStorage.user_real_name = res.data.user_real_name;
               localStorage.token = res.data.token;
+              console.log(localStorage.token);
+              console.log(localStorage.user_id);
               let obj = {
                 user_id: res.data.user_id,
                 user_real_name: res.data.user_real_name === '' ? '暂无姓名' : res.data.user_real_name,

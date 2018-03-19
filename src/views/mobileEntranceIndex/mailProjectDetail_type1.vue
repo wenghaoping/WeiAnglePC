@@ -92,7 +92,7 @@
               <div class="showAll" v-if="projectDetail.brand.length >3">全部&nbsp;({{projectDetail.brand.length}})</div>
             </div>
             <div class="brand flex" v-for="brand in projectDetail.brand">
-              <img src="http://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/image/banner/email/default-logo.jpg" alt="">
+              <img src="https://weitianshi-2017.oss-cn-shanghai.aliyuncs.com/image/banner/email/default-logo.jpg" alt="">
               <div style="width: 17.5rem;">
                 <div>
                   <div class="sb">
@@ -305,7 +305,8 @@
           project_id: {},
           tag: {}
         },
-        projectUser: ''
+        projectUser: '',
+        investor_id: ''
       };
     },
     components: {
@@ -448,6 +449,7 @@
       }
     },
     created () {
+      console.log('先进入这里了type');
       this.getprojectId();
       this.getProjectDetail();
     }
@@ -461,6 +463,9 @@
   }
 
   #mailProjectDetail_type1 {
+    .container{
+      padding: 0;
+    }
     /*-webkit-max-width: 750px;*/
     /*max-width: 750px;*/
     /*margin: auto;*/

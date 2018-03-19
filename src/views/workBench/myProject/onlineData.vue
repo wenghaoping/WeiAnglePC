@@ -44,6 +44,22 @@
         </template>
       </el-table-column>
 
+      <el-table-column prop="source" label="来源" width="75">
+        <template slot-scope="scope">
+          <el-tooltip placement="top" :disabled="scope.row.source.length > 14 ? false:true">
+            <div slot="content">
+              <div class="tips-txt">{{scope.row.source}}</div>
+            </div>
+            <div>
+              {{scope.row.source}}
+            </div>
+          </el-tooltip>
+          <div v-if="scope.row.source.length === 0">
+            -
+          </div>
+        </template>
+      </el-table-column>
+
       <el-table-column prop="group_title" label="角色" width="75"
                        show-overflow-tooltip>
         <template slot-scope="scope">
@@ -74,7 +90,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="service_desc" label="备注" width="280"
+      <el-table-column prop="service_desc" label="备注" width="200"
                        show-overflow-tooltip>
         <template slot-scope="scope">
           <el-tooltip placement="top" :disabled="scope.row.service_desc.length > 25 ? false:true">
@@ -208,6 +224,7 @@
           obj.group_title = list[i].group_title;
           obj.created_at = list[i].created_at;
           obj.service_desc = list[i].service_desc;
+          obj.source = list[i].source;
           arr.push(obj);
         }
         return arr;

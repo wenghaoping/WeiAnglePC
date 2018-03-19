@@ -409,6 +409,9 @@
   @import '../../assets/css/mobileEntrance.less';
   #mailProjectDetail_type2 {
     width: 100%;
+    .container{
+      padding: 0;
+    }
     /*-webkit-max-width: 750px;*/
     /*padding: 1rem;*/
     /*margin: 0 auto;*/

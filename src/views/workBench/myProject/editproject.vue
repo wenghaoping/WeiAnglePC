@@ -82,6 +82,15 @@
             </div>
             <el-collapse-transition>
               <div v-show="ProjectShow">
+                <div class="block-info block-cc-file clearfix" style="height: 149px;">
+                  <span class="f-title fl">项目Logo</span>
+                  <cardUpload :uploadCardAddress="uploadLogoAddress"
+                              :uploadDate="uploadDateLogo" :cardplanList="project.pro_logo_url"
+                              @delete="planRemoveLogo" @success="HeadPlanuploadsuccessLogo"
+                              :width="150"
+                              :size="2097160">
+                  </cardUpload>
+                </div>
                 <el-form :model="project" ref="project" label-width="100px" class="padding" label-position="top">
                   <el-row :span="24" :gutter="32">
                     <el-col :span="12">
@@ -1178,6 +1187,7 @@
   import { error, success, warning } from '@/utils/notification';
   import * as formatData from '@/utils/formatData';
   import { getTop } from '@/utils';
+  import cardUpload from '@/components/upload/cardUpload.vue';
   export default {
     data () {
       var checkPhoneNumber = (rule, value, callback) => {
@@ -1352,7 +1362,17 @@
             stage_name: '暂无内容'
           },
           project_id: '',
-          tag: []
+          tag: [],
+          pro_logo: {
+            image_id: '',
+            image_src: ''
+          },
+          pro_logo_url: [
+//              {
+//            image_id: '',
+//            url: ''
+//          }
+          ]
         },
         // 公司运营
         company: {
@@ -1544,7 +1564,9 @@
         timer2: null,
         scrollTop: 0,
         tagShow: 0, // 控制标签显示隐藏
-        saveControl: false // 控制是否保存
+        saveControl: false, // 控制是否保存
+        uploadLogoAddress: this.URL.weitianshiLine + this.URL.uploadProjectLogo + localStorage.token, // 上传地址
+        uploadDateLogo: {user_id: localStorage.user_id, project_id: this.$route.query.project_id || ''} // 名片上传所带的额外的参数
       };
     },
     computed: {
@@ -1649,7 +1671,8 @@
       };
     },
     components: {
-      syncprojectdetail
+      syncprojectdetail,
+      cardUpload
     },
     methods: {
       // 获得项目亮点焦点
@@ -1803,7 +1826,10 @@
                 if (data.project.pro_scale === '') {
                   data.project.pro_scale = {scale_id: ''};
                 }
-
+                data.project.pro_logo_url = [];
+                if (data.project.pro_logo !== '') {
+                  data.project.pro_logo_url.push({image_id: data.project.pro_logo.image_id || '', url: data.project.pro_logo.image_src || ''});
+                }// logo处理
                 this.area1Change(data.project.pro_area.pid);// 取到省级设置市级
                 if (data.project.pro_stage === '') {
                   data.project.pro_stage = {stage_id: ''};
@@ -2617,7 +2643,11 @@
               allData.user_id = localStorage.user_id;// 用户id
               allData.pro_total_score = this.proportion;// 完整度
               allData.project_id = this.project.project_id;// 项目id
-
+              if (allData.project.pro_logo_url.length !== 0) {
+                allData.project.pro_logo = allData.project.pro_logo_url[0].image_id; // 主图设置
+              } else {
+                allData.project.pro_logo = 0;
+              }
               formatData.setReallyTimeToTime(allData.financing.pro_history_finance, 'finance_time', 'finance_time_stamp');// 标准时间转化为时间戳
               formatData.setReallyTimeToTime(allData.milepost.pro_develop, 'dh_start_time', 'dh_start_time_stamp');// 标准时间转化为时间戳
 
@@ -2877,6 +2907,28 @@
           }
           this.loading = false;
         };
+      },
+      // 上传成功后添加字段
+      HeadPlanuploadsuccessLogo (response) {
+        success('上传成功');
+        this.project.pro_logo_url[0] = {image_id: response.data.image_id, url: response.data.image_src};
+        this.project.pro_logo = {image_id: response.data.image_id, image_src: response.data.image_src};
+      },
+      // 删除活动配图
+      planRemoveLogo (file, index) {
+        this.$http.post(this.URL.deleteActivityImage, {user_id: localStorage.user_id, image_id: this.project.pro_logo_url[0].image_id})
+          .then(res => {
+            if (res.data.status_code === 2000000) {
+              this.project.pro_logo_url.splice(0, 1);
+              this.project.pro_logo = {};
+              this.loading = false;
+              success('删除成功');
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            error('删除失败,请联系管理员');
+          });
       }
     },
     // 当dom一创建时
@@ -2971,6 +3023,9 @@
   }
 
   #editproject {
+    .is-success{
+      width: 150px;
+    }
     .el-dialog--tiny{
       width: 400px;
       top:35%!important;

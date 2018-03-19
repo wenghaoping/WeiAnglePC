@@ -1,204 +1,393 @@
 <template>
-  <div id='mailLogin' class="container">
-    <div class="flex">
-      <!--登录头部-->
-      <div class="tab" @click="toggle(index)" v-for="(tab,index) in tabs">
-        <div class="tabIndex" :class="{border:active===index}">
-          {{tab.type}}
+  <div class="mailLogin">
+    <div class="form-signin" v-loading.body="loading" element-loading-text="拼命加载中" >
+      <div class="mb-4">
+        <p class="tc title topTitle">请核实您的身份信息</p>
+        <p class="tc title bottomTitle">第一时间为您推送、约谈优质项目方</p>
+        <div class="jumbotron">
+          <div class="tc centerTitle">身份确认</div>
+          <el-form ref="loginData" :model="loginData" label-width="3.75rem">
+            <el-form-item label="姓名" :rules="NullRule20"
+                          prop="user_real_name" style="margin-top: .5rem;">
+              <el-input v-model="loginData.user_real_name" placeholder="请输入姓名"></el-input>
+            </el-form-item>
+            <el-form-item label="手机" :rules="PhoneRule"
+                          prop="user_mobile">
+              <el-input v-model="loginData.user_mobile" placeholder="请输入手机号"></el-input>
+            </el-form-item>
+            <el-form-item label="机构" :rules="NullRule20" prop="user_brand">
+              <el-input v-model="loginData.user_brand" placeholder="请输入机构"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱" prop="user_email"
+                          :rules="[{required: true, message: '邮箱不能为空', trigger: 'blur'},{ type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }]">
+              <el-input v-model="loginData.user_email" placeholder="请输入邮箱地址"></el-input>
+            </el-form-item>
+            <el-form-item label="身份" :rules="[{required: true, message: '不能为空', trigger: 'change'}]" prop="group_id">
+              <el-select v-model="loginData.group_id" placeholder="请选择投资人">
+                <el-option
+                  v-for="item in identitys"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
         </div>
+        <button class="btn btn-lg btn-block btn-light btn-white" @click="confirm">确认</button>
+        <p class="tc last-bottom">www.weitianshi.cn</p>
       </div>
     </div>
-    <!--验证码登录-->
-    <div class="login_tel" v-if="active === 0">
-      <div class="inputFrame">
-        <input class="telephone" v-model="telephone" placeholder="请输入常用手机号">
+
+    <!--验证码弹框-->
+    <el-dialog
+      :visible.sync="getCodeChange"
+      :show-close="showList" :close-on-click-modal="showList"
+      :before-close="handleClose" class="position_center_auto">
+      <div class="codeModel">
+        <p class="tc title" v-if="userType === 'user_id'">您为修改手机号，请验证</p>
+        <p class="tc title" v-else>您为新用户，请验证</p>
+        <p class="tc title" style="margin-bottom: 1.25rem;">已发送短信验证码至{{loginData.user_mobile}}</p>
+        <el-form ref="captchaData" :model="captchaData">
+          <el-form-item :rules="CaptchaCode"
+                        prop="captcha">
+            <el-input v-model="captchaData.captcha" placeholder="请输入验证码"></el-input>
+            <el-button type="text" class="reloadCode absolute" v-show="is_getCode === 0" @click="getCode">获取验证码</el-button>
+            <el-button type="text" class="reloadCode absolute" v-show="is_getCode !== 0" :disabled="true">{{captchaNum}}s</el-button>
+          </el-form-item>
+        </el-form>
+        <button class="yes_btn cursor" @click="next">确定</button>
       </div>
-      <div class="inputFrame flex" style="justify-content: space-between;">
-        <input class="captcha" v-model="captcha" placeholder="请输入验证码">
-        <el-button class="getCaptcha" type="text" @click="getCode" v-show="is_getCode==0">获取验证码</el-button>
-        <el-button class="getCaptcha " type="text" v-show="is_getCode!=0" :disabled="true">{{captchaNum}}s</el-button>
-      </div>
-      <el-button @click='login' class="loginBtn">登录/注册</el-button>
-    </div>
-    <!--密码登录-->
-    <div class="login_code" v-else>
-      <div class="inputFrame">
-        <input class="telephone" v-model="telephone" placeholder="请输入常用手机号">
-      </div>
-      <div class="inputFrame">
-        <input class="password" type="password"  v-model="password" placeholder="请输入密码">
-      </div>
-      <el-button @click='login' class="loginBtn">登录</el-button>
-    </div>
+    </el-dialog>
   </div>
 </template>
 
-
 <script type="text/ecmascript-6">
   import * as validata from '@/utils/validata';
-  import { error } from '@/utils/notification';
+  import { error, warning } from '@/utils/notification';
   export default {
     data () {
+      const CaptchaCodeForElement = (rule, value, callback) => {
+        if (!validata.getNull(value)) {
+          setTimeout(() => {
+            if (value.length !== 6) {
+              callback(new Error('验证码是6位'));
+            } else {
+              this.$http.post(this.URL.loginForCaptcha, {
+                user_mobile: this.loginData.user_mobile,
+                captcha: this.captchaData.captcha,
+                user_real_name: this.loginData.user_real_name,
+                user_brand: this.loginData.user_brand,
+                user_email: this.loginData.user_email
+              }).then(res => {
+                if (res.data.status_code === 2000000) {
+                  localStorage.user_id = res.data.user_id;
+                  this.getCheckUserInfo(localStorage.user_id);
+                  this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
+                  this.getUserGroupByStatusName(localStorage.user_id);
+                  callback();
+                } else {
+                  callback(new Error(res.data.error_msg));
+                }
+              });
+            }
+          }, 100);
+        } else {
+          callback(new Error('不能为空'));
+        }
+      };// 不为空,20
       return {
-        tabs: [{
-          type: '验证码登录', jump: '/login'
-        }, {
-          type: '密码登录', jump: '/login/codeLogin'
-        }],
+        showList: false,
+        getCodeChange: false,
         active: 0,
         is_getCode: 0,
         captchaNum: 60,
-        telephone: '',
-        captcha: '',
-        password: ''
+        captchaData: {
+          captcha: ''
+        },
+        loading: false,
+        PhoneRule: [{required: true, message: '电话不能为空', trigger: 'blur'}, { validator: validata.checkPhoneNumberForElement, trigger: 'blur' }],
+        NullRule20: [{required: true, message: '不能为空', trigger: 'blur'}, { validator: validata.checkNull20ForElement, trigger: 'blur' }], // 不为空
+        CaptchaCode: [{required: true, message: '验证码不能为空', trigger: 'blur'}, { validator: CaptchaCodeForElement, trigger: 'blur' }], // 不为空,20
+        loginData: {
+          user_real_name: '',
+          user_mobile: '',
+          user_brand: '',
+          user_email: '',
+          group_id: ''
+        },
+        identitys: [],
+        loginDataMust: false,
+        captchaDataMust: false,
+        oldMobilePhone: '', // 存储初始电话
+        userType: 'user_id'
       };
     },
     methods: {
-      // 切换tab
-      toggle (i) {
-        this.active = i;
-      },
-      //    获取验证码
+      // 获取验证码
       getCode () {
-        if (!validata.checkPhoneNumber(this.telephone)) {
-          error('请正确输入手机号码');
-        } else {
+        this.loading = true;
+        this.$http.post(this.URL.authCaptcha, {
+          user_mobile: this.loginData.user_mobile
+        }).then(res => {
+          if (res.data.status_code === 2000000) {
+            this.is_getCode = 1;
+            var timer = setInterval(() => {
+              this.captchaNum--;
+            }, 1000);
+            setTimeout(() => {
+              clearInterval(timer);
+              this.captchaNum = 60;
+              this.is_getCode = 0;
+            }, 60000);
+          } else {
+            error(res.data.error_msg);
+          }
+          this.loading = false;
+        });
+      },
+      // 确定
+      next () {
+        const submit = () => {
+          return new Promise((resolve, reject) => {
+            // 做一些异步操作
+            this.submitForm('captchaData', 'captchaDataMust');
+            resolve(true);
+          });
+        };
+        const check = () => {
+          return new Promise((resolve, reject) => {
+            // 做一些异步操作
+            setTimeout(() => {
+              if (this.captchaDataMust) {
+              } else {
+                resolve(true);
+              }
+            }, 200);
+          });
+        };
+        submit()
+          .then((data) => {
+            return check();
+          })
+          .then((data) => {
+            if (data) {
+              this.handleClose();
+              this.$router.go(-1);
+            }
+            console.log(data);
+            console.log('过');
+          });
+      },
+      // 确认
+      confirm () {
+        const submit = () => {
+          return new Promise((resolve, reject) => {
+            // 做一些异步操作
+            this.submitForm('loginData', 'loginDataMust');
+            resolve(true);
+          });
+        };
+        const check = () => {
+          return new Promise((resolve, reject) => {
+            // 做一些异步操作
+            setTimeout(() => {
+              if (this.loginDataMust) {
+              } else {
+                resolve(true);
+              }
+            }, 200);
+          });
+        };
+        submit()
+          .then((data) => {
+            return check();
+          })
+          .then((data) => {
+            if (data) {
+              if (this.loginData.user_mobile === this.oldMobilePhone) {
+                this.$http.post(this.URL.loginNonstop, this.loginData).then(res => {
+                  if (res.data.status_code === 2000000) {
+                    this.getCheckUserInfo(res.data.user_id);
+                    this.getUserGroupByStatusName(res.data.user_id);
+                    this.$router.push({name: this.$route.query.old_path, query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id}});// 路由传参
+                  } else {
+                    warning(res.data.error_msg);
+                  }
+                });
+              } else {
+                this.getCodeChange = true;
+              }
+//              this.$router.push({name: 'login', query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id}});// 路由传参
+            }
+          });
+      },
+      // 检查所有必填项目以及获取所有数据/true过.false不过
+      submitForm (formName, checkName) {
+        this.$refs[formName].validate((valid) => {
+          this[checkName] = !valid;
+        });
+      },
+      handleClose () {
+        this.getCodeChange = false;
+      },
+      // 获取登陆信息
+      checkUserByInteInvestorId () {
+        if (!localStorage.investor_id) {
           this.loading = true;
-          this.$http.post(this.URL.authCaptcha, {
-            user_mobile: this.telephone
+          this.$http.post(this.URL.checkUserByInteInvestorId, {
+            investor_id: this.$route.query.investor_id
           }).then(res => {
-            console.log('获取验证码');
             if (res.data.status_code === 2000000) {
-              this.is_getCode = 1;
-              var timer = setInterval(() => {
-                this.captchaNum--;
-              }, 1000);
-              setTimeout(() => {
-                clearInterval(timer);
-                this.captchaNum = 60;
-                this.is_getCode = 0;
-              }, 60000);
+              let data = res.data.data;
+              if (data.type === 'user_id') {
+                localStorage.user_id = data.type_id;
+              }
+              localStorage.user_real_name = data.user_real_name === '' ? '暂无姓名' : data.user_real_name;
+              localStorage.user_brand = data.user_brand;
+              data.group_id = data.group_id.toString() || '6';
+              this.loginData = data;
+              this.oldMobilePhone = data.user_mobile;
             } else {
-              error(res.data.error_msg);
+              warning(res.data.error_msg);
             }
             this.loading = false;
           });
+        } else {
+          error('请重新进入');
         }
       },
-      //    注册或者登录
-      login () {
-        if (this.active === 0) {
-          if (this.telephone && this.captcha) {
-            this.loading = true;
-            this.$http.post(this.URL.loginForCaptcha, {
-              user_mobile: this.telephone,
-              captcha: this.captcha
-            }).then(res => {
-              console.log('登陆');
-              if (res.data.status_code === 2000000) {
-                console.log(localStorage.user_id);
-                localStorage.user_id = res.data.user_id;
-                localStorage.user_real_name = res.data.user_real_name === '' ? '暂无姓名' : res.data.user_real_name;
-                localStorage.user_brand = res.data.user_brand;
-                localStorage.user_company_career = res.data.user_company_career;
-                localStorage.user_company_name = res.data.user_company_name;
-                this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
-                localStorage.token = res.data.token;
-                // 重新获取个人标签(因为获取个人标签必须要有user_id)
-                this.$global.func.getWxProjectCategory();
-                this.getUserGroupByStatusName(localStorage.user_id);
-                this.getCheckUserInfo(localStorage.user_id);
-                // is_exist: 0:新用户;1:老用户;NaN:没有请求过验证码
-                this.loading = false;
-                this.$router.go(-1);
-              } else {
-                error(res.data.error_msg);
-                this.loading = false;
-              }
-            });
-          } else {
-            error('请正确填写手机号码和验证码');
-          }
-        } else {
-          if (!validata.checkPhoneNumber(this.telephone)) {
-            error('请正确填写手机号码');
-          } else if (validata.getNull(this.password)) {
-            error('请正确填写密码');
-          } else {
-            this.loading = true;
-            this.$http.post(this.URL.loginForPassword, {
-              user_mobile: this.telephone,
-              user_passwd: this.password
-            }).then(res => {
-              console.log('密码登陆');
-              if (res.data.status_code === 2000000) {
-                // 将user_id存入sessionStorge并跳转
-                localStorage.user_id = res.data.user_id;
-                this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
-                localStorage.user_real_name = res.data.user_real_name === '' ? '暂无姓名' : res.data.user_real_name;
-                localStorage.user_brand = res.data.user_brand;
-                localStorage.user_company_career = res.data.user_company_career;
-                localStorage.user_company_name = res.data.user_company_name;
-                this.getCheckUserInfo(localStorage.user_id);
-                this.getUserGroupByStatusName(localStorage.user_id);
-                localStorage.token = res.data.token;
-                // 重新获取个人标签(因为获取个人标签必须要有user_id)
-                this.$global.func.getWxProjectCategory();
-                this.loading = false;
-                this.$router.go(-1);
-              } else {
-                error(res.data.error_msg);
-                this.loading = false;
-              }
-            });
-          }
-        }
+      // 获取身份列表信息
+      getIdentity () {
+        this.$http.post(this.URL.getGroupIdentify).then(res => {
+          let data = res.data.data;
+          data.forEach((item) => {
+            this.identitys.push({label: item.group_title, value: item.group_id.toString()});
+          });
+        });
       }
+    },
+    created () {
+      this.getIdentity();
+      this.checkUserByInteInvestorId();
     }
   };
 </script>
 
-<style scoped lang="less">
-  @import '../../assets/css/mobileEntrance.less';
-  #mailLogin{
-    width: 288/16rem;
-    margin: 94/16rem auto;
-    ::-moz-placeholder { color: #99a9bf; }
-    ::-webkit-input-placeholder { color:#99a9bf; }
-    :-ms-input-placeholder { color:#99a9bf;}
-    div,span,button,input{
-      padding: 0;
-      line-height: 1em;
+<style lang="less">
+body{
+  background: #356a9e;
+}
+.form-signin{
+  width: 100%;
+  max-width: 420px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.mailLogin{
+  background: #356a9e;
+  height: 100%;
+  .title{
+    font-size:1rem;
+    color:#ffffff;
+    line-height: 1.375rem;
+  }
+  .topTitle{
+    padding-top: 3rem;
+  }
+  .bottomTitle{
+    margin-bottom: 2rem;
+  }
+
+  .centerTitle{
+    background:#f5f5f5;
+    height:45/16rem;
+    line-height:45/16rem;
+    font-size:15/16rem;
+    color:#1f2d3d;
+    border-radius: .3rem .3rem 0 0;
+    font-weight: bold;
+  }
+  .el-form{
+    margin: 0 1rem;
+  }
+  .el-form-item{
+    border-bottom: 1/16rem solid #e0e6ed;
+    margin-bottom: 10/16rem;
+  }
+  .el-form-item__label{
+    font-size:14/16rem;
+    color:#99a9bf;
+    text-align: left;
+  }
+  .el-input__inner{
+    border: none;
+  }
+  .el-form-item__error{
+    left: 10/16rem;
+    top: 26/16rem;
+  }
+  :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:#99a9bf;
+  }
+
+  ::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:#99a9bf;
+  }
+
+  input:-ms-input-placeholder{
+    color:#99a9bf;
+  }
+
+  input::-webkit-input-placeholder{
+    color:#99a9bf;
+  }
+  .btn-white{
+    height:52/16rem;
+  }
+  .last-bottom{
+    font-size:14/16rem;
+    color:#ffffff;
+    margin: 32/16rem 0 0 0;
+  }
+
+
+
+  .jumbotron{
+    background: #ffffff;
+    padding: 0;
+  }
+  .el-dialog{
+    width:286/16rem!important;
+  }
+  .el-dialog__header{
+    display: none;
+  }
+  .el-dialog__body{
+    background:#ffffff;
+    border-radius:4px;
+    padding: 1.25rem 0 0;
+  }
+  .codeModel{
+    .title{
+      font-size:14px;
+      color:#1f2d3d;
     }
-    .tab{
-      color:#99a9bf;
-      margin-bottom: 49/16rem;
-      font-size: 1rem;
-      line-height: 1rem;
-      cursor: pointer;
-      div:first-child{
-        margin-right: 1.5rem;
-      }
+    .reloadCode{
+      top: 0rem;
+      right: 0rem;
     }
-    .border{
-      color:#009eff;
+    .el-form-item__error{
+      top:2.4rem;
     }
-    .inputFrame{
-      padding: .75rem 0;
-      border-bottom: 1px solid #e0e6ed;
-      margin-bottom: 19/16rem;
-    }
-    .loginBtn{
-      margin-top: 35/16 rem;
-      background:#40587a;
-      border-radius:4px;
-      text-align: center;
-      color: white;
+    .yes_btn{
       width: 100%;
-      height:46/16rem;
-    }
-    .login_tel{
-      .captcha{}
+      height: 40/16rem;
+      font-size:15/16rem;
+      color:#333333;
+      margin-top: 1rem;
+      outline:none;
     }
   }
+}
 </style>

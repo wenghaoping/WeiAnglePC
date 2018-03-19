@@ -439,23 +439,23 @@
   import * as validata from '@/utils/validata';
   export default {
     data () {
-      var checkPhoneNumber = (rule, value, callback) => {
-        if (!validata.getNull(value)) {
-          setTimeout(() => {
-            if (!validata.checkNumber(value)) {
-              callback(new Error('请输入数字值'));
-            } else {
-              if (!validata.checkPhoneNumber(value)) {
-                callback(new Error('请输入正确的手机号'));
-              } else {
-                callback();
-              }
-            }
-          }, 100);
-        } else {
-          callback();
-        }
-      };// 电话号码正则判断
+//      var checkPhoneNumber = (rule, value, callback) => {
+//        if (!validata.getNull(value)) {
+//          setTimeout(() => {
+//            if (!validata.checkNumber(value)) {
+//              callback(new Error('请输入数字值'));
+//            } else {
+//              if (!validata.checkPhoneNumber(value)) {
+//                callback(new Error('请输入正确的手机号'));
+//              } else {
+//                callback();
+//              }
+//            }
+//          }, 100);
+//        } else {
+//          callback();
+//        }
+//      };// 电话号码正则判断
       var checkBigNumber = (rule, value, callback) => {
         if (validata.getNull(value)) {
           callback(new Error('不能为空'));
@@ -473,19 +473,19 @@
           }, 100);
         }
       };// 必须为数字,数值不大于999999999999
-      var checkNull20 = (rule, value, callback) => {
-        if (!validata.getNull(value)) {
-          setTimeout(() => {
-            if (value.length > 20) {
-              callback(new Error('最大长度为20'));
-            } else {
-              callback();
-            }
-          }, 100);
-        } else {
-          callback(new Error('不能为空'));
-        }
-      };// 不为空,20
+//      var checkNull20 = (rule, value, callback) => {
+//        if (!validata.getNull(value)) {
+//          setTimeout(() => {
+//            if (value.length > 20) {
+//              callback(new Error('最大长度为20'));
+//            } else {
+//              callback();
+//            }
+//          }, 100);
+//        } else {
+//          callback(new Error('不能为空'));
+//        }
+//      };// 不为空,20
       var checkNull40 = (rule, value, callback) => {
         if (!validata.getNull(value)) {
           setTimeout(() => {
@@ -502,9 +502,9 @@
       return {
         loading: false,
         activeName: 'person',
-        PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },
+        PhoneRule: { validator: validata.checkPhoneNumberForElement, trigger: 'blur' },
         BigNumberRule: [{ required: true, message: '请输入' }, { validator: checkBigNumber, trigger: 'blur' }], // 可以为空,必须为数字,数值不大于999999999999
-        NullRule20: [{ required: true, message: '请输入名称' }, { validator: checkNull20, trigger: 'blur' }], // 不为空,20
+        NullRule20: [{ required: true, message: '请输入名称' }, { validator: validata.checkNull20ForElement, trigger: 'blur' }], // 不为空,20
         NullRule40: [{ required: true, message: '请输入名称' }, { validator: checkNull40, trigger: 'blur' }], // 不为空,40
         uploadHeadAddress: this.URL.weitianshiLine + this.URL.uploadUserImage + localStorage.token, // 上传地址
         uploadCardAddress: this.URL.weitianshiLine + this.URL.uploadUserCardImage + localStorage.token, // 上传地址

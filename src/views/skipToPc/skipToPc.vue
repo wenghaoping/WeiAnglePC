@@ -19,6 +19,8 @@
         this.type = this.$route.query.type || '';
         localStorage.user_id = this.$route.query.user_id || '';
         localStorage.token = this.$route.query.token || '';
+        console.log(localStorage.token);
+        console.log(localStorage.user_id);
         this.getCheckUserInfo(this.$route.query.user_id)
           .then((data) => {
             // 跳转项目列表
