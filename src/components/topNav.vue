@@ -7,20 +7,15 @@
         </router-link>
       </li>
     </ul>
-
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
+    props: ['tabs'],
     data () {
       return {
-        active: 0,
-        tabs: [
-          {type: '我的项目', jump: {name: 'myProject', query: {activeTo: 0}}},
-          {type: '我的人脉', jump: {name: 'myContacts', query: {activeTo: 1}}},
-          {type: '跟进记录', jump: {name: 'followUp', query: {activeTo: 2}}}
-        ]
+        active: 0
       };
     },
     methods: {

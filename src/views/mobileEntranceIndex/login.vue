@@ -41,13 +41,12 @@
 
     <!--验证码弹框-->
     <el-dialog
-      :visible.sync="getCodeChange"
-      :show-close="showList" :close-on-click-modal="showList"
+      :visible.sync="getCodeChange" :close-on-click-modal="showList"
       :before-close="handleClose" class="position_center_auto">
       <div class="codeModel">
-        <p class="tc title" v-if="userType === 'user_id'">您为修改手机号，请验证</p>
-        <p class="tc title" v-else>您为新用户，请验证</p>
-        <p class="tc title" style="margin-bottom: 1.25rem;">已发送短信验证码至{{loginData.user_mobile}}</p>
+        <p class="tc title" v-if="userType === 'user_id'">您正在修改手机号：{{loginData.user_mobile}}</p>
+        <p class="tc title" v-else>您正在注册新用户：{{loginData.user_mobile}}</p>
+        <p class="tc title" style="margin-bottom: 1.25rem;">请短信验证</p>
         <el-form ref="captchaData" :model="captchaData">
           <el-form-item :rules="CaptchaCode"
                         prop="captcha">
@@ -78,10 +77,12 @@
                 captcha: this.captchaData.captcha,
                 user_real_name: this.loginData.user_real_name,
                 user_brand: this.loginData.user_brand,
-                user_email: this.loginData.user_email
+                user_email: this.loginData.user_email,
+                group_id: this.loginData.group_id
               }).then(res => {
                 if (res.data.status_code === 2000000) {
                   localStorage.user_id = res.data.user_id;
+                  localStorage.token = res.data.token;
                   this.getCheckUserInfo(localStorage.user_id);
                   this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
                   this.getUserGroupByStatusName(localStorage.user_id);
@@ -175,8 +176,6 @@
               this.handleClose();
               this.$router.go(-1);
             }
-            console.log(data);
-            console.log('过');
           });
       },
       // 确认
@@ -208,6 +207,7 @@
               if (this.loginData.user_mobile === this.oldMobilePhone) {
                 this.$http.post(this.URL.loginNonstop, this.loginData).then(res => {
                   if (res.data.status_code === 2000000) {
+                    localStorage.token = res.data.token;
                     this.getCheckUserInfo(res.data.user_id);
                     this.getUserGroupByStatusName(res.data.user_id);
                     this.$router.push({name: this.$route.query.old_path, query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id}});// 路由传参
@@ -243,6 +243,7 @@
               if (data.type === 'user_id') {
                 localStorage.user_id = data.type_id;
               }
+              this.userType = data.type;
               localStorage.user_real_name = data.user_real_name === '' ? '暂无姓名' : data.user_real_name;
               localStorage.user_brand = data.user_brand;
               data.group_id = data.group_id.toString() || '6';
@@ -360,9 +361,9 @@ body{
   .el-dialog{
     width:286/16rem!important;
   }
-  .el-dialog__header{
-    display: none;
-  }
+  /*.el-dialog__header{*/
+    /*display: none;*/
+  /*}*/
   .el-dialog__body{
     background:#ffffff;
     border-radius:4px;

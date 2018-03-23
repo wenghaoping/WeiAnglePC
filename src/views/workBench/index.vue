@@ -1,11 +1,5 @@
 <template>
   <div id="workBench">
-    <!--左侧导航-->
- <!--   <div class="center_header main-left">
-      <el-menu default-active="1" class="el-menu-vertical-demo" >
-        <el-menu-item index="1" style="color:#475669;"><i class="el-icon-message"></i>个人工作台</el-menu-item>
-      </el-menu>
-    </div>-->
     <!-- 右侧主内容区 -->
     <div class="main-right clearfix">
       <transition name="el-fade-in-linear">

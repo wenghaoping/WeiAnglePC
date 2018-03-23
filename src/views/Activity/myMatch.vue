@@ -1,0 +1,520 @@
+<template>
+  <div>
+    <div class="top-search-box clearfix">
+      <div class="input-box fl">
+        <el-input
+          placeholder="搜索活动名称、主办方"
+          icon="search"
+          v-model="searchinput"
+          :on-icon-click="handleIconClick"
+          @keyup.native.enter="handleIconClick">
+        </el-input>
+      </div>
+      <div class="btns-box fr">
+        <el-button type="primary" size="large" @click="creatActivity">创建赛事</el-button>
+      </div>
+    </div>
+    <div class="top-lists" style="cursor: pointer">
+      <template>
+        <el-table :data="tableData" style="width: 100%"
+                  @row-click="handleSelect"
+                  @header-click="headerClick"
+                  @sort-change="filterChange"
+                  @filter-change="filterChange"
+                  v-loading="loading"
+                  element-loading-text="拼命加载中"
+                  stripe>
+          <el-table-column prop="user_real_name" label="赛事名称" width="200" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <el-tooltip class="fl name" placement="top" :disabled="scope.row.user_real_name.length > 4 ? false:true">
+                <div slot="content">
+                  <div class="tips-txt">{{scope.row.user_real_name}}</div>
+                </div>
+                <div>
+                  {{scope.row.user_real_name}}
+                </div>
+              </el-tooltip>
+              <div v-if="scope.row.user_real_name.length === 0">
+                -
+              </div>
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="user_company_career" label="赛事领域" show-overflow-tooltip width="80">
+            <template slot-scope="scope">
+              <div v-if="scope.row.user_company_career==''">
+                -
+              </div>
+              <div else>
+                {{scope.row.user_company_career}}
+              </div>
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="card_company_name" label="大赛时间" show-overflow-tooltip width="144">
+            <template slot-scope="scope">
+              <el-tooltip placement="top" :disabled="scope.row.user_company_name.length > 10 ? false:true">
+                <div slot="content">
+                  <div class="tips-txt">{{scope.row.user_company_name}}</div>
+                </div>
+                <div>
+                  {{scope.row.user_company_name}}
+                </div>
+              </el-tooltip>
+              <div v-if="scope.row.user_company_name.length === 0">
+                -
+              </div>
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="user_brand" label="创建时间" show-overflow-tooltip width="80">
+            <template slot-scope="scope">
+              <el-tooltip placement="top" :disabled="scope.row.user_brand.length > 5 ? false:true">
+                <div slot="content">
+                  <div class="tips-txt">{{scope.row.user_brand}}</div>
+                </div>
+                <div>
+                  {{scope.row.user_brand}}
+                </div>
+              </el-tooltip>
+              <div v-if="scope.row.user_brand.length === 0">
+                -
+              </div>
+            </template>
+          </el-table-column>
+
+          <el-table-column
+            prop="reset"
+            label="操作"
+            width="130" class="edits-btn btn-cur">
+            <template slot-scope="scope">
+              <el-button
+                type="text"
+                size="small" class="flow-btn btn-cur" v-if="scope.row.is_bind==0"
+                @click="handleEdit(scope.$index, scope.row)">
+                编辑
+              </el-button>
+              <el-button
+                type="text"
+                size="small" class="send-btn btn-cur"
+                @click="handleDelete(scope.$index, scope.row)">
+                删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="pagenav" v-if="totalData > 10">
+          <el-pagination
+            small
+            @current-change="filterChangeCurrent"
+            :current-page.sync="currentPage"
+            :page-size="10"
+            layout="total, prev, pager, next"
+            :total="totalData">
+          </el-pagination>
+        </div>
+      </template>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import { error } from '@/utils/notification';
+  export default {
+    data () {
+      return {
+        searchinput: '', // 搜索绑定
+        getCon: {}, // 筛选的请求参数
+        tableData: [
+          /* {
+           activity_id: '',
+           activity_title: '',
+           activity_user: '',
+           activity_address: '浙江省杭州市西湖区文一西路588号中节能西溪首座B3-51信用卡-1楼江省杭州市西湖区文一西路58vv',
+           activity_theme_image: 'https://i.imgur.com/SgDpf8x.jpg',
+           start_time: 1515377593,
+           end_time: '',
+           is_end: 0,
+           activity_apply: 2, // 报名人数
+           activity_sign: 1 // 签到人数
+           } */
+        ] // 列表数据
+      };
+    },
+    methods: {
+      // 搜索===首次进入页面加载的数据
+      handleIconClick () {
+        return new Promise((resolve, reject) => {
+          // 做一些异步操作
+          this.loading = true;
+          this.getCon.user_id = localStorage.user_id;
+          this.getCon.search = this.searchinput;
+          this.getCon.page = 1;
+          this.$http.post(this.URL.getActivityList, this.getCon)
+            .then(res => {
+              if (res.data.status_code === 2000000) {
+                let data = res.data.data;
+                this.tableData = this.setProjectList(data);
+                this.totalData = res.data.count;
+                this.loading = false;
+                resolve(3);
+              } else {
+                error(res.data.error_msg);
+                this.loading = false;
+              }
+            })
+            .catch(err => {
+              this.loading = false;
+              console.log(err, 2);
+            });
+        });
+      },
+      handleSelect (row, event, column) {
+        if (column.label !== '重置') {
+          this.$router.push({name: 'contactsDetails', query: {user_id: row.user_id, card_id: row.card_id, investor_id: row.investor_id}});
+          this.setRouterData();
+        }
+      },
+      // 点击编辑按钮,跳转
+      handleEdit (index, row) {
+        this.zgClick('编辑人脉');
+        this.$router.push({name: 'createContacts', query: {card_id: row.card_id}});
+        this.setRouterData();
+      },
+      // 总设置列表的数据处理
+      setProjectList (list) {
+        let arr = [];
+        for (let i = 0; i < list.length; i++) {
+          let obj = [];
+          obj.activity_id = list[i].activity_id;
+          obj.activity_title = list[i].activity_title;
+          obj.activity_user = list[i].activity_user;
+          obj.activity_address = list[i].activity_address;
+          obj.activity_theme_image = list[i].activity_theme_image;
+          obj.start_time = list[i].start_time;
+          obj.end_time = list[i].end_time;
+          obj.is_end = list[i].is_end;
+          obj.activity_apply = list[i].activity_apply;
+          obj.activity_sign = list[i].activity_sign;
+          arr.push(obj);
+        }
+        return arr;
+      }
+    },
+    // 当dom一创建时
+    created () {}
+  };
+</script>
+<style lang="less" scoped>
+  .top-lists{
+    position: relative;
+    .prointro{
+      height: 50px;
+      overflow: hidden;
+    }
+    .prointrolone{
+      height: 25px;
+      overflow: hidden;
+      display: block;
+      line-height: 23px;
+    }
+    .el-input__icon+.el-input__inner{
+      padding-right: 0px;
+    }
+    .timeCheck{
+      cursor: pointer;
+      position: absolute;
+      opacity: 0;
+      top: 6px;
+      right: 135px;
+      .el-input{
+        width: 30px;
+      }
+      .el-input__icon{
+        display: none;
+      }
+    }
+    .img{
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background:#eff2f7;
+      line-height: 36px;
+      text-align: center;
+      font-size:14px;
+      color:#40587a;
+      img{
+        width: 100%;
+      }
+    }
+    .add{
+      width: 35px;
+      height: 25px;
+      margin-top: 11px;
+      padding-left: 8px;
+      img{
+        width: 100%;
+      }
+    }
+    .name{
+      max-width: 80px!important;
+      margin-left: 16px!important;
+      line-height: 36px!important;
+    }
+
+    .table-thead{
+      background:#e5e9f2;
+      width:100%;
+      height:50px;
+      .thead-item{
+        text-align: left;
+        line-height: 50px;
+        font-size: 12px;
+        color:#475669;
+        padding-left:16px;
+        font-weight: 100;
+        box-sizing: border-box;
+      }
+    }
+    .item-1{
+      width:211px;
+      max-width: 211px;
+      padding-left: 24px !important;
+    }
+    .item-2{
+      width:90px;
+      max-width: 90px
+    }
+    .item-3{
+      width:75px;
+      max-width: 75px
+    }
+    .item-4{
+      width:72px;
+      max-width: 72px;
+    }
+    .item-5{
+      width:90px;
+      max-width: 90px;
+    }
+    .item-6{
+      width:200px;
+      max-width: 200px;
+    }
+    .item-7{
+      width:80px;
+      max-width: 80px;
+    }
+    .item-8{
+      width:65px;
+      max-width: 65px;
+    }
+    .item-9{
+      width:55px;
+      max-width: 55px;
+    }
+    .item-10{
+      width:80px;
+      max-width: 80px;
+    }
+    .item-11{
+      width:120px;
+      max-width: 120px;
+    }
+    .table-tbody{
+      .tbody-item{
+        height: 64px;
+        font-size:12px;
+        color:#1f2d3d;
+        padding-left: 16px;
+        box-sizing: border-box;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+    .flow-pop{
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      .float-tip-window{
+        position: absolute;
+        left:0;
+        top:0;
+        background:rgba(31,45,61,0.85);
+        border-radius:2px;
+        font-size: 12px;
+
+        white-space: normal;
+        padding: 8px 10px;
+        line-height: 16px;
+        color:#fff;
+        .san-angle{
+          position: absolute;
+          border: 6px solid transparent;
+          border-top-color: rgba(31,45,61,0.85);
+          width: 0px;
+          left:5%;
+          top:99%;
+          height: 0px;
+        }
+      }
+    }
+    .tb-item-1{
+      .pro-name{
+        font-size:14px;
+        color:#1f2d3d;
+      }
+      .pro-txt{
+        display: inline-block;
+        width: 100%;
+        margin-top:6px;
+        font-size: 12px;
+        color:#5e6d82;
+        line-height:12px;
+      }
+    }
+    // 以上为原来
+    .el-table{
+      border:none;
+      &::before,&::after{
+        height: 0;
+        width:0;
+      }
+      th{
+        height: 50px;
+      }
+      td{
+        height: 64px;
+      }
+    }
+
+    .el-table--striped .el-table__body tr:hover{
+      background: #eef1f6;
+    }
+    .el-table--striped .el-table__body tr:nth-child(2n){
+      background: #f9fafc !important;
+    }
+    thead{
+      th{
+        font-size: 12px;
+        font-weight: 100;
+        border:none;
+        &:nth-child(1){
+          padding-left:76px;
+        }
+      }
+      th:nth-last-child(2){
+        .cell{
+          color: #20a0ff ;
+          cursor: pointer;
+        }
+      }
+      //.el-table_1_column_11{
+      //  .cell{
+      //    color:#20a0ff;
+      //    cursor: pointer;
+      //  }
+      //}
+
+      .el-table_1_column_1{
+        .cell{
+          /*            margin-left: 53px;*/
+        }
+      }
+      .el-table_1_column_55{
+        .cell{
+          color: #20a0ff!important;
+        }
+      }
+    }
+    tbody{
+
+      td{
+        border:none;
+        .cell{
+          font-size: 12px;
+          div{
+            overflow: hidden!important;
+            white-space: nowrap!important;
+            text-overflow: ellipsis!important;
+          }
+        }
+        &:nth-child(1){
+          padding-left:24px;
+        }
+      }
+
+      .edits-btn{
+
+        margin-left: 0;
+        color:#c0ccda;
+
+      }
+      .btn-cur{
+        color:#20a0ff !important;
+
+      }
+      .flow-btn,.send-btn{
+        color:#c0ccda;
+        margin-left: 5px;
+      }
+      .more{
+        width: 12px;
+        display: inline-block;
+
+        vertical-align: middle;
+        //margin-left: 8px;
+        margin-top: -4px;
+        cursor: pointer;
+      }
+
+    }
+    .el-table {
+      .cell{
+        //padding-right:1px;
+        padding-left: 0;
+        .el-tag{
+          padding:0 10px;
+        }
+        .el-tag--gray{
+          background: transparent;
+          border:none;
+        }
+        .el-table__column-filter-trigger{
+          margin-left: 2px;
+        }
+        .caret-wrapper{
+          margin-left: 0;
+          width:15px;
+        }
+      }
+    }
+  }
+  .top-search-box {
+    padding: 24px;
+    background: #FFFFFF;
+    .input-box {
+      height: 36px;
+      line-height: 36px;
+      width: 320px;
+      border-radius: 5px;
+      .el-input {
+        .el-input__inner {
+          font-size: 14px;
+          background: #e5e9f2;
+          border: 0px;
+          border-radius: 2px;
+        }
+      }
+    }
+  }
+  /* 路由切换动效 */
+  .fade-enter-active, .fade-leave-active {
+    transition: all .2s;
+  }
+  .fade-enter, .fade-leave-active {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+</style>
