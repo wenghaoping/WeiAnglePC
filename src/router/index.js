@@ -30,16 +30,16 @@ export default new Router({
         {path: 'contactsDetails', component: _import('workBench/myContacts/contactsDetails'), name: 'contactsDetails'}// 人脉详情
       ]
     },
-    // {
-    //   path: '/matchActive',
-    //   component: _import('Activity/index'),
-    //   children: [
-    //     {path: '', component: _import('Activity/myMatch'), name: 'myMatch'},
-    //     {path: 'myMatch', component: _import('Activity/myMatch'), name: 'myMatch'},
-    //     {path: 'myActivity', component: _import('Activity/myActivity'), name: 'myActivity'}
-    //   ]
-    // },
-    {path: 'myActivity', component: _import('Activity/myActivity'), name: 'myActivity'},
+    {
+      path: '/matchActive',
+      component: _import('Activity/index'),
+      children: [
+        {path: '', component: _import('Activity/myMatch'), name: 'myMatch'},
+        {path: 'myMatch', component: _import('Activity/myMatch'), name: 'myMatch'},
+        {path: 'myActivity', component: _import('Activity/myActivity'), name: 'myActivity'}
+      ]
+    },
+    // {path: 'myActivity', component: _import('Activity/myActivity'), name: 'myActivity'},
     {
       path: '*', redirect: '/' // 默认回到首页
     },

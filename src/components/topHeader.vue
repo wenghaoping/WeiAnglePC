@@ -64,7 +64,7 @@
         tabs: [
           {type: '首页', jump: '/'},
           {type: '工作站', jump: '/workBench'},
-//          {type: '赛事活动', jump: '/matchActive'},
+          {type: '赛事活动', jump: '/matchActive'},
           {type: '超级BP', jump: '/superBP'}
         ],
         restaurants: [],
