@@ -37,8 +37,8 @@
     methods: {
       // 切换tab
       jump (i) {
-        const url = 'http://192.168.8.223:8090/#/';
-//        const url = 'https://www.weitianshi.cn/workbench/#/';
+//        const url = 'http://192.168.8.223:8090/#/';
+        const url = 'https://www.weitianshi.cn/workbench/#/';
         this.activeName = i;
         if (i === 1) {
           window.location.href = url;
