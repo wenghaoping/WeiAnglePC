@@ -31,15 +31,6 @@ export default new Router({
       ]
     },
     {
-      path: '/matchActive',
-      component: _import('Activity/index'),
-      children: [
-        {path: '', component: _import('Activity/myMatch'), name: 'myMatch'},
-        {path: 'myMatch', component: _import('Activity/myMatch'), name: 'myMatch'},
-        {path: 'myActivity', component: _import('Activity/myActivity'), name: 'myActivity'}
-      ]
-    },
-    {
       path: '*', redirect: '/' // 默认回到首页
     },
     {
@@ -103,6 +94,18 @@ export default new Router({
     },
     {
       path: '/successActivity', name: 'successActivity', component: _import('Activity/successActivity') // 我的活动
+    },
+    {
+      path: '/matchActive',
+      component: _import('Activity/index'),
+      children: [
+        {path: '', component: _import('Activity/myMatch')},
+        {path: 'myMatch', component: _import('Activity/myMatch'), name: 'myMatch'},
+        {path: 'myActivity', component: _import('Activity/myActivity'), name: 'myActivity'}
+      ]
+    },
+    {
+      path: '/creatMatch', name: 'creatMatch', component: _import('Activity/creatMatch') // 创建赛事
     },
     {
       path: '/test', name: 'test', component: checkone

@@ -19,65 +19,51 @@
         <el-table :data="tableData" style="width: 100%"
                   @row-click="handleSelect"
                   @header-click="headerClick"
-                  @sort-change="filterChange"
-                  @filter-change="filterChange"
                   v-loading="loading"
                   element-loading-text="拼命加载中"
                   stripe>
-          <el-table-column prop="user_real_name" label="赛事名称" min-width="400" show-overflow-tooltip>
+          <el-table-column prop="competition_name" label="赛事名称" min-width="400" show-overflow-tooltip>
             <template slot-scope="scope">
-              <el-tooltip class="fl name" placement="top" :disabled="scope.row.user_real_name.length > 4 ? false:true">
+              <el-tooltip class="fl name" placement="top" :disabled="scope.row.competition_name.length > 30 ? false:true">
                 <div slot="content">
-                  <div class="tips-txt">{{scope.row.user_real_name}}</div>
+                  <div class="tips-txt">{{scope.row.competition_name}}</div>
                 </div>
                 <div>
-                  {{scope.row.user_real_name}}
+                  {{scope.row.competition_name}}
                 </div>
               </el-tooltip>
-              <div v-if="scope.row.user_real_name.length === 0">
+              <div v-if="scope.row.competition_name.length === 0">
                 -
               </div>
             </template>
           </el-table-column>
 
-          <el-table-column prop="user_company_career" label="赛事领域" show-overflow-tooltip width="300">
+          <el-table-column prop="industry" label="赛事领域" show-overflow-tooltip width="300">
             <template slot-scope="scope">
-              <div v-if="scope.row.user_company_career==''">
+              <div v-if="scope.row.industry==''">
                 -
               </div>
               <div else>
-                {{scope.row.user_company_career}}
+                {{scope.row.industry}}
               </div>
             </template>
           </el-table-column>
 
-          <el-table-column prop="card_company_name" label="大赛时间" show-overflow-tooltip width="250">
+          <el-table-column prop="start_time" label="大赛时间" show-overflow-tooltip width="250">
             <template slot-scope="scope">
-              <el-tooltip placement="top" :disabled="scope.row.user_company_name.length > 10 ? false:true">
-                <div slot="content">
-                  <div class="tips-txt">{{scope.row.user_company_name}}</div>
-                </div>
-                <div>
-                  {{scope.row.user_company_name}}
-                </div>
-              </el-tooltip>
-              <div v-if="scope.row.user_company_name.length === 0">
-                -
-              </div>
+              <span v-if="scope.row.start_time !== ''">{{scope.row.start_time}}</span>
+              <span v-else>-</span>
+              <span v-if="scope.row.end_time !== ''">~</span>
+              <span v-if="scope.row.end_time !== ''">{{scope.row.end_time}}</span>
             </template>
           </el-table-column>
 
-          <el-table-column prop="user_brand" label="创建时间" show-overflow-tooltip width="150">
+          <el-table-column prop="created_at" label="创建时间" show-overflow-tooltip width="150">
             <template slot-scope="scope">
-              <el-tooltip placement="top" :disabled="scope.row.user_brand.length > 5 ? false:true">
-                <div slot="content">
-                  <div class="tips-txt">{{scope.row.user_brand}}</div>
-                </div>
-                <div>
-                  {{scope.row.user_brand}}
-                </div>
-              </el-tooltip>
-              <div v-if="scope.row.user_brand.length === 0">
+              <div v-if="scope.row.created_at.length !== 0">
+                {{scope.row.created_at}}
+              </div>
+              <div v-else>
                 -
               </div>
             </template>
@@ -90,7 +76,7 @@
             <template slot-scope="scope">
               <el-button
                 type="text"
-                size="small" class="flow-btn btn-cur" v-if="scope.row.is_bind==0"
+                size="small" class="flow-btn btn-cur"
                 @click="handleEdit(scope.$index, scope.row)">
                 编辑
               </el-button>
@@ -119,19 +105,24 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { error } from '@/utils/notification';
+  import { error, success } from '@/utils/notification';
+  import { setTagToString } from '@/utils/formatData';
   export default {
     data () {
       return {
+        loading: false,
+        totalData: 1, // 总页数
+        currentPage: 1, // 当前页数
         searchinput: '', // 搜索绑定
         getCon: {}, // 筛选的请求参数
         tableData: [
           {
             competition_id: '',
-            competition_name: '', // 标题
-            start_time: '',
-            end_time: '',
-            industry: '' // 领域
+            competition_name: '我是标题', // 标题
+            industry: '我是领域', // 领域
+            start_time: '2017-12-12 14:00',
+            end_time: '2017-12-12 14:00',
+            created_at: '2017-12-12 14:00' // 创建时间
           }
         ] // 列表数据
       };
@@ -166,13 +157,12 @@
       },
       handleSelect (row, event, column) {
         if (column.label !== '重置') {
-          this.$router.push({name: 'contactsDetails', query: {user_id: row.user_id, card_id: row.card_id, investor_id: row.investor_id}});
+          this.$router.push({name: 'contactsDetails', query: {competition_id: row.competition_id}});
           this.setRouterData();
         }
       },
       // 点击编辑按钮,跳转
       handleEdit (index, row) {
-        this.zgClick('编辑人脉');
         this.$router.push({name: 'createContacts', query: {card_id: row.card_id}});
         this.setRouterData();
       },
@@ -181,19 +171,53 @@
         let arr = [];
         for (let i = 0; i < list.length; i++) {
           let obj = [];
-          obj.activity_id = list[i].activity_id;
-          obj.activity_title = list[i].activity_title;
-          obj.activity_user = list[i].activity_user;
-          obj.activity_address = list[i].activity_address;
-          obj.activity_theme_image = list[i].activity_theme_image;
+          obj.competition_id = list[i].competition_id;
+          obj.competition_name = list[i].competition_name;
+          obj.industry = setTagToString(list[i].industry);
           obj.start_time = list[i].start_time;
           obj.end_time = list[i].end_time;
-          obj.is_end = list[i].is_end;
-          obj.activity_apply = list[i].activity_apply;
-          obj.activity_sign = list[i].activity_sign;
+          obj.created_at = list[i].created_at;
           arr.push(obj);
         }
         return arr;
+      },
+      // 创建跳转
+      creatActivity () {
+        this.$router.push({name: 'creatMatch'});
+      },
+      // 点击重置按钮时
+      headerClick (column, event) {
+        if (column.label === '重置') {
+          window.location.reload();
+        }
+      },
+      // 点击删除按钮
+      handleDelete (index, row) {
+        this.setRouterData();
+        this.$confirm('您确认要删除该赛事吗?, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.loading = true;
+          this.$http.post(this.URL.delete_follow_record, {user_id: localStorage.user_id, follow_id: row.follow_id})
+            .then(res => {
+              this.loading = false;
+              success('删除成功');
+              this.getRouterData();
+              this.filterChangeCurrent(this.currentPage || 1);
+            })
+            .catch(err => {
+              this.loading = false;
+              error('删除失败');
+              console.log(err);
+            });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       }
     },
     // 当dom一创建时
@@ -397,7 +421,7 @@
           font-weight: 100;
           border:none;
           &:nth-child(1){
-            padding-left:76px;
+            padding-left:40px;
           }
         }
         th:nth-last-child(2){
