@@ -39,7 +39,6 @@ export default new Router({
         {path: 'myActivity', component: _import('Activity/myActivity'), name: 'myActivity'}
       ]
     },
-    // {path: 'myActivity', component: _import('Activity/myActivity'), name: 'myActivity'},
     {
       path: '*', redirect: '/' // 默认回到首页
     },
@@ -101,9 +100,6 @@ export default new Router({
     },
     {
       path: '/creatActivity', name: 'creatActivity', component: _import('Activity/creatActivity') // 创建活动
-    },
-    {
-      path: '/myActivity', name: 'myActivity', component: _import('Activity/myActivity') // 我的活动
     },
     {
       path: '/successActivity', name: 'successActivity', component: _import('Activity/successActivity') // 我的活动
