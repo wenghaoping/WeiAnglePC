@@ -39,17 +39,24 @@
         // 看是否需要加入项目库
         this.addProject();
         // 未登录状态下拦截
-        if (!localStorage.user_id && this.$route.path !== '/' &&
-          this.$route.path !== '/login' && this.$route.path !== '/login/codeLogin' &&
-          this.$route.path !== '/login/telephoneLogin' && this.$route.path !== '/forgetPassword' &&
-          this.$route.path !== '/loginReady' && this.$route.path !== '/login/' &&
-          this.$route.path !== '/bindTelephone' && this.$route.path !== '/qr' &&
-          this.$route.path !== '/API/DD' && this.$route.path !== '/aboutUs' &&
-          this.$route.path !== '/onekeyResearch' && this.$route.path !== '/emailContact' &&
-          this.$route.path !== '/addProject' && this.$route.path !== '/iosBanner' &&
-          this.$route.path !== '/skipToPc' && this.$route.path !== '/superBP') {
-          this.$router.push({name: 'index'});
+        if (!localStorage.token) {
+          localStorage.clear();
+          sessionStorage.clear();
           this.$store.dispatch('setUserRealName', '');
+          this.$router.push({name: 'telephoneLogin'});
+        } else {
+          if (!localStorage.user_id && this.$route.path !== '/' &&
+            this.$route.path !== '/login' && this.$route.path !== '/login/codeLogin' &&
+            this.$route.path !== '/login/telephoneLogin' && this.$route.path !== '/forgetPassword' &&
+            this.$route.path !== '/loginReady' && this.$route.path !== '/login/' &&
+            this.$route.path !== '/bindTelephone' && this.$route.path !== '/qr' &&
+            this.$route.path !== '/API/DD' && this.$route.path !== '/aboutUs' &&
+            this.$route.path !== '/onekeyResearch' && this.$route.path !== '/emailContact' &&
+            this.$route.path !== '/addProject' && this.$route.path !== '/iosBanner' &&
+            this.$route.path !== '/skipToPc' && this.$route.path !== '/superBP') {
+            this.$router.push({name: 'index'});
+            this.$store.dispatch('setUserRealName', '');
+          }
         }
         // 十二小时不动后退出登录
         setTimeout(function () {
@@ -100,10 +107,10 @@
     created () {
       this.user_name = localStorage.user_real_name;
 //      this.zgIdentify(localStorage.user_id, {name: localStorage.user_real_name});
-      this.getCheckUserInfo(localStorage.user_id);
-      this.getUserGroupByStatusName(localStorage.user_id);
       if (IEVersion() !== -1) { alert('请不要使用IE浏览器，建议使用谷歌浏览器及其他浏览器，以获得更好体验'); };
       this.checkUser();
+      this.getCheckUserInfo(localStorage.user_id);
+      this.getUserGroupByStatusName(localStorage.user_id);
     },
     components: {
       alertIdentity,

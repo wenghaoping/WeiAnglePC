@@ -27,6 +27,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import { warning } from '@/utils/notification';
   export default {
     data () {
       return {
@@ -40,29 +41,30 @@
 //        const url = 'http://192.168.8.223:8090/#/';
         const url = 'https://www.weitianshi.cn/workbench/#/';
         this.activeName = i;
-        if (i === 1) {
-          window.location.href = url;
-        } else if (i === 2) {
-          window.location.href = url + 'workBench/myProject';
-        } else if (i === 3) {
-          window.location.href = url + 'superBP';
+        if (Number.parseInt(localStorage.mobileEnter) === 1) {
+          if (i === 1) {
+            window.location.href = url;
+          } else if (i === 2) {
+            window.location.href = url + 'workBench/myProject';
+          } else if (i === 3) {
+            window.location.href = url + 'superBP';
+          }
+        } else {
+          warning('请确认身份');
         }
       },
       checkUser () {
-//        if (this.$route.query.user_id === 0) {
-//          this.$router.push({name: 'login', query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, old_path: this.oldPath, user_id: this.$route.query.user_id, type: this.$route.query.type}});// 路由传参
-//        } else {
-//          if (!localStorage.user_id) {
-//           localStorage.user_id = this.$route.query.user_id;
-//          this.$router.push({name: 'login', query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, old_path: this.oldPath, user_id: this.$route.query.user_id, type: this.$route.query.type}});// 路由传参
-//          }
-//        }
-        if (localStorage.user_id === undefined || localStorage.user_id === '') {
+        if (localStorage.user_id === undefined || localStorage.user_id === '' || localStorage.token === undefined || localStorage.token === '') {
           this.$router.push({name: 'login', query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, old_path: this.oldPath, user_id: this.$route.query.user_id, type: this.$route.query.type}});// 路由传参
         }
       }
     },
     created () {
+      if (!localStorage.token) {
+        localStorage.mobileEnter = 0;
+      } else {
+        localStorage.mobileEnter = 1;
+      }
       this.oldPath = this.$route.path.substring(1, this.$route.path.length);
       this.checkUser();
     },

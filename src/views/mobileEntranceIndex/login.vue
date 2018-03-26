@@ -65,30 +65,36 @@
   export default {
     data () {
       const CaptchaCodeForElement = (rule, value, callback) => {
+        console.log('掉我了');
         if (!validata.getNull(value)) {
           setTimeout(() => {
             if (value.length !== 6) {
               callback(new Error('验证码是6位'));
             } else {
-              this.$http.post(this.URL.loginForCaptcha, {
-                user_mobile: this.loginData.user_mobile,
-                captcha: this.captchaData.captcha,
-                user_real_name: this.loginData.user_real_name,
-                user_brand: this.loginData.user_brand,
-                user_email: this.loginData.user_email,
-                group_id: this.loginData.group_id
-              }).then(res => {
-                if (res.data.status_code === 2000000) {
-                  localStorage.user_id = res.data.user_id;
-                  localStorage.token = res.data.token;
-                  this.getCheckUserInfo(localStorage.user_id);
-                  this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
-                  this.getUserGroupByStatusName(localStorage.user_id);
-                  callback();
-                } else {
-                  callback(new Error(res.data.error_msg));
-                }
-              });
+              console.log(this.checkCaptcha);
+              if (this.checkCaptcha === true) {
+                console.log('掉我了2');
+                this.$http.post(this.URL.loginForCaptcha, {
+                  user_mobile: this.loginData.user_mobile,
+                  captcha: this.captchaData.captcha,
+                  user_real_name: this.loginData.user_real_name,
+                  user_brand: this.loginData.user_brand,
+                  user_email: this.loginData.user_email,
+                  group_id: this.loginData.group_id
+                }).then(res => {
+                  if (res.data.status_code === 2000000) {
+                    this.checkCaptcha = false;
+                    localStorage.user_id = res.data.user_id;
+                    localStorage.token = res.data.token;
+                    this.getCheckUserInfo(localStorage.user_id);
+                    this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
+                    this.getUserGroupByStatusName(localStorage.user_id);
+                    callback();
+                  } else {
+                    callback(new Error(res.data.error_msg));
+                  }
+                });
+              }
             }
           }, 100);
         } else {
@@ -119,7 +125,9 @@
         loginDataMust: false,
         captchaDataMust: false,
         oldMobilePhone: '', // 存储初始电话
-        userType: 'user_id'
+        userType: 'user_id',
+        timer: null,
+        checkCaptcha: true
       };
     },
     methods: {
@@ -131,11 +139,11 @@
         }).then(res => {
           if (res.data.status_code === 2000000) {
             this.is_getCode = 1;
-            var timer = setInterval(() => {
+            this.timer = setInterval(() => {
               this.captchaNum--;
             }, 1000);
             setTimeout(() => {
-              clearInterval(timer);
+              clearInterval(this.timer);
               this.captchaNum = 60;
               this.is_getCode = 0;
             }, 60000);
@@ -171,8 +179,11 @@
           })
           .then((data) => {
             if (data) {
-              this.$router.push({name: this.$route.query.old_path, query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, user_id: localStorage.user_id, type: this.$route.query.type}});// 路由传参
+              localStorage.mobileEnter = 1;
               this.handleClose();
+              setTimeout(() => {
+                this.$router.push({name: this.$route.query.old_path, query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, user_id: localStorage.user_id}});// 路由传参
+              }, 500);
             }
           });
       },
@@ -203,17 +214,22 @@
           .then((data) => {
             if (data) {
               if (this.loginData.user_mobile === this.oldMobilePhone) {
-                this.$http.post(this.URL.loginNonstop, this.loginData).then(res => {
-                  if (res.data.status_code === 2000000) {
-                    localStorage.token = res.data.token;
-                    localStorage.user_id = res.data.user_id;
-                    this.getCheckUserInfo(res.data.user_id);
-                    this.getUserGroupByStatusName(res.data.user_id);
-                    this.$router.go(-1);
-                  } else {
-                    warning(res.data.error_msg);
-                  }
-                });
+                if (this.userType === 'user_id') {
+                  this.$http.post(this.URL.loginNonstop, this.loginData).then(res => {
+                    if (res.data.status_code === 2000000) {
+                      localStorage.token = res.data.token;
+                      localStorage.user_id = res.data.user_id;
+                      this.getCheckUserInfo(res.data.user_id);
+                      this.getUserGroupByStatusName(res.data.user_id);
+                      localStorage.mobileEnter = 1;
+                      this.$router.go(-1);
+                    } else {
+                      warning(res.data.error_msg);
+                    }
+                  });
+                } else {
+                  this.getCodeChange = true;
+                }
               } else {
                 this.getCodeChange = true;
               }
@@ -227,8 +243,10 @@
         });
       },
       handleClose () {
+        clearInterval(this.timer);
+        this.captchaNum = 60;
+        this.is_getCode = 0;
         this.getCodeChange = false;
-        this.captchaNum = 0;
       },
       // 获取登陆信息
       checkUserByInteInvestorId () {
