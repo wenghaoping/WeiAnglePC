@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="myMatch">
     <div class="top-search-box clearfix">
       <div class="input-box fl">
         <el-input
@@ -24,7 +24,7 @@
                   v-loading="loading"
                   element-loading-text="拼命加载中"
                   stripe>
-          <el-table-column prop="user_real_name" label="赛事名称" width="200" show-overflow-tooltip>
+          <el-table-column prop="user_real_name" label="赛事名称" min-width="400" show-overflow-tooltip>
             <template slot-scope="scope">
               <el-tooltip class="fl name" placement="top" :disabled="scope.row.user_real_name.length > 4 ? false:true">
                 <div slot="content">
@@ -40,7 +40,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="user_company_career" label="赛事领域" show-overflow-tooltip width="80">
+          <el-table-column prop="user_company_career" label="赛事领域" show-overflow-tooltip width="300">
             <template slot-scope="scope">
               <div v-if="scope.row.user_company_career==''">
                 -
@@ -51,7 +51,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="card_company_name" label="大赛时间" show-overflow-tooltip width="144">
+          <el-table-column prop="card_company_name" label="大赛时间" show-overflow-tooltip width="250">
             <template slot-scope="scope">
               <el-tooltip placement="top" :disabled="scope.row.user_company_name.length > 10 ? false:true">
                 <div slot="content">
@@ -67,7 +67,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="user_brand" label="创建时间" show-overflow-tooltip width="80">
+          <el-table-column prop="user_brand" label="创建时间" show-overflow-tooltip width="150">
             <template slot-scope="scope">
               <el-tooltip placement="top" :disabled="scope.row.user_brand.length > 5 ? false:true">
                 <div slot="content">
@@ -86,7 +86,7 @@
           <el-table-column
             prop="reset"
             label="操作"
-            width="130" class="edits-btn btn-cur">
+            width="100" class="edits-btn btn-cur">
             <template slot-scope="scope">
               <el-button
                 type="text"
@@ -126,18 +126,13 @@
         searchinput: '', // 搜索绑定
         getCon: {}, // 筛选的请求参数
         tableData: [
-          /* {
-           activity_id: '',
-           activity_title: '',
-           activity_user: '',
-           activity_address: '浙江省杭州市西湖区文一西路588号中节能西溪首座B3-51信用卡-1楼江省杭州市西湖区文一西路58vv',
-           activity_theme_image: 'https://i.imgur.com/SgDpf8x.jpg',
-           start_time: 1515377593,
-           end_time: '',
-           is_end: 0,
-           activity_apply: 2, // 报名人数
-           activity_sign: 1 // 签到人数
-           } */
+          {
+            competition_id: '',
+            competition_name: '', // 标题
+            start_time: '',
+            end_time: '',
+            industry: '' // 领域
+          }
         ] // 列表数据
       };
     },
@@ -205,306 +200,308 @@
     created () {}
   };
 </script>
-<style lang="less" scoped>
-  .top-lists{
-    position: relative;
-    .prointro{
-      height: 50px;
-      overflow: hidden;
-    }
-    .prointrolone{
-      height: 25px;
-      overflow: hidden;
-      display: block;
-      line-height: 23px;
-    }
-    .el-input__icon+.el-input__inner{
-      padding-right: 0px;
-    }
-    .timeCheck{
-      cursor: pointer;
-      position: absolute;
-      opacity: 0;
-      top: 6px;
-      right: 135px;
-      .el-input{
-        width: 30px;
+<style lang="less">
+  .myMatch{
+    .top-lists{
+      position: relative;
+      .prointro{
+        height: 50px;
+        overflow: hidden;
       }
-      .el-input__icon{
-        display: none;
+      .prointrolone{
+        height: 25px;
+        overflow: hidden;
+        display: block;
+        line-height: 23px;
       }
-    }
-    .img{
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background:#eff2f7;
-      line-height: 36px;
-      text-align: center;
-      font-size:14px;
-      color:#40587a;
-      img{
-        width: 100%;
+      .el-input__icon+.el-input__inner{
+        padding-right: 0px;
       }
-    }
-    .add{
-      width: 35px;
-      height: 25px;
-      margin-top: 11px;
-      padding-left: 8px;
-      img{
-        width: 100%;
+      .timeCheck{
+        cursor: pointer;
+        position: absolute;
+        opacity: 0;
+        top: 6px;
+        right: 135px;
+        .el-input{
+          width: 30px;
+        }
+        .el-input__icon{
+          display: none;
+        }
       }
-    }
-    .name{
-      max-width: 80px!important;
-      margin-left: 16px!important;
-      line-height: 36px!important;
-    }
+      .img{
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background:#eff2f7;
+        line-height: 36px;
+        text-align: center;
+        font-size:14px;
+        color:#40587a;
+        img{
+          width: 100%;
+        }
+      }
+      .add{
+        width: 35px;
+        height: 25px;
+        margin-top: 11px;
+        padding-left: 8px;
+        img{
+          width: 100%;
+        }
+      }
+      .name{
+        max-width: 80px!important;
+        margin-left: 16px!important;
+        line-height: 36px!important;
+      }
 
-    .table-thead{
-      background:#e5e9f2;
-      width:100%;
-      height:50px;
-      .thead-item{
-        text-align: left;
-        line-height: 50px;
-        font-size: 12px;
-        color:#475669;
-        padding-left:16px;
-        font-weight: 100;
-        box-sizing: border-box;
+      .table-thead{
+        background:#e5e9f2;
+        width:100%;
+        height:50px;
+        .thead-item{
+          text-align: left;
+          line-height: 50px;
+          font-size: 12px;
+          color:#475669;
+          padding-left:16px;
+          font-weight: 100;
+          box-sizing: border-box;
+        }
       }
-    }
-    .item-1{
-      width:211px;
-      max-width: 211px;
-      padding-left: 24px !important;
-    }
-    .item-2{
-      width:90px;
-      max-width: 90px
-    }
-    .item-3{
-      width:75px;
-      max-width: 75px
-    }
-    .item-4{
-      width:72px;
-      max-width: 72px;
-    }
-    .item-5{
-      width:90px;
-      max-width: 90px;
-    }
-    .item-6{
-      width:200px;
-      max-width: 200px;
-    }
-    .item-7{
-      width:80px;
-      max-width: 80px;
-    }
-    .item-8{
-      width:65px;
-      max-width: 65px;
-    }
-    .item-9{
-      width:55px;
-      max-width: 55px;
-    }
-    .item-10{
-      width:80px;
-      max-width: 80px;
-    }
-    .item-11{
-      width:120px;
-      max-width: 120px;
-    }
-    .table-tbody{
-      .tbody-item{
-        height: 64px;
-        font-size:12px;
-        color:#1f2d3d;
-        padding-left: 16px;
-        box-sizing: border-box;
+      .item-1{
+        width:211px;
+        max-width: 211px;
+        padding-left: 24px !important;
+      }
+      .item-2{
+        width:90px;
+        max-width: 90px
+      }
+      .item-3{
+        width:75px;
+        max-width: 75px
+      }
+      .item-4{
+        width:72px;
+        max-width: 72px;
+      }
+      .item-5{
+        width:90px;
+        max-width: 90px;
+      }
+      .item-6{
+        width:200px;
+        max-width: 200px;
+      }
+      .item-7{
+        width:80px;
+        max-width: 80px;
+      }
+      .item-8{
+        width:65px;
+        max-width: 65px;
+      }
+      .item-9{
+        width:55px;
+        max-width: 55px;
+      }
+      .item-10{
+        width:80px;
+        max-width: 80px;
+      }
+      .item-11{
+        width:120px;
+        max-width: 120px;
+      }
+      .table-tbody{
+        .tbody-item{
+          height: 64px;
+          font-size:12px;
+          color:#1f2d3d;
+          padding-left: 16px;
+          box-sizing: border-box;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+      .flow-pop{
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-      }
-    }
-    .flow-pop{
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      .float-tip-window{
-        position: absolute;
-        left:0;
-        top:0;
-        background:rgba(31,45,61,0.85);
-        border-radius:2px;
-        font-size: 12px;
-
-        white-space: normal;
-        padding: 8px 10px;
-        line-height: 16px;
-        color:#fff;
-        .san-angle{
+        .float-tip-window{
           position: absolute;
-          border: 6px solid transparent;
-          border-top-color: rgba(31,45,61,0.85);
-          width: 0px;
-          left:5%;
-          top:99%;
-          height: 0px;
-        }
-      }
-    }
-    .tb-item-1{
-      .pro-name{
-        font-size:14px;
-        color:#1f2d3d;
-      }
-      .pro-txt{
-        display: inline-block;
-        width: 100%;
-        margin-top:6px;
-        font-size: 12px;
-        color:#5e6d82;
-        line-height:12px;
-      }
-    }
-    // 以上为原来
-    .el-table{
-      border:none;
-      &::before,&::after{
-        height: 0;
-        width:0;
-      }
-      th{
-        height: 50px;
-      }
-      td{
-        height: 64px;
-      }
-    }
-
-    .el-table--striped .el-table__body tr:hover{
-      background: #eef1f6;
-    }
-    .el-table--striped .el-table__body tr:nth-child(2n){
-      background: #f9fafc !important;
-    }
-    thead{
-      th{
-        font-size: 12px;
-        font-weight: 100;
-        border:none;
-        &:nth-child(1){
-          padding-left:76px;
-        }
-      }
-      th:nth-last-child(2){
-        .cell{
-          color: #20a0ff ;
-          cursor: pointer;
-        }
-      }
-      //.el-table_1_column_11{
-      //  .cell{
-      //    color:#20a0ff;
-      //    cursor: pointer;
-      //  }
-      //}
-
-      .el-table_1_column_1{
-        .cell{
-          /*            margin-left: 53px;*/
-        }
-      }
-      .el-table_1_column_55{
-        .cell{
-          color: #20a0ff!important;
-        }
-      }
-    }
-    tbody{
-
-      td{
-        border:none;
-        .cell{
+          left:0;
+          top:0;
+          background:rgba(31,45,61,0.85);
+          border-radius:2px;
           font-size: 12px;
-          div{
-            overflow: hidden!important;
-            white-space: nowrap!important;
-            text-overflow: ellipsis!important;
+
+          white-space: normal;
+          padding: 8px 10px;
+          line-height: 16px;
+          color:#fff;
+          .san-angle{
+            position: absolute;
+            border: 6px solid transparent;
+            border-top-color: rgba(31,45,61,0.85);
+            width: 0px;
+            left:5%;
+            top:99%;
+            height: 0px;
           }
         }
-        &:nth-child(1){
-          padding-left:24px;
+      }
+      .tb-item-1{
+        .pro-name{
+          font-size:14px;
+          color:#1f2d3d;
+        }
+        .pro-txt{
+          display: inline-block;
+          width: 100%;
+          margin-top:6px;
+          font-size: 12px;
+          color:#5e6d82;
+          line-height:12px;
+        }
+      }
+      // 以上为原来
+      .el-table{
+        border:none;
+        &::before,&::after{
+          height: 0;
+          width:0;
+        }
+        th{
+          height: 50px;
+        }
+        td{
+          height: 64px;
         }
       }
 
-      .edits-btn{
-
-        margin-left: 0;
-        color:#c0ccda;
-
+      .el-table--striped .el-table__body tr:hover{
+        background: #eef1f6;
       }
-      .btn-cur{
-        color:#20a0ff !important;
-
+      .el-table--striped .el-table__body tr:nth-child(2n){
+        background: #f9fafc !important;
       }
-      .flow-btn,.send-btn{
-        color:#c0ccda;
-        margin-left: 5px;
-      }
-      .more{
-        width: 12px;
-        display: inline-block;
-
-        vertical-align: middle;
-        //margin-left: 8px;
-        margin-top: -4px;
-        cursor: pointer;
-      }
-
-    }
-    .el-table {
-      .cell{
-        //padding-right:1px;
-        padding-left: 0;
-        .el-tag{
-          padding:0 10px;
-        }
-        .el-tag--gray{
-          background: transparent;
+      thead{
+        th{
+          font-size: 12px;
+          font-weight: 100;
           border:none;
+          &:nth-child(1){
+            padding-left:76px;
+          }
         }
-        .el-table__column-filter-trigger{
-          margin-left: 2px;
+        th:nth-last-child(2){
+          .cell{
+            color: #20a0ff ;
+            cursor: pointer;
+          }
         }
-        .caret-wrapper{
+        //.el-table_1_column_11{
+        //  .cell{
+        //    color:#20a0ff;
+        //    cursor: pointer;
+        //  }
+        //}
+
+        .el-table_1_column_1{
+          .cell{
+            /*            margin-left: 53px;*/
+          }
+        }
+        .el-table_1_column_55{
+          .cell{
+            color: #20a0ff!important;
+          }
+        }
+      }
+      tbody{
+
+        td{
+          border:none;
+          .cell{
+            font-size: 12px;
+            div{
+              overflow: hidden!important;
+              white-space: nowrap!important;
+              text-overflow: ellipsis!important;
+            }
+          }
+          &:nth-child(1){
+            padding-left:24px;
+          }
+        }
+
+        .edits-btn{
+
           margin-left: 0;
-          width:15px;
+          color:#c0ccda;
+
+        }
+        .btn-cur{
+          color:#20a0ff !important;
+
+        }
+        .flow-btn,.send-btn{
+          color:#c0ccda;
+          margin-left: 5px;
+        }
+        .more{
+          width: 12px;
+          display: inline-block;
+
+          vertical-align: middle;
+          //margin-left: 8px;
+          margin-top: -4px;
+          cursor: pointer;
+        }
+
+      }
+      .el-table {
+        .cell{
+          //padding-right:1px;
+          padding-left: 0;
+          .el-tag{
+            padding:0 10px;
+          }
+          .el-tag--gray{
+            background: transparent;
+            border:none;
+          }
+          .el-table__column-filter-trigger{
+            margin-left: 2px;
+          }
+          .caret-wrapper{
+            margin-left: 0;
+            width:15px;
+          }
         }
       }
     }
-  }
-  .top-search-box {
-    padding: 24px;
-    background: #FFFFFF;
-    .input-box {
-      height: 36px;
-      line-height: 36px;
-      width: 320px;
-      border-radius: 5px;
-      .el-input {
-        .el-input__inner {
-          font-size: 14px;
-          background: #e5e9f2;
-          border: 0px;
-          border-radius: 2px;
+    .top-search-box {
+      padding: 24px;
+      background: #FFFFFF;
+      .input-box {
+        height: 36px;
+        line-height: 36px;
+        width: 320px;
+        border-radius: 5px;
+        .el-input {
+          .el-input__inner {
+            font-size: 14px;
+            background: #e5e9f2;
+            border: 0px;
+            border-radius: 2px;
+          }
         }
       }
     }
