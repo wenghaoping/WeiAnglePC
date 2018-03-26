@@ -317,9 +317,9 @@
       async getProjectDetail () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
-          this.$http.post(this.URL.mail_getProjectDetail, {
-            user_id: this.user_id || 0,
-            investor_id: this.investor_id || 0,
+          this.$http.post(this.URL.wtsProject, {
+            user_id: localStorage.user_id,
+            investor_id: this.investor_id,
             project_id: this.project_id,
             scene: 'mobile'
           })
@@ -354,11 +354,7 @@
         this.activeFrom = this.$route.query.activeTo || 0;
         this.show = this.$route.query.show || 'detail';
         this.investor_id = this.$route.query.investor_id || 0;
-        if (localStorage.user_id === 0 || localStorage.user_id === undefined) {
-          this.user_id = this.$route.query.user_id;
-        } else {
-          this.user_id = localStorage.user_id;
-        }
+        this.user_id = localStorage.user_id;
       },
       // 打开弹窗_查看Bp
       previewBp () {
@@ -388,7 +384,7 @@
           warning('邮箱格式不正确');
         } else {
           this.loading = true;
-          this.$http.post(this.URL.mail_sendBp, {
+          this.$http.post(this.URL.emailForBp, {
             user_id: localStorage.user_id,
             project_id: this.project_id,
             email: this.email,
@@ -418,7 +414,7 @@
       closeGetContact (text) {
         if (text !== 'close') {
           this.checkLoginStatus(x => {
-            this.$http.post(this.URL.mail_createInterview, {
+            this.$http.post(this.URL.createInterview, {
               user_id: localStorage.user_id,
               project_id: this.project_id,
               remark: text
@@ -437,7 +433,7 @@
       },
       // BP预览
       preview () {
-        this.$http.post(this.URL.mail_sendBp, {
+        this.$http.post(this.URL.emailForBp, {
           user_id: localStorage.user_id,
           project_id: this.project_id,
           email: '',

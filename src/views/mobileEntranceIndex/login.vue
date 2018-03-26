@@ -171,8 +171,7 @@
           })
           .then((data) => {
             if (data) {
-              this.$router.push({name: this.$route.query.old_path, query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, user_id: this.$route.query.user_id, type: this.$route.query.type}});// 路由传参
-              console.log('开始跳转');
+              this.$router.push({name: this.$route.query.old_path, query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, user_id: localStorage.user_id, type: this.$route.query.type}});// 路由传参
               this.handleClose();
             }
           });
@@ -207,8 +206,7 @@
                 this.$http.post(this.URL.loginNonstop, this.loginData).then(res => {
                   if (res.data.status_code === 2000000) {
                     localStorage.token = res.data.token;
-                    console.log(this.$route.query.old_path);
-//                    this.$router.push({name: this.$route.query.old_path, query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, user_id: this.$route.query.user_id, type: this.$route.query.type}});// 路由传参
+                    localStorage.user_id = res.data.user_id;
                     this.getCheckUserInfo(res.data.user_id);
                     this.getUserGroupByStatusName(res.data.user_id);
                     this.$router.go(-1);
@@ -230,6 +228,7 @@
       },
       handleClose () {
         this.getCodeChange = false;
+        this.captchaNum = 0;
       },
       // 获取登陆信息
       checkUserByInteInvestorId () {
