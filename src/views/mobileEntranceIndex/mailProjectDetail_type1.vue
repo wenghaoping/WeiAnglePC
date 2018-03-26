@@ -449,7 +449,6 @@
       }
     },
     created () {
-      console.log('先进入这里了type');
       this.getprojectId();
       this.getProjectDetail();
     }

@@ -39,7 +39,6 @@ export default new Router({
     //     {path: 'myActivity', component: _import('Activity/myActivity'), name: 'myActivity'}
     //   ]
     // },
-    {path: 'myActivity', component: _import('Activity/myActivity'), name: 'myActivity'},
     {
       path: '*', redirect: '/' // 默认回到首页
     },

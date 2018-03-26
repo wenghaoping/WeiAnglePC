@@ -49,19 +49,20 @@
         }
       },
       checkUser () {
-        this.user_id = localStorage.user_id;
-        if (!localStorage.user_id) {
-          this.$router.push({name: 'login', query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, old_path: this.oldPath}});// 路由传参
+        if (this.$route.query.user_id === 0) {
+          console.log(this.$route.query.user_id);
+          this.$router.push({name: 'login', query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, old_path: this.oldPath, user_id: this.$route.query.user_id, type: this.$route.query.type}});// 路由传参
+        } else {
+          if (!localStorage.user_id) {
+            localStorage.user_id = this.$route.query.user_id;
+            this.$router.push({name: 'login', query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, old_path: this.oldPath, user_id: this.$route.query.user_id, type: this.$route.query.type}});// 路由传参
+            console.log(this.$route.query.investor_id);
+          }
         }
       }
     },
     created () {
-//      console.log('先进入这里了user');
-      console.log(this.$route.path);
       this.oldPath = this.$route.path.substring(1, this.$route.path.length);
-      console.log(this.oldPath);
-//      localStorage.investor_id = this.$route.query.investor_id;
-//      localStorage.project_id = this.$route.query.project_id;
       this.checkUser();
     },
     watch: {

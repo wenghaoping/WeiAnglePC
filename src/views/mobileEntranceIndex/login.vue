@@ -44,9 +44,7 @@
       :visible.sync="getCodeChange" :close-on-click-modal="showList"
       :before-close="handleClose" class="position_center_auto">
       <div class="codeModel">
-        <p class="tc title" v-if="userType === 'user_id'">您正在修改手机号：{{loginData.user_mobile}}</p>
-        <p class="tc title" v-else>您正在注册新用户：{{loginData.user_mobile}}</p>
-        <p class="tc title" style="margin-bottom: 1.25rem;">请短信验证</p>
+        <p class="tc title">请短信验证手机号：{{loginData.user_mobile}}</p>
         <el-form ref="captchaData" :model="captchaData">
           <el-form-item :rules="CaptchaCode"
                         prop="captcha">
@@ -173,8 +171,9 @@
           })
           .then((data) => {
             if (data) {
+              this.$router.push({name: this.$route.query.old_path, query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, user_id: this.$route.query.user_id, type: this.$route.query.type}});// 路由传参
+              console.log('开始跳转');
               this.handleClose();
-              this.$router.go(-1);
             }
           });
       },
@@ -208,9 +207,11 @@
                 this.$http.post(this.URL.loginNonstop, this.loginData).then(res => {
                   if (res.data.status_code === 2000000) {
                     localStorage.token = res.data.token;
+                    console.log(this.$route.query.old_path);
+//                    this.$router.push({name: this.$route.query.old_path, query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, user_id: this.$route.query.user_id, type: this.$route.query.type}});// 路由传参
                     this.getCheckUserInfo(res.data.user_id);
                     this.getUserGroupByStatusName(res.data.user_id);
-                    this.$router.push({name: this.$route.query.old_path, query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id}});// 路由传参
+                    this.$router.go(-1);
                   } else {
                     warning(res.data.error_msg);
                   }
@@ -218,7 +219,6 @@
               } else {
                 this.getCodeChange = true;
               }
-//              this.$router.push({name: 'login', query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id}});// 路由传参
             }
           });
       },
@@ -236,7 +236,9 @@
         if (!localStorage.investor_id) {
           this.loading = true;
           this.$http.post(this.URL.checkUserByInteInvestorId, {
-            investor_id: this.$route.query.investor_id
+            investor_id: this.$route.query.investor_id,
+            user_id: this.$route.query.user_id,
+            type: this.$route.query.type
           }).then(res => {
             if (res.data.status_code === 2000000) {
               let data = res.data.data;
