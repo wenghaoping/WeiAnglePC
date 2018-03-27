@@ -155,16 +155,17 @@
             });
         });
       },
+      // 查看赛事详情
       handleSelect (row, event, column) {
         if (column.label !== '重置') {
-          this.$router.push({name: 'contactsDetails', query: {competition_id: row.competition_id}});
-          this.setRouterData();
+          this.$router.push({name: 'creatMatch', query: {competition_id: row.competition_id}});
+//          this.setRouterData();
         }
       },
       // 点击编辑按钮,跳转
       handleEdit (index, row) {
-        this.$router.push({name: 'createContacts', query: {card_id: row.card_id}});
-        this.setRouterData();
+        this.$router.push({name: 'creatMatch', query: {competition_id: row.competition_id}});
+//        this.setRouterData();
       },
       // 总设置列表的数据处理
       setProjectList (list) {
@@ -224,6 +225,7 @@
     created () {}
   };
 </script>
+
 <style lang="less">
   .myMatch{
     .top-lists{
