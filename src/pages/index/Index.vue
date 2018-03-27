@@ -43,7 +43,6 @@
           localStorage.clear();
           sessionStorage.clear();
           this.$store.dispatch('setUserRealName', '');
-          this.$router.push({name: 'telephoneLogin'});
         } else {
           if (!localStorage.user_id && this.$route.path !== '/' &&
             this.$route.path !== '/login' && this.$route.path !== '/login/codeLogin' &&

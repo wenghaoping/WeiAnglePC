@@ -72,7 +72,7 @@
               callback(new Error('验证码是6位'));
             } else {
               console.log(this.checkCaptcha);
-              if (this.checkCaptcha === true) {
+              if (this.checkCaptcha) {
                 console.log('掉我了2');
                 this.$http.post(this.URL.loginForCaptcha, {
                   user_mobile: this.loginData.user_mobile,
@@ -84,6 +84,8 @@
                 }).then(res => {
                   if (res.data.status_code === 2000000) {
                     this.checkCaptcha = false;
+                    console.log(this.checkCaptcha);
+                    console.log('请求成功了');
                     localStorage.user_id = res.data.user_id;
                     localStorage.token = res.data.token;
                     this.getCheckUserInfo(localStorage.user_id);
@@ -94,6 +96,8 @@
                     callback(new Error(res.data.error_msg));
                   }
                 });
+              } else {
+                callback();
               }
             }
           }, 100);
