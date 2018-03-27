@@ -108,6 +108,9 @@ export default new Router({
       path: '/creatMatch', name: 'creatMatch', component: _import('Activity/creatMatch') // 创建赛事
     },
     {
+      path: '/matchDetail', name: 'matchDetail', component: _import('Activity/matchDetail/index') // 赛事详情
+    },
+    {
       path: '/test', name: 'test', component: checkone
     }
   ]

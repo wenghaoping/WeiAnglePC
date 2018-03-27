@@ -1,7 +1,7 @@
 <template>
-  <!--赛事详情-->
+  <!--参赛项目-->
   <div class="matchDetail" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
-  我是赛事详情
+  参赛项目
   </div>
 </template>
 

@@ -158,7 +158,7 @@
       // 查看赛事详情
       handleSelect (row, event, column) {
         if (column.label !== '重置') {
-          this.$router.push({name: 'creatMatch', query: {competition_id: row.competition_id}});
+          this.$router.push({name: 'matchDetail', query: {competition_id: row.competition_id}});
 //          this.setRouterData();
         }
       },

@@ -1,7 +1,7 @@
 <template>
-  <!--赛事详情-->
-  <div class="matchDetail" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
-  我是赛事详情
+  <!--大赛评委-->
+  <div class="recommendResources" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
+    推荐资源
   </div>
 </template>
 

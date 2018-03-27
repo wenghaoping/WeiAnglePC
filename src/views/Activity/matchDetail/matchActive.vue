@@ -1,5 +1,6 @@
 <template>
-  <div class="myActivity">
+  <!--赛事活动-->
+  <div class="matchActive myActivity" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     <!-- 右侧底部主内容区 -->
     <div class="wrap-left">
       <div class="top-search-box clearfix">
@@ -13,7 +14,7 @@
           </el-input>
         </div>
         <div class="btns-box fr">
-          <el-button type="primary" size="large" @click="creatActivity">发布活动</el-button>
+          <el-button type="primary" size="large" @click="creatActivity">创建活动</el-button>
         </div>
       </div>
       <div class="top-lists clearfix" v-if="tableData.length !== 0">
@@ -26,16 +27,16 @@
               <template slot-scope="scope">
                 <div class="my_heardimg relative">
                   <img :src="scope.row.activity_theme_image" v-if="scope.row.activity_theme_image !== ''">
-                  <img src="../../assets/images/morenIMG.png" v-else>
+                  <img src="../../../assets/images/morenIMG.png" v-else>
                   <div class="isSign absolute">
-                    <img src="../../assets/images/isSign.png" v-if="scope.row.is_end === 0">
-                    <img src="../../assets/images/noSign.png" v-if="scope.row.is_end === 1">
+                    <img src="../../../assets/images/isSign.png" v-if="scope.row.is_end === 0">
+                    <img src="../../../assets/images/noSign.png" v-if="scope.row.is_end === 1">
                   </div>
                 </div>
               </template>
             </el-table-column>
 
-            <el-table-column label="题目" width="645">
+            <el-table-column label="题目" width="720">
               <template slot-scope="scope">
                 <p class="my_title">{{scope.row.activity_title | nullToB}}</p>
                 <p class="my_small_title">主办方：{{scope.row.activity_user | nullToB}}</p>
@@ -67,7 +68,7 @@
             <el-table-column
               prop="reset"
               label="重置"
-              width="220" class="edits-btn btn-cur ">
+              min-width="120" class="edits-btn btn-cur ">
               <template slot-scope="scope">
                 <div class="editBtn relative">
                   <el-button
@@ -81,12 +82,6 @@
                     @click="handleDelete(scope.row)"
                     size="small">
                     删除
-                  </el-button>
-                  <el-button
-                    type="text"
-                    @click="importRegistration(scope.row)"
-                    size="small">
-                    导入报名名单
                   </el-button>
                 </div>
               </template>
@@ -108,7 +103,7 @@
       <div class="emptyType" v-else v-loading="loading" element-loading-text="拼命加载中">
         <div class="position_auto absolute" style="width: 150px;height: 180px;">
           <div class="shape innImg absolute position_center_auto" v-if="emptyType">
-            <img src="../../assets/images/shape.png">
+            <img src="../../../assets/images/shape.png">
           </div>
           <div class="empty_title tc absolute position_center_auto" style="top: 80px;" v-if="emptyType">
             你目前还没有任何活动
@@ -132,22 +127,22 @@
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex';
   import alertMember from '@/views/Activity/alertMember.vue';
-  import importRegistration from '@/views/Activity/importRegistration.vue';
   import qrCodeActivity from '@/views/Activity/qrCodeActivity.vue';
   import { error, success } from '@/utils/notification';
   import { getTop } from '@/utils';
   export default {
+    props: {},
     data () {
       return {
-        close: false,
-        loading: false, // 加载
+        loading: false,
+        competition_id: '',
         searchinput: '', // 搜索绑定
         totalData: 1, // 总页数
         currentPage: 1, // 当前页数
         getCon: {}, // 筛选的请求参数
         // 列表数据
         tableData: [
-          /* {
+          {
             activity_id: '',
             activity_title: '',
             activity_user: '',
@@ -158,19 +153,11 @@
             is_end: 0,
             activity_apply: 2, // 报名人数
             activity_sign: 1 // 签到人数
-          } */
+          }
         ],
         emptyType: true
       };
     },
-    computed: {
-      ...mapState({
-        activeSearch: state => state.myActivity.activeSearch || '',
-        activeCurrentPage: state => state.myActivity.activeCurrentPage || 1,
-        importRegistrationDisplay: state => state.myActivity.importRegistrationDisplay
-      })
-    },
-    components: { alertMember, importRegistration, qrCodeActivity },
     methods: {
       // 点击编辑按钮,跳转
       handleEdit (row) {
@@ -214,11 +201,6 @@
       toMember (row, type) {
         this.$store.dispatch('setActivityData', {activityId: row.activity_id, isSign: type});
         this.$store.dispatch('memberControl', true);
-      },
-      // 导入报名名单
-      importRegistration (row) {
-        this.$store.dispatch('importRegistrationControl', true);
-        this.$store.dispatch('setActivityData', {activityId: row.activity_id});
       },
       // 查看二维码
       getQrAcitivity (row, type) {
@@ -299,21 +281,20 @@
         return arr;
       }
     },
-    created () {
-      getTop();
-      this.searchinput = this.activeSearch;
-      this.filterChangeCurrent(this.activeCurrentPage || 1);
+    components: { alertMember, qrCodeActivity },
+    computed: {
+      ...mapState({
+        activeSearch: state => state.myActivity.activeSearch || ''
+      })
     },
-    watch: {
-      importRegistrationDisplay: function (e) {
-        if (!e) {
-          this.filterChangeCurrent(1);
-        }
-      }
-    }
+    created () {},
+    watch: {}
   };
 </script>
 
-<style type="text/css" lang="less">
-  @import '../../assets/css/myActivity';
+<style lang="less">
+  @import '../../../assets/css/myActivity';
+.matchDetail{
+
+}
 </style>

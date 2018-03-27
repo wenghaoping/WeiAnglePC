@@ -44,9 +44,7 @@
       :visible.sync="getCodeChange" :close-on-click-modal="showList"
       :before-close="handleClose" class="position_center_auto">
       <div class="codeModel">
-        <p class="tc title" v-if="userType === 'user_id'">您正在修改手机号：{{loginData.user_mobile}}</p>
-        <p class="tc title" v-else>您正在注册新用户：{{loginData.user_mobile}}</p>
-        <p class="tc title" style="margin-bottom: 1.25rem;">请短信验证</p>
+        <p class="tc title">请短信验证手机号：{{loginData.user_mobile}}</p>
         <el-form ref="captchaData" :model="captchaData">
           <el-form-item :rules="CaptchaCode"
                         prop="captcha">
@@ -72,25 +70,36 @@
             if (value.length !== 6) {
               callback(new Error('验证码是6位'));
             } else {
-              this.$http.post(this.URL.loginForCaptcha, {
-                user_mobile: this.loginData.user_mobile,
-                captcha: this.captchaData.captcha,
-                user_real_name: this.loginData.user_real_name,
-                user_brand: this.loginData.user_brand,
-                user_email: this.loginData.user_email,
-                group_id: this.loginData.group_id
-              }).then(res => {
-                if (res.data.status_code === 2000000) {
-                  localStorage.user_id = res.data.user_id;
-                  localStorage.token = res.data.token;
-                  this.getCheckUserInfo(localStorage.user_id);
-                  this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
-                  this.getUserGroupByStatusName(localStorage.user_id);
-                  callback();
+              if (this.checkCaptchaPost) {
+                this.checkCaptchaPost = false;
+                if (this.checkCaptcha) {
+                  this.$http.post(this.URL.loginForCaptcha, {
+                    user_mobile: this.loginData.user_mobile,
+                    captcha: this.captchaData.captcha,
+                    user_real_name: this.loginData.user_real_name,
+                    user_brand: this.loginData.user_brand,
+                    user_email: this.loginData.user_email,
+                    group_id: this.loginData.group_id
+                  }).then(res => {
+                    this.checkCaptchaPost = true;
+                    if (res.data.status_code === 2000000) {
+                      this.checkCaptcha = false;
+                      localStorage.user_id = res.data.user_id;
+                      localStorage.token = res.data.token;
+                      this.getCheckUserInfo(localStorage.user_id);
+                      this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
+                      this.getUserGroupByStatusName(localStorage.user_id);
+                      callback();
+                    } else {
+                      callback(new Error(res.data.error_msg));
+                    }
+                  });
                 } else {
-                  callback(new Error(res.data.error_msg));
+                  callback();
                 }
-              });
+              } else {
+                callback();
+              }
             }
           }, 100);
         } else {
@@ -121,7 +130,10 @@
         loginDataMust: false,
         captchaDataMust: false,
         oldMobilePhone: '', // 存储初始电话
-        userType: 'user_id'
+        userType: 'user_id',
+        timer: null,
+        checkCaptcha: true,
+        checkCaptchaPost: true
       };
     },
     methods: {
@@ -133,11 +145,11 @@
         }).then(res => {
           if (res.data.status_code === 2000000) {
             this.is_getCode = 1;
-            var timer = setInterval(() => {
+            this.timer = setInterval(() => {
               this.captchaNum--;
             }, 1000);
             setTimeout(() => {
-              clearInterval(timer);
+              clearInterval(this.timer);
               this.captchaNum = 60;
               this.is_getCode = 0;
             }, 60000);
@@ -173,8 +185,11 @@
           })
           .then((data) => {
             if (data) {
+              localStorage.mobileEnter = 1;
               this.handleClose();
-              this.$router.go(-1);
+              setTimeout(() => {
+                this.$router.push({name: this.$route.query.old_path, query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id, user_id: localStorage.user_id}});// 路由传参
+              }, 500);
             }
           });
       },
@@ -205,20 +220,25 @@
           .then((data) => {
             if (data) {
               if (this.loginData.user_mobile === this.oldMobilePhone) {
-                this.$http.post(this.URL.loginNonstop, this.loginData).then(res => {
-                  if (res.data.status_code === 2000000) {
-                    localStorage.token = res.data.token;
-                    this.getCheckUserInfo(res.data.user_id);
-                    this.getUserGroupByStatusName(res.data.user_id);
-                    this.$router.push({name: this.$route.query.old_path, query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id}});// 路由传参
-                  } else {
-                    warning(res.data.error_msg);
-                  }
-                });
+                if (this.userType === 'user_id') {
+                  this.$http.post(this.URL.loginNonstop, this.loginData).then(res => {
+                    if (res.data.status_code === 2000000) {
+                      localStorage.token = res.data.token;
+                      localStorage.user_id = res.data.user_id;
+                      this.getCheckUserInfo(res.data.user_id);
+                      this.getUserGroupByStatusName(res.data.user_id);
+                      localStorage.mobileEnter = 1;
+                      this.$router.go(-1);
+                    } else {
+                      warning(res.data.error_msg);
+                    }
+                  });
+                } else {
+                  this.getCodeChange = true;
+                }
               } else {
                 this.getCodeChange = true;
               }
-//              this.$router.push({name: 'login', query: {investor_id: this.$route.query.investor_id, project_id: this.$route.query.project_id}});// 路由传参
             }
           });
       },
@@ -229,6 +249,9 @@
         });
       },
       handleClose () {
+        clearInterval(this.timer);
+        this.captchaNum = 60;
+        this.is_getCode = 0;
         this.getCodeChange = false;
       },
       // 获取登陆信息
@@ -236,7 +259,9 @@
         if (!localStorage.investor_id) {
           this.loading = true;
           this.$http.post(this.URL.checkUserByInteInvestorId, {
-            investor_id: this.$route.query.investor_id
+            investor_id: this.$route.query.investor_id,
+            user_id: this.$route.query.user_id,
+            type: this.$route.query.type
           }).then(res => {
             if (res.data.status_code === 2000000) {
               let data = res.data.data;

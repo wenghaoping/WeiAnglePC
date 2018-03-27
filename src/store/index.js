@@ -10,6 +10,7 @@ import projectDetails from './modules/projectDetails.js'; // 项目详情页面�
 import contactsDetails from './modules/contactsDetails.js'; // 人脉详情页面
 import syncData from './modules/syncData.js'; // 同步数据使用的
 import myActivity from './modules/myActivity.js'; // 我的活动使用
+import myMatch from './modules/myMatch.js'; // 我的活动使用
 Vue.use(Vuex);
 
 const state = {
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     dialogDisplay: dialogDisplay,
     projectDetails: projectDetails,
     contactsDetails: contactsDetails,
-    myActivity: myActivity
+    myActivity: myActivity,
+    myMatch: myMatch
   }
 });
