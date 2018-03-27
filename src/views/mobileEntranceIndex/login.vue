@@ -72,30 +72,36 @@
               callback(new Error('验证码是6位'));
             } else {
               console.log(this.checkCaptcha);
-              if (this.checkCaptcha) {
-                console.log('掉我了2');
-                this.$http.post(this.URL.loginForCaptcha, {
-                  user_mobile: this.loginData.user_mobile,
-                  captcha: this.captchaData.captcha,
-                  user_real_name: this.loginData.user_real_name,
-                  user_brand: this.loginData.user_brand,
-                  user_email: this.loginData.user_email,
-                  group_id: this.loginData.group_id
-                }).then(res => {
-                  if (res.data.status_code === 2000000) {
-                    this.checkCaptcha = false;
-                    console.log(this.checkCaptcha);
-                    console.log('请求成功了');
-                    localStorage.user_id = res.data.user_id;
-                    localStorage.token = res.data.token;
-                    this.getCheckUserInfo(localStorage.user_id);
-                    this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
-                    this.getUserGroupByStatusName(localStorage.user_id);
-                    callback();
-                  } else {
-                    callback(new Error(res.data.error_msg));
-                  }
-                });
+              if (this.checkCaptchaPost) {
+                this.checkCaptchaPost = false;
+                if (this.checkCaptcha) {
+                  console.log('掉我了2');
+                  this.$http.post(this.URL.loginForCaptcha, {
+                    user_mobile: this.loginData.user_mobile,
+                    captcha: this.captchaData.captcha,
+                    user_real_name: this.loginData.user_real_name,
+                    user_brand: this.loginData.user_brand,
+                    user_email: this.loginData.user_email,
+                    group_id: this.loginData.group_id
+                  }).then(res => {
+                    this.checkCaptchaPost = true;
+                    if (res.data.status_code === 2000000) {
+                      this.checkCaptcha = false;
+                      console.log(this.checkCaptcha);
+                      console.log('请求成功了');
+                      localStorage.user_id = res.data.user_id;
+                      localStorage.token = res.data.token;
+                      this.getCheckUserInfo(localStorage.user_id);
+                      this.zgIdentify(res.data.user_id, {name: res.data.user_real_name});
+                      this.getUserGroupByStatusName(localStorage.user_id);
+                      callback();
+                    } else {
+                      callback(new Error(res.data.error_msg));
+                    }
+                  });
+                } else {
+                  callback();
+                }
               } else {
                 callback();
               }
@@ -131,7 +137,8 @@
         oldMobilePhone: '', // 存储初始电话
         userType: 'user_id',
         timer: null,
-        checkCaptcha: true
+        checkCaptcha: true,
+        checkCaptchaPost: true
       };
     },
     methods: {
