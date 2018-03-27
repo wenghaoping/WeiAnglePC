@@ -72,7 +72,6 @@
         if (sessionStorage.flog === 'mail') {
           if (!localStorage.user_id) {
             // 没有登录的人去登录
-
           } else if (sessionStorage.userId !== localStorage.user_id) {
             // 推送者和接受者是不是一人时
             warning('此链接不是分享给您的,请进入正确的链接');

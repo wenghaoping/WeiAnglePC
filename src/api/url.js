@@ -11,10 +11,10 @@ if (process.env.NODE_ENV === 'development') {
   weitianshi = 'https://pc.dev.weitianshi.cn/';
   weitianshiLine = 'https://pc.dev.weitianshi.cn/';
 } else {
-  // weitianshi = 'https://wts.weitianshi.cn/';
-  // weitianshiLine = 'https://wts.weitianshi.cn/';
-  weitianshi = 'https://pc.dev.weitianshi.cn/';
-  weitianshiLine = 'https://pc.dev.weitianshi.cn/';
+  weitianshi = 'https://wts.weitianshi.cn/';
+  weitianshiLine = 'https://wts.weitianshi.cn/';
+  // weitianshi = 'https://pc.dev.weitianshi.cn/';
+  // weitianshiLine = 'https://pc.dev.weitianshi.cn/';
 }
 export default
 {
