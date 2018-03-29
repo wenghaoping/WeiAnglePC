@@ -7,11 +7,9 @@
           <span class="pp-sec-title">全部项目</span>
         </div>
       </div>
-
       <carousel ref="carousel" class="inlineBlock" :nodelist="nodeCount.nodelist"
                 @setNode="setNode"
                 v-loading.body="loading2" element-loading-text="拼命加载中" ></carousel>
-
       <el-button style="position: absolute;right: -50px;top: 65px;" @click.native="closeStage(true)">阶段设置</el-button>
       <div class="clearfx"></div>
       <div class="top-search-box">

@@ -18,7 +18,6 @@
       <template>
         <el-table :data="tableData" style="width: 100%"
                   @row-click="handleSelect"
-                  @header-click="headerClick"
                   v-loading="loading"
                   element-loading-text="拼命加载中"
                   stripe>
@@ -105,8 +104,10 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   import { error, success } from '@/utils/notification';
   import { setTagToString } from '@/utils/formatData';
+  import { getTop } from '@/utils';
   export default {
     data () {
       return {
@@ -136,11 +137,12 @@
           this.getCon.user_id = localStorage.user_id;
           this.getCon.search = this.searchinput;
           this.getCon.page = 1;
-          this.$http.post(this.URL.getActivityList, this.getCon)
+          this.$store.dispatch('setUpMatchSearch', {macthSearch: this.searchinput, matchPage: 1});
+          this.$http.post(this.URL.getCompetitionList, this.getCon)
             .then(res => {
               if (res.data.status_code === 2000000) {
                 let data = res.data.data;
-                this.tableData = this.setProjectList(data);
+                this.tableData = this.setCompetitionList(data);
                 this.totalData = res.data.count;
                 this.loading = false;
                 resolve(3);
@@ -157,18 +159,20 @@
       },
       // 查看赛事详情
       handleSelect (row, event, column) {
-        if (column.label !== '重置') {
+        if (column.label !== '操作') {
           this.$router.push({name: 'matchDetail', query: {competition_id: row.competition_id}});
-//          this.setRouterData();
         }
       },
       // 点击编辑按钮,跳转
       handleEdit (index, row) {
         this.$router.push({name: 'creatMatch', query: {competition_id: row.competition_id}});
-//        this.setRouterData();
+      },
+      // 创建跳转
+      creatActivity () {
+        this.$router.push({name: 'creatMatch', query: {competition_id: 'creat'}});
       },
       // 总设置列表的数据处理
-      setProjectList (list) {
+      setCompetitionList (list) {
         let arr = [];
         for (let i = 0; i < list.length; i++) {
           let obj = [];
@@ -182,16 +186,6 @@
         }
         return arr;
       },
-      // 创建跳转
-      creatActivity () {
-        this.$router.push({name: 'creatMatch'});
-      },
-      // 点击重置按钮时
-      headerClick (column, event) {
-        if (column.label === '重置') {
-          window.location.reload();
-        }
-      },
       // 点击删除按钮
       handleDelete (index, row) {
         this.setRouterData();
@@ -201,11 +195,10 @@
           type: 'warning'
         }).then(() => {
           this.loading = true;
-          this.$http.post(this.URL.delete_follow_record, {user_id: localStorage.user_id, follow_id: row.follow_id})
+          this.$http.post(this.URL.deleteCompetition, {user_id: localStorage.user_id, competition_id: row.competition_id})
             .then(res => {
               this.loading = false;
               success('删除成功');
-              this.getRouterData();
               this.filterChangeCurrent(this.currentPage || 1);
             })
             .catch(err => {
@@ -219,10 +212,45 @@
             message: '已取消删除'
           });
         });
+      },
+      // 控制页码
+      filterChangeCurrent (page) {
+        delete this.getCon.page;
+        this.loading = true;
+        this.getCon.user_id = localStorage.user_id;
+        this.getCon.page = page;// 控制当前页码
+        this.$store.dispatch('setUpMatchSearch', {macthSearch: this.searchinput, matchPage: page});
+        this.$http.post(this.URL.getCompetitionList, this.getCon)
+          .then(res => {
+            if (res.data.status_code === 2000000) {
+              let data = res.data.data;
+              this.tableData = this.setCompetitionList(data);
+              this.totalData = res.data.count;
+              getTop();
+              this.loading = false;
+            } else {
+              error(res.data.error_msg);
+              this.loading = false;
+            }
+          })
+          .catch(err => {
+            this.loading = false;
+            console.log(err, 2);
+          });
       }
     },
+    computed: {
+      ...mapState({
+        macthSearch: state => state.myMatch.macthSearch || '',
+        matchPage: state => state.myMatch.matchPage || 1
+      })
+    },
     // 当dom一创建时
-    created () {}
+    created () {
+      this.searchinput = this.macthSearch;
+      this.currentPage = this.matchPage;
+      this.filterChangeCurrent(this.currentPage || 1);
+    }
   };
 </script>
 

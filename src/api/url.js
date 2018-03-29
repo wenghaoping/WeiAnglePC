@@ -250,5 +250,11 @@ export default
 
   // 手机端入口
   checkUserByInteInvestorId: 'api/user/checkUserByInteInvestorId', // 获取相关信息investor_id
-  loginNonstop: 'api/auth/loginNonstop'
+  loginNonstop: 'api/auth/loginNonstop',
+
+  // 我的赛事
+  getCompetitionList: 'api/competition/getCompetitionList', // 赛事列表
+  deleteCompetition: 'api/competition/deleteCompetition', // 删除赛事
+  getOneCompetition: 'api/competition/getOneCompetition', // 赛事详情
+  editCompetition: 'api/competition/editCompetition' // 编辑赛事
 };

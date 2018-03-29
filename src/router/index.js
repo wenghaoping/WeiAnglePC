@@ -108,7 +108,13 @@ export default new Router({
       path: '/creatMatch', name: 'creatMatch', component: _import('Activity/creatMatch') // 创建赛事
     },
     {
+      path: '/creatMatchActive', name: 'creatMatchActive', component: _import('Activity/creatMatchActive') // 创建赛事活动
+    },
+    {
       path: '/matchDetail', name: 'matchDetail', component: _import('Activity/matchDetail/index') // 赛事详情
+    },
+    {
+      path: '/createJudges', name: 'createJudges', component: _import('Activity/matchDetail/createJudges') // 创建评委
     },
     {
       path: '/test', name: 'test', component: checkone

@@ -1,10 +1,10 @@
 <template>
   <!--赛事详情汇总-->
   <div class="matchIndex" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
-    <div class="contain-center edit-page" style="margin-top: 24px;">
+    <div style="margin-top: 24px;">
       <span class="back-tag" @click="goBack" ><i class="el-icon-arrow-left"></i>返回</span>
-      <div class="main-box">
-        <div class="left-wrap" ref="left" style="margin-top:24px;">
+      <div>
+        <div style="margin-top:24px;">
           <div class="title">
             <div class="titleTop">全国区块链大赛</div>
             <div class="titleMain">
@@ -45,7 +45,7 @@
       return {
         loading: false,
         showList: false,
-        activeName: 'matchActive',
+        activeName: 'matchDetail',
         competition_id: ''
       };
     },

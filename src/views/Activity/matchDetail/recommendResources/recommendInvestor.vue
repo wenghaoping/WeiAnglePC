@@ -1,88 +1,65 @@
 <template>
-  <!--赛事活动-->
-  <div class="matchActive myActivity" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
+  <!--推荐投资人-->
+  <div id="myproject" class="recommendInvestor" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     <!-- 右侧底部主内容区 -->
     <div class="wrap-left">
-      <div class="top-search-box clearfix">
-        <div class="input-box fl">
-          <el-input
-            placeholder="搜索活动名称、主办方"
-            icon="search"
-            v-model="searchinput"
-            :on-icon-click="handleIconClick"
-            @keyup.native.enter="handleIconClick">
-          </el-input>
-        </div>
-        <div class="btns-box fr">
-          <el-button type="primary" size="large" @click="creatActivity">创建活动</el-button>
-        </div>
-      </div>
       <div class="top-lists clearfix" v-if="tableData.length !== 0">
         <template>
           <el-table :data="tableData"
                     :show-header="false"
                     v-loading="loading"
                     element-loading-text="拼命加载中">
-            <el-table-column label="图片" width="180">
+            <el-table-column prop="user_real_name" label="姓名" min-width="300" show-overflow-tooltip>
               <template slot-scope="scope">
-                <div class="my_heardimg relative">
-                  <img :src="scope.row.activity_theme_image" v-if="scope.row.activity_theme_image !== ''">
-                  <img src="../../../assets/images/morenIMG.png" v-else>
-                  <div class="isSign absolute">
-                    <img src="../../../assets/images/isSign.png" v-if="scope.row.is_end === 0">
-                    <img src="../../../assets/images/noSign.png" v-if="scope.row.is_end === 1">
+                <el-tooltip class="fl name" placement="top" :disabled="scope.row.user_real_name.length > 4 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.user_real_name}}</div>
                   </div>
+                  <div>
+                    {{scope.row.user_real_name}}
+                  </div>
+                </el-tooltip>
+                <span class="fl add" v-if="scope.row.is_add==false"><img src="../../../../assets/images/add.png"></span>
+                <div v-if="scope.row.user_real_name.length === 0">
+                  -
                 </div>
               </template>
             </el-table-column>
 
-            <el-table-column label="题目" width="720">
+            <el-table-column prop="card_company_name" label="公司" show-overflow-tooltip min-width="144">
               <template slot-scope="scope">
-                <p class="my_title">{{scope.row.activity_title | nullToB}}</p>
-                <p class="my_small_title">主办方：{{scope.row.activity_user | nullToB}}</p>
-                <p class="my_small_title">时间：{{scope.row.start_time | timeToReallTimeAll | nullToB}} ~ {{scope.row.end_time | timeToReallTimeAll | nullToB}}</p>
-                <p class="my_small_title">地点：{{scope.row.activity_address | nullToB}}</p>
-              </template>
-            </el-table-column>
-
-            <el-table-column label="报名" width="120">
-              <template slot-scope="scope">
-                <p class="my_sign tc cursor">{{scope.row.activity_apply | nullToB}}</p>
-                <p class="is_sign tc cursor" @click="toMember(scope.row, 0)">已报名</p>
-                <div class="position_center_auto relative">
-                  <el-button type="text" @click="getQrAcitivity(scope.row, 0)" class="hoverBtn is_img">报名二维码</el-button>
+                <el-tooltip placement="top" :disabled="scope.row.user_company_name.length > 10 ? false:true">
+                  <div slot="content">
+                    <div class="tips-txt">{{scope.row.user_company_name}}</div>
+                  </div>
+                  <div>
+                    {{scope.row.user_company_name}}
+                  </div>
+                </el-tooltip>
+                <div v-if="scope.row.user_company_name.length === 0">
+                  -
                 </div>
               </template>
             </el-table-column>
 
-            <el-table-column label="报名2" width="120">
+            <el-table-column prop="user_company_career" label="职位" show-overflow-tooltip width="80">
               <template slot-scope="scope">
-                <p class="my_sign tc">{{scope.row.activity_sign | nullToB}}</p>
-                <p class="is_sign tc cursor" @click="toMember(scope.row, 1)">已签到</p>
-                <div class="position_center_auto relative">
-                  <el-button type="text" @click="getQrAcitivity(scope.row, 1)" class="hoverBtn is_img">签到二维码</el-button>
+                <div v-if="scope.row.user_company_career==''">
+                  -
+                </div>
+                <div else>
+                  {{scope.row.user_company_career}}
                 </div>
               </template>
             </el-table-column>
 
-            <el-table-column
-              prop="reset"
-              label="重置"
-              min-width="120" class="edits-btn btn-cur ">
+            <el-table-column prop="user_mobile" label="手机" show-overflow-tooltip width="200">
               <template slot-scope="scope">
-                <div class="editBtn relative">
-                  <el-button
-                    type="text"
-                    @click="handleEdit(scope.row)"
-                    size="small">
-                    编辑
-                  </el-button>
-                  <el-button
-                    type="text"
-                    @click="handleDelete(scope.row)"
-                    size="small">
-                    删除
-                  </el-button>
+                <div v-if="scope.row.user_mobile==''">
+                  -
+                </div>
+                <div else>
+                  {{scope.row.user_mobile}}
                 </div>
               </template>
             </el-table-column>
@@ -103,7 +80,7 @@
       <div class="emptyType" v-else v-loading="loading" element-loading-text="拼命加载中">
         <div class="position_auto absolute" style="width: 150px;height: 180px;">
           <div class="shape innImg absolute position_center_auto" v-if="emptyType">
-            <img src="../../../assets/images/shape.png">
+            <img src="../../../../assets/images/shape.png">
           </div>
           <div class="empty_title tc absolute position_center_auto" style="top: 80px;" v-if="emptyType">
             你目前还没有任何活动
@@ -111,23 +88,15 @@
           <div class="empty_title tc absolute position_center_auto" style="top: 80px;width: 210px;" v-if="!emptyType">
             暂时没有符合该搜索条件的活动
           </div>
-          <el-button @click="creatActivity" class="absolute position_center_auto" style="top: 124px;left: 28px;" v-if="emptyType">马上发布</el-button>
+          <el-button @click="creatMatchActive" class="absolute position_center_auto" style="top: 124px;left: 28px;" v-if="emptyType">马上发布</el-button>
         </div>
       </div>
     </div>
-    <!--签到成员-->
-    <!--<alert-member></alert-member>-->
-    <!--报名导入-->
-    <!--<import-registration></import-registration>-->
-    <!--二维码-->
-    <!--<qr-code-activity></qr-code-activity>-->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex';
-  import alertMember from '@/views/Activity/alertMember.vue';
-  import qrCodeActivity from '@/views/Activity/qrCodeActivity.vue';
   import { error, success } from '@/utils/notification';
   import { getTop } from '@/utils';
   export default {
@@ -143,25 +112,30 @@
         // 列表数据
         tableData: [
           {
-            activity_id: '',
-            activity_title: '',
-            activity_user: '',
-            activity_address: '浙江省杭州市西湖区文一西路588号中节能西溪首座B3-51信用卡-1楼江省杭州市西湖区文一西路58vv',
-            activity_theme_image: 'https://i.imgur.com/SgDpf8x.jpg',
-            start_time: 1515377593,
-            end_time: '',
-            is_end: 0,
-            activity_apply: 2, // 报名人数
-            activity_sign: 1 // 签到人数
+            user_avatar_url: 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83epia77Br2Wk8RiaR8hMAxMG9DerJfzuRCGr5Pf0s2MNDj1FU6dwnpKycchqTRck13S0RTQ6Cg3qZy4A/0', // 头像
+            user_avatar_url_change: '翁', // 代替图片
+            user_real_name: '翁浩平', // 姓名
+            is_add: true, // 标签,true显示,false不显示
+            user_company_career: '投资总监', // 职位
+            user_company_name: '杭州投着乐网络科技有限公司', // 公司名称
+            user_brand: '微天使,FA', // 品牌
+            user_mobile: '18910359282', // 手机
+            user_email: '123@168.com', // 邮箱
+            user_invest_industry: '电子商务', // 投资领域
+            user_invest_stage: '种子轮', // 投资轮次
+            tag: '海龟', // 标签
+            tagArray: [], // 原版标签,设置标签用的
+            login_time: '刚刚活跃', // 最近活跃
+            is_bind: 0 // 编辑
           }
-        ],
+        ], // 列表数据
         emptyType: true
       };
     },
     methods: {
       // 点击编辑按钮,跳转
       handleEdit (row) {
-        this.$router.push({name: 'creatActivity', query: {activity_id: row.activity_id}});
+        this.$router.push({name: 'creatMatchActive', query: {competition_id: row.competition_id}});
       },
       // 点击删除按钮
       handleDelete (row) {
@@ -194,8 +168,8 @@
         });
       },
       // 添加人脉
-      creatActivity () {
-        this.$router.push({name: 'creatActivity', query: {activity_id: 'creat'}});// 路由传参
+      creatMatchActive () {
+        this.$router.push({name: 'creatMatchActive', query: {competition_id: 'creat'}});// 路由传参
       },
       // 查看报名成员 / 签到成员
       toMember (row, type) {
@@ -281,7 +255,6 @@
         return arr;
       }
     },
-    components: { alertMember, qrCodeActivity },
     computed: {
       ...mapState({
         activeSearch: state => state.myActivity.activeSearch || ''
@@ -293,8 +266,10 @@
 </script>
 
 <style lang="less">
-  @import '../../../assets/css/myActivity';
-.matchDetail{
-  .el-table{}
-}
+  @import '../../../../assets/css/myproject';
+  .recommendProjects{
+    .el-table{
+      margin-top: 30px!important;
+    }
+  }
 </style>

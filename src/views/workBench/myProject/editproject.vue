@@ -1655,7 +1655,7 @@
       }
     },
     mounted () {
-      let leftWidth = document.getElementById('wid').offsetLeft + 935;
+      let leftWidth = document.getElementById('wid').offsetLeft + 1300;
       this.$refs.right.style.left = leftWidth + 'px';
       const that = this;
       window.onresize = () => {

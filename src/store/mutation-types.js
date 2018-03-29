@@ -52,3 +52,7 @@ export const SER_ACTIVITY_DATA = 'SER_ACTIVITY_DATA'; // 我的活动 => 设置�
 export const IMPORT_REGISTRATION_CHANGE = 'IMPORT_REGISTRATION_CHANGE'; // 我的活动 => 导入名单
 export const QR_CODE_ACTIVITY_CHANGE = 'QR_CODE_ACTIVITY_CHANGE'; // 我的活动 => 二维码
 export const SET_UP_SEARCH = 'SET_UP_SEARCH'; // 我的活动 => 搜索参数
+
+// 我的赛事
+export const SET_UP_MATCH_SEARCH = 'SET_UP_MATCH_SEARCH'; // 我的赛事 => 搜索参数
+export const GET_MATCH_DETAIL = 'GET_MATCH_DETAIL'; // 我的赛事 => 获取详情
