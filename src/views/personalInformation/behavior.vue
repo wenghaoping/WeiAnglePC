@@ -61,6 +61,23 @@
         </template>
       </el-table-column>
 
+      <el-table-column prop="source" label="来源" width="105"
+                       show-overflow-tooltip>
+        <template slot-scope="scope">
+          <el-tooltip placement="top" :disabled="scope.row.source.length > 6 ? false:true">
+            <div slot="content">
+              <div class="tips-txt">{{scope.row.source}}</div>
+            </div>
+            <div>
+              {{scope.row.source}}
+            </div>
+          </el-tooltip>
+          <div v-if="scope.row.source.length === 0">
+            -
+          </div>
+        </template>
+      </el-table-column>
+
       <el-table-column prop="user_name" label="发布者" width="75"
                        show-overflow-tooltip>
         <template slot-scope="scope">
@@ -91,7 +108,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="service_desc" label="备注" width="240"
+      <el-table-column prop="service_desc" label="备注" min-width="100"
                        show-overflow-tooltip>
         <template slot-scope="scope">
           <el-tooltip placement="top" :disabled="scope.row.service_desc.length > 25 ? false:true">
@@ -225,6 +242,7 @@
           obj.user_name = list[i].user_name;
           obj.created_at = list[i].created_at;
           obj.service_desc = list[i].service_desc;
+          obj.source = list[i].source;
           arr.push(obj);
         }
         return arr;
