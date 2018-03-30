@@ -226,6 +226,7 @@
             if (data) {
               if (this.loginData.user_mobile === this.oldMobilePhone) {
                 if (this.userType === 'user_id') {
+                  this.loginData.investor_id = this.$route.query.investor_id;
                   this.$http.post(this.URL.loginNonstop, this.loginData).then(res => {
                     if (res.data.status_code === 2000000) {
                       localStorage.token = res.data.token;
