@@ -97,6 +97,13 @@
           } else {
             this.$router.push({name: 'telephoneLogin'});
           }
+        } else if (this.active === 2) {
+          localStorage.entrance = 'myMatch';
+          if (localStorage.user_id) {
+            this.$router.push({name: 'myMatch'});
+          } else {
+            this.$router.push({name: 'telephoneLogin'});
+          }
         }
       },
       // 登录

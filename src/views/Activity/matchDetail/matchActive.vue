@@ -14,7 +14,7 @@
           </el-input>
         </div>
         <div class="btns-box fr">
-          <el-button type="primary" size="large" @click="creatActivity">创建活动</el-button>
+          <el-button type="primary" size="large" @click="creatMatchActive">创建活动</el-button>
         </div>
       </div>
       <div class="top-lists clearfix" v-if="tableData.length !== 0">
@@ -111,25 +111,26 @@
           <div class="empty_title tc absolute position_center_auto" style="top: 80px;width: 210px;" v-if="!emptyType">
             暂时没有符合该搜索条件的活动
           </div>
-          <el-button @click="creatActivity" class="absolute position_center_auto" style="top: 124px;left: 28px;" v-if="emptyType">马上发布</el-button>
+          <el-button @click="creatMatchActive" class="absolute position_center_auto" style="top: 124px;left: 28px;" v-if="emptyType">马上发布</el-button>
         </div>
       </div>
     </div>
     <!--签到成员-->
-    <!--<alert-member></alert-member>-->
+    <alert-member></alert-member>
     <!--报名导入-->
-    <!--<import-registration></import-registration>-->
+    <import-registration></import-registration>
     <!--二维码-->
-    <!--<qr-code-activity></qr-code-activity>-->
+    <qr-code-activity></qr-code-activity>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex';
-  import alertMember from '@/views/Activity/alertMember.vue';
-  import qrCodeActivity from '@/views/Activity/qrCodeActivity.vue';
   import { error, success } from '@/utils/notification';
   import { getTop } from '@/utils';
+  import alertMember from '@/views/Activity/alertMember.vue';
+  import importRegistration from '@/views/Activity/importRegistration.vue';
+  import qrCodeActivity from '@/views/Activity/qrCodeActivity.vue';
   export default {
     props: {},
     data () {
@@ -161,7 +162,7 @@
     methods: {
       // 点击编辑按钮,跳转
       handleEdit (row) {
-        this.$router.push({name: 'creatActivity', query: {activity_id: row.activity_id}});
+        this.$router.push({name: 'creatMatchActive', query: {activity_id: row.activity_id}});
       },
       // 点击删除按钮
       handleDelete (row) {
@@ -194,8 +195,8 @@
         });
       },
       // 添加人脉
-      creatActivity () {
-        this.$router.push({name: 'creatActivity', query: {activity_id: 'creat'}});// 路由传参
+      creatMatchActive () {
+        this.$router.push({name: 'creatMatchActive', query: {activity_id: 'creat'}});// 路由传参
       },
       // 查看报名成员 / 签到成员
       toMember (row, type) {
@@ -281,12 +282,12 @@
         return arr;
       }
     },
-    components: { alertMember, qrCodeActivity },
     computed: {
       ...mapState({
         activeSearch: state => state.myActivity.activeSearch || ''
       })
     },
+    components: { alertMember, importRegistration, qrCodeActivity },
     created () {},
     watch: {}
   };

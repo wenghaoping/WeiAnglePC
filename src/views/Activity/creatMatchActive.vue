@@ -37,9 +37,20 @@
                       <el-col :span="12">
                         <el-form-item
                           label="关联赛事"
-                          :rules="[{required: true, message: '赛事标题不能为空', trigger: 'blur'}, {min:1, max:40,message: '最大40个字符'}]"
-                          prop="activity_title">
-                          <el-input placeholder="请输入活动主题" v-model="activity.activity_title"></el-input>
+                          prop="activity_title"
+                          :rules="[{type: 'array',required: true, message: '关联赛事不能为空', trigger: 'change'}]">
+                          <el-select
+                            v-model="activity.activity_match"
+                            multiple filterable
+                            :multiple-limit="multiplelimit"
+                            placeholder="请添加领域（最多5个），支持检索" class="width360">
+                            <el-option
+                              v-for="item in industry"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
                         </el-form-item>
                       </el-col>
                     </el-row>
@@ -257,6 +268,7 @@
           activity_address: '', // 详细地址
           activity_area: '', // 地区
           activity_city: '', // 城市
+          activity_match: '', // 关联赛事
           activity_province: '', // 省份
           // 活动封面图片id
           has_one_theme_image: {
@@ -361,6 +373,8 @@
         area2: [],
         //* 所属地区区级
         area3: [],
+        industry: [],
+        multiplelimit: 5,
         ActiveDateRule: [{ validator: endDateRule, trigger: 'change', type: 'date', message: '请输入正确的时间' }], // 活动结束时间判断
         saveControl: false
       };

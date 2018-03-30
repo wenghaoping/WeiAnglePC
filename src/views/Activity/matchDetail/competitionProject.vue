@@ -236,43 +236,34 @@
               label="重置"
               width="130" class="set-th">
               <template slot-scope="scope">
-                <el-button
-                  @click="handleEdit(scope.$index, scope.row)"
-                  type="text"
-                  size="small" class="edits-btn btn-cur">
-                  编辑
-                </el-button>
-                <el-button
-                  @click="addFollow(scope.$index, scope.row)"
-                  type="text"
-                  size="small" class="flow-btn btn-cur">
-                  跟进
-                </el-button>
-                <el-button
-                  @click="addprojectPush(scope.$index, scope.row)"
-                  type="text"
-                  size="small" class="send-btn btn-cur">
-                  推送
-                </el-button>
-                <el-button
-                  @click="deleteProject(scope.$index, scope.row)"
-                  type="text"
-                  style="margin-left: 0;"
-                  size="small" class="send-btn btn-cur">
-                  删除
-                </el-button>
-
-                <el-dropdown trigger="click" style="height: 19px;">
+                <div class="prointrolone" style="height: 26px;">
                   <el-button
                     type="text"
-                    size="small" class="send-btn btn-cur">
-                    比赛阶段<i class="el-icon-caret-bottom el-icon--right"></i>
+                    size="small" class="flow-btn btn-cur"
+                    @click="handleEdit(scope.$index, scope.row)">
+                    编辑
                   </el-button>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item><div @click="goScoreStatistics(scope.$index, scope.row)">项目评价</div></el-dropdown-item>
-                    <el-dropdown-item><div @click="deleteProject(scope.$index, scope.row)">删除</div></el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
+                  <el-button
+                    type="text"
+                    size="small" class="send-btn btn-cur"
+                    @click="handleDelete(scope.$index, scope.row)">
+                    删除
+                  </el-button>
+                </div>
+                <div class="prointrolone"  style="height: 26px;">
+                  <el-dropdown  trigger="click">
+                    <el-button
+                      type="text"
+                      size="small" class="send-btn btn-cur">
+                      评分阶段<i class="el-icon-caret-bottom el-icon--right"></i>
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item>黄金糕</el-dropdown-item>
+                      <el-dropdown-item>狮子头</el-dropdown-item>
+                      <el-dropdown-item>螺蛳粉</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </div>
               </template>
             </el-table-column>
           </el-table>

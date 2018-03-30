@@ -6,7 +6,7 @@
       <div>
         <div style="margin-top:24px;">
           <div class="title">
-            <div class="titleTop">全国区块链大赛</div>
+            <div class="titleTop">{{matchData.competition_name}}</div>
             <div class="titleMain">
               <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="赛事详情" name="matchDetail">
@@ -34,6 +34,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   import matchDetail from '@/views/Activity/matchDetail/matchDetail.vue';
   import matchActive from '@/views/Activity/matchDetail/matchActive.vue';
   import competitionProject from '@/views/Activity/matchDetail/competitionProject.vue';
@@ -45,7 +46,7 @@
       return {
         loading: false,
         showList: false,
-        activeName: 'matchDetail',
+        activeName: 'matchJudges',
         competition_id: ''
       };
     },
@@ -57,19 +58,24 @@
       recommendResources
     },
     methods: {
-      // 获取id
-      getCompetitionId () {
-        this.competition_id = this.$route.query.competition_id;
-      },
       // 返回上一步
       goBack () {
         this.$router.go(-1);
       },
       handleClick (tab, event) {
         this.activeName = tab.name;
+        this.$store.dispatch('setMatchActive', tab.name);
       }
     },
-    created () {},
+    computed: {
+      ...mapState({
+        matchData: state => state.myMatch.matchData || {},
+        matchActive: state => state.myMatch.matchActive || {}
+      })
+    },
+    created () {
+      this.activeName = this.matchActive;
+    },
     watch: {}
   };
 </script>

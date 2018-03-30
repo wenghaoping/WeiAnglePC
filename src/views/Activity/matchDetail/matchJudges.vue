@@ -238,26 +238,12 @@
       handleSelect (row, event, column) {
         if (column.label !== '重置') {
           this.$router.push({name: 'contactsDetails', query: {user_id: row.user_id, card_id: row.card_id, investor_id: row.investor_id}});
-          this.setRouterData();
         }
       },
       // 点击编辑按钮,跳转
       handleEdit (index, row) {
         this.zgClick('编辑人脉');
         this.$router.push({name: 'createContacts', query: {card_id: row.card_id}});
-        this.setRouterData();
-      },
-      // 跳转之后设置参数
-      setRouterData () {
-        this.$store.state.pageANDSelect.getPra = this.getCon;
-        this.$store.state.pageANDSelect.concurrentPage = this.currentPage;
-      },
-      // 从vuex中取数据
-      getRouterData () {
-        this.getCon = this.$store.state.pageANDSelect.getCon;
-        this.getCon.page = this.$store.state.pageANDSelect.concurrentPage || 1;
-        this.currentPage = this.$store.state.pageANDSelect.concurrentPage || 1;
-        this.searchinput = this.$store.state.pageANDSelect.conSearchinput;
       },
       // 点击标签按钮
       handleTag (index, row) {
@@ -269,7 +255,6 @@
       },
       // 点击删除按钮
       handleDelete (index, row) {
-        this.setRouterData();
         this.$confirm('此操作将永久删除该人脉, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -281,7 +266,6 @@
             .then(res => {
               this.loading = false;
               success('删除成功');
-              this.getRouterData();
               this.filterChangeCurrent(this.currentPage || 1);
             })
             .catch(err => {
@@ -326,10 +310,10 @@
           this.loading = true;
           this.getCon.user_id = localStorage.user_id;
           this.getCon.search = this.searchinput;
-          this.$store.state.pageANDSelect.conSearchinput = this.searchinput;
+          this.getCon.competition_id = this.competition_id;
           this.currentPage = 1;
           this.getCon.page = 1;
-          this.$http.post(this.URL.getConnectUser, this.getCon)
+          this.$http.post(this.URL.getJudgeList, this.getCon)
             .then(res => {
               let data = res.data.data;
               this.tableData = this.setProjectList(data);
@@ -349,6 +333,7 @@
         this.currentPage = 1;
         this.getCon.page = 1;// 控制当前页码
         this.getCon.user_id = localStorage.user_id;
+        this.getCon.competition_id = this.competition_id;
         if (filters.order) {
           if (filters.order === 'ascending') filters.order = 'asc';// 升降序
           else filters.order = 'desc';
@@ -364,7 +349,7 @@
             delete this.getCon[key];
           }
         }// 删除空的查询项
-        this.$http.post(this.URL.getConnectUser, this.getCon)
+        this.$http.post(this.URL.getJudgeList, this.getCon)
           .then(res => {
             this.loading = false;
             let data = res.data.data;
@@ -382,7 +367,7 @@
         this.loading = true;
         this.getCon.user_id = localStorage.user_id;
         this.getCon.page = page;// 控制当前页码
-        this.$http.post(this.URL.getConnectUser, this.getCon)
+        this.$http.post(this.URL.getJudgeList, this.getCon)
           .then(res => {
             let data = res.data.data;
             this.tableData = this.setProjectList(data);
@@ -515,6 +500,10 @@
       judgeSetValue (index, row) {
         this.judgeDisplay = true;
         this.judgeSet = row;
+      },
+      // 获取id
+      getCompetitionId () {
+        this.competition_id = this.$route.query.competition_id;
       }
     },
     computed: {
@@ -522,7 +511,10 @@
         activeSearch: state => state.myActivity.activeSearch || ''
       })
     },
-    created () {},
+    created () {
+      this.getCompetitionId();
+      this.filterChangeCurrent(this.currentPage || 1);
+    },
     watch: {}
   };
 </script>

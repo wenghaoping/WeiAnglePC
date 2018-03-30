@@ -38,9 +38,9 @@
                     <el-row :span="24" :gutter="32">
                       <el-col :span="12">
                         <el-form-item
-                          label="项目领域"
+                          label="赛事领域"
                           prop="morph_industry"
-                          :rules="[{type: 'array',required: true, message: '项目领域不能为空', trigger: 'change'}]">
+                          :rules="[{type: 'array',required: true, message: '赛事领域不能为空', trigger: 'change'}]">
                           <el-select
                             v-model="competition.morph_industry"
                             multiple filterable
@@ -360,7 +360,8 @@
 //                }
               ]
             }
-          ]
+          ],
+          morph_industry: []
         },
         //* 所属地区1省级选项
         area: [],
@@ -416,8 +417,11 @@
                     this.$refs['moreUpload' + index][0].setPlanList(v.belongs_to_many_images_url);
                   });
                   this.competition = data;
+                  console.log(this.competition.has_many_details.length);
                   if (this.competition.has_many_details.length < 5) {
                     for (let i = 0; i < 6 - this.competition.has_many_details.length; i++) {
+                      console.log('运行了1次');
+                      console.log(this.competition.has_many_details.length);
                       this.setActiveityFive();
                     }
                   }
@@ -494,7 +498,7 @@
                 .then(res => {
                   if (res.data.status_code === 2000000) {
                     this.saveControl = true;
-                    this.$router.push({name: 'successActivity', query: {activity_title: allData.activity_title}});
+                    this.$router.push({name: 'successMatch', query: {match_title: allData.activity_title}});
                   }
                   this.loading = false;
                 })

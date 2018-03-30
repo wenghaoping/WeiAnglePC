@@ -3,31 +3,34 @@
   <div class="matchDetail" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     <div class="main">
       <div class="main_top clearfix">
-        <div class="top_left fl">
+        <div class="top_left fl" v-if="competition.has_one_theme_image === ''">
+          <img src="../../../assets/images/morenIMG.png"/>
+        </div>
+        <div class="top_left fl" v-else>
           <img :src="competition.has_one_theme_image.image_src"/>
         </div>
         <div class="top_right fl">
           <div class="right_title">
             {{competition.competition_name}}
           </div>
-          <div class="title_main">领域：{{competition.morph_industry}}</div>
+          <div class="title_main">领域：{{competition.morph_industry === '' ? '暂未编辑' : competition.morph_industry}}</div>
           <div class="title_main">主办方：{{competition.competition_user === '' ? '暂未编辑' : competition.competition_user}}</div>
           <div class="title_main">时间：{{competition.start_time | timeToReallTimeAll}} ~ {{competition.end_time | timeToReallTimeAll}}</div>
-          <div class="title_main">地点：{{competition.competition_address}}</div>
+          <div class="title_main">地点：{{competition.competition_address === '' ? '暂未编辑' : competition.competition_address}}</div>
         </div>
       </div>
-      <div class="main_for">
-        <div class="main_center">
+        <div class="main_center" v-if="competition.has_many_details.length !== 0">
           <div class="center_title">详情</div>
-          <div class="center_main">
-            上周五，
+          <div class="main_for" v-for="(has_many_detail, index) in competition.has_many_details" :key="index">
+            <div class="center_main">
+              {{has_many_detail.detail_description}}
+            </div>
+            <div class="main_bottom" v-for="(many_detail, item) in has_many_detail.belongs_to_many_images" :key="item">
+              <img :src="many_detail.image_src"/>
+            </div>
           </div>
         </div>
-        <div class="main_bottom">
-          <img src="https://i.imgur.com/SgDpf8x.jpg"/>
-        </div>
-      </div>
-      <div class="fixed_button tc cursor">
+      <div class="fixed_button tc cursor" @click="handleEdit">
         编辑
       </div>
     </div>
@@ -103,7 +106,6 @@
                   let data = res.data.data;
                   this.competition = data;
                   this.competition.morph_industry = setTagToString(this.competition.morph_industry, 'industry_name');
-                  console.log(data);
                   this.$store.dispatch('getMatchDetail', data);
                   this.loading = false;
                 } else {
@@ -117,6 +119,10 @@
           }
           resolve(1);
         });
+      },
+      // 点击编辑按钮,跳转
+      handleEdit () {
+        this.$router.push({name: 'creatMatch', query: {competition_id: this.competition_id}});
       }
     },
     computed: {

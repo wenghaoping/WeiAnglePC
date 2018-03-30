@@ -256,5 +256,6 @@ export default
   getCompetitionList: 'api/competition/getCompetitionList', // 赛事列表
   deleteCompetition: 'api/competition/deleteCompetition', // 删除赛事
   getOneCompetition: 'api/competition/getOneCompetition', // 赛事详情
-  editCompetition: 'api/competition/editCompetition' // 编辑赛事
+  editCompetition: 'api/competition/editCompetition', // 编辑赛事
+  getJudgeList: 'api/competition/getJudgeList' // 评委列表
 };

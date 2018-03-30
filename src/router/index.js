@@ -117,6 +117,9 @@ export default new Router({
       path: '/createJudges', name: 'createJudges', component: _import('Activity/matchDetail/createJudges') // 创建评委
     },
     {
+      path: '/successMatch', name: 'successMatch', component: _import('Activity/successMatch') // 赛事创建成功
+    },
+    {
       path: '/test', name: 'test', component: checkone
     }
   ]

@@ -4,12 +4,10 @@
 import * as types from '../mutation-types';
 export default {
   state: {
-    memberDisplay: false, // 报名成员弹框
-    importRegistrationDisplay: false, // 导入报名名单弹框
-    qrCodeActivityDisplay: false, // 二维码弹框
     matchData: {}, // 详情数据
     macthSearch: '', // 我的赛事搜索
-    matchPage: 1 // 赛事页码
+    matchPage: 1, // 赛事页码
+    matchActive: 'matchDetail' // 切换默认设置
   },
   mutations: {
     // 设置搜索参数
@@ -19,6 +17,9 @@ export default {
     },
     [types.GET_MATCH_DETAIL] (state, obj) {
       state.matchData = obj;
+    },
+    [types.SET_MATCH_ACTIVE] (state, obj) {
+      state.matchActive = obj;
     }
   },
   actions: {
@@ -28,6 +29,9 @@ export default {
     },
     getMatchDetail ({ commit }, obj) {
       commit(types.GET_MATCH_DETAIL, obj);
+    },
+    setMatchActive ({ commit }, obj) {
+      commit(types.SET_MATCH_ACTIVE, obj);
     }
   }
 };

@@ -161,7 +161,7 @@
       return {
         loading: false,
         uploadAddress: this.URL.weitianshiLine + this.URL.uploadConnectCard + localStorage.token, // 上传地址
-        card_id: '', // 名片ID
+        judge_id: '', // 名片ID
         nullRule: { validator: checkNull, trigger: 'blur' },
         PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },
         multiplelimit: 5, // 一次最多选5个,下拉表
@@ -174,7 +174,7 @@
         uploadShow: {}, // 计划书上传列表,需要存数据啦
         uploadDate: {user_id: localStorage.user_id}, // 商业计划书上传所带的额外的参数
         contacts: {
-          card_id: '', // id
+          judge_id: '', // id
           user_id: '', // user_id
           user_real_name: '', // 姓名
           user_nickname: '', // 昵称
@@ -211,7 +211,7 @@
         tags: {
           changecont: [], // 项目标签新增
           index: '', // 取数据保存的位置
-          card_id: ''// 人脉id
+          judge_id: ''// 人脉id
         },
         contactsMust: false,
         saveControl: false
@@ -234,8 +234,8 @@
       }, // 上传成功后添加字段
       planRemove (file) {
         if (file) {
-          if (this.card_id === 'creat') this.card_id = 0;
-          this.$http.post(this.URL.deleteConnectCard, {user_id: localStorage.user_id, image_id: this.uploadShow.image_id, card_id: this.card_id})
+          if (this.judge_id === 'creat') this.judge_id = 0;
+          this.$http.post(this.URL.deleteConnectCard, {user_id: localStorage.user_id, image_id: this.uploadShow.image_id, judge_id: this.judge_id})
             .then(res => {
               if (res.status === 200) {
                 this.planList = [];
@@ -258,8 +258,8 @@
       }, // 添加上传文件时,保存返回的数据
       changeUploadData (file) {
         this.uploadDate.user_id = localStorage.user_id;
-        if (this.card_id === 'creat') this.card_id = 0;
-        this.uploadDate.card_id = this.card_id;
+        if (this.judge_id === 'creat') this.judge_id = 0;
+        this.uploadDate.judge_id = this.judge_id;
       }, // 上传前的数据修改
       // 添加人脉标签
       addChangeTag (e) {
@@ -349,11 +349,11 @@
               let allData = {};
               allData = this.contacts;
               allData.user_id = localStorage.user_id;
-              allData.card_id = this.contacts.card_id || '';
+              allData.judge_id = this.contacts.judge_id || '';
               allData.image_id = this.uploadShow.image_id || '';
               this.$http.post(this.URL.createUserCard, allData)
                 .then(res => {
-                  this.card_id = res.data.card_id;
+                  this.judge_id = res.data.judge_id;
                   this.loading = false;
                   this.open2('创建成功', '您添加的评委已是微天使的注册用户，一经保存，手机号将不可修改，请确认评委信息', '查看详情', '返回人脉列表');
                   this.saveControl = true;
@@ -410,7 +410,7 @@
           cancelButtonText: cancel,
           type: 'success'
         }).then(() => {
-          this.$router.push({name: 'contactsDetails', query: {card_id: this.card_id, user_id: this.contacts.user_id}});
+          this.$router.push({name: 'contactsDetails', query: {judge_id: this.judge_id, user_id: this.contacts.user_id}});
         }).catch(() => {
           this.$router.push({name: 'myContacts', query: {activeTo: 1}});
         });
@@ -448,9 +448,9 @@
       getOneUserInfo () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
-          if (this.card_id !== 'creat') {
+          if (this.judge_id !== 'creat') {
             this.loading = true;
-            this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id, card_id: this.card_id})
+            this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id, judge_id: this.judge_id})
               .then(res => {
                 if (res.data.status_code === 420008) {
                   warning('这不是您的人脉,您无权查看');
@@ -483,7 +483,7 @@
         });
       }, // 获取个人详情
       getContactsId () {
-        this.card_id = this.$route.query.card_id;
+        this.judge_id = this.$route.query.judge_id;
       }// 获取id
     },
     components: {

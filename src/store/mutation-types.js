@@ -56,3 +56,4 @@ export const SET_UP_SEARCH = 'SET_UP_SEARCH'; // 我的活动 => 搜索参数
 // 我的赛事
 export const SET_UP_MATCH_SEARCH = 'SET_UP_MATCH_SEARCH'; // 我的赛事 => 搜索参数
 export const GET_MATCH_DETAIL = 'GET_MATCH_DETAIL'; // 我的赛事 => 获取详情
+export const SET_MATCH_ACTIVE = 'SET_MATCH_ACTIVE'; // 我的赛事 => 设置切换标签

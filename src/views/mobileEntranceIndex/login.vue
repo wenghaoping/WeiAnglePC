@@ -18,6 +18,9 @@
             <el-form-item label="机构" :rules="NullRule20" prop="user_brand">
               <el-input v-model="loginData.user_brand" placeholder="请输入机构"></el-input>
             </el-form-item>
+            <el-form-item label="职位" :rules="NullRule20" prop="user_company_career">
+              <el-input v-model="loginData.user_company_career" placeholder="请输入职位"></el-input>
+            </el-form-item>
             <el-form-item label="邮箱" prop="user_email"
                           :rules="[{required: true, message: '邮箱不能为空', trigger: 'blur'},{ type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }]">
               <el-input v-model="loginData.user_email" placeholder="请输入邮箱地址"></el-input>
@@ -79,7 +82,8 @@
                     user_real_name: this.loginData.user_real_name,
                     user_brand: this.loginData.user_brand,
                     user_email: this.loginData.user_email,
-                    group_id: this.loginData.group_id
+                    group_id: this.loginData.group_id,
+                    user_company_career: this.loginData.user_company_career
                   }).then(res => {
                     this.checkCaptchaPost = true;
                     if (res.data.status_code === 2000000) {
