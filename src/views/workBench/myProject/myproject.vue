@@ -609,8 +609,7 @@
       },
       // 获取表头
       titleSift () {
-        const titleSiftURL = this.URL.titleSift;
-        this.$http.post(titleSiftURL, {user_id: localStorage.user_id})
+        this.$http.post(this.URL.titleSift, {user_id: localStorage.user_id})
           .then(res => {
             let data = res.data.data;
             let proArea = data.pro_area;// 地区

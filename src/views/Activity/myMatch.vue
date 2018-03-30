@@ -21,9 +21,9 @@
                   v-loading="loading"
                   element-loading-text="拼命加载中"
                   stripe>
-          <el-table-column prop="competition_name" label="赛事名称" min-width="400" show-overflow-tooltip>
+          <el-table-column prop="competition_name" label="赛事名称" min-width="300" show-overflow-tooltip>
             <template slot-scope="scope">
-              <el-tooltip class="fl name" placement="top" :disabled="scope.row.competition_name.length > 30 ? false:true">
+              <el-tooltip placement="top" :disabled="scope.row.competition_name.length > 30 ? false:true">
                 <div slot="content">
                   <div class="tips-txt">{{scope.row.competition_name}}</div>
                 </div>
@@ -48,7 +48,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="start_time" label="大赛时间" show-overflow-tooltip width="250">
+          <el-table-column prop="start_time" label="大赛时间" show-overflow-tooltip width="300">
             <template slot-scope="scope">
               <span v-if="scope.row.start_time !== ''">{{scope.row.start_time}}</span>
               <span v-else>-</span>
@@ -117,14 +117,14 @@
         searchinput: '', // 搜索绑定
         getCon: {}, // 筛选的请求参数
         tableData: [
-          {
+          /* {
             competition_id: '',
             competition_name: '我是标题', // 标题
             industry: '我是领域', // 领域
             start_time: '2017-12-12 14:00',
             end_time: '2017-12-12 14:00',
             created_at: '2017-12-12 14:00' // 创建时间
-          }
+          } */
         ] // 列表数据
       };
     },
@@ -188,7 +188,6 @@
       },
       // 点击删除按钮
       handleDelete (index, row) {
-        this.setRouterData();
         this.$confirm('您确认要删除该赛事吗?, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

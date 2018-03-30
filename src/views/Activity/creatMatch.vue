@@ -417,7 +417,6 @@
                     this.$refs['moreUpload' + index][0].setPlanList(v.belongs_to_many_images_url);
                   });
                   data.morph_industry = data.morph_industry.map((item) => item.industry_id);
-                  console.log(data);
                   this.competition = data;
                   if (this.competition.has_many_details.length < 5) {
                     for (let i = 0; i < 6 - this.competition.has_many_details.length; i++) {

@@ -14,13 +14,12 @@
           </el-input>
         </div>
         <div class="btns-box fr">
-          <el-button type="primary" @click="addContacts" size="large" >添加评委</el-button>
+          <el-button type="primary" @click="createJudges" size="large" >添加评委</el-button>
         </div>
       </div>
       <div class="top-lists" style="cursor: pointer">
         <template>
           <el-table :data="tableData" style="width: 100%"
-                    @row-click="handleSelect"
                     @header-click="headerClick"
                     @sort-change="filterChange"
                     @filter-change="filterChange"
@@ -118,22 +117,22 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="tag" label="评分阶段" show-overflow-tooltip
+            <el-table-column prop="schedule_name" label="评分阶段" show-overflow-tooltip
                              min-width="74"
-                             :filters="pro_scaleFilters"
-                             column-key="pro_scale"
+                             :filters="scheduleFilters"
+                             column-key="schedule_id"
                              :filter-multiple="stateCheck"
                              filter-placement="bottom-end">
               <template slot-scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.tag.length > 4 ? false:true">
+                <el-tooltip placement="top" :disabled="scope.row.schedule_name.length > 4 ? false:true">
                   <div slot="content">
-                    <div class="tips-txt">{{scope.row.tag}}</div>
+                    <div class="tips-txt">{{scope.row.schedule_name}}</div>
                   </div>
                   <div>
-                    {{scope.row.tag}}
+                    {{scope.row.schedule_name}}
                   </div>
                 </el-tooltip>
-                <div v-if="scope.row.tag.length === 0">
+                <div v-if="scope.row.schedule_name.length === 0">
                   -
                 </div>
               </template>
@@ -166,9 +165,9 @@
                       评分阶段<i class="el-icon-caret-bottom el-icon--right"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item>黄金糕</el-dropdown-item>
-                      <el-dropdown-item>狮子头</el-dropdown-item>
-                      <el-dropdown-item>螺蛳粉</el-dropdown-item>
+                      <el-dropdown-item v-for='(schedule, index) in scheduleFilters' :key="index">
+                        <div @click="setJudgeAuth(scope.row.judge_id, schedule.value)">{{schedule.text}}</div>
+                        </el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
                 </div>
@@ -194,9 +193,8 @@
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex';
   import { error, success } from '@/utils/notification';
-  import { getTitleSift, getTagsPro } from '@/utils/setSelect';
+  import { getTitleSift } from '@/utils/setSelect';
   import * as formatData from '@/utils/formatData';
-  import { isArray } from '@/utils/validata';
   import { getTop } from '@/utils';
   export default {
     props: {},
@@ -209,9 +207,8 @@
         currentPage: 1, // 当前页数
         getCon: {}, // 筛选的请求参数
         tagsValue: [], // 标签弹框数据绑定
-        addTags: [], // 人脉标签展示数据
         tableData: [
-          {
+/*          {
             user_avatar_url: 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83epia77Br2Wk8RiaR8hMAxMG9DerJfzuRCGr5Pf0s2MNDj1FU6dwnpKycchqTRck13S0RTQ6Cg3qZy4A/0', // 头像
             user_avatar_url_change: '翁', // 代替图片
             user_real_name: '翁浩平', // 姓名
@@ -227,46 +224,66 @@
             tagArray: [], // 原版标签,设置标签用的
             login_time: '刚刚活跃', // 最近活跃
             is_bind: 0 // 编辑
-          }
+          } */
         ], // 列表数据
-        pro_scaleFilters: [/* { text: '3000万', value: '3000万' } */],
+        scheduleFilters: [/* { text: '3000万', value: '3000万' } */],
         stateCheck: false // 状态单选
       };
     },
     methods: {
-// 跳转到人脉详情页面传参数
-      handleSelect (row, event, column) {
-        if (column.label !== '重置') {
-          this.$router.push({name: 'contactsDetails', query: {user_id: row.user_id, card_id: row.card_id, investor_id: row.investor_id}});
+      getAllNode () {
+        this.$http.post(this.URL.getAllNode, {user_id: localStorage.user_id})
+          .then(res => {
+            let data = res.data.data;
+            this.scheduleFilters = this.getTit(data);
+          })
+          .catch(err => {
+            this.loading = false;
+            console.log(err);
+          });
+      },
+      getTit (data) {
+        let arr = [];
+        for (let i = 0; i < data.length; i++) {
+          let obj = {};
+          obj.text = data[i].schedule_name;
+          obj.value = data[i].schedule_id;
+          arr.push(obj);
         }
+        return arr;
       },
-      // 点击编辑按钮,跳转
-      handleEdit (index, row) {
-        this.zgClick('编辑人脉');
-        this.$router.push({name: 'createContacts', query: {card_id: row.card_id}});
-      },
-      // 点击标签按钮
-      handleTag (index, row) {
-        this.addTagDislpay = true;
-        this.tags.index = index;
-        this.tags.card_id = row.card_id;
-        this.tagsValue = formatData.setIdToArr(this.tableData[index].tagArray, 'tag_id');
-        this.tags.changecont = formatData.setIdToArr(this.tableData[index].tagArray, 'tag_id');
+      // 设置评委阶段
+      setJudgeAuth (judgeId, schedulesId) {
+        this.$http.post(this.URL.competitionSetJudgeAuth, {user_id: localStorage.user_id, judge_id: judgeId, schedule_id: schedulesId})
+          .then(res => {
+            if (res.data.status_code === 2000000) {
+              success('设置成功');
+              this.filterChangeCurrent(this.currentPage || 1);
+            } else {
+              error(res.data.error_msg);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
       },
       // 点击删除按钮
       handleDelete (index, row) {
-        this.$confirm('此操作将永久删除该人脉, 是否继续?', '提示', {
+        this.$confirm('您确认要删除该评委吗?, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.zgClick('删除人脉');
           this.loading = true;
-          this.$http.post(this.URL.deleteConnectUser, {user_id: localStorage.user_id, card_id: row.card_id})
+          this.$http.post(this.URL.deleteJudge, {user_id: localStorage.user_id, judge_id: row.judge_id})
             .then(res => {
+              if (res.data.status_code === 2000000) {
+                success('删除成功');
+                this.filterChangeCurrent(this.currentPage || 1);
+              } else {
+                error(res.data.error_msg);
+              }
               this.loading = false;
-              success('删除成功');
-              this.filterChangeCurrent(this.currentPage || 1);
             })
             .catch(err => {
               this.loading = false;
@@ -280,28 +297,20 @@
           });
         });
       },
+      // 点击编辑按钮,跳转
+      handleEdit (index, row) {
+        this.zgClick('编辑人脉');
+        this.$router.push({name: 'createJudges', query: {judge_id: row.judge_id, competition_id: this.competition_id}});
+      },
       // 点击重置按钮时
       headerClick (column, event) {
         if (column.label === '重置') {
           window.location.reload();
         }
       },
-      // 点击推送,并且传送数据给推送弹框
-      handlePush (index, row) {
-        this.zgClick('推送项目');
-        let obj = {
-          user_real_name: row.user_real_name,
-          user_company_career: row.user_company_career,
-          user_company_name: row.user_company_name,
-          card_id: row.card_id,
-          investor_email: row.user_email
-        };
-        this.$store.dispatch('setUserMessage', obj);
-        this.$store.dispatch('projectPushToConControl', true);
-      },
       // 添加人脉
-      addContacts () {
-        this.$router.push({name: 'createJudges', query: {card_id: 'creat'}});// 路由传参
+      createJudges () {
+        this.$router.push({name: 'createJudges', query: {judge_id: 'creat', competition_id: this.competition_id}});// 路由传参
       },
       // 搜索===首次进入页面加载的数据
       handleIconClick () {
@@ -404,12 +413,11 @@
         let arr = [];
         for (let i = 0; i < list.length; i++) {
           let obj = [];
-          obj.user_id = list[i].user_id;
+          obj.competition_id = list[i].competition_id;
+          obj.judge_id = list[i].judge_id;
           obj.user_avatar_url = list[i].user_avatar_url;
           obj.user_real_name = list[i].user_real_name;// 姓名
           obj.user_avatar_url_change = formatData.setUrlChange(list[i].user_avatar_url, list[i].user_real_name);// 代替名称
-          obj.is_add = list[i].is_add;// 标签
-          obj.is_bind = list[i].is_bind;// 编辑
           obj.user_company_career = list[i].user_company_career;// 职位
           obj.user_company_name = list[i].user_company_name;// 公司名称
           obj.user_brand = list[i].user_brand;// 品牌
@@ -418,14 +426,11 @@
           obj.user_invest_industry = formatData.setTagToString(list[i].user_invest_industry, 'industry_name');// 投资领域
           obj.user_invest_stage = formatData.setTagToString(list[i].user_invest_stage, 'stage_name');// 投资轮次
           obj.tag = formatData.setTagToString(list[i].user_invest_tag, 'tag_name');// 标签
-          obj.tagArray = list[i].user_invest_tag;// 标签
-          obj.login_time = list[i].login_time;// 活跃时间
-          obj.card_id = list[i].card_id;// 活跃时间
-          obj.investor_id = list[i].investor_id;// 活跃时间
-          obj.type = list[i].type;// 类型
-          obj.is_judge = list[i].is_judge;// 是否是评委
-          obj.schedule = isArray(list[i].schedule) ? '' : list[i].schedule.schedule_name;// 评分阶段
-          obj.schedule_id = isArray(list[i].schedule) ? '' : list[i].schedule.schedule_id;// 评分阶段
+          if (list[i].belongs_to_schedule === null) {
+            obj.schedule_name = '';
+          } else {
+            obj.schedule_name = list[i].belongs_to_schedule.schedule_name || '';// 评分阶段
+          }
           arr.push(obj);
         }
         return arr;
@@ -440,68 +445,6 @@
           }, 200);
         });
       },
-      // 添加项目标签
-      addChangeTag (e) {
-        let tagName = formatData.checkArr(e, this.addTags);
-        if (tagName !== undefined) {
-          if (tagName.length > 40) {
-            error('最多输入40个字');
-            this.tagsValue.pop();
-          } else {
-            this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
-              .then(res => {
-                let newState = {};
-                newState.label = tagName;
-                newState.value = res.data.tag_id;
-                this.tags.changecont.push(newState);
-                this.$global.func.getWxProjectCategory();
-              })
-              .catch(err => {
-                error('添加失败');
-                console.log(err);
-              });
-          }
-        }
-      },
-      // 保存标签选择
-      addTag () {
-        this.loading = true;
-        formatData.setTag(this.tagsValue, this.tags.changecont);
-        this.$http.post(this.URL.setConnectTag, {user_id: localStorage.user_id, card_id: this.tags.card_id, tag: this.tagsValue})
-          .then(res => {
-            this.loading = false;
-            success('设置成功');
-            this.addTagDislpay = false;
-            this.handleIconClick();
-            this.gettags_user();
-          })
-          .catch(err => {
-            this.loading = false;
-            error('设置失败');
-            console.log(err);
-            this.addTagDislpay = false;
-          });
-      },
-      // 设置人脉标签
-      gettags_user () {
-        this.$http.post(this.URL.getWxProjectCategory, {user_id: localStorage.user_id})
-          .then(res => {
-            let data = res.data.data;
-            this.addTags = getTagsPro(data.tags_user);// 设置人脉标签
-          });
-      },
-      // 打开关闭设置评委
-      closeJudge (e) {
-        this.judgeDisplay = e;
-        if (!e) {
-          this.filterChangeCurrent(this.currentPage || 1);
-        }
-      },
-      // 评委设置
-      judgeSetValue (index, row) {
-        this.judgeDisplay = true;
-        this.judgeSet = row;
-      },
       // 获取id
       getCompetitionId () {
         this.competition_id = this.$route.query.competition_id;
@@ -514,9 +457,9 @@
     },
     created () {
       this.getCompetitionId();
+      this.getAllNode();
       this.filterChangeCurrent(this.currentPage || 1);
-    },
-    watch: {}
+    }
   };
 </script>
 

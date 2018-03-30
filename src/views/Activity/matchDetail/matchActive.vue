@@ -162,7 +162,7 @@
     methods: {
       // 点击编辑按钮,跳转
       handleEdit (row) {
-        this.$router.push({name: 'creatMatchActive', query: {activity_id: row.activity_id}});
+        this.$router.push({name: 'creatMatchActive', query: {activity_id: row.activity_id, competition_id: this.competition_id}});
       },
       // 点击删除按钮
       handleDelete (row) {
@@ -172,7 +172,7 @@
           type: 'warning'
         }).then(() => {
           this.loading = true;
-          this.$http.post(this.URL.deleteActivity, {user_id: localStorage.user_id, activity_id: row.activity_id})
+          this.$http.post(this.URL.deleteActivity, {user_id: localStorage.user_id, competition_id: this.competition_id, activity_id: row.activity_id})
             .then(res => {
               if (res.data.status_code === 2000000) {
                 success('删除成功');
@@ -196,7 +196,7 @@
       },
       // 添加人脉
       creatMatchActive () {
-        this.$router.push({name: 'creatMatchActive', query: {activity_id: 'creat'}});// 路由传参
+        this.$router.push({name: 'creatMatchActive', query: {competition_id: this.competition_id, activity_id: 'creat'}});// 路由传参
       },
       // 查看报名成员 / 签到成员
       toMember (row, type) {
@@ -242,8 +242,9 @@
         delete this.getCon.page;
         this.loading = true;
         this.getCon.user_id = localStorage.user_id;
+        this.getCon.competition_id = this.competition_id;
         this.getCon.page = page;// 控制当前页码
-        this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: page});
+//        this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: page});
         this.$http.post(this.URL.getActivityList, this.getCon)
           .then(res => {
             if (res.data.status_code === 2000000) {
@@ -280,6 +281,10 @@
           arr.push(obj);
         }
         return arr;
+      },
+      // 获取id
+      getCompetitionId () {
+        this.competition_id = this.$route.query.competition_id;
       }
     },
     computed: {
@@ -288,8 +293,10 @@
       })
     },
     components: { alertMember, importRegistration, qrCodeActivity },
-    created () {},
-    watch: {}
+    created () {
+      this.getCompetitionId();
+      this.filterChangeCurrent(this.currentPage || 1);
+    }
   };
 </script>
 

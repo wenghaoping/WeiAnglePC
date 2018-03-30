@@ -37,15 +37,14 @@
                       <el-col :span="12">
                         <el-form-item
                           label="关联赛事"
-                          prop="activity_title"
-                          :rules="[{type: 'array',required: true, message: '关联赛事不能为空', trigger: 'change'}]">
+                          prop="competition_id"
+                          :rules="[{required: true, message: '关联赛事不能为空', trigger: 'change'}]">
                           <el-select
-                            v-model="activity.activity_match"
-                            multiple filterable
-                            :multiple-limit="multiplelimit"
-                            placeholder="请添加领域（最多5个），支持检索" class="width360">
+                            v-model="activity.competition_id"
+                            filterable
+                            placeholder="请添加领域，支持检索" class="width360">
                             <el-option
-                              v-for="item in industry"
+                              v-for="item in match"
                               :key="item.value"
                               :label="item.label"
                               :value="item.value">
@@ -57,9 +56,21 @@
                     <el-row :span="24" :gutter="32">
                       <el-col :span="12">
                         <el-form-item
-                          label="活动领域"
-                          prop="activity_title">
-                          <el-input placeholder="请输入活动主题" v-model="activity.activity_title"></el-input>
+                          label="赛事领域"
+                          prop="morph_industry"
+                          :rules="[{type: 'array',required: true, message: '赛事领域不能为空', trigger: 'change'}]">
+                          <el-select
+                            v-model="activity.morph_industry"
+                            multiple filterable
+                            :multiple-limit="multiplelimit"
+                            placeholder="请添加领域（最多5个），支持检索" class="width360">
+                            <el-option
+                              v-for="item in industry"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">
@@ -268,7 +279,7 @@
           activity_address: '', // 详细地址
           activity_area: '', // 地区
           activity_city: '', // 城市
-          activity_match: '', // 关联赛事
+          competition_id: '', // 关联赛事
           activity_province: '', // 省份
           // 活动封面图片id
           has_one_theme_image: {
@@ -365,7 +376,8 @@
 //                }
               ]
             }
-          ]
+          ],
+          morph_industry: []
         },
         //* 所属地区1省级选项
         area: [],
@@ -374,6 +386,7 @@
         //* 所属地区区级
         area3: [],
         industry: [],
+        match: [], // 关联赛事存储
         multiplelimit: 5,
         ActiveDateRule: [{ validator: endDateRule, trigger: 'change', type: 'date', message: '请输入正确的时间' }], // 活动结束时间判断
         saveControl: false
@@ -400,7 +413,7 @@
           // 做一些异步操作
           if (this.activity_id !== 'creat') {
             this.loading = true;
-            this.$http.post(this.URL.getActivity, {user_id: localStorage.user_id, activity_id: this.activity_id})
+            this.$http.post(this.URL.getActivity, {user_id: localStorage.user_id, activity_id: this.activity_id, competition_id: this.competition_id})
               .then(res => {
                 if (res.data.status_code === 2000000) {
                   let data = res.data.data;
@@ -422,16 +435,17 @@
                   });
                   formatData.setTimeToReallyTime1(data, 'start_time');
                   formatData.setTimeToReallyTime1(data, 'end_time');
+                  data.morph_industry = data.morph_industry.map((item) => item.industry_id);
                   this.activity = data;
                   if (this.activity.has_many_details.length < 5) {
                     for (let i = 0; i < 6 - this.activity.has_many_details.length; i++) {
                       this.setActiveityFive();
                     }
                   }
-                  this.loading = false;
                 } else {
                   error(res.data.error_msg);
                 }
+                this.loading = false;
               })
               .catch(err => {
                 this.loading = false;
@@ -440,6 +454,34 @@
           }
           resolve(1);
         });
+      },
+      getAllCompetition () {
+        return new Promise((resolve, reject) => {
+          this.loading = true;
+          this.$http.post(this.URL.getAllCompetition, {user_id: localStorage.user_id})
+            .then(res => {
+              let data = res.data.data;
+              if (res.data.status_code === 2000000) {
+                this.match = this.getSelect(data);
+                resolve(1);
+              }
+              this.loading = false;
+            })
+            .catch(err => {
+              this.loading = false;
+              console.log(err);
+            });
+        });
+      },
+      getSelect (data) {
+        let arr = [];
+        for (let key in data) {
+          let obj = {};
+          obj.label = data[key];
+          obj.value = key;
+          arr.push(obj);
+        }
+        return arr;
       },
       // 强行5条数据
       setActiveityFive () {
@@ -484,6 +526,7 @@
               this.loading = true;
               let allData = this.activity;
               allData.user_id = localStorage.user_id;
+              allData.competition_id = this.competition_id;
               allData.activity_area = allData.activity_area === '' ? 0 : allData.activity_area;
               allData.activity_city = allData.activity_city === '' ? 0 : allData.activity_city;
               allData.activity_province = allData.activity_province === '' ? 0 : allData.activity_province;
@@ -597,6 +640,7 @@
           // 做一些异步操作
           setTimeout(() => {
             this.area = this.$global.data.area;// 设置城市1列表
+            this.industry = this.$global.data.industry;// 设置轮次信息
             resolve(2);
           }, 200);
         });
@@ -604,18 +648,20 @@
       // 获取id
       getCompetitionId () {
         this.competition_id = this.$route.query.competition_id;
+        this.activity_id = this.$route.query.activity_id;
       }
     },
     // 当dom一创建时
     created () {
-//      this.getCompetitionId();
-//      this.$global.func.getWxProjectCategory()
-//        .then((data) => {
-//          return this.getWxProjectCategory();
-//        })
-//        .then((data) => {
-//          return this.getActivity();
-//        });
+      this.getCompetitionId();
+      this.getAllCompetition();
+      this.$global.func.getWxProjectCategory()
+        .then((data) => {
+          return this.getWxProjectCategory();
+        })
+        .then((data) => {
+          return this.getActivity();
+        });
     },
     beforeRouteLeave (to, from, next) {
       if (!this.saveControl) {

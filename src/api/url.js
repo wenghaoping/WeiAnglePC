@@ -258,5 +258,10 @@ export default
   getOneCompetition: 'api/competition/getOneCompetition', // 赛事详情
   editCompetition: 'api/competition/editCompetition', // 编辑赛事
   getJudgeList: 'api/competition/getJudgeList', // 评委列表
-  editJudge: 'api/competition/editJudge' // 编辑评委
+  editJudge: 'api/competition/editJudge', // 编辑评委
+  getOneJudge: 'api/competition/getOneJudge', // 编辑评委
+  competitionSetJudgeAuth: 'api/competition/setJudgeAuth', // 设置评分阶段
+  deleteJudge: 'api/competition/deleteJudge', // 设置评分阶段
+  getAllCompetition: 'api/competition/getAllCompetition', // 下拉框获取所有的赛事
+  checkUserByMobile: 'api/user/checkUserByMobile' // 通过手机号查用户
 };

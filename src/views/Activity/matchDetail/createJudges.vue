@@ -89,25 +89,6 @@
                         <el-input v-model="contacts.user_company_career" placeholder="请输入职位"></el-input>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="12">
-                      <el-form-item
-                        label="人脉标签"
-                        prop="user_invest_tag">
-                        <el-select v-model="contacts.user_invest_tag"
-                                   multiple placeholder="请添加" class="width360"
-                                   :multiple-limit="multiplelimit"
-                                   filterable allow-create
-                                   default-first-option
-                                   @change="addChangeTag">
-                          <el-option
-                            v-for="item in tags_con"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                          </el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
                   </el-row>
                 </el-form>
               </div>
@@ -162,6 +143,7 @@
         loading: false,
         uploadAddress: this.URL.weitianshiLine + this.URL.uploadConnectCard + localStorage.token, // 上传地址
         judge_id: '', // 名片ID
+        competition_id: '',
         nullRule: { validator: checkNull, trigger: 'blur' },
         PhoneRule: { validator: checkPhoneNumber, trigger: 'blur' },
         multiplelimit: 5, // 一次最多选5个,下拉表
@@ -184,7 +166,6 @@
           import_user_name: '', // 来源
           user_brand: '', // 品牌
           user_company_career: '', // 职位
-          user_invest_tag: [], // 人脉标签
           user_avatar_url: '', // 头像URL
           user_invest_industry: [], // 领域标签
           user_invest_stage: [], // 轮次
@@ -196,8 +177,6 @@
           user_invest_desc: '', // 投资需求描述
           user_resource_desc: ''// 资源需求描述
         }, // 人脉参数
-
-        tags_con: [], // 人脉标签选项
         industry: [], // 领域标签选项
         stage: [], // 轮次标签选项
         scale: [], // 投资金额100-500选项
@@ -262,28 +241,6 @@
         this.uploadDate.judge_id = this.judge_id;
       }, // 上传前的数据修改
       // 添加人脉标签
-      addChangeTag (e) {
-        let tagName = formatData.checkArr(e, this.tags_con);
-        if (tagName !== undefined) {
-          if (tagName.length > 40) {
-            error('最多输入40个字');
-            this.contacts.user_invest_tag.pop();
-          } else {
-            this.$http.post(this.URL.createCustomTag, {user_id: localStorage.user_id, type: 3, tag_name: tagName})
-              .then(res => {
-                let newState = {};
-                newState.label = tagName;
-                newState.value = res.data.tag_id;
-                this.tags.changecont.push(newState);
-//                this.$global.func.getWxProjectCategory();
-              })
-              .catch(err => {
-                error('添加失败');
-                console.log(err);
-              });
-          }
-        }
-      }, // 添加人脉标签
       checkPhoneNumber (value) {
         let check = false;
         if (!validata.getNull(value)) {
@@ -342,21 +299,29 @@
             return check();
           })
           .then((data) => {
-            if (data) {
+            return this.checkUserByMobile();
+          })
+          .then((data) => {
+            if (data.judge_user_id === 0) {
               this.zgClick('提交人脉');
               this.loading = true;
-              formatData.setTag(this.contacts.user_invest_tag, this.tags.changecont);
               let allData = {};
               allData = this.contacts;
               allData.user_id = localStorage.user_id;
-              allData.judge_id = this.contacts.judge_id || '';
+              allData.judge_user_id = data.judge_user_id;
+              allData.judge_id = this.contacts.judge_id || 0;
+              allData.competition_id = this.competition_id;
               allData.image_id = this.uploadShow.image_id || '';
               this.$http.post(this.URL.editJudge, allData)
                 .then(res => {
-                  this.judge_id = res.data.judge_id;
-                  this.loading = false;
-                  this.open2('创建成功', '您添加的评委已是微天使的注册用户，一经保存，手机号将不可修改，请确认评委信息', '查看详情', '返回人脉列表');
-                  this.saveControl = true;
+                  if (res.data.status_code === 2000000) {
+                    this.judge_id = res.data.judge_id;
+                    this.loading = false;
+                    this.saveControl = true;
+                    this.open2('提示', '创建成功', '继续编辑', '返回列表');
+                  } else {
+                    error(res.data.error_msg);
+                  }
 //              //路由传参
                 })
                 .catch(err => {
@@ -364,6 +329,43 @@
                   console.log(err);
                   this.loading = false;
                 });
+            } else {
+              this.$confirm('您添加的评委已是微天使的注册用户，一经保存，手机号将不可修改，请确认评委信息, 是否继续?', '确认评委信息', {
+                confirmButtonText: '保存',
+                cancelButtonText: '取消',
+                type: 'success'
+              }).then(() => {
+                this.loading = true;
+                let allData = {};
+                allData = this.contacts;
+                allData.user_id = localStorage.user_id;
+                allData.judge_user_id = data.judge_user_id;
+                allData.judge_id = this.contacts.judge_id || 0;
+                allData.competition_id = this.competition_id;
+                allData.image_id = this.uploadShow.image_id || '';
+                this.$http.post(this.URL.editJudge, allData)
+                  .then(res => {
+                    if (res.data.status_code === 2000000) {
+                      this.judge_id = res.data.judge_id;
+                      this.loading = false;
+                      this.saveControl = true;
+                      this.open2('提示', '创建成功', '继续编辑', '返回列表');
+                    } else {
+                      error(res.data.error_msg);
+                    }
+//              //路由传参
+                  })
+                  .catch(err => {
+                    error('编辑失败');
+                    console.log(err);
+                    this.loading = false;
+                  });
+              }).catch(() => {
+                this.$message({
+                  type: 'info',
+                  message: '已取消'
+                });
+              });
             }
           });
       }, // 保存人脉
@@ -410,9 +412,9 @@
           cancelButtonText: cancel,
           type: 'success'
         }).then(() => {
-          this.$router.push({name: 'contactsDetails', query: {judge_id: this.judge_id, user_id: this.contacts.user_id}});
+          this.getOneJudge();
         }).catch(() => {
-          this.$router.push({name: 'myContacts', query: {activeTo: 1}});
+          this.$router.go(-1);
         });
       },
       // 检查所有必填项目以及获取所有数据/true过.false不过
@@ -445,12 +447,12 @@
         object.image_id = obj.image_id;
         this.uploadShow = object;
       }, // 设置名片
-      getOneUserInfo () {
+      getOneJudge () {
         return new Promise((resolve, reject) => {
           // 做一些异步操作
           if (this.judge_id !== 'creat') {
             this.loading = true;
-            this.$http.post(this.URL.getOneUserInfo, {user_id: localStorage.user_id, judge_id: this.judge_id})
+            this.$http.post(this.URL.getOneJudge, {user_id: localStorage.user_id, judge_id: this.judge_id})
               .then(res => {
                 if (res.data.status_code === 420008) {
                   warning('这不是您的人脉,您无权查看');
@@ -484,7 +486,29 @@
       }, // 获取个人详情
       getJudgeId () {
         this.judge_id = this.$route.query.judge_id;
-      }// 获取id
+        this.competition_id = this.$route.query.competition_id;
+      }, // 获取id
+      checkUserByMobile () {
+        return new Promise((resolve, reject) => {
+          if (this.contacts.user_mobile === '') {
+            resolve({judge_user_id: 0});
+          } else {
+            // 做一些异步操作
+            this.$http.post(this.URL.checkUserByMobile, {user_id: localStorage.user_id, user_mobile: this.contacts.user_mobile})
+              .then(res => {
+                if (res.data.status_code === 2000000) {
+                  resolve(res.data);
+                } else {
+                  error(res.data.error_msg);
+                }
+              })
+              .catch(err => {
+                this.loading = false;
+                console.log(err);
+              });
+          }
+        });
+      } // 通过手机号查用户
     },
     components: {
       cardUpload
@@ -497,7 +521,7 @@
           return this.getWxProjectCategory();
         })
         .then((data) => {
-          return this.getOneUserInfo();
+          return this.getOneJudge();
         });
     },
     beforeRouteLeave (to, from, next) {
