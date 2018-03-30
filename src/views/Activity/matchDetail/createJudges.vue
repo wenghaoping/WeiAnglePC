@@ -351,7 +351,7 @@
               allData.user_id = localStorage.user_id;
               allData.judge_id = this.contacts.judge_id || '';
               allData.image_id = this.uploadShow.image_id || '';
-              this.$http.post(this.URL.createUserCard, allData)
+              this.$http.post(this.URL.editJudge, allData)
                 .then(res => {
                   this.judge_id = res.data.judge_id;
                   this.loading = false;
@@ -482,7 +482,7 @@
           resolve(1);
         });
       }, // 获取个人详情
-      getContactsId () {
+      getJudgeId () {
         this.judge_id = this.$route.query.judge_id;
       }// 获取id
     },
@@ -491,7 +491,7 @@
     },
     created () {
       getTop();
-      this.getContactsId();
+      this.getJudgeId();
       this.$global.func.getWxProjectCategory()
         .then((data) => {
           return this.getWxProjectCategory();

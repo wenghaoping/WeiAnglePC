@@ -367,6 +367,7 @@
         this.loading = true;
         this.getCon.user_id = localStorage.user_id;
         this.getCon.page = page;// 控制当前页码
+        this.getCon.competition_id = this.competition_id;
         this.$http.post(this.URL.getJudgeList, this.getCon)
           .then(res => {
             let data = res.data.data;

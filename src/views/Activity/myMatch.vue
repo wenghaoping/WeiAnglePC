@@ -178,7 +178,7 @@
           let obj = [];
           obj.competition_id = list[i].competition_id;
           obj.competition_name = list[i].competition_name;
-          obj.industry = setTagToString(list[i].industry);
+          obj.industry = setTagToString(list[i].industry, 'industry_name');
           obj.start_time = list[i].start_time;
           obj.end_time = list[i].end_time;
           obj.created_at = list[i].created_at;

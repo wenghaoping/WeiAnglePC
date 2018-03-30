@@ -416,12 +416,11 @@
                     });
                     this.$refs['moreUpload' + index][0].setPlanList(v.belongs_to_many_images_url);
                   });
+                  data.morph_industry = data.morph_industry.map((item) => item.industry_id);
+                  console.log(data);
                   this.competition = data;
-                  console.log(this.competition.has_many_details.length);
                   if (this.competition.has_many_details.length < 5) {
                     for (let i = 0; i < 6 - this.competition.has_many_details.length; i++) {
-                      console.log('运行了1次');
-                      console.log(this.competition.has_many_details.length);
                       this.setActiveityFive();
                     }
                   }
@@ -499,6 +498,8 @@
                   if (res.data.status_code === 2000000) {
                     this.saveControl = true;
                     this.$router.push({name: 'successMatch', query: {match_title: allData.activity_title}});
+                  } else {
+                    error(res.data.error_msg);
                   }
                   this.loading = false;
                 })
