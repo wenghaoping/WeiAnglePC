@@ -21,6 +21,7 @@
               <el-tooltip class="item" effect="dark"  placement="top-start" :disabled="project.pro_company_name.length > 13? false:true">
                 <div slot="content">
                   <div class="tips-txt">{{project.pro_company_name}}</div>
+                  <div class="tips-txt">{{project.pro_company_name}}</div>
                 </div>
                 <span class="company"  style="width: 220px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{project.pro_company_name}}</span>
               </el-tooltip>
@@ -820,7 +821,8 @@
         getFollowData: false, // 看是否要获取跟进的数据
         scrolled: false,
         qrImg: '', // 二维码地址
-        InvestorType: 'userInfo' // 人脉详情弹框,应该用那种数据设置
+        InvestorType: 'userInfo', // 人脉详情弹框,应该用那种数据设置
+        competition_id: ''
       };
     },
     computed: {
@@ -1080,13 +1082,14 @@
       // 获取id
       getprojectId () {
         this.project.project_id = this.$route.query.project_id;
+        this.competition_id = this.$route.query.competition_id;
         this.activeFrom = this.$route.query.activeTo || 0;
         this.show = this.$route.query.show || 'detail';
       },
       // 编辑项目
       toEdit () {
         this.zgClick('编辑项目');
-        this.$router.push({name: 'editproject', query: {project_id: this.project.project_id}});
+        this.$router.push({name: 'editproject', query: {project_id: this.project.project_id, competition_id: this.competition_id}});
       },
       // 打开人脉详情弹窗
       toDetail (data) {
@@ -1133,7 +1136,6 @@
         else this.tabs = false;
       },
       // 设置意向投资人右边
-
       // 获取意向项目数据(图表)
       async getEchartData () {
         return new Promise((resolve, reject) => {

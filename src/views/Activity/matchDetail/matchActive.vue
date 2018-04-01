@@ -139,7 +139,7 @@
         competition_id: '',
         searchinput: '', // 搜索绑定
         totalData: 1, // 总页数
-        currentPage: 1, // 当前页数
+        activeCurrentPage: 1, // 当前页数
         getCon: {}, // 筛选的请求参数
         // 列表数据
         tableData: [
@@ -162,7 +162,7 @@
     methods: {
       // 点击编辑按钮,跳转
       handleEdit (row) {
-        this.$router.push({name: 'creatMatchActive', query: {activity_id: row.activity_id, competition_id: this.competition_id}});
+        this.$router.push({name: 'creatMatchActive', query: {activity_id: row.activity_id, competition_id: this.competition_id, type: 'competition'}});
       },
       // 点击删除按钮
       handleDelete (row) {
@@ -196,7 +196,7 @@
       },
       // 添加人脉
       creatMatchActive () {
-        this.$router.push({name: 'creatMatchActive', query: {competition_id: this.competition_id, activity_id: 'creat'}});// 路由传参
+        this.$router.push({name: 'creatMatchActive', query: {activity_id: 'creat', competition_id: this.competition_id, type: 'competition'}});// 路由传参
       },
       // 查看报名成员 / 签到成员
       toMember (row, type) {

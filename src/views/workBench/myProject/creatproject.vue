@@ -441,6 +441,7 @@
       };// 可以为空,必须为数字,比例数值1-100判断
       return {
         projectMust: false,
+        competition_id: '',
         uploadAddress: this.URL.weitianshiLine + this.URL.projectUpload + localStorage.token, // 上传地址
         planList: [], // 商业计划书上传列表
         planButton: false, // 控制上传按钮的显示
@@ -463,6 +464,7 @@
 //          }
           ],
           project_id: '',
+          competition_id: '',
           pro_name: '', // 项目名称
           pro_company_name: '', // 公司名称
           pro_intro: '', // 项目介绍
@@ -853,9 +855,13 @@
             type: 'success',
             message: '继续完善'
           });
-          this.$router.push({name: 'editproject', query: {project_id: this.project.project_id}});
+          this.$router.push({name: 'editproject', query: {project_id: this.project.project_id, competition_id: this.competition_id}});
         }).catch(() => {
-          this.$router.push({name: 'myProject'});
+          if (this.competition_id === 0) {
+            this.$router.push({name: 'myProject', query: {activeTo: 0}});
+          } else {
+            this.$router.push({name: 'matchDetail', query: {competition_id: this.competition_id}});
+          }
         });
       },
       oneCheck (item) {
@@ -1068,6 +1074,8 @@
       },
       getprojectId () {
         this.project.project_id = this.$route.query.project_id || '';
+        this.project.competition_id = this.$route.query.competition_id || '';
+        this.competition_id = this.$route.query.competition_id || '';
       },
       // 获取微信或者ios传过来的数据
       getWxosProjectData () {

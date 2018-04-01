@@ -398,6 +398,7 @@
               .then(res => {
                 if (res.data.status_code === 2000000) {
                   let data = res.data.data;
+                  this.$store.dispatch('getMatchDetail', data);
                   this.area1Change(data.competition_province, 'province');
                   this.area1Change(data.competition_city, 'city');
                   this.competition_area = data.competition_area;
@@ -496,7 +497,7 @@
                 .then(res => {
                   if (res.data.status_code === 2000000) {
                     this.saveControl = true;
-                    this.$router.push({name: 'successMatch', query: {match_title: allData.activity_title}});
+                    this.$router.push({name: 'successMatch', query: {match_title: allData.activity_title, url: res.data.data}});
                   } else {
                     error(res.data.error_msg);
                   }

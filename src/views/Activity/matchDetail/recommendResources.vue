@@ -21,7 +21,7 @@
     data () {
       return {
         loading: false,
-        activeName: 'recommendInvestor',
+        activeName: 'recommendProjects',
         competition_id: ''
       };
     },

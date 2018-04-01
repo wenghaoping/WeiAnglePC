@@ -255,12 +255,12 @@
                     <el-button
                       type="text"
                       size="small" class="send-btn btn-cur">
-                      评分阶段<i class="el-icon-caret-bottom el-icon--right"></i>
+                      比赛阶段<i class="el-icon-caret-bottom el-icon--right"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item>黄金糕</el-dropdown-item>
-                      <el-dropdown-item>狮子头</el-dropdown-item>
-                      <el-dropdown-item>螺蛳粉</el-dropdown-item>
+                      <el-dropdown-item v-for='(schedule, index) in scheduleFilters' :key="index">
+                        <div @click="setJudgeAuth(scope.row, schedule.value)">{{schedule.text}}</div>
+                      </el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
                 </div>
@@ -304,15 +304,6 @@
     <!--自定义项目列表-->
     <project-lists-custom :listsDisplay="listsDisplay" @closeLists="closeLists"></project-lists-custom>
 
-    <!--    <div class="page-grid wrap-right contain-right-2 fl">
-          <div class="main-box">
-            <div class="title-box">
-              <span class="lit-line"></span>
-              <span class="title">动态记录</span>
-              <span class="lit-line"></span>
-            </div>
-          </div>
-        </div>-->
   </div>
 </template>
 
@@ -343,6 +334,7 @@
     },
     data () {
       return {
+        competition_id: '',
         uploadDisplay: false, // 上传弹框控制
         previewDisplay: false, // 控制项目推送预览显隐
         scoreDisplay: false, // 评分指标弹窗
@@ -404,10 +396,32 @@
           'created_at'
         ],
         checkTime: null, // 点击放慢
-        checkTimeTrue: true
+        checkTimeTrue: true,
+        scheduleFilters: [/* { text: '3000万', value: '3000万' } */]
       };
     },
     methods: {
+      getAllNode () {
+        this.$http.post(this.URL.getAllNode, {user_id: localStorage.user_id})
+          .then(res => {
+            let data = res.data.data;
+            this.scheduleFilters = this.getTit(data);
+          })
+          .catch(err => {
+            this.loading = false;
+            console.log(err);
+          });
+      },
+      getTit (data) {
+        let arr = [];
+        for (let i = 0; i < data.length; i++) {
+          let obj = {};
+          obj.text = data[i].schedule_name;
+          obj.value = data[i].schedule_id;
+          arr.push(obj);
+        }
+        return arr;
+      },
       // 批量上传项目
       uploadAll () {
         this.uploadDisplay = true;
@@ -417,36 +431,18 @@
       handleSelect (row, event, column) {
         if (column.label !== '重置') {
           this.zgClick('查看项目详情');
-          this.$router.push({name: 'projectDetails', query: {project_id: row.project_id, show: 'detail'}});
-          this.setRouterData();
+          this.$router.push({name: 'projectDetails', query: {project_id: row.project_id, show: 'detail', competition_id: this.competition_id}});
         }
-      },
-      // 跳转之后设置参数
-      setRouterData () {
-        this.$store.state.pageANDSelect.getPra = this.getPra;
-        this.$store.state.pageANDSelect.pracurrentPage = this.currentPage;
-      },
-      // 从vuex中取数据
-      getRouterData () {
-        this.getPra = this.$store.state.pageANDSelect.getPra;
-        this.currentPage = this.$store.state.pageANDSelect.pracurrentPage || 1;
-        this.getPra.page = this.$store.state.pageANDSelect.pracurrentPage || 1;
-        let node = this.$store.state.pageANDSelect.node || 0;
-        this.searchinput = this.$store.state.pageANDSelect.proSearchinput || '';
-        this.pro_schedule = node;
-        this.setNodeCss(node);
       },
       // 跳转到编辑页
       handleEdit (index, row) {
         this.zgClick('编辑项目');
-        this.$router.push({name: 'editproject', query: {project_id: row.project_id}});
-        this.setRouterData();
+        this.$router.push({name: 'editproject', query: {project_id: row.project_id, competition_id: this.competition_id}});
       },
       // 跳转到创建项目页面
       createProject () {
         this.zgClick('创建项目');
-        this.$router.push({name: 'creatproject'});
-        this.setRouterData();
+        this.$router.push({name: 'creatproject', query: {competition_id: this.competition_id}});
       },
       // 控制上传弹窗
       uploadDisplayChange (msg) {
@@ -472,6 +468,7 @@
         this.loading = true;
         this.getPra.user_id = localStorage.user_id;
         this.getPra.search = this.searchinput;
+        this.getPra.competition_id = this.competition_id;
         this.$store.state.pageANDSelect.proSearchinput = this.searchinput;
         this.currentPage = 1;
         this.getPra.page = 1;
@@ -493,6 +490,7 @@
         this.loading = true;
         this.currentPage = 1;
         this.getPra.user_id = localStorage.user_id;
+        this.getPra.competition_id = this.competition_id;
         if (filters.pro_schedule) {
           if (parseInt(filters.pro_schedule)) {
             this.setNode(parseInt(filters.pro_schedule));
@@ -542,6 +540,7 @@
         delete this.getPra.page;
         this.loading = true;
         this.getPra.user_id = localStorage.user_id;
+        this.getPra.competition_id = this.competition_id;
         this.getPra.page = page;// 控制当前页码
         this.getPra.pro_schedule = this.pro_schedule;
         this.$http.post(this.getProjectListURL, this.getPra)
@@ -565,7 +564,7 @@
         this.setNodeCss(id);
         this.getPra.pro_schedule = parseInt(id);
         this.pro_schedule = this.getPra.pro_schedule;
-        this.$http.post(this.getProjectListURL, {user_id: localStorage.user_id, pro_schedule: parseInt(id)})
+        this.$http.post(this.getProjectListURL, {user_id: localStorage.user_id, pro_schedule: parseInt(id), competition_id: this.competition_id})
           .then(res => {
             this.loading = false;
             let data = res.data.data;
@@ -592,7 +591,7 @@
       // 获取项目节点数量
       getNodeCount () {
         this.loading2 = true;
-        this.$http.post(this.URL.getNodeCount, {user_id: localStorage.user_id})
+        this.$http.post(this.URL.getNodeCount, {user_id: localStorage.user_id, competition_id: this.competition_id})
           .then(res => {
             let data = res.data.data;
             this.nodeCount.whole = data.count;// 全部项目
@@ -658,7 +657,6 @@
       },
       // 删除项目
       deleteProject (index, row) {
-        this.setRouterData();
         this.$confirm('此操作将永久删除该项目, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -670,7 +668,6 @@
             .then(res => {
               this.loading = false;
               success('删除成功');
-              this.getRouterData();
               this.filterChangeCurrent(this.currentPage || 1);
             })
             .catch(err => {
@@ -732,7 +729,25 @@
       // 跳转到评价
       goScoreStatistics (index, row) {
         this.$router.push({name: 'projectDetails', query: {project_id: row.project_id, show: 'scoreStatistics'}});
-        this.setRouterData();
+      },
+      // 设置评委阶段
+      setJudgeAuth (row, schedulesId) {
+        this.$http.post(this.URL.setProjectSchedule, {user_id: localStorage.user_id, project_id: row.project_id, schedule_id: schedulesId})
+          .then(res => {
+            if (res.data.status_code === 2000000) {
+              success('设置成功');
+              this.filterChangeCurrent(this.currentPage || 1);
+            } else {
+              error(res.data.error_msg);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      // 获取id
+      getCompetitionId () {
+        this.competition_id = this.$route.query.competition_id;
       }
     },
     mounted () {},
@@ -740,8 +755,9 @@
       this.is_competition = localStorage.is_competition;
       // 组件创建完后获取数据，
       this.getProjectListURL = this.URL.getProjectList;
-      this.getRouterData();
       this.loading = true;
+      this.getAllNode();
+      this.getCompetitionId();
       this.getNodeCount();
       this.titleSift();
       this.filterChangeCurrent(this.currentPage || 1);

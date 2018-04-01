@@ -77,27 +77,12 @@
           </div>
         </template>
       </div>
-      <div class="emptyType" v-else v-loading="loading" element-loading-text="拼命加载中">
-        <div class="position_auto absolute" style="width: 150px;height: 180px;">
-          <div class="shape innImg absolute position_center_auto" v-if="emptyType">
-            <img src="../../../../assets/images/shape.png">
-          </div>
-          <div class="empty_title tc absolute position_center_auto" style="top: 80px;" v-if="emptyType">
-            你目前还没有任何活动
-          </div>
-          <div class="empty_title tc absolute position_center_auto" style="top: 80px;width: 210px;" v-if="!emptyType">
-            暂时没有符合该搜索条件的活动
-          </div>
-          <el-button @click="creatMatchActive" class="absolute position_center_auto" style="top: 124px;left: 28px;" v-if="emptyType">马上发布</el-button>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import { mapState } from 'vuex';
-  import { error, success } from '@/utils/notification';
+  import { error } from '@/utils/notification';
   import { getTop } from '@/utils';
   export default {
     props: {},
@@ -133,54 +118,6 @@
       };
     },
     methods: {
-      // 点击编辑按钮,跳转
-      handleEdit (row) {
-        this.$router.push({name: 'creatMatchActive', query: {competition_id: row.competition_id}});
-      },
-      // 点击删除按钮
-      handleDelete (row) {
-        this.$confirm('删除后不可恢复，确定要删除该活动？, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.loading = true;
-          this.$http.post(this.URL.deleteActivity, {user_id: localStorage.user_id, activity_id: row.activity_id})
-            .then(res => {
-              if (res.data.status_code === 2000000) {
-                success('删除成功');
-                this.filterChangeCurrent(this.activeCurrentPage || 1);
-              } else {
-                error(res.data.error_msg);
-              }
-              this.loading = false;
-            })
-            .catch(err => {
-              this.loading = false;
-              error('删除失败');
-              console.log(err);
-            });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
-      },
-      // 添加人脉
-      creatMatchActive () {
-        this.$router.push({name: 'creatMatchActive', query: {competition_id: 'creat'}});// 路由传参
-      },
-      // 查看报名成员 / 签到成员
-      toMember (row, type) {
-        this.$store.dispatch('setActivityData', {activityId: row.activity_id, isSign: type});
-        this.$store.dispatch('memberControl', true);
-      },
-      // 查看二维码
-      getQrAcitivity (row, type) {
-        this.$store.dispatch('setActivityData', {activityId: row.activity_id, isSign: type});
-        this.$store.dispatch('qrCodeActivityControl', true);
-      },
       // 搜索===首次进入页面加载的数据
       handleIconClick () {
         return new Promise((resolve, reject) => {
@@ -255,13 +192,9 @@
         return arr;
       }
     },
-    computed: {
-      ...mapState({
-        activeSearch: state => state.myActivity.activeSearch || ''
-      })
-    },
-    created () {},
-    watch: {}
+    created () {
+      //      this.filterChangeCurrent(this.currentPage || 1);
+    }
   };
 </script>
 

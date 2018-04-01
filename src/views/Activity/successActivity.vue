@@ -30,6 +30,8 @@
     data () {
       return {
         loading: false,
+        type: '',
+        competition_id: '',
         activityTitle: '互动名称'
       };
     },
@@ -37,9 +39,15 @@
       // 获取id
       getActivityId () {
         this.activityTitle = this.$route.query.activity_title;
+        this.type = this.$route.query.type || '';
+        this.competition_id = this.$route.query.competition_id || '';
       },
       goMyActivity () {
-        this.$router.push({name: 'myActivity'});
+        if (this.type === 'competition') {
+          this.$router.push({name: 'matchDetail', query: {competition_id: this.competition_id}});
+        } else {
+          this.$router.push({name: 'myActivity'});
+        }
       }
     },
     // 当dom一创建时

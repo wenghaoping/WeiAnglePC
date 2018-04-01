@@ -37,12 +37,11 @@
                       <el-col :span="12">
                         <el-form-item
                           label="关联赛事"
-                          prop="competition_id"
-                          :rules="[{required: true, message: '关联赛事不能为空', trigger: 'change'}]">
+                          prop="competition_id">
                           <el-select
                             v-model="activity.competition_id"
                             filterable
-                            placeholder="请添加领域，支持检索" class="width360">
+                            placeholder="请添加赛事，支持检索" class="width360">
                             <el-option
                               v-for="item in match"
                               :key="item.value"
@@ -57,8 +56,7 @@
                       <el-col :span="12">
                         <el-form-item
                           label="赛事领域"
-                          prop="morph_industry"
-                          :rules="[{type: 'array',required: true, message: '赛事领域不能为空', trigger: 'change'}]">
+                          prop="morph_industry">
                           <el-select
                             v-model="activity.morph_industry"
                             multiple filterable
@@ -436,6 +434,7 @@
                   formatData.setTimeToReallyTime1(data, 'start_time');
                   formatData.setTimeToReallyTime1(data, 'end_time');
                   data.morph_industry = data.morph_industry.map((item) => item.industry_id);
+                  data.competition_id = data.competition_id === 0 ? '' : data.competition_id.toString();
                   this.activity = data;
                   if (this.activity.has_many_details.length < 5) {
                     for (let i = 0; i < 6 - this.activity.has_many_details.length; i++) {
@@ -451,6 +450,8 @@
                 this.loading = false;
                 console.log(err);
               });
+          } else {
+            this.activity.competition_id = this.competition_id;
           }
           resolve(1);
         });
@@ -525,8 +526,8 @@
             if (data && this.submitButton === -1) {
               this.loading = true;
               let allData = this.activity;
+              allData.morph_industry = allData.morph_industry.length === 0 ? '' : allData.morph_industry;
               allData.user_id = localStorage.user_id;
-              allData.competition_id = this.competition_id;
               allData.activity_area = allData.activity_area === '' ? 0 : allData.activity_area;
               allData.activity_city = allData.activity_city === '' ? 0 : allData.activity_city;
               allData.activity_province = allData.activity_province === '' ? 0 : allData.activity_province;
@@ -544,7 +545,7 @@
                 .then(res => {
                   if (res.data.status_code === 2000000) {
                     this.saveControl = true;
-                    this.$router.push({name: 'successActivity', query: {activity_title: allData.activity_title}});
+                    this.$router.push({name: 'successActivity', query: {activity_title: allData.activity_title, type: this.type, competition_id: this.competition_id}});
                   }
                   this.loading = false;
                 })
@@ -649,6 +650,7 @@
       getCompetitionId () {
         this.competition_id = this.$route.query.competition_id;
         this.activity_id = this.$route.query.activity_id;
+        this.type = this.$route.query.type;
       }
     },
     // 当dom一创建时

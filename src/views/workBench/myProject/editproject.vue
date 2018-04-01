@@ -1566,7 +1566,8 @@
         tagShow: 0, // 控制标签显示隐藏
         saveControl: false, // 控制是否保存
         uploadLogoAddress: this.URL.weitianshiLine + this.URL.uploadProjectLogo + localStorage.token, // 上传地址
-        uploadDateLogo: {user_id: localStorage.user_id, project_id: this.$route.query.project_id || ''} // 名片上传所带的额外的参数
+        uploadDateLogo: {user_id: localStorage.user_id, project_id: this.$route.query.project_id || ''}, // 名片上传所带的额外的参数
+        competition_id: ''
       };
     },
     computed: {
@@ -2687,9 +2688,13 @@
           cancelButtonText: cancel,
           type: 'success'
         }).then(() => {
-          this.$router.push({name: 'projectDetails', query: {project_id: this.project_id}});
+          this.$router.push({name: 'projectDetails', query: {project_id: this.project_id, competition_id: this.competition_id}});
         }).catch(() => {
-          this.$router.push({name: 'myProject', query: {activeTo: 0}});
+          if (this.competition_id === 0) {
+            this.$router.push({name: 'myProject', query: {activeTo: 0}});
+          } else {
+            this.$router.push({name: 'matchDetail', query: {competition_id: this.competition_id}});
+          }
         });
       },
       // 锚点跳转
@@ -2808,6 +2813,8 @@
       getprojectId () {
         this.project_id = this.$route.query.project_id || '';
         this.project.project_id = this.$route.query.project_id || '';
+        this.project.competition_id = this.$route.query.competition_id || '';
+        this.competition_id = this.$route.query.competition_id;
       },
       // 开始同步信息(是否覆盖信息)
       syncCompanyData (msg) {

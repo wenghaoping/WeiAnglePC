@@ -1,7 +1,7 @@
 <template>
     <div class="alertMember">
       <el-dialog :visible="memberDisplay" custom-class="dialogFollow" :before-close="handleClose"
-                 close-on-press-escape close-on-click-modal lock-scroll
+                 close-on-press-escape close-on-click-modal lock-scroll :modal="showList"
                  :close-on-click-modal="showList" :close-on-press-escape="showList" size="small">
         <p class="tc" style="font-size:24px;color:#1f2d3d;margin-bottom: 24px;font-weight: bolder">— {{title}} —</p>
         <el-table :data="tableData"

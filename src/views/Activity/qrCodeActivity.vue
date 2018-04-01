@@ -1,8 +1,8 @@
 <template>
   <!--二维码-->
   <div class="qrCodeActivity">
-    <el-dialog :visible="qrCodeActivityDisplay" :before-close="cancel" close-on-press-escape close-on-click-modal lock-scroll
-               :close-on-click-modal="showList" :close-on-press-escape="showList" size="large">
+    <el-dialog :visible="qrCodeActivityDisplay" :before-close="cancel" close-on-press-escape close-on-click-modal
+               :close-on-click-modal="showList" :close-on-press-escape="showList" size="large" :modal="showList">
       <div class="side fl">
         <div class="title">可放于签到处</div>
         <div class="title">让嘉宾自行扫码签到</div>
@@ -62,18 +62,33 @@
       // 获取二维码
       getQr () {
         this.loading = true;
-        this.$http.post(this.URL.getSignQrCode, {user_id: localStorage.user_id, activity_id: this.activityId}) // , is_sign: this.isSign
-          .then(res => {
-            if (res.data.status_code === 2000000) {
-              let data = res.data.data || '';
-              this.qrUrl = data || '';
-            }
-            this.loading = false;
-          })
-          .catch(err => {
-            this.loading = false;
-            console.log(err);
-          });
+        if (this.isSign === 1) {
+          this.$http.post(this.URL.getSignQrCode, {user_id: localStorage.user_id, activity_id: this.activityId})
+            .then(res => {
+              if (res.data.status_code === 2000000) {
+                let data = res.data.data || '';
+                this.qrUrl = data || '';
+              }
+              this.loading = false;
+            })
+            .catch(err => {
+              this.loading = false;
+              console.log(err);
+            });
+        } else {
+          this.$http.post(this.URL.getActivityQrCode, {user_id: localStorage.user_id, activity_id: this.activityId})
+            .then(res => {
+              if (res.data.status_code === 2000000) {
+                let data = res.data.data || '';
+                this.qrUrl = data || '';
+              }
+              this.loading = false;
+            })
+            .catch(err => {
+              this.loading = false;
+              console.log(err);
+            });
+        }
       }
     },
     watch: {
@@ -90,8 +105,10 @@
 
 <style lang="less">
 .qrCodeActivity{
+  z-index: 9999;
   .el-dialog{
     width:514px;
+    z-index: 9999;
   }
   .side{
     margin: 0 15px;

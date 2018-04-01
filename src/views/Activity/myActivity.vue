@@ -49,7 +49,7 @@
                 <p class="my_sign tc">{{scope.row.activity_apply | nullToB}}</p>
                 <p class="is_sign tc cursor" @click="toMember(scope.row, 0)">已报名</p>
                 <div class="position_center_auto relative">
-                  <el-button type="text" :disabled="true" @click="getQrAcitivity(scope.row, 0)" class="hoverNoBtn no_img">报名二维码</el-button>
+                  <el-button type="text" @click="getQrAcitivity(scope.row, 0)" class="hoverBtn is_img">报名二维码</el-button>
                 </div>
               </template>
             </el-table-column>
@@ -84,6 +84,7 @@
                   </el-button>
                   <el-button
                     type="text"
+                    :disabled="scope.row.competition_id !== 0"
                     @click="importRegistration(scope.row)"
                     size="small">
                     导入报名名单
@@ -174,7 +175,7 @@
     methods: {
       // 点击编辑按钮,跳转
       handleEdit (row) {
-        this.$router.push({name: 'creatActivity', query: {activity_id: row.activity_id}});
+        this.$router.push({name: 'creatMatchActive', query: {activity_id: row.activity_id}});
       },
       // 点击删除按钮
       handleDelete (row) {
@@ -208,7 +209,7 @@
       },
       // 添加人脉
       creatActivity () {
-        this.$router.push({name: 'creatActivity', query: {activity_id: 'creat'}});// 路由传参
+        this.$router.push({name: 'creatMatchActive', query: {activity_id: 'creat'}});// 路由传参
       },
       // 查看报名成员 / 签到成员
       toMember (row, type) {
@@ -292,6 +293,7 @@
           obj.start_time = list[i].start_time;
           obj.end_time = list[i].end_time;
           obj.is_end = list[i].is_end;
+          obj.competition_id = list[i].competition_id;
           obj.activity_apply = list[i].activity_apply;
           obj.activity_sign = list[i].activity_sign;
           arr.push(obj);

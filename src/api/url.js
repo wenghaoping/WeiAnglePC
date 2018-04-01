@@ -246,6 +246,7 @@ export default
   exportApplyUser: 'api/activity/exportApplyUser', // 导出报名名单模板
   importApplyUser: 'api/activity/importApplyUser?token=', // register
   getSignQrCode: 'api/activity/getSignQrCode', // 获取签到二维码
+  getActivityQrCode: 'api/activity/getActivityQrCode', // 获取报名二维码
   downloadQrCode: 'api/activity/downloadQrCode', // 下载签到二维码
 
   // 手机端入口

@@ -7,7 +7,7 @@
           <i class="el-notification__icon el-icon-circle-check"></i>
         </div>
         <div class="message relative position_center_auto tc clearfix">
-          {{matchTitle}}
+          {{matchData.competition_name}}
         </div>
         <div class="innImg relative position_center_auto clearfix">
           <span class="fl img">
@@ -15,7 +15,8 @@
             <span class="tc name inlineBlock">查看小程序</span>
           </span>
           <span class="fl img" style="margin-left: 30px;">
-            <img src="../../assets/images/weixin.jpg">
+            <img v-if="url === '' || url === null" src="../../assets/images/morenIMG.png">
+            <img :src="url" v-else>
             <span class="tc name inlineBlock">扫码分享</span>
           </span>
         </div>
@@ -29,26 +30,34 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex';
   export default {
     props: {},
     data () {
       return {
         loading: false,
+        type: '',
+        url: '',
+        smallQcr: '', // 小程序分享二维码
         matchTitle: '互动名称'
       };
     },
     methods: {
-      // 获取id
-      getActivityId () {
-        this.matchTitle = this.$route.query.match_title;
-      },
       goMyActivity () {
         this.$router.push({name: 'myMatch'});
+      },
+      // 获取id
+      getCompetitionId () {
+        this.url = this.$route.query.url;
       }
     },
-    // 当dom一创建时
+    computed: {
+      ...mapState({
+        matchData: state => state.myMatch.matchData || {}
+      })
+    },
     created () {
-      this.getActivityId();
+      this.getCompetitionId();
     }
   };
 </script>
@@ -95,7 +104,11 @@
       margin-top: 50px;
       .img{
         width: 120px;
-        height: 120px;
+        height: 137px;
+        img{
+          width: 100%;
+          height: 100%;
+        }
       }
       .name{
         width: 120px;
