@@ -46,7 +46,7 @@
         if (this.type === 'competition') {
           this.$router.push({name: 'matchDetail', query: {competition_id: this.competition_id}});
         } else {
-          this.$router.push({name: 'myActivity'});
+          this.$router.push({name: 'myActivity', query: {activeTo: 1}});
         }
       }
     },

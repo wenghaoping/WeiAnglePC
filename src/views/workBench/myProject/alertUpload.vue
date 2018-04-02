@@ -122,12 +122,16 @@
         showList: false,
         alentTitle: '',
         submitButton: false, // 是否允许提交false允许/true不允许
-        isCheck: true// 显示大上传
+        isCheck: true, // 显示大上传
+        competition_id: ''
       };
     },
     methods: {
       // 1号添加文件后添加入上传列表,并且跳转到多次上传的列表
       handleChange (file, fileList) {
+        if (this.competition_id) {
+          this.uploadDate.competition_id = this.competition_id;
+        }
         this.isCheck = false;
       },
       uploadsuccess (response, file, fileList) {
@@ -291,6 +295,9 @@
       },
       handleClose () {
         this.$emit('uploadDisplayChange', false);
+      },
+      getCompetitionId () {
+        this.competition_id = this.$route.query.competition_id || '';
       }
     },
     computed: {
@@ -308,6 +315,7 @@
       // 如果路由有变化，会再次执行该方法
       uploadDisplay: function (e) {
         if (e) {
+          this.getCompetitionId();
           this.isCheck = true;
         }
       }

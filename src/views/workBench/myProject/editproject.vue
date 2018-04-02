@@ -2644,6 +2644,9 @@
               allData.user_id = localStorage.user_id;// 用户id
               allData.pro_total_score = this.proportion;// 完整度
               allData.project_id = this.project.project_id;// 项目id
+              if (this.competition_id) {
+                allData.competition_id = this.competition_id;
+              }
               if (allData.project.pro_logo_url.length !== 0) {
                 allData.project.pro_logo = allData.project.pro_logo_url[0].image_id; // 主图设置
               } else {
@@ -2814,7 +2817,7 @@
         this.project_id = this.$route.query.project_id || '';
         this.project.project_id = this.$route.query.project_id || '';
         this.project.competition_id = this.$route.query.competition_id || '';
-        this.competition_id = this.$route.query.competition_id;
+        this.competition_id = this.$route.query.competition_id || '';
       },
       // 开始同步信息(是否覆盖信息)
       syncCompanyData (msg) {
@@ -2940,6 +2943,7 @@
     },
     // 当dom一创建时
     created () {
+      this.screenWidth = 1;
       getTop();
       this.loading = true;
       this.getprojectId();

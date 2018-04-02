@@ -246,7 +246,7 @@
                   <el-button
                     type="text"
                     size="small" class="send-btn btn-cur"
-                    @click="handleDelete(scope.$index, scope.row)">
+                    @click="deleteProject(scope.$index, scope.row)">
                     删除
                   </el-button>
                 </div>

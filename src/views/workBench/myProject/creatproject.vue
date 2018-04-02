@@ -911,6 +911,7 @@
               delete allData.project.tag;
               allData.pro_FA = {is_exclusive: this.project.is_exclusive};
               allData.user_id = localStorage.user_id;// 用户id
+              allData.competition_id = this.competition_id;
               allData.pro_total_score = this.proportion;// 完整度
               if (allData.project.pro_logo_url.length !== 0) {
                 allData.project.pro_logo = allData.project.pro_logo_url[0].image_id; // 主图设置

@@ -451,7 +451,7 @@
                 console.log(err);
               });
           } else {
-            this.activity.competition_id = this.competition_id;
+            this.activity.competition_id = this.competition_id.toString();
           }
           resolve(1);
         });
@@ -479,7 +479,7 @@
         for (let key in data) {
           let obj = {};
           obj.label = data[key];
-          obj.value = key;
+          obj.value = key.toString();
           arr.push(obj);
         }
         return arr;
@@ -656,12 +656,13 @@
     // 当dom一创建时
     created () {
       this.getCompetitionId();
-      this.getAllCompetition();
       this.$global.func.getWxProjectCategory()
         .then((data) => {
-          return this.getWxProjectCategory();
+          return this.getAllCompetition();
         })
         .then((data) => {
+          return this.getWxProjectCategory();
+        }).then((data) => {
           return this.getActivity();
         });
     },

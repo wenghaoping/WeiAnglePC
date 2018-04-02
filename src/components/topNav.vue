@@ -1,8 +1,8 @@
 <template>
   <div id="topNav">
     <ul class="selectTop ulfl tc">
-      <li @click="toggle(index)" v-for="(tab,index) in tabs">
-        <router-link :to=" tab.jump " :class="{border:active===index}">
+      <li @click="toggle(index)" v-for="(tab, index) in tabs">
+        <router-link :to=" tab.jump " :class="{border: active === index}">
           {{tab.type}}
         </router-link>
       </li>
@@ -15,7 +15,7 @@
     props: ['tabs'],
     data () {
       return {
-        active: 0
+        active: 1
       };
     },
     methods: {
@@ -25,7 +25,7 @@
     },
     watch: {
       '$route' (to, from) {
-        this.active = to.query.activeTo;
+//        this.active = to.query.activeTo;
       }
     },
     created () {
