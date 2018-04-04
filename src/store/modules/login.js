@@ -9,7 +9,8 @@ export default {
     user_brand: '', // 品牌
     user_company_career: '', // 职位
     user_company_name: '', // 公司名称
-    group_name: '' // 身份认证
+    group_name: '', // 身份认证
+    entrance: 'myProject' // 默认入口
   },
   mutations: {
     // 设置登陆获取的信息
@@ -27,6 +28,10 @@ export default {
     // 设置真实名字（退出登陆的时候需要清空数据）
     [types.SET_USER_REAL_NAME] (state, name) {
       state.user_real_name = name;
+    },
+    // 设置默认进入的入口
+    [types.SET_ENTRANCE] (state, enter) {
+      state.entrance = enter;
     }
   },
   actions: {
@@ -38,6 +43,9 @@ export default {
     },
     setUserRealName ({ commit }, name) {
       commit(types.SET_USER_REAL_NAME, name);
+    },
+    setEntrance ({ commit }, enter) {
+      commit(types.SET_ENTRANCE, enter);
     }
   }
 };

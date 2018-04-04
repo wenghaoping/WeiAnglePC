@@ -23,9 +23,9 @@
           </el-input>
         </div>
         <div class="btns-box">
-          <el-button @click="closeScore(true)" v-if="is_competition == 'true'">大赛评分指标</el-button>
+          <!--<el-button @click="closeScore(true)" v-if="is_competition == 'true'">大赛评分指标</el-button>-->
           <el-button @click="openLists(true)">自定义列表</el-button>
-          <el-button @click="scoreDownload" v-if="is_competition == 'true'">评分下载</el-button>
+          <!--<el-button @click="scoreDownload" v-if="is_competition == 'true'">评分下载</el-button>-->
           <el-button type="primary" @click="uploadAll">批量上传项目</el-button>
           <el-button type="primary" @click="createProject">创建项目</el-button>
         </div>
@@ -295,7 +295,7 @@
     <projectpreview></projectpreview>
 
     <!--评分指标-->
-    <score-index :scoreDisplay="scoreDisplay" @closeScore="closeScore" @chengeSchedule="chengeSchedule"></score-index>
+    <!--<score-index :scoreDisplay="scoreDisplay" @closeScore="closeScore" @chengeSchedule="chengeSchedule"></score-index>-->
 
     <!--自定义项目阶段-->
     <stage-custom :stageDisplay="stageDisplay" @closeStage="closeStage"></stage-custom>

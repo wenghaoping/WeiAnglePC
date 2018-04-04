@@ -151,23 +151,23 @@
               </template>
             </el-table-column>
 <!--赛事方列表-->
-            <el-table-column prop="is_judge" label="是否评委"
-                             show-overflow-tooltip
-                             width="128"
-                             column-key="is_judge"
-                             :filters="is_judgeFilters"
-                             :filter-multiple="stateCheck"
-                             filter-placement="bottom-end"
-                             v-if="is_competition == 'true'">
-              <template slot-scope="scope">
-                <div>
-                  {{scope.row.is_judge}}
-                </div>
-                <div v-if="scope.row.is_judge == ''">
-                  -
-                </div>
-              </template>
-            </el-table-column>
+            <!--<el-table-column prop="is_judge" label="是否评委"-->
+                             <!--show-overflow-tooltip-->
+                             <!--width="128"-->
+                             <!--column-key="is_judge"-->
+                             <!--:filters="is_judgeFilters"-->
+                             <!--:filter-multiple="stateCheck"-->
+                             <!--filter-placement="bottom-end"-->
+                             <!--v-if="is_competition == 'true'">-->
+              <!--<template slot-scope="scope">-->
+                <!--<div>-->
+                  <!--{{scope.row.is_judge}}-->
+                <!--</div>-->
+                <!--<div v-if="scope.row.is_judge == ''">-->
+                  <!-- - -->
+                <!--</div>-->
+              <!--</template>-->
+            <!--</el-table-column>-->
 
             <el-table-column prop="schedule" label="评分阶段"
                              show-overflow-tooltip
@@ -261,15 +261,15 @@
                     删除
                   </el-button>
                 </div>
-                <div :class="{ prointrolone: is_competition == 'true'}" v-if="is_competition == 'true'">
-                  <el-button
-                    type="text"
-                    size="small"
-                    :disabled="scope.row.type === 'card'"
-                    @click="judgeSetValue(scope.$index, scope.row)">
-                    评委设置
-                  </el-button>
-                </div>
+                <!--<div :class="{ prointrolone: is_competition == 'true'}" v-if="is_competition == 'true'">-->
+                  <!--<el-button-->
+                    <!--type="text"-->
+                    <!--size="small"-->
+                    <!--:disabled="scope.row.type === 'card'"-->
+                    <!--@click="judgeSetValue(scope.$index, scope.row)">-->
+                    <!--评委设置-->
+                  <!--</el-button>-->
+                <!--</div>-->
               </template>
             </el-table-column>
           </el-table>

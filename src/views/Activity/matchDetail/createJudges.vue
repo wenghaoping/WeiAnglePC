@@ -48,7 +48,7 @@
                         label="手机"
                         prop="user_mobile"
                         :rules="PhoneRule">
-                        <el-input v-model.number="contacts.user_mobile" placeholder="请输入手机"></el-input>
+                        <el-input v-model.number="contacts.user_mobile" placeholder="请输入手机" :disabled="this.judge_id !== 'creat' && contacts.user_mobile !== ''"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">

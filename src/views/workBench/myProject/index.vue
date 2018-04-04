@@ -2,7 +2,6 @@
   <div id="myProjct">
     <!--顶部导航栏-->
     <top-nav :tabs="tabs"></top-nav>
-
     <!--下方主内容切换区-->
     <main class="clearfix">
       <transition name="fade"  mode="out-in">

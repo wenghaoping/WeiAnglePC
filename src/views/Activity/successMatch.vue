@@ -7,7 +7,7 @@
           <i class="el-notification__icon el-icon-circle-check"></i>
         </div>
         <div class="message relative position_center_auto tc clearfix">
-          {{matchData.competition_name}}
+          {{match_title}}
         </div>
         <div class="innImg relative position_center_auto clearfix">
           <span class="fl img">
@@ -39,7 +39,7 @@
         type: '',
         url: '',
         smallQcr: '', // 小程序分享二维码
-        matchTitle: '互动名称'
+        match_title: '赛事名称'
       };
     },
     methods: {
@@ -49,6 +49,7 @@
       // 获取id
       getCompetitionId () {
         this.url = this.$route.query.url;
+        this.match_title = this.$route.query.match_title;
       }
     },
     computed: {

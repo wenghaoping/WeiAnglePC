@@ -27,7 +27,7 @@
                 {{userRealName}}<i class="el-icon-caret-bottom el-icon--right"></i>
               </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item><div @click="loginOut(3)">我的活动</div></el-dropdown-item>
+            <!--<el-dropdown-item><div @click="loginOut(3)">我的活动</div></el-dropdown-item>-->
             <el-dropdown-item><div @click="loginOut(0)">个人信息</div></el-dropdown-item>
             <el-dropdown-item><div @click="loginOut(1)" >{{groupStatus}}</div></el-dropdown-item>
             <el-dropdown-item divided><div @click="loginOut(2)">退出</div></el-dropdown-item>
@@ -43,6 +43,7 @@
         placeholder="查竞品，查工商，请输入公司或品牌名称"
         @select="handleSelect"
         class="width350"
+        style="width: 17%"
       ></el-autocomplete>
     </ul>
   </header>
@@ -92,6 +93,7 @@
         // 控制点击工作台跳转情况
         if (this.active === 1) {
           localStorage.entrance = 'myProject';
+          this.$store.dispatch('setEntrance', 'myProject');
           if (localStorage.user_id) {
             this.$router.push({name: 'myProject', query: {activeTo: 0}});
           } else {
@@ -99,6 +101,7 @@
           }
         } else if (this.active === 2) {
           localStorage.entrance = 'myMatch';
+          this.$store.dispatch('setEntrance', 'myMatch');
           if (localStorage.user_id) {
             this.$router.push({name: 'myMatch'});
           } else {

@@ -45,6 +45,7 @@ export const SET_INDUSTRY = 'SET_INDUSTRY'; // 行业存储
 export const SET_LOGIN_DATA = 'SET_LOGIN_DATA'; // 设置登陆参数
 export const SET_GROUP_NAME = 'SET_GROUP_NAME'; // 设置身份认证
 export const SET_USER_REAL_NAME = 'SET_USER_REAL_NAME'; // 设置真实名字（退出登陆的时候需要清空数据）
+export const SET_ENTRANCE = 'SET_ENTRANCE'; // 设置登录入口
 
 // 我的活动
 export const MEMBER_CHANGE = 'MEMBER_CHANGE'; // 我的活动 => 报名成员弹框
