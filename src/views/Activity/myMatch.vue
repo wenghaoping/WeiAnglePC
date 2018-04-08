@@ -3,7 +3,7 @@
     <div class="top-search-box clearfix">
       <div class="input-box fl">
         <el-input
-          placeholder="搜索活动名称、主办方"
+          placeholder="搜索赛事名称"
           icon="search"
           v-model="searchinput"
           :on-icon-click="handleIconClick"

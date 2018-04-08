@@ -169,23 +169,23 @@
               <!--</template>-->
             <!--</el-table-column>-->
 
-            <el-table-column prop="schedule" label="评分阶段"
-                             show-overflow-tooltip
-                             width="140"
-                             column-key="schedule_id"
-                             :filters="schedule_idFilters"
-                             :filter-multiple="stateCheck"
-                             filter-placement="bottom-end"
-                             v-if="is_competition == 'true'">
-              <template slot-scope="scope">
-                <div>
-                  {{scope.row.schedule}}
-                </div>
-                <div v-if="scope.row.schedule == ''">
-                  -
-                </div>
-              </template>
-            </el-table-column>
+            <!--<el-table-column prop="schedule" label="评分阶段"-->
+                             <!--show-overflow-tooltip-->
+                             <!--width="140"-->
+                             <!--column-key="schedule_id"-->
+                             <!--:filters="schedule_idFilters"-->
+                             <!--:filter-multiple="stateCheck"-->
+                             <!--filter-placement="bottom-end"-->
+                             <!--v-if="is_competition == 'true'">-->
+              <!--<template slot-scope="scope">-->
+                <!--<div>-->
+                  <!--{{scope.row.schedule}}-->
+                <!--</div>-->
+                <!--<div v-if="scope.row.schedule == ''">-->
+                  <!-- - -->
+                <!--</div>-->
+              <!--</template>-->
+            <!--</el-table-column>-->
 
             <el-table-column prop="tag" label="标签" show-overflow-tooltip
                              width="74"

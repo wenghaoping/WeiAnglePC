@@ -175,7 +175,8 @@
           user_resource_give: [], // 提供的资源
           user_resource_find: [], // 寻求对接的资源
           user_invest_desc: '', // 投资需求描述
-          user_resource_desc: ''// 资源需求描述
+          user_resource_desc: '', // 资源需求描述
+          judge_user_id: 0
         }, // 人脉参数
         industry: [], // 领域标签选项
         stage: [], // 轮次标签选项
