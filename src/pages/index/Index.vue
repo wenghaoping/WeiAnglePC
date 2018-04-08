@@ -40,7 +40,7 @@
         this.addProject();
         // 未登录状态下拦截
         if (!localStorage.token) {
-          localStorage.clear();
+          // localStorage.clear();
           sessionStorage.clear();
           this.$store.dispatch('setUserRealName', '');
         } else {

@@ -16,7 +16,7 @@
       <div class="top-search-box">
         <div class="input-box">
           <el-input
-            placeholder="搜索项目、公司名称"
+            placeholder="搜索赛事名称"
             icon="search"
             v-model="searchinput"
             :on-icon-click="handleIconClick"
@@ -24,9 +24,9 @@
           </el-input>
         </div>
         <div class="btns-box">
-          <el-button @click="closeScore(true)" v-if="is_competition == 'true'">大赛评分指标</el-button>
+          <el-button @click="closeScore(true)">大赛评分指标</el-button>
           <el-button @click="openLists(true)">自定义列表</el-button>
-          <el-button @click="scoreDownload" v-if="is_competition == 'true'">评分下载</el-button>
+          <el-button @click="scoreDownload">评分下载</el-button>
           <el-button type="primary" @click="uploadAll">批量上传项目</el-button>
           <el-button type="primary" @click="createProject">创建项目</el-button>
         </div>
@@ -267,7 +267,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <div class="pagenav" v-if="totalData>10">
+          <div class="pagenav" v-if="totalData>10" style="float: right">
             <el-pagination
               small
               @current-change="filterChangeCurrent"

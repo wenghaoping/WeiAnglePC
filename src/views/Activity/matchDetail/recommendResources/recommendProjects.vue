@@ -1,4 +1,4 @@
-<template>
+—<template>
   <!--推荐项目-->
   <div id="myproject" class="recommendProjects" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     <!-- 右侧底部主内容区 -->
@@ -25,42 +25,42 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_industry" label="领域" width="400"
+            <el-table-column prop="industry" label="领域" width="400"
                              show-overflow-tooltip>
               <template slot-scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.pro_industry.length > 8 ? false:true">
+                <el-tooltip placement="top" :disabled="scope.row.industry.length > 8 ? false:true">
                   <div slot="content">
-                    <div class="tips-txt">{{scope.row.pro_industry}}</div>
+                    <div class="tips-txt">{{scope.row.industry}}</div>
                   </div>
                   <div>
-                    {{scope.row.pro_industry}}
+                    {{scope.row.industry}}
                   </div>
                 </el-tooltip>
-                <div v-if="scope.row.pro_industry==''">
+                <div v-if="scope.row.industry==''">
                   -
                 </div>
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_stage" label="轮次" min-width="80">
+            <el-table-column prop="stage" label="轮次" min-width="80">
               <template slot-scope="scope">
-                <div v-if="scope.row.pro_stage.length === 0">
+                <div v-if="scope.row.stage.length === 0">
                   -
                 </div>
-                <div v-if="scope.row.pro_stage.length > 0">
-                  {{scope.row.pro_stage}}
+                <div v-if="scope.row.stage.length > 0">
+                  {{scope.row.stage}}
                 </div>
               </template>
             </el-table-column>
 
-            <el-table-column prop="pro_area" label="地区" min-width="80"
+            <el-table-column prop="area" label="地区" min-width="80"
                              filter-placement="bottom-end">
               <template slot-scope="scope">
-                <div v-if="scope.row.pro_area.length === 0">
+                <div v-if="scope.row.area.length === 0">
                   -
                 </div>
-                <div v-if="scope.row.pro_area.length > 0">
-                  {{scope.row.pro_area}}
+                <div v-if="scope.row.area.length > 0">
+                  {{scope.row.area}}
                 </div>
               </template>
             </el-table-column>
@@ -115,18 +115,13 @@
         // 列表数据
         tableData: [
           {
-            pro_name: '公司名称公司名称公司名称公司名称',
-            pro_intro: '我是项目介绍我是项目介绍我是项目介绍我是项目介绍',
-            pro_company_name: '',
-            pro_source: '我是项目来源1',
-            pro_follow_up_user: '迪丽热巴',
-            pro_schedule: '跟进状态1',
-            pro_industry: '大数据、社交通讯，电商平台，教育培训',
-            is_exclusive: '独家',
-            pro_stage: 'IPO上市后',
-            pro_area: '北京',
-            pro_scale: '3000万',
-            project_id: ''
+            project_id: 'RpALg5Wx',
+            pro_name: '“学霸联盟”APP平台',
+            pro_intro: '我们让你能够在大学“学业”，“友谊”，“财富”三丰收，学霸带你飞翔不在只是梦想，我们会为你插上学霸的翅膀；众里寻“她”无需千百度让你准确找到那个“她”；翻身消费做卖家，自食其力，拥抱财富梦想。',
+            industry: '教育培训、电子商务、社交网络',
+            stage: '',
+            area: '垣曲县',
+            is_invited: true
           }
         ],
         emptyType: true
@@ -142,10 +137,11 @@
           this.loading = true;
           this.emptyType = false;
           this.getCon.user_id = localStorage.user_id;
+          this.getCon.competition_id = this.competition_id;
           this.getCon.search = this.searchinput;
           this.getCon.page = 1;
-          this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: this.activeCurrentPage});
-          this.$http.post(this.URL.getActivityList, this.getCon)
+          // this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: this.activeCurrentPage});
+          this.$http.post(this.URL.project, this.getCon)
             .then(res => {
               if (res.data.status_code === 2000000) {
                 let data = res.data.data;
@@ -169,9 +165,10 @@
         delete this.getCon.page;
         this.loading = true;
         this.getCon.user_id = localStorage.user_id;
+        this.getCon.competition_id = this.competition_id;
         this.getCon.page = page;// 控制当前页码
         this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: page});
-        this.$http.post(this.URL.getActivityList, this.getCon)
+        this.$http.post(this.URL.project, this.getCon)
           .then(res => {
             if (res.data.status_code === 2000000) {
               let data = res.data.data;
@@ -194,23 +191,23 @@
         let arr = [];
         for (let i = 0; i < list.length; i++) {
           let obj = [];
-          obj.activity_id = list[i].activity_id;
-          obj.activity_title = list[i].activity_title;
-          obj.activity_user = list[i].activity_user;
-          obj.activity_address = list[i].activity_address;
-          obj.activity_theme_image = list[i].activity_theme_image;
-          obj.start_time = list[i].start_time;
-          obj.end_time = list[i].end_time;
-          obj.is_end = list[i].is_end;
-          obj.activity_apply = list[i].activity_apply;
-          obj.activity_sign = list[i].activity_sign;
+          obj.project_id = list[i].project_id;
+          obj.pro_name = list[i].pro_name;
+          obj.pro_intro = list[i].pro_intro;
+          obj.industry = list[i].industry;
+          obj.stage = list[i].stage;
+          obj.area = list[i].area;
           arr.push(obj);
         }
         return arr;
+      },
+      // 获取id
+      getCompetitionId () {
+        this.competition_id = this.$route.query.competition_id;
       }
     },
     created () {
-//      this.filterChangeCurrent(this.currentPage || 1);
+      this.filterChangeCurrent(this.currentPage || 1);
     }
   };
 </script>

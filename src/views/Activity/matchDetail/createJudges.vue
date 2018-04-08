@@ -48,7 +48,7 @@
                         label="手机"
                         prop="user_mobile"
                         :rules="PhoneRule">
-                        <el-input v-model.number="contacts.user_mobile" placeholder="请输入手机" :disabled="this.judge_id !== 'creat' && contacts.user_mobile !== ''"></el-input>
+                        <el-input v-model.number="contacts.user_mobile" placeholder="请输入手机" :disabled="contacts.judge_user_id !== 0"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -318,7 +318,7 @@
                     this.judge_id = res.data.judge_id;
                     this.loading = false;
                     this.saveControl = true;
-                    this.open2('提示', '创建成功', '继续编辑', '返回列表');
+                    this.open2('提示', '创建成功');
                   } else {
                     error(res.data.error_msg);
                   }
@@ -406,36 +406,12 @@
         }
       },
       // 编辑成功弹窗
-      open2 (title, main, confirm, cancel) {
-        this.$confirm(main, title, {
-          confirmButtonText: confirm,
-          cancelButtonText: cancel,
-          type: 'success'
-        }).then(() => {
-          this.contacts = {
-            judge_id: '', // id
-            user_id: '', // user_id
-            user_real_name: '', // 姓名
-            user_nickname: '', // 昵称
-            user_mobile: '', // 名片手机号
-            user_email: '', // 邮箱
-            user_company_name: '', // 公司名称
-            import_user_name: '', // 来源
-            user_brand: '', // 品牌
-            user_company_career: '', // 职位
-            user_avatar_url: '', // 头像URL
-            user_invest_industry: [], // 领域标签
-            user_invest_stage: [], // 轮次
-            user_invest_scale: [], // 投资金额
-            user_invest_area: [], // 所属地区1省级单位
-            user_intro: '', // 个人描述
-            user_resource_give: [], // 提供的资源
-            user_resource_find: [], // 寻求对接的资源
-            user_invest_desc: '', // 投资需求描述
-            user_resource_desc: ''// 资源需求描述
-          }; // 人脉参数
-        }).catch(() => {
-          this.$router.go(-1);
+      open2 (title, main) {
+        this.$alert(main, title, {
+          confirmButtonText: '返回列表',
+          callback: action => {
+            this.$router.go(-1);
+          }
         });
       },
       // 检查所有必填项目以及获取所有数据/true过.false不过

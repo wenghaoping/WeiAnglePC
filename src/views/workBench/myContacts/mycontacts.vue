@@ -58,7 +58,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="card_company_name" label="公司" show-overflow-tooltip width="144">
+            <el-table-column prop="card_company_name" label="公司" show-overflow-tooltip min-width="144">
               <template slot-scope="scope">
                 <el-tooltip placement="top" :disabled="scope.row.user_company_name.length > 10 ? false:true">
                   <div slot="content">
