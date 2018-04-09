@@ -497,7 +497,7 @@
                 .then(res => {
                   if (res.data.status_code === 2000000) {
                     this.saveControl = true;
-                    this.$router.push({name: 'successMatch', query: {match_title: allData.competition_name, url: res.data.data}});
+                    this.$router.push({name: 'successMatch', query: {match_title: allData.competition_name, url: res.data.data.activity_qr, has_activity: res.data.data.has_activity}});
                   } else {
                     error(res.data.error_msg);
                   }

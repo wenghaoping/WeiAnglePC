@@ -114,15 +114,15 @@
         getCon: {}, // 筛选的请求参数
         // 列表数据
         tableData: [
-          {
-            project_id: 'RpALg5Wx',
-            pro_name: '“学霸联盟”APP平台',
-            pro_intro: '我们让你能够在大学“学业”，“友谊”，“财富”三丰收，学霸带你飞翔不在只是梦想，我们会为你插上学霸的翅膀；众里寻“她”无需千百度让你准确找到那个“她”；翻身消费做卖家，自食其力，拥抱财富梦想。',
-            industry: '教育培训、电子商务、社交网络',
-            stage: '',
-            area: '垣曲县',
-            is_invited: true
-          }
+          // {
+          //   project_id: 'RpALg5Wx',
+          //   pro_name: '“学霸联盟”APP平台',
+          //   pro_intro: '我们让你能够在大学“学业”，“友谊”，“财富”三丰收，学霸带你飞翔不在只是梦想，我们会为你插上学霸的翅膀；众里寻“她”无需千百度让你准确找到那个“她”；翻身消费做卖家，自食其力，拥抱财富梦想。',
+          //   industry: '教育培训、电子商务、社交网络',
+          //   stage: '',
+          //   area: '垣曲县',
+          //   is_invited: true
+          // }
         ],
         emptyType: true
       };
@@ -141,11 +141,11 @@
           this.getCon.search = this.searchinput;
           this.getCon.page = 1;
           // this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: this.activeCurrentPage});
-          this.$http.post(this.URL.project, this.getCon)
+          this.$http.get(this.URL.project, {params: this.getCon})
             .then(res => {
               if (res.data.status_code === 2000000) {
                 let data = res.data.data;
-                this.tableData = this.setProjectList(data);
+                this.tableData = this.setProjectList(data.list);
                 this.totalData = res.data.count;
                 this.loading = false;
                 resolve(3);
@@ -167,12 +167,12 @@
         this.getCon.user_id = localStorage.user_id;
         this.getCon.competition_id = this.competition_id;
         this.getCon.page = page;// 控制当前页码
-        this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: page});
-        this.$http.post(this.URL.project, this.getCon)
+        // this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: page});
+        this.$http.get(this.URL.project, {params: this.getCon})
           .then(res => {
             if (res.data.status_code === 2000000) {
               let data = res.data.data;
-              this.tableData = this.setProjectList(data);
+              this.tableData = this.setProjectList(data.list);
               this.totalData = res.data.count;
               getTop();
               this.loading = false;
@@ -207,6 +207,7 @@
       }
     },
     created () {
+      this.getCompetitionId();
       this.filterChangeCurrent(this.currentPage || 1);
     }
   };

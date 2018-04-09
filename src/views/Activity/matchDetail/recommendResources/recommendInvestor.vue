@@ -95,13 +95,13 @@
         getCon: {}, // 筛选的请求参数
         // 列表数据
         tableData: [
-          {
-            investor_id: 58971,
-            investor_name: '郭辉',
-            investor_company: '久秉',
-            investor_career: '',
-            investor_mobile: '18612571371'
-          }
+          // {
+          //   investor_id: 58971,
+          //   investor_name: '郭辉',
+          //   investor_company: '久秉',
+          //   investor_career: '',
+          //   investor_mobile: '18612571371'
+          // }
         ], // 列表数据
         emptyType: true
       };
@@ -118,11 +118,11 @@
           this.getCon.search = this.searchinput;
           this.getCon.page = 1;
           // this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: this.activeCurrentPage});
-          this.$http.post(this.URL.investor, this.getCon)
+          this.$http.get(this.URL.investor, {params: this.getCon})
             .then(res => {
               if (res.data.status_code === 2000000) {
                 let data = res.data.data;
-                this.tableData = this.setProjectList(data);
+                this.tableData = this.setProjectList(data.list);
                 this.totalData = res.data.count;
                 this.loading = false;
                 resolve(3);
@@ -145,11 +145,12 @@
         this.getCon.competition_id = this.competition_id;
         this.getCon.page = page;// 控制当前页码
         // this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: page});
-        this.$http.post(this.URL.investor, this.getCon)
+        this.$http.get(this.URL.investor, {params: this.getCon})
           .then(res => {
             if (res.data.status_code === 2000000) {
               let data = res.data.data;
-              this.tableData = this.setProjectList(data);
+              console.log(data);
+              this.tableData = this.setProjectList(data.list);
               this.totalData = res.data.count;
               getTop();
               this.loading = false;
@@ -183,6 +184,7 @@
       }
     },
     created () {
+      this.getCompetitionId();
       this.filterChangeCurrent(this.currentPage || 1);
     }
   };
