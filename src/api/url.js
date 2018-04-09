@@ -265,6 +265,6 @@ export default
   deleteJudge: 'api/competition/deleteJudge', // 设置评分阶段
   getAllCompetition: 'api/competition/getAllCompetition', // 下拉框获取所有的赛事
   checkUserByMobile: 'api/user/checkUserByMobile', // 通过手机号查用户
-  project: '/api/activity/recommend/project', // 活动匹配的项目资源
-  investor: '/api/activity/recommend/investor' // 活动匹配的投资人资源
+  project: '/api/competition/recommend/project', // 活动匹配的项目资源
+  investor: '/api/competition/recommend/investor' // 活动匹配的投资人资源
 };

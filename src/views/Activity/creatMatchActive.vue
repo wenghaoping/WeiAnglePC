@@ -482,6 +482,7 @@
           obj.value = key.toString();
           arr.push(obj);
         }
+        arr.unshift({ label: '不关联赛事', value: '' });
         return arr;
       },
       // 强行5条数据
@@ -648,7 +649,7 @@
       },
       // 获取id
       getCompetitionId () {
-        this.competition_id = this.$route.query.competition_id;
+        this.competition_id = this.$route.query.competition_id || '';
         this.activity_id = this.$route.query.activity_id;
         this.type = this.$route.query.type;
       }

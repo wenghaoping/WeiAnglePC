@@ -88,7 +88,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div class="pagenav" v-if="totalData > 10">
+        <div class="pagenav" v-if="totalData > 10" style="float: right;">
           <el-pagination
             small
             @current-change="filterChangeCurrent"
