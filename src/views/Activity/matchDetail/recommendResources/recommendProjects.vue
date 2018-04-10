@@ -71,14 +71,16 @@
               <template slot-scope="scope">
                 <div class="editBtn relative">
                   <el-button
+                    v-if="scope.row.is_invited === 'false' || scope.row.is_invited === false"
                     @click="handleEdit(scope.row)">
                     邀请
                   </el-button>
-                  <!--<el-button-->
-                    <!--:disabled="true"-->
-                    <!--@click="handleEdit(scope.row)">-->
-                    <!--已邀请-->
-                  <!--</el-button>-->
+                  <el-button
+                    v-else
+                    :disabled="true"
+                    @click="handleEdit(scope.row)">
+                    已邀请
+                  </el-button>
                 </div>
               </template>
             </el-table-column>
@@ -101,7 +103,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { error } from '@/utils/notification';
+  import { error, success } from '@/utils/notification';
   import { getTop } from '@/utils';
   export default {
     data () {
@@ -128,8 +130,22 @@
       };
     },
     methods: {
-      // 点击编辑切换
-      handleEdit (index, row) {},
+      // 点击邀请
+      handleEdit (row) {
+        this.$http.get(this.URL.comInviteProject, {user_id: localStorage.user_id, competition_id: this.competition_id, project_id: row.project_id})
+          .then(res => {
+            if (res.data.status_code === 2000000) {
+              success('邀请成功');
+              this.filterChangeCurrent(this.activeCurrentPage || 1);
+            } else {
+              error(res.data.error_msg);
+            }
+          })
+          .catch(err => {
+            this.loading = false;
+            console.log(err, 2);
+          });
+      },
       // 搜索===首次进入页面加载的数据
       handleIconClick () {
         return new Promise((resolve, reject) => {
@@ -137,7 +153,8 @@
           this.loading = true;
           this.emptyType = false;
           this.getCon.user_id = localStorage.user_id;
-          this.getCon.competition_id = this.competition_id;
+          // this.getCon.competition_id = this.competition_id;
+          this.getCon.competition_id = 44;
           this.getCon.search = this.searchinput;
           this.getCon.page = 1;
           // this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: this.activeCurrentPage});
@@ -146,7 +163,7 @@
               if (res.data.status_code === 2000000) {
                 let data = res.data.data;
                 this.tableData = this.setProjectList(data.list);
-                this.totalData = res.data.count;
+                this.totalData = data.count;
                 this.loading = false;
                 resolve(3);
               } else {
@@ -165,7 +182,8 @@
         delete this.getCon.page;
         this.loading = true;
         this.getCon.user_id = localStorage.user_id;
-        this.getCon.competition_id = this.competition_id;
+        // this.getCon.competition_id = this.competition_id;
+        this.getCon.competition_id = 44;
         this.getCon.page = page;// 控制当前页码
         // this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: page});
         this.$http.get(this.URL.project, {params: this.getCon})
@@ -173,7 +191,7 @@
             if (res.data.status_code === 2000000) {
               let data = res.data.data;
               this.tableData = this.setProjectList(data.list);
-              this.totalData = res.data.count;
+              this.totalData = data.count;
               getTop();
               this.loading = false;
             } else {
@@ -197,6 +215,7 @@
           obj.industry = list[i].industry;
           obj.stage = list[i].stage;
           obj.area = list[i].area;
+          obj.is_invited = list[i].is_invited;
           arr.push(obj);
         }
         return arr;

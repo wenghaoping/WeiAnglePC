@@ -70,7 +70,7 @@ export function checkURL (data) {
 }
 // 电话号码验证
 export function checkPhoneNumber (data) {
-  let reg = /^1(3|4|5|7|8)\d{9}$/;
+  let reg = /^\d{11}$/;
   return reg.test(data);
 }
 // 验证手机号高级版

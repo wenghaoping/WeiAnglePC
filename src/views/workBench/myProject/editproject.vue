@@ -1936,9 +1936,10 @@
                 if (data.private.stock_right === 0) data.private.stock_right = '';
                 if (data.private.stock_follow === 0) data.private.stock_follow = '';
                 if (data.private.stock_other === 0) data.private.stock_other = '';
-
+                if (this.project.competition_id !== 'false' || this.project.competition_id !== false) {
+                  this.competition_id = this.project.competition_id;
+                }
                 this.private = data.private;
-
                 this.loading = false;
                 this.tags_pro = this.tags.changepro.slice(0);
                 this.tags_team = this.tags.changeTeam.slice(0);
@@ -2644,7 +2645,9 @@
               allData.user_id = localStorage.user_id;// 用户id
               allData.pro_total_score = this.proportion;// 完整度
               allData.project_id = this.project.project_id;// 项目id
-              if (this.competition_id) {
+              if (this.competition_id === 'false' || this.competition_id === false) {
+                allData.competition_id = 0;
+              } else {
                 allData.competition_id = this.competition_id;
               }
               if (allData.project.pro_logo_url.length !== 0) {
@@ -2693,11 +2696,13 @@
         }).then(() => {
           this.$router.push({name: 'projectDetails', query: {project_id: this.project_id, competition_id: this.competition_id}});
         }).catch(() => {
-          if (this.competition_id === 0) {
-            this.$router.push({name: 'myProject', query: {activeTo: 0}});
-          } else {
-            this.$router.push({name: 'matchDetail', query: {competition_id: this.competition_id}});
-          }
+          setTimeout(() => {
+            if (this.competition_id === 'false' || this.competition_id === false) {
+              this.$router.push({name: 'myProject', query: {activeTo: 0}});
+            } else {
+              this.$router.push({name: 'matchDetail', query: {competition_id: this.competition_id}});
+            }
+          }, 200);
         });
       },
       // 锚点跳转

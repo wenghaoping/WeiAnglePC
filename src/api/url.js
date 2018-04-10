@@ -266,5 +266,9 @@ export default
   getAllCompetition: 'api/competition/getAllCompetition', // 下拉框获取所有的赛事
   checkUserByMobile: 'api/user/checkUserByMobile', // 通过手机号查用户
   project: '/api/competition/recommend/project', // 活动匹配的项目资源
-  investor: '/api/competition/recommend/investor' // 活动匹配的投资人资源
+  investor: '/api/competition/recommend/investor', // 活动匹配的投资人资源
+  comGetAllNode: 'api/competition/getAllNode', // 获取赛事的项目阶段
+  comSetScheduleOrder: '/api/competition/setScheduleOrder', // 编辑赛事项目阶段
+  comDeleteSchedule: '/api/competition/deleteSchedule', // 删除参赛项目阶段
+  comInviteProject: '/api/competition/invite/project' // 赛事方邀请项目方
 };

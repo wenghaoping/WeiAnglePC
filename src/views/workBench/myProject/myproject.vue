@@ -437,7 +437,7 @@
       // 跳转到编辑页
       handleEdit (index, row) {
         this.zgClick('编辑项目');
-        this.$router.push({name: 'editproject', query: {project_id: row.project_id, competition_id: 0}});
+        this.$router.push({name: 'editproject', query: {project_id: row.project_id, competition_id: 'false'}});
         this.setRouterData();
       },
       // 跳转到创建项目页面

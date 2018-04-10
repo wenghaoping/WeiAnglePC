@@ -90,6 +90,7 @@
         loading: false,
         competition_id: '',
         searchinput: '', // 搜索绑定
+        activeCurrentPage: 1, // 当前页数
         totalData: 1, // 总页数
         currentPage: 1, // 当前页数
         getCon: {}, // 筛选的请求参数
@@ -114,7 +115,8 @@
           this.loading = true;
           this.emptyType = false;
           this.getCon.user_id = localStorage.user_id;
-          this.getCon.competition_id = this.competition_id;
+          // this.getCon.competition_id = this.competition_id;
+          this.getCon.competition_id = 44;
           this.getCon.search = this.searchinput;
           this.getCon.page = 1;
           // this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: this.activeCurrentPage});
@@ -123,7 +125,7 @@
               if (res.data.status_code === 2000000) {
                 let data = res.data.data;
                 this.tableData = this.setProjectList(data.list);
-                this.totalData = res.data.count;
+                this.totalData = data.count;
                 this.loading = false;
                 resolve(3);
               } else {
@@ -142,16 +144,16 @@
         delete this.getCon.page;
         this.loading = true;
         this.getCon.user_id = localStorage.user_id;
-        this.getCon.competition_id = this.competition_id;
+        // this.getCon.competition_id = this.competition_id;
+        this.getCon.competition_id = 44;
         this.getCon.page = page;// 控制当前页码
         // this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: page});
         this.$http.get(this.URL.investor, {params: this.getCon})
           .then(res => {
             if (res.data.status_code === 2000000) {
               let data = res.data.data;
-              console.log(data);
               this.tableData = this.setProjectList(data.list);
-              this.totalData = res.data.count;
+              this.totalData = data.count;
               getTop();
               this.loading = false;
             } else {

@@ -11,6 +11,7 @@ import contactsDetails from './modules/contactsDetails.js'; // 人脉详情页�
 import syncData from './modules/syncData.js'; // 同步数据使用的
 import myActivity from './modules/myActivity.js'; // 我的活动使用
 import myMatch from './modules/myMatch.js'; // 我的活动使用
+import comPageAndSelect from './modules/comPageAndSelect.js'; // 赛事
 Vue.use(Vuex);
 
 const state = {
@@ -29,6 +30,7 @@ export default new Vuex.Store({
     projectDetails: projectDetails,
     contactsDetails: contactsDetails,
     myActivity: myActivity,
-    myMatch: myMatch
+    myMatch: myMatch,
+    comPageAndSelect: comPageAndSelect
   }
 });

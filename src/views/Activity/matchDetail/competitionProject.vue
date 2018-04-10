@@ -16,7 +16,7 @@
       <div class="top-search-box">
         <div class="input-box">
           <el-input
-            placeholder="搜索赛事名称"
+            placeholder="搜索项目、公司名称"
             icon="search"
             v-model="searchinput"
             :on-icon-click="handleIconClick"
@@ -286,15 +286,6 @@
                  @uploadDisplayChange="uploadDisplayChange"
                  @reload="handleIconClick"></alertUpload>
 
-    <!--写跟进弹框-->
-    <addfollow></addfollow>
-
-    <!--项目推送项目入口弹窗-->
-    <projectpushtopro></projectpushtopro>
-
-    <!--项目预览弹窗-->
-    <projectpreview></projectpreview>
-
     <!--评分指标-->
     <score-index :scoreDisplay="scoreDisplay" @closeScore="closeScore" @chengeSchedule="chengeSchedule"></score-index>
 
@@ -311,12 +302,9 @@
   import { mapState } from 'vuex';
   import alertUpload from '@/views/workBench/myProject/alertUpload.vue';
   import scoreIndex from '@/views/components/scoreIndex.vue';
-  import stageCustom from '@/views/workBench/myProject/stageCustom.vue';
+  import stageCustom from './competitionStageCustom.vue';
   import projectListsCustom from '@/views/workBench/myProject/projectListsCustom.vue';
-  import addfollow from '@/views/components/addFollow.vue';
-  import projectpushtopro from '@/views/components/projectPushToPro.vue';
-  import projectpreview from '@/views/components/projectPreview.vue';
-  import carousel from '@/views/components/carousel.vue';
+  import carousel from './competitionCarousel';
   import * as formatData from '@/utils/formatData';
   import { getTitleSift } from '@/utils/setSelect';
   import { error, success, warning } from '@/utils/notification';
@@ -324,9 +312,6 @@
   export default {
     components: {
       alertUpload,
-      addfollow,
-      projectpreview,
-      projectpushtopro,
       scoreIndex,
       stageCustom,
       carousel,
@@ -402,7 +387,7 @@
     },
     methods: {
       getAllNode () {
-        this.$http.post(this.URL.getAllNode, {user_id: localStorage.user_id})
+        this.$http.post(this.URL.comGetAllNode, {user_id: localStorage.user_id, competition_id: this.competition_id})
           .then(res => {
             let data = res.data.data;
             this.scheduleFilters = this.getTit(data);
@@ -579,7 +564,7 @@
       // 设置样式
       setNodeCss (id) {
         this.node0 = false;
-        this.$store.state.pageANDSelect.node = id;
+        this.$store.state.comPageAndSelect.node = id;
         if (id === 0) { this.node0 = true; };
       },
       // 点击重置按钮时
@@ -752,12 +737,12 @@
     },
     mounted () {},
     created () {
+      this.getCompetitionId();
       this.is_competition = localStorage.is_competition;
       // 组件创建完后获取数据，
       this.getProjectListURL = this.URL.getProjectList;
       this.loading = true;
       this.getAllNode();
-      this.getCompetitionId();
       this.getNodeCount();
       this.titleSift();
       this.filterChangeCurrent(this.currentPage || 1);

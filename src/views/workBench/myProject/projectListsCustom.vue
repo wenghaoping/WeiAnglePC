@@ -51,8 +51,9 @@
           {value: 'pro_scale', label: '期望融资'},
           {value: 'created_at', label: '创建时间'}
         ],
+        competition_id: '',
         checkList: [],
-        checkListAll: ['pro_name', 'pro_intro', 'pro_source', 'pro_schedule', 'pro_industry', 'is_exclusive', 'pro_stage', 'pro_area', 'pro_scale', 'created_at']
+        checkListAll: ['pro_name', 'pro_intro', 'pro_source', 'pro_schedule', 'pro_industry', 'is_exclusive', 'pro_stage', 'pro_area', 'total_score', 'average_score']
       };
     },
     methods: {
@@ -79,7 +80,7 @@
       // 获取所有节点
       getCheckedColumn () {
         this.loading = true;
-        this.$http.post(this.URL.getCheckedColumn, {user_id: localStorage.user_id})
+        this.$http.post(this.URL.getCheckedColumn, {user_id: localStorage.user_id, competition_id: this.competition_id})
           .then(res => {
             let data = res.data.data;
             this.checkList = data === '' ? this.checkListAll : data;
@@ -89,6 +90,10 @@
             this.loading = false;
             console.log(err);
           });
+      },
+      // 获取id
+      getCompetitionId () {
+        this.competition_id = this.$route.query.competition_id;
       }
     },
     // 当dom一创建时
