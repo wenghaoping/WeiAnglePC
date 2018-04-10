@@ -232,7 +232,7 @@
     },
     methods: {
       getAllNode () {
-        this.$http.post(this.URL.getAllNode, {user_id: localStorage.user_id})
+        this.$http.post(this.URL.comGetAllNode, {user_id: localStorage.user_id, competition_id: this.competition_id})
           .then(res => {
             let data = res.data.data;
             this.scheduleFilters = this.getTit(data);

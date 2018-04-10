@@ -10,11 +10,11 @@
           {{match_title}}
         </div>
         <div class="innImg relative position_center_auto clearfix">
-          <span class="fl img" :class="{position_center_auto: !has_activity}">
+          <span class="fl img" :class="{position_center_auto: has_activity}">
             <img src="../../assets/images/weixin.jpg">
             <span class="tc name inlineBlock">查看小程序</span>
           </span>
-          <span class="fl img" style="margin-left: 30px;" v-if="has_activity === false">
+          <span class="fl img" style="margin-left: 30px;" v-if="has_activity === true">
             <img v-if="url === '' || url === null" src="../../assets/images/morenIMG.png">
             <img :src="url" v-else>
             <span class="tc name inlineBlock">扫码分享</span>
