@@ -450,13 +450,14 @@
           font-weight: 100;
           border:none;
           &:nth-child(1){
-            padding-left:40px;
+            padding-left:23px;
           }
         }
         th:nth-last-child(2){
           .cell{
             color: #20a0ff ;
             cursor: pointer;
+            padding-left:5px;
           }
         }
         //.el-table_1_column_11{

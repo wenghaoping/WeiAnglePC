@@ -160,6 +160,7 @@
         font-size: 22px;
         color: #1F2D3D;
         margin-bottom: 48px;
+        height: 64px;
       }
       .title_main{
         line-height: 30px;
@@ -186,8 +187,9 @@
     width: 880px;
     height: 513px;
     margin-bottom: 35px;
+    margin-top: 24px;
     img{
-      width: 100%;
+      width: 880px;
       height: 100%;
       border-radius: 4px;
     }

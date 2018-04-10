@@ -197,7 +197,7 @@
     font-family: "He`lvetica Neue", "PingFang SC", Arial, sans-serif;
     header {
       width: 100%;
-      background: #40587a;
+      background: #293B55;
       height: 60px;
       position: fixed;
       z-index: 300;

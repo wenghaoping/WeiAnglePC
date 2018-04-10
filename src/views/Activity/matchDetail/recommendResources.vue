@@ -63,4 +63,10 @@
     margin-top: -21px!important;
   }
 }
+.el-tabs__header{
+  border: none;
+}
+  .center_title{
+    margin-top:24px;
+  }
 </style>

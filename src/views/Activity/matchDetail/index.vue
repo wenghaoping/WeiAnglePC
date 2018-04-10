@@ -97,14 +97,14 @@
     .title{
       background: #F9FAFC;
       .titleTop{
-        padding: 0 24px;
-        line-height: 95px;
+        padding: 24px 24px 50px 24px;
+        line-height: 47px;
         font-size: 36px;
         color: #1F2D3D;
         font-weight: bolder;
       }
       .el-tabs__item{
-        font-size: 18px;
+        font-size: 14px;
       }
       .el-tabs__active-bar{
         width: 98px;
@@ -120,6 +120,9 @@
     }
     .wrap-left{
       margin: 0!important;
+    }
+    .el-button{
+      padding:6px 15px;
     }
   }
 </style>
