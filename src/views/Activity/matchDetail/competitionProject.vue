@@ -581,7 +581,7 @@
       // 获取项目节点数量
       getNodeCount () {
         this.loading2 = true;
-        this.$http.post(this.URL.getNodeCount, {user_id: localStorage.user_id, competition_id: this.competition_id})
+        this.$http.post(this.URL.getCompNodeCount, {user_id: localStorage.user_id, competition_id: this.competition_id})
           .then(res => {
             let data = res.data.data;
             this.nodeCount.whole = data.count;// 全部项目
@@ -723,7 +723,7 @@
       },
       // 设置评委阶段
       setJudgeAuth (row, schedulesId) {
-        this.$http.post(this.URL.setProjectSchedule, {user_id: localStorage.user_id, project_id: row.project_id, schedule_id: schedulesId})
+        this.$http.post(this.URL.setProjectCompSchedule, {user_id: localStorage.user_id, project_id: row.project_id, schedule_id: schedulesId})
           .then(res => {
             if (res.data.status_code === 2000000) {
               success('设置成功');

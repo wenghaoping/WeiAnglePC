@@ -258,6 +258,8 @@ export default
   deleteCompetition: 'api/competition/deleteCompetition', // 删除赛事
   getOneCompetition: 'api/competition/getOneCompetition', // 赛事详情
   editCompetition: 'api/competition/editCompetition', // 编辑赛事
+  getCompNodeCount: 'api/project/getCompNodeCount', // 赛事阶段节点数量
+  setProjectCompSchedule: 'api/project/setProjectCompSchedule', // 设置赛事阶段
   getJudgeList: 'api/competition/getJudgeList', // 评委列表
   editJudge: 'api/competition/editJudge', // 编辑评委
   getOneJudge: 'api/competition/getOneJudge', // 编辑评委
