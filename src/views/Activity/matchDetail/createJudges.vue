@@ -594,6 +594,9 @@
   .creatActivity{
     width: 1200px;
     margin: 0 auto;
+    .back-tag{
+      position: absolute;
+    }
     .main-box{
       width: 1150px;
     }

@@ -697,6 +697,9 @@
     .main-box{
       width: 1150px;
     }
+    .back-tag{
+      position: absolute;
+    }
     .f-title{
       font-size:14px;
       color:#99a9bf;

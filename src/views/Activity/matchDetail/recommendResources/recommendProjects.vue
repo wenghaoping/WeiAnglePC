@@ -134,7 +134,7 @@
     methods: {
       // 点击邀请
       handleEdit (row) {
-        this.$http.get(this.URL.comInviteProject, {user_id: localStorage.user_id, competition_id: this.competition_id, project_id: row.project_id})
+        this.$http.post(this.URL.comInviteProject, {user_id: localStorage.user_id, competition_id: this.competition_id, project_id: row.project_id})
           .then(res => {
             if (res.data.status_code === 2000000) {
               success('邀请成功');
