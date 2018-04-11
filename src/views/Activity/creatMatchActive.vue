@@ -482,7 +482,7 @@
           obj.value = key.toString();
           arr.push(obj);
         }
-        arr.unshift({ label: '不关联赛事', value: '' });
+        arr.unshift({ label: '不关联赛事', value: 0 });
         return arr;
       },
       // 强行5条数据

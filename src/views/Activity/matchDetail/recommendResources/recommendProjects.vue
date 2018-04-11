@@ -1,4 +1,4 @@
-—<template>
+<template>
   <!--推荐项目-->
   <div id="myproject" class="recommendProjects" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     <!-- 右侧底部主内容区 -->
@@ -71,11 +71,13 @@
               <template slot-scope="scope">
                 <div class="editBtn relative">
                   <el-button
+                    style="font-size: 12px;"
                     v-if="scope.row.is_invited === 'false' || scope.row.is_invited === false"
                     @click="handleEdit(scope.row)">
                     邀请
                   </el-button>
                   <el-button
+                    style="font-size: 12px;"
                     v-else
                     :disabled="true"
                     @click="handleEdit(scope.row)">
@@ -153,8 +155,7 @@
           this.loading = true;
           this.emptyType = false;
           this.getCon.user_id = localStorage.user_id;
-          // this.getCon.competition_id = this.competition_id;
-          this.getCon.competition_id = 44;
+          this.getCon.competition_id = this.competition_id;
           this.getCon.search = this.searchinput;
           this.getCon.page = 1;
           // this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: this.activeCurrentPage});
@@ -182,8 +183,7 @@
         delete this.getCon.page;
         this.loading = true;
         this.getCon.user_id = localStorage.user_id;
-        // this.getCon.competition_id = this.competition_id;
-        this.getCon.competition_id = 44;
+        this.getCon.competition_id = this.competition_id;
         this.getCon.page = page;// 控制当前页码
         // this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: page});
         this.$http.get(this.URL.project, {params: this.getCon})

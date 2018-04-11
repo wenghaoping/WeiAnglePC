@@ -293,6 +293,7 @@
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex';
+  import { error } from '@/utils/notification';
   import cirIcon from '../../../static/images/circle.png';
   import pinpai from '../../../static/images/icon-pinpa.png';
   import yunying from '../../../static/images/icon-yunying.png';
@@ -438,31 +439,39 @@
         this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.projectId})
           .then(res => {
             this.loading = false;
-            let data = res.data.data;
-            if (data.project.pro_scale === '') { data.project.pro_scale = {}; data.project.pro_scale.scale_money = '-'; }
-            if (data.project.pro_area === '') { data.project.pro_area = {}; data.project.pro_area.area_title = '-'; }
-            if (data.project.pro_stage === '') { data.project.pro_stage = {}; data.project.pro_stage.stage_name = '-'; }
-            if (data.project.pro_finance_stock_after === '') { data.project.pro_finance_stock_after = {}; data.project.pro_finance_stock_after = '-'; }
-            if (data.project.pro_intro === '') { data.project.pro_intro = {}; data.project.pro_intro = '-'; }
-            if (data.project.pro_industry === '') { data.project.pro_industry = {}; data.project.pro_industry.industry_name = '-'; }
-            this.project = data.project;
-            // 项目文件
-            this.file.pro_BP.file_title = data.file.pro_BP.file_title + '.' + data.file.pro_BP.file_ext;
-            this.file = data.file;
-            // 团队
-            this.team = data.team;
-            // 公司运营
-            this.company = data.company;
-            // 融资信息
-            this.financing = data.financing;
-            // 里程碑
-            this.milepost = data.milepost;
-            // FA业务
-            this.private = data.private;
-            // is_exclusive
-            this.pro = data.pro_FA;
-            // brand
-            this.brands = data.brands;
+            if (res.data.status_code === 2000000) {
+              let data = res.data.data;
+              if (data.project.pro_scale === '') { data.project.pro_scale = {}; data.project.pro_scale.scale_money = '-'; }
+              if (data.project.pro_area === '') { data.project.pro_area = {}; data.project.pro_area.area_title = '-'; }
+              if (data.project.pro_stage === '') { data.project.pro_stage = {}; data.project.pro_stage.stage_name = '-'; }
+              if (data.project.pro_finance_stock_after === '') { data.project.pro_finance_stock_after = {}; data.project.pro_finance_stock_after = '-'; }
+              if (data.project.pro_intro === '') { data.project.pro_intro = {}; data.project.pro_intro = '-'; }
+              if (data.project.pro_industry === '') { data.project.pro_industry = {}; data.project.pro_industry.industry_name = '-'; }
+              this.project = data.project;
+              // 项目文件
+              this.file.pro_BP.file_title = data.file.pro_BP.file_title + '.' + data.file.pro_BP.file_ext;
+              this.file = data.file;
+              // 团队
+              this.team = data.team;
+              // 公司运营
+              this.company = data.company;
+              // 融资信息
+              this.financing = data.financing;
+              // 里程碑
+              this.milepost = data.milepost;
+              // FA业务
+              this.private = data.private;
+              // is_exclusive
+              this.pro = data.pro_FA;
+              // brand
+              this.brands = data.brands;
+
+              this.loading = false;
+            } else {
+              error(res.data.error_msg);
+              this.loading = false;
+              this.handleClose();
+            }
           })
           .catch(err => {
             this.loading = false;

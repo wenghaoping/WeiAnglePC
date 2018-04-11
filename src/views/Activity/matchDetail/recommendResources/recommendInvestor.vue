@@ -115,8 +115,7 @@
           this.loading = true;
           this.emptyType = false;
           this.getCon.user_id = localStorage.user_id;
-          // this.getCon.competition_id = this.competition_id;
-          this.getCon.competition_id = 44;
+          this.getCon.competition_id = this.competition_id;
           this.getCon.search = this.searchinput;
           this.getCon.page = 1;
           // this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: this.activeCurrentPage});
@@ -144,8 +143,7 @@
         delete this.getCon.page;
         this.loading = true;
         this.getCon.user_id = localStorage.user_id;
-        // this.getCon.competition_id = this.competition_id;
-        this.getCon.competition_id = 44;
+        this.getCon.competition_id = this.competition_id;
         this.getCon.page = page;// 控制当前页码
         // this.$store.dispatch('setUpSearch', {activeSearch: this.searchinput, activeCurrentPage: page});
         this.$http.get(this.URL.investor, {params: this.getCon})

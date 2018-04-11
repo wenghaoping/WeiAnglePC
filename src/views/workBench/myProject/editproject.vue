@@ -1567,7 +1567,8 @@
         saveControl: false, // 控制是否保存
         uploadLogoAddress: this.URL.weitianshiLine + this.URL.uploadProjectLogo + localStorage.token, // 上传地址
         uploadDateLogo: {user_id: localStorage.user_id, project_id: this.$route.query.project_id || ''}, // 名片上传所带的额外的参数
-        competition_id: ''
+        competition_id: '',
+        enter: ''
       };
     },
     computed: {
@@ -1936,7 +1937,7 @@
                 if (data.private.stock_right === 0) data.private.stock_right = '';
                 if (data.private.stock_follow === 0) data.private.stock_follow = '';
                 if (data.private.stock_other === 0) data.private.stock_other = '';
-                if (this.project.competition_id !== 'false' || this.project.competition_id !== false) {
+                if (!this.project.competition_id !== 0) {
                   this.competition_id = this.project.competition_id;
                 }
                 this.private = data.private;
@@ -2645,11 +2646,7 @@
               allData.user_id = localStorage.user_id;// 用户id
               allData.pro_total_score = this.proportion;// 完整度
               allData.project_id = this.project.project_id;// 项目id
-              if (this.competition_id === 'false' || this.competition_id === false) {
-                allData.competition_id = 0;
-              } else {
-                allData.competition_id = this.competition_id;
-              }
+              allData.competition_id = this.competition_id;
               if (allData.project.pro_logo_url.length !== 0) {
                 allData.project.pro_logo = allData.project.pro_logo_url[0].image_id; // 主图设置
               } else {
@@ -2689,6 +2686,7 @@
       },
       // 编辑成功弹窗
       open2 (title, main, confirm, cancel) {
+        console.log(this.competition_id);
         this.$confirm(main, title, {
           confirmButtonText: confirm,
           cancelButtonText: cancel,
@@ -2696,13 +2694,11 @@
         }).then(() => {
           this.$router.push({name: 'projectDetails', query: {project_id: this.project_id, competition_id: this.competition_id}});
         }).catch(() => {
-          setTimeout(() => {
-            if (this.competition_id === 'false' || this.competition_id === false) {
-              this.$router.push({name: 'myProject', query: {activeTo: 0}});
-            } else {
-              this.$router.push({name: 'matchDetail', query: {competition_id: this.competition_id}});
-            }
-          }, 200);
+          if (+this.enter === 0) {
+            this.$router.push({name: 'myProject', query: {activeTo: 0}});
+          } else {
+            this.$router.push({name: 'matchDetail', query: {competition_id: this.competition_id}});
+          }
         });
       },
       // 锚点跳转
@@ -2821,8 +2817,9 @@
       getprojectId () {
         this.project_id = this.$route.query.project_id || '';
         this.project.project_id = this.$route.query.project_id || '';
-        this.project.competition_id = this.$route.query.competition_id || '';
-        this.competition_id = this.$route.query.competition_id || '';
+        this.project.competition_id = +this.$route.query.competition_id || 0;
+        this.competition_id = +this.$route.query.competition_id || 0;
+        this.enter = +this.$route.query.enter || 0;
       },
       // 开始同步信息(是否覆盖信息)
       syncCompanyData (msg) {

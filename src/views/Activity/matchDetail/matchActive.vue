@@ -36,7 +36,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="题目" width="720">
+            <el-table-column label="题目" width="620">
               <template slot-scope="scope">
                 <p class="my_title">{{scope.row.activity_title | nullToB}}</p>
                 <p class="my_small_title">主办方：{{scope.row.activity_user | nullToB}}</p>
@@ -68,7 +68,7 @@
             <el-table-column
               prop="reset"
               label="重置"
-              min-width="120" class="edits-btn btn-cur ">
+              width="200" class="edits-btn btn-cur ">
               <template slot-scope="scope">
                 <div class="editBtn relative">
                   <el-button

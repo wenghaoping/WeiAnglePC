@@ -367,7 +367,6 @@
         loading2: false,
         filter: true,
         getPra: {}, // 筛选的请求参数
-        getProjectListURL: '', // 首页获取列表的URL
         moreList: [{
           value: '0',
           label: '删除'
@@ -375,10 +374,16 @@
         pro_schedule: '', // 筛选选项
         column: [], // 选中中
         columns: [
-          'pro_name', 'pro_intro', 'pro_source',
-          'pro_schedule', 'pro_industry', 'is_exclusive',
-          'pro_stage', 'pro_area', 'pro_scale',
-          'created_at'
+          'pro_name',
+          'pro_intro',
+          'pro_source',
+          'pro_schedule',
+          'pro_industry',
+          'is_exclusive',
+          'pro_stage',
+          'pro_area',
+          'total_score',
+          'average_score'
         ],
         checkTime: null, // 点击放慢
         checkTimeTrue: true,
@@ -457,7 +462,7 @@
         this.$store.state.pageANDSelect.proSearchinput = this.searchinput;
         this.currentPage = 1;
         this.getPra.page = 1;
-        this.$http.post(this.getProjectListURL, this.getPra)
+        this.$http.post(this.URL.getProjectList, this.getPra)
           .then(res => {
             let data = res.data.data;
             this.tableData = this.getProjectList(data);
@@ -506,7 +511,7 @@
           }
         }// 删除空的查询项
 //        console.log(this.getPra);
-        this.$http.post(this.getProjectListURL, this.getPra)
+        this.$http.post(this.URL.getProjectList, this.getPra)
           .then(res => {
             this.loading = false;
             let data = res.data.data;
@@ -528,7 +533,7 @@
         this.getPra.competition_id = this.competition_id;
         this.getPra.page = page;// 控制当前页码
         this.getPra.pro_schedule = this.pro_schedule;
-        this.$http.post(this.getProjectListURL, this.getPra)
+        this.$http.post(this.URL.getProjectList, this.getPra)
           .then(res => {
             this.loading = false;
             let data = res.data.data;
@@ -549,7 +554,7 @@
         this.setNodeCss(id);
         this.getPra.pro_schedule = parseInt(id);
         this.pro_schedule = this.getPra.pro_schedule;
-        this.$http.post(this.getProjectListURL, {user_id: localStorage.user_id, pro_schedule: parseInt(id), competition_id: this.competition_id})
+        this.$http.post(this.URL.getProjectList, {user_id: localStorage.user_id, pro_schedule: parseInt(id), competition_id: this.competition_id})
           .then(res => {
             this.loading = false;
             let data = res.data.data;
@@ -688,6 +693,7 @@
         this.stageDisplay = e;
         if (!e) {
           this.getNodeCount();
+          this.getAllNode();
         }
       },
       // 项目列表自定义
@@ -722,6 +728,7 @@
             if (res.data.status_code === 2000000) {
               success('设置成功');
               this.filterChangeCurrent(this.currentPage || 1);
+              this.getNodeCount();
             } else {
               error(res.data.error_msg);
             }
@@ -740,7 +747,6 @@
       this.getCompetitionId();
       this.is_competition = localStorage.is_competition;
       // 组件创建完后获取数据，
-      this.getProjectListURL = this.URL.getProjectList;
       this.loading = true;
       this.getAllNode();
       this.getNodeCount();

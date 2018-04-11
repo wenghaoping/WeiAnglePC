@@ -40,7 +40,7 @@
                         <el-form-item
                           label="赛事领域"
                           prop="morph_industry"
-                          :rules="[{type: 'array',required: true, message: '赛事领域不能为空', trigger: 'change'}]">
+                          :rules="[{type: 'array', message: '赛事领域不能为空', trigger: 'change'}]">
                           <el-select
                             v-model="competition.morph_industry"
                             multiple filterable
@@ -478,7 +478,7 @@
           .then((data) => {
             if (data && this.submitButton === -1) {
               this.loading = true;
-              let allData = this.competition;
+              let allData = validata.simpleClone(this.competition);
               allData.user_id = localStorage.user_id;
               allData.competition_area = allData.competition_area === '' ? 0 : allData.competition_area;
               allData.competition_city = allData.competition_city === '' ? 0 : allData.competition_city;
@@ -493,6 +493,7 @@
               });
               formatData.setReallyTimeToTime1(allData, 'start_time', 'start_time_stamp');// 标准时间转化为时间戳
               formatData.setReallyTimeToTime1(allData, 'end_time', 'end_time_stamp');// 标准时间转化为时间戳
+              allData.morph_industry = this.competition.morph_industry.length === 0 ? [] : this.competition.morph_industry;
               this.$http.post(this.URL.editCompetition, allData)
                 .then(res => {
                   if (res.data.status_code === 2000000) {

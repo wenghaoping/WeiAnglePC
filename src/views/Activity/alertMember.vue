@@ -8,7 +8,7 @@
                   v-loading="loading"
                   :row-class-name="tableRowClassName"
                   element-loading-text="拼命加载中">
-          <el-table-column prop="user_real_name" label="成员" width="310">
+          <el-table-column prop="user_real_name" label="成员" width="250">
             <template slot-scope="scope">
               <div class="heardimg fl">
                 <img v-if="scope.row.user_avatar!=''" :src="scope.row.user_avatar">
@@ -50,7 +50,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="user_email" label="邮箱" show-overflow-tooltip width="195">
+          <el-table-column prop="user_email" label="邮箱" show-overflow-tooltip min-width="100">
             <template slot-scope="scope">
               <el-tooltip placement="top" :disabled="scope.row.user_email.length > 15 ? false:true">
                 <div slot="content">
@@ -58,6 +58,19 @@
                 </div>
                 <div class="mobile">
                   {{scope.row.user_email | nullTo_}}
+                </div>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="pro_name" label="项目名称" min-width="155">
+            <template slot-scope="scope">
+              <el-tooltip placement="top" :disabled="scope.row.pro_name.length > 15 ? false:true">
+                <div slot="content">
+                  <div class="tips-txt">{{scope.row.pro_name}}</div>
+                </div>
+                <div @click="toDetail(scope.row.project_id)" class="cursor">
+                  {{scope.row.pro_name | nullTo_}}
                 </div>
               </el-tooltip>
             </template>
@@ -94,15 +107,22 @@
           </el-pagination>
         </div>
       </el-dialog>
+
+      <!--项目详情弹窗-->
+      <alertprojectdetail></alertprojectdetail>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     import * as formatData from '@/utils/formatData';
+    import alertprojectdetail from '@/views/components/alertProjectDetail.vue';
     import { mapState } from 'vuex';
     import { error } from '@/utils/notification';
     export default {
       props: {},
+      components: {
+        alertprojectdetail
+      },
       computed: {
         ...mapState({
           memberDisplay: state => state.myActivity.memberDisplay,
@@ -187,6 +207,8 @@
             obj.apply_time = list[i].apply_time;// 活跃时间
             obj.user_wechat = list[i].user_wechat;// 活跃时间
             obj.is_sign = list[i].is_sign;// 是否是评委
+            obj.pro_name = list[i].project.pro_name || '';// 项目名称
+            obj.project_id = list[i].project.project_id || 0;// 项目id
             arr.push(obj);
           }
           return arr;
@@ -197,6 +219,11 @@
             return 'info';
           }
           return '';
+        },
+        // 项目详情弹窗
+        toDetail (data) {
+          this.$store.dispatch('setProjectId', data);
+          this.$store.dispatch('alertProjectControl', true);
         }
       },
       watch: {

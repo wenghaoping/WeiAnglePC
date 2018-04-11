@@ -437,13 +437,13 @@
       // 跳转到编辑页
       handleEdit (index, row) {
         this.zgClick('编辑项目');
-        this.$router.push({name: 'editproject', query: {project_id: row.project_id, competition_id: 'false'}});
+        this.$router.push({name: 'editproject', query: {project_id: row.project_id, enter: 0, competition_id: 0}});
         this.setRouterData();
       },
       // 跳转到创建项目页面
       createProject () {
         this.zgClick('创建项目');
-        this.$router.push({name: 'creatproject', query: {competition_id: 0}});
+        this.$router.push({name: 'creatproject', query: {competition_id: 0, enter: 0}});
         this.setRouterData();
       },
       // 控制上传弹窗

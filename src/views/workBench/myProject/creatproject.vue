@@ -857,11 +857,7 @@
           });
           this.$router.push({name: 'editproject', query: {project_id: this.project.project_id, competition_id: this.competition_id}});
         }).catch(() => {
-          if (this.competition_id === 0) {
-            this.$router.push({name: 'myProject', query: {activeTo: 0}});
-          } else {
-            this.$router.push({name: 'matchDetail', query: {competition_id: this.competition_id}});
-          }
+          this.$router.push({name: 'myProject', query: {activeTo: 0}});
         });
       },
       oneCheck (item) {
@@ -911,7 +907,6 @@
               delete allData.project.tag;
               allData.pro_FA = {is_exclusive: this.project.is_exclusive};
               allData.user_id = localStorage.user_id;// 用户id
-              allData.competition_id = this.competition_id;
               allData.pro_total_score = this.proportion;// 完整度
               if (allData.project.pro_logo_url.length !== 0) {
                 allData.project.pro_logo = allData.project.pro_logo_url[0].image_id; // 主图设置
