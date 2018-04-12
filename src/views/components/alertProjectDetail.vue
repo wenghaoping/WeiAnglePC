@@ -301,7 +301,9 @@
     computed: {
       ...mapState({
         alertProjectDetailDisplay: state => state.dialogDisplay.alertProjectDetailDisplay,
-        projectId: state => state.contactsDetails.alertProjectMessage.projectId
+        projectId: state => state.contactsDetails.alertProjectMessage.projectId,
+        projectUserId: state => state.contactsDetails.alertProjectMessage.userId,
+        projectType: state => state.contactsDetails.alertProjectMessage.type
       })
     },
     data () {
@@ -436,7 +438,9 @@
       },
       // 获取项目详情数据
       getProjectDetail () {
-        this.$http.post(this.URL.getProjectDetail, {user_id: localStorage.user_id, project_id: this.projectId})
+        let userId = this.projectType === 'other' ? this.projectUserId : localStorage.user_id;
+        let queryData = {user_id: userId, project_id: this.projectId};
+        this.$http.post(this.URL.getProjectDetail, queryData)
           .then(res => {
             this.loading = false;
             if (res.data.status_code === 2000000) {

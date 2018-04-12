@@ -610,7 +610,8 @@
           contact_user_name: ''
         },
         uploadLogoAddress: this.URL.weitianshiLine + this.URL.uploadProjectLogo + localStorage.token, // 上传地址
-        uploadDateLogo: {user_id: localStorage.user_id} // 名片上传所带的额外的参数
+        uploadDateLogo: {user_id: localStorage.user_id}, // 名片上传所带的额外的参数
+        enter: ''
       };
     },
     methods: {
@@ -857,7 +858,11 @@
           });
           this.$router.push({name: 'editproject', query: {project_id: this.project.project_id, competition_id: this.competition_id}});
         }).catch(() => {
-          this.$router.push({name: 'myProject', query: {activeTo: 0}});
+          if (+this.enter === 0) {
+            this.$router.push({name: 'myProject', query: {activeTo: 0}});
+          } else {
+            this.$router.push({name: 'matchDetail', query: {competition_id: this.competition_id}});
+          }
         });
       },
       oneCheck (item) {
@@ -1072,6 +1077,7 @@
         this.project.project_id = this.$route.query.project_id || '';
         this.project.competition_id = this.$route.query.competition_id || '';
         this.competition_id = this.$route.query.competition_id || '';
+        this.enter = +this.$route.query.enter;
       },
       // 获取微信或者ios传过来的数据
       getWxosProjectData () {

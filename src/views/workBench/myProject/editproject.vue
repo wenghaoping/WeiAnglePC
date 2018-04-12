@@ -2819,7 +2819,7 @@
         this.project.project_id = this.$route.query.project_id || '';
         this.project.competition_id = +this.$route.query.competition_id || 0;
         this.competition_id = +this.$route.query.competition_id || 0;
-        this.enter = +this.$route.query.enter || 0;
+        this.enter = +this.$route.query.enter;
       },
       // 开始同步信息(是否覆盖信息)
       syncCompanyData (msg) {

@@ -69,7 +69,7 @@
                 <div slot="content">
                   <div class="tips-txt">{{scope.row.pro_name}}</div>
                 </div>
-                <div @click="toDetail(scope.row.project_id)" class="cursor">
+                <div @click="toDetail(scope.row)" class="cursor">
                   {{scope.row.pro_name | nullTo_}}
                 </div>
               </el-tooltip>
@@ -209,6 +209,8 @@
             obj.is_sign = list[i].is_sign;// 是否是评委
             obj.pro_name = list[i].project.pro_name || '';// 项目名称
             obj.project_id = list[i].project.project_id || 0;// 项目id
+            obj.user_id = list[i].user_id;// 项目用户id
+            obj.type = 'other';
             arr.push(obj);
           }
           return arr;
@@ -222,8 +224,9 @@
         },
         // 项目详情弹窗
         toDetail (data) {
-          this.$store.dispatch('setProjectId', data);
+          this.$store.dispatch('setProjectId', data.project_id);
           this.$store.dispatch('alertProjectControl', true);
+          this.$store.dispatch('setProjectUserId', {userId: data.user_id, type: data.type});
         }
       },
       watch: {

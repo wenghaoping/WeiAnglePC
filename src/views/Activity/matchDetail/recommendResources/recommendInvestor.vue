@@ -69,7 +69,7 @@
               small
               @current-change="filterChangeCurrent"
               :current-page.sync="activeCurrentPage"
-              :page-size="5"
+              :page-size="10"
               layout="total, prev, pager, next"
               :total="totalData">
             </el-pagination>

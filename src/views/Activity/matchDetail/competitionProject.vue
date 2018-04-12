@@ -87,7 +87,7 @@
             <el-table-column prop="pro_schedule" label="项目进度" min-width="96" :filters="pro_scheduleFilters"
                              filter-placement="bottom-end"
                              :filter-multiple="stateCheck"
-                             column-key="pro_schedule"
+                             column-key="comp_schedule"
                              sortable="custom"
                              v-if="this.column.findIndex(function(value, index, arr) {return value === 'pro_schedule';}) !== -1">
               <template slot-scope="scope">
@@ -371,7 +371,7 @@
           value: '0',
           label: '删除'
         }], // 更多的选项表单
-        pro_schedule: '', // 筛选选项
+        comp_schedule: '', // 筛选选项
         column: [], // 选中中
         columns: [
           'pro_name',
@@ -427,12 +427,12 @@
       // 跳转到编辑页
       handleEdit (index, row) {
         this.zgClick('编辑项目');
-        this.$router.push({name: 'editproject', query: {project_id: row.project_id, competition_id: this.competition_id}});
+        this.$router.push({name: 'editproject', query: {project_id: row.project_id, competition_id: this.competition_id, enter: 1}});
       },
       // 跳转到创建项目页面
       createProject () {
         this.zgClick('创建项目');
-        this.$router.push({name: 'creatproject', query: {competition_id: this.competition_id}});
+        this.$router.push({name: 'creatproject', query: {competition_id: this.competition_id, enter: 1}});
       },
       // 控制上传弹窗
       uploadDisplayChange (msg) {
@@ -481,10 +481,10 @@
         this.currentPage = 1;
         this.getPra.user_id = localStorage.user_id;
         this.getPra.competition_id = this.competition_id;
-        if (filters.pro_schedule) {
-          if (parseInt(filters.pro_schedule)) {
-            this.setNode(parseInt(filters.pro_schedule));
-          } else if (filters.pro_schedule.length === 0) {
+        if (filters.comp_schedule) {
+          if (parseInt(filters.comp_schedule)) {
+            this.setNode(parseInt(filters.comp_schedule));
+          } else if (filters.comp_schedule.length === 0) {
             this.setNode(0);
           }
         }// 设置顶部样式
@@ -532,7 +532,7 @@
         this.getPra.user_id = localStorage.user_id;
         this.getPra.competition_id = this.competition_id;
         this.getPra.page = page;// 控制当前页码
-        this.getPra.pro_schedule = this.pro_schedule;
+        this.getPra.comp_schedule = this.comp_schedule;
         this.$http.post(this.URL.getProjectList, this.getPra)
           .then(res => {
             this.loading = false;
@@ -552,9 +552,9 @@
         this.currentPage = 1;
         this.loading = true;
         this.setNodeCss(id);
-        this.getPra.pro_schedule = parseInt(id);
-        this.pro_schedule = this.getPra.pro_schedule;
-        this.$http.post(this.URL.getProjectList, {user_id: localStorage.user_id, pro_schedule: parseInt(id), competition_id: this.competition_id})
+        this.getPra.comp_schedule = parseInt(id);
+        this.comp_schedule = this.getPra.comp_schedule;
+        this.$http.post(this.URL.getProjectList, {user_id: localStorage.user_id, comp_schedule: parseInt(id), competition_id: this.competition_id})
           .then(res => {
             this.loading = false;
             let data = res.data.data;
