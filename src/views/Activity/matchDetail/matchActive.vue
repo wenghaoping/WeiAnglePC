@@ -267,7 +267,7 @@
       setProjectList (list) {
         let arr = [];
         for (let i = 0; i < list.length; i++) {
-          let obj = [];
+          let obj = {};
           obj.activity_id = list[i].activity_id;
           obj.activity_title = list[i].activity_title;
           obj.activity_user = list[i].activity_user;

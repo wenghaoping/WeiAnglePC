@@ -36,9 +36,7 @@
       ...mapState({
         activeSearch: state => state.myActivity.activeSearch || ''
       })
-    },
-    created () {},
-    watch: {}
+    }
   };
 </script>
 
@@ -64,12 +62,15 @@
   }
   .el-tabs__content{
     margin-top: -21px!important;
+    overflow: unset;
+    position: static;
   }
-}
-.el-tabs__header{
-  border: none;
-}
+  .el-tabs__header{
+    border: none;
+  }
   .center_title{
     margin-top:24px;
   }
+}
+
 </style>

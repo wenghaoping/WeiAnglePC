@@ -412,7 +412,7 @@
       setProjectList (list) {
         let arr = [];
         for (let i = 0; i < list.length; i++) {
-          let obj = [];
+          let obj = {};
           obj.competition_id = list[i].competition_id;
           obj.judge_id = list[i].judge_id;
           obj.user_avatar_url = list[i].user_avatar_url;

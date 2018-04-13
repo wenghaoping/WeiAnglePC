@@ -742,7 +742,6 @@
         this.competition_id = this.$route.query.competition_id;
       }
     },
-    mounted () {},
     created () {
       this.getCompetitionId();
       this.is_competition = localStorage.is_competition;
@@ -757,8 +756,7 @@
       ...mapState({
         activeSearch: state => state.myActivity.activeSearch || ''
       })
-    },
-    watch: {}
+    }
   };
 </script>
 

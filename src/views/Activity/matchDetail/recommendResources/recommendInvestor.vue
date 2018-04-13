@@ -3,7 +3,7 @@
   <div id="myproject" class="recommendInvestor" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     <!-- 右侧底部主内容区 -->
     <div class="wrap-left">
-      <div class="top-lists clearfix" v-if="tableData.length !== 0">
+      <div class="top-lists" v-if="tableData.length !== 0">
         <template>
           <el-table :data="tableData"
                     :show-header="false"
@@ -168,7 +168,7 @@
       setProjectList (list) {
         let arr = [];
         for (let i = 0; i < list.length; i++) {
-          let obj = [];
+          let obj = {};
           obj.investor_id = list[i].investor_id;
           obj.investor_name = list[i].investor_name;
           obj.investor_company = list[i].investor_company;

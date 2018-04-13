@@ -3,7 +3,7 @@
   <div id="myproject" class="recommendProjects" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     <!-- 右侧底部主内容区 -->
     <div class="wrap-left">
-      <div class="top-lists clearfix" v-if="tableData.length !== 0">
+      <div class="top-lists" v-if="tableData.length !== 0">
         <template>
           <el-table :data="tableData"
                     :show-header="false"
@@ -118,15 +118,15 @@
         getCon: {}, // 筛选的请求参数
         // 列表数据
         tableData: [
-          // {
-          //   project_id: 'RpALg5Wx',
-          //   pro_name: '“学霸联盟”APP平台',
-          //   pro_intro: '我们让你能够在大学“学业”，“友谊”，“财富”三丰收，学霸带你飞翔不在只是梦想，我们会为你插上学霸的翅膀；众里寻“她”无需千百度让你准确找到那个“她”；翻身消费做卖家，自食其力，拥抱财富梦想。',
-          //   industry: '教育培训、电子商务、社交网络',
-          //   stage: '',
-          //   area: '垣曲县',
-          //   is_invited: true
-          // }
+          {
+            project_id: 'RpALg5Wx',
+            pro_name: '“学霸联盟”APP平台',
+            pro_intro: '我们让你能够在大学“学业”，“友谊”，“财富”三丰收，学霸带你飞翔不在只是梦想，我们会为你插上学霸的翅膀；众里寻“她”无需千百度让你准确找到那个“她”；翻身消费做卖家，自食其力，拥抱财富梦想。',
+            industry: '教育培训、电子商务、社交网络',
+            stage: '',
+            area: '垣曲县',
+            is_invited: true
+          }
         ],
         emptyType: true
       };
@@ -189,10 +189,11 @@
         this.$http.get(this.URL.project, {params: this.getCon})
           .then(res => {
             if (res.data.status_code === 2000000) {
+              getTop();
               let data = res.data.data;
               this.tableData = this.setProjectList(data.list);
               this.totalData = data.count;
-              getTop();
+              console.log(this.tableData);
               this.loading = false;
             } else {
               error(res.data.error_msg);
@@ -208,7 +209,7 @@
       setProjectList (list) {
         let arr = [];
         for (let i = 0; i < list.length; i++) {
-          let obj = [];
+          let obj = {};
           obj.project_id = list[i].project_id;
           obj.pro_name = list[i].pro_name;
           obj.pro_intro = list[i].pro_intro;
@@ -237,6 +238,9 @@
 .recommendProjects{
   .el-table{
     margin-top: 30px!important;
+  }
+  .el-tabs__content{
+    overflow: unset;
   }
 }
 </style>

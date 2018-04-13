@@ -599,7 +599,7 @@
       setProjectList (list) {
         let arr = [];
         for (let i = 0; i < list.length; i++) {
-          let obj = [];
+          let obj = {};
           obj.user_id = list[i].user_id;
           obj.user_avatar_url = list[i].user_avatar_url;
           obj.user_real_name = list[i].user_real_name;// 姓名

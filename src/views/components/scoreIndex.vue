@@ -97,10 +97,6 @@
         scoreDisplay: {
           type: Boolean,
           default: false
-        },
-        schid: {
-          type: [Number, String],
-          default: 0
         }
       },
       data () {
@@ -171,14 +167,10 @@
             .then(res => {
               let data = res.data.data;
               if (res.data.status_code === 2000000) {
-                if (data.schedule_id === 0) {
-                  data.schedule_id = this.schedule[0].value;
+                if (data.schedule_id === 0 && this.schedule.length !== 0) {
+                  data.schedule_id = this.schedule && this.schedule[0].value;
                 }
-                if (this.schid) {
-                  this.schedule_id = this.schid;
-                } else {
-                  this.schedule_id = data.schedule_id;
-                }
+                this.schedule_id = data.schedule_id === 0 ? '' : data.schedule_id;
                 this.competition = data;
                 if (data.competition_index.length === 0) {
                   this.addScore();
@@ -346,19 +338,9 @@
       watch: {
         scoreDisplay: function (e) {
           if (e) {
-            if (this.competition_id) {
-              this.$global.func.getWxProjectCategory()
-              .then((data) => {
-                return this.getWxProjectCategory();
-              })
-              .then((data) => {
-                return this.getCompetitionIndex(this.schid);
-              });
-            } else {
-              this.getCompetitionId();
-              this.getAllNode();
-              this.getCompetitionIndex(this.schid);
-            }
+            this.getCompetitionId();
+            this.getAllNode();
+            this.getCompetitionIndex(this.schid);
           } else {
             this.$refs['competition'].resetFields();
           }
