@@ -390,10 +390,12 @@
 //          });
         this.getCompetitionId();
         this.getAllNode();
+        this.filterChangeCurrent(1);
       },
       watch: {
         scheduleid: function (e) {
           this.schedule_id = e;
+          this.filterChangeCurrent(1);
         }
       }
     };
