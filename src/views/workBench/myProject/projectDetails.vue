@@ -978,9 +978,9 @@
       },
       // 返回上一层
       goBack () {
-//        if (this.activeFrom === 0) this.$router.push({name: 'myProject', query: {activeTo: 0}});
-//        else if (this.activeFrom === 2) this.$router.push({name: 'followUp', query: {activeTo: 2}});// 路由传参
-        this.$router.go(-1);
+        if (this.activeFrom === 0) this.$router.push({name: 'myProject', query: {activeTo: 0}});
+        else if (this.activeFrom === 2) this.$router.push({name: 'followUp', query: {activeTo: 2}});// 路由传参
+        this.
         this.$store.dispatch('clearProjectMessage', false);
       },
       // 项目来源编辑

@@ -9,17 +9,17 @@
                     :show-header="false"
                     v-loading="loading"
                     element-loading-text="拼命加载中">
-            <el-table-column prop="pro_name" label="项目名称" min-width="430" show-overflow-tooltip>
+            <el-table-column prop="pro_intro" label="项目名称" min-width="430" show-overflow-tooltip>
               <template slot-scope="scope">
-                <el-tooltip placement="top" :disabled="scope.row.pro_name.length > 14 ? false:true">
+                <el-tooltip placement="top" :disabled="scope.row.pro_intro.length > 14 ? false:true">
                   <div slot="content">
-                    <div class="tips-txt">{{scope.row.pro_name}}</div>
+                    <div class="tips-txt">{{scope.row.pro_intro}}</div>
                   </div>
                   <div>
-                    {{scope.row.pro_name}}
+                    {{scope.row.pro_intro}}
                   </div>
                 </el-tooltip>
-                <div v-if="scope.row.pro_name.length === 0">
+                <div v-if="scope.row.pro_intro.length === 0">
                   -
                 </div>
               </template>
@@ -193,7 +193,6 @@
               let data = res.data.data;
               this.tableData = this.setProjectList(data.list);
               this.totalData = data.count;
-              console.log(this.tableData);
               this.loading = false;
             } else {
               error(res.data.error_msg);
@@ -211,8 +210,8 @@
         for (let i = 0; i < list.length; i++) {
           let obj = {};
           obj.project_id = list[i].project_id;
-          obj.pro_name = list[i].pro_name;
           obj.pro_intro = list[i].pro_intro;
+          obj.pro_name = list[i].pro_name;
           obj.industry = list[i].industry;
           obj.stage = list[i].stage;
           obj.area = list[i].area;
