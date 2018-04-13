@@ -674,7 +674,7 @@
       },
       // 评分指标下载
       scoreDownload () {
-        const url = this.URL.weitianshi + this.URL.exportScoreByCompetition + '?user_id=' + localStorage.user_id;
+        const url = this.URL.weitianshi + this.URL.exportScoreByCompetition + '?user_id=' + localStorage.user_id + '&competition_id=' + this.competition_id;
         window.open(url);
       },
       // 控制评分指标

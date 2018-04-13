@@ -326,7 +326,7 @@
         },
         // 下载评分
         download () {
-          const url = this.URL.weitianshi + this.URL.exportProjectScoreByCompetition + '?user_id=' + localStorage.user_id + '&schedule_id=' + this.schedule_id + '&project_id=' + this.project_id;
+          const url = this.URL.weitianshi + this.URL.exportProjectScoreByCompetition + '?user_id=' + localStorage.user_id + '&schedule_id=' + this.schedule_id + '&project_id=' + this.project_id + '&competition_id=' + this.competition_id;
           window.open(url);
         },
         // 获取所有下拉框的数据
