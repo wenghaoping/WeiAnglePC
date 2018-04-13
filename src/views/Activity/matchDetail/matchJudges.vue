@@ -165,7 +165,7 @@
                       评分阶段<i class="el-icon-caret-bottom el-icon--right"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item v-for='(schedule, index) in scheduleFilters' :key="index">
+                      <el-dropdown-item v-for='(schedule, index) in schedule' :key="index">
                         <div @click="setJudgeAuth(scope.row.judge_id, schedule.value)">{{schedule.text}}</div>
                         </el-dropdown-item>
                     </el-dropdown-menu>
@@ -452,7 +452,8 @@
     },
     computed: {
       ...mapState({
-        activeSearch: state => state.myActivity.activeSearch || ''
+        activeSearch: state => state.myActivity.activeSearch || '',
+        schedule: state => state.myActivity.schedule || {}
       })
     },
     created () {

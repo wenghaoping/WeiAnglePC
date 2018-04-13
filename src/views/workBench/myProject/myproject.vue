@@ -415,7 +415,7 @@
       handleSelect (row, event, column) {
         if (column.label !== '重置') {
           this.zgClick('查看项目详情');
-          this.$router.push({name: 'projectDetails', query: {project_id: row.project_id, show: 'detail', competition_id: 0}});
+          this.$router.push({name: 'projectDetails', query: {project_id: row.project_id, show: 'detail', competition_id: row.competition_id}});
           this.setRouterData();
         }
       },
@@ -437,7 +437,7 @@
       // 跳转到编辑页
       handleEdit (index, row) {
         this.zgClick('编辑项目');
-        this.$router.push({name: 'editproject', query: {project_id: row.project_id, enter: 0, competition_id: 0}});
+        this.$router.push({name: 'editproject', query: {project_id: row.project_id, enter: 0, competition_id: row.competition_id}});
         this.setRouterData();
       },
       // 跳转到创建项目页面
@@ -649,6 +649,7 @@
           obj.created_at = list[i].created_at;
           obj.total_score = list[i].total_score;
           obj.average_score = list[i].average_score;
+          obj.competition_id = list[i].competition_id;
           arr.push(obj);
         }
         return arr;
@@ -732,8 +733,6 @@
         this.setRouterData();
       }
     },
-    computed: {},
-    mounted () {},
     created () {
       this.is_competition = localStorage.is_competition;
       // 组件创建完后获取数据，

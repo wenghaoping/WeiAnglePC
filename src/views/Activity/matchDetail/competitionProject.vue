@@ -396,6 +396,7 @@
           .then(res => {
             let data = res.data.data;
             this.scheduleFilters = this.getTit(data);
+            this.$store.dispatch('setUpSchedule', {schedule: this.scheduleFilters});
           })
           .catch(err => {
             this.loading = false;

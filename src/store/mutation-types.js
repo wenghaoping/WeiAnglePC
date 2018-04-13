@@ -59,3 +59,4 @@ export const SET_UP_MATCH_SEARCH = 'SET_UP_MATCH_SEARCH'; // 我的赛事 => 搜
 export const GET_MATCH_DETAIL = 'GET_MATCH_DETAIL'; // 我的赛事 => 获取详情
 export const SET_MATCH_ACTIVE = 'SET_MATCH_ACTIVE'; // 我的赛事 => 设置切换标签
 export const SET_PROJECT_USER_ID = 'SET_PROJECT_USER_ID'; // 我的赛事 => 赛事活动 => 点击签到
+export const SET_UP_SCHEDULE = 'SET_UP_SCHEDULE'; // 我的赛事 => 赛事活动 => 设置赛事阶段

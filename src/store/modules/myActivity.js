@@ -12,7 +12,8 @@ export default {
       isSign: 1 // 1代表签到成员
     },
     activeSearch: '', // 搜索参数
-    activeCurrentPage: 1 // 当前页数
+    activeCurrentPage: 1, // 当前页数
+    schedule: {}
   },
   mutations: {
     // 改变报名成员弹框
@@ -41,6 +42,10 @@ export default {
     [types.SET_UP_SEARCH] (state, obj) {
       state.activeSearch = obj.activeSearch;
       state.activeCurrentPage = obj.activeCurrentPage;
+    },
+    // 赛事阶段
+    [types.SET_UP_SCHEDULE] (state, obj) {
+      state.schedule = obj.schedule;
     }
   },
   actions: {
@@ -66,6 +71,10 @@ export default {
     // 设置搜索参数
     setUpSearch ({ commit }, obj) {
       commit(types.SET_UP_SEARCH, obj);
+    },
+    // 设置赛事阶段
+    setUpSchedule ({ commit }, obj) {
+      commit(types.SET_UP_SCHEDULE, obj);
     }
   }
 };
