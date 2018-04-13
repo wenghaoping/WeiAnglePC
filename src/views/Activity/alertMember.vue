@@ -224,9 +224,11 @@
         },
         // 项目详情弹窗
         toDetail (data) {
-          this.$store.dispatch('setProjectId', data.project_id);
-          this.$store.dispatch('alertProjectControl', true);
-          this.$store.dispatch('setProjectUserId', {userId: data.user_id, type: data.type});
+          if (data.project_id) {
+            this.$store.dispatch('setProjectId', data.project_id);
+            this.$store.dispatch('alertProjectControl', true);
+            this.$store.dispatch('setProjectUserId', {userId: data.user_id, type: data.type});
+          }
         }
       },
       watch: {

@@ -87,7 +87,7 @@
             <el-table-column prop="pro_schedule" label="项目进度" min-width="96" :filters="pro_scheduleFilters"
                              filter-placement="bottom-end"
                              :filter-multiple="stateCheck"
-                             column-key="comp_schedule"
+                             column-key="pro_schedule"
                              sortable="custom"
                              v-if="this.column.findIndex(function(value, index, arr) {return value === 'pro_schedule';}) !== -1">
               <template slot-scope="scope">
