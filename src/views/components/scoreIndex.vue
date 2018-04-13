@@ -22,7 +22,7 @@
                 <el-select v-model="schedule_id"
                            placeholder="请选择" @change="getCompetitionIndex2">
                   <el-option
-                    v-for="item in schedule"
+                    v-for="item in scheduleFilters"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -143,7 +143,9 @@
           competitionMust: false,
           hunderdRule: {validator: checkHundred, trigger: 'blur'}, // 可以为空,必须为数字,比例数值1-100
           schedule_id: '',
-          schedule: []
+          competition_id: '',
+          schedule: [],
+          scheduleFilters: []
         };
       },
       methods: {
@@ -163,6 +165,7 @@
           this.loading = true;
           this.$http.post(this.URL.getCompetitionIndex, {
             user_id: localStorage.user_id,
+            competition_id: this.competition_id,
             schedule_id: scheduleId
           })
             .then(res => {
@@ -195,6 +198,7 @@
           this.loading = true;
           this.$http.post(this.URL.getCompetitionIndex, {
             user_id: localStorage.user_id,
+            competition_id: this.competition_id,
             schedule_id: scheduleId
           })
             .then(res => {
@@ -310,6 +314,31 @@
                   });
               }
             });
+        },
+        getAllNode () {
+          this.$http.post(this.URL.comGetAllNode, {user_id: localStorage.user_id, competition_id: this.competition_id})
+            .then(res => {
+              let data = res.data.data;
+              this.scheduleFilters = this.getTit(data);
+            })
+            .catch(err => {
+              this.loading = false;
+              console.log(err);
+            });
+        },
+        getTit (data) {
+          let arr = [];
+          for (let i = 0; i < data.length; i++) {
+            let obj = {};
+            obj.label = data[i].schedule_name;
+            obj.value = data[i].schedule_id;
+            arr.push(obj);
+          }
+          return arr;
+        },
+        // 获取id
+        getCompetitionId () {
+          this.competition_id = this.$route.query.competition_id;
         }
       },
       // 当dom一创建时
@@ -317,13 +346,19 @@
       watch: {
         scoreDisplay: function (e) {
           if (e) {
-            this.$global.func.getWxProjectCategory()
+            if (this.competition_id) {
+              this.$global.func.getWxProjectCategory()
               .then((data) => {
                 return this.getWxProjectCategory();
               })
               .then((data) => {
                 return this.getCompetitionIndex(this.schid);
               });
+            } else {
+              this.getCompetitionId();
+              this.getAllNode();
+              this.getCompetitionIndex(this.schid);
+            }
           } else {
             this.$refs['competition'].resetFields();
           }

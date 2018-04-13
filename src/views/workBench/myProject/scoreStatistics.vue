@@ -271,7 +271,7 @@
         getScoreStatistics () {
           this.scoreloading = true;
           this.$http.post(this.URL.getScoreStatistics,
-            {user_id: localStorage.user_id, project_id: this.project_id, schedule_id: this.schedule_id})
+            {user_id: localStorage.user_id, project_id: this.project_id, schedule_id: this.schedule_id, competition_id: this.competition_id})
             .then(res => {
               let data = res.data.data;
               if (data.length !== 0) {
@@ -294,7 +294,7 @@
         getScoreStatisticsGroup () {
           this.chartloading = true;
           this.$http.post(this.URL.getScoreStatisticsGroup,
-            {user_id: localStorage.user_id, project_id: this.project_id, schedule_id: this.schedule_id})
+            {user_id: localStorage.user_id, project_id: this.project_id, schedule_id: this.schedule_id, competition_id: this.competition_id})
             .then(res => {
               let data = res.data.data;
               if (data.length !== 0) {
@@ -354,15 +354,42 @@
           this.filterChangeCurrent(1);
           this.getScoreStatisticsGroup();
           this.getScoreStatistics();
+        },
+        getAllNode () {
+          this.$http.post(this.URL.comGetAllNode, {user_id: localStorage.user_id, competition_id: this.competition_id})
+            .then(res => {
+              let data = res.data.data;
+              this.schedule = this.getTit(data);
+            })
+            .catch(err => {
+              this.loading = false;
+              console.log(err);
+            });
+        },
+        getTit (data) {
+          let arr = [];
+          for (let i = 0; i < data.length; i++) {
+            let obj = {};
+            obj.label = data[i].schedule_name;
+            obj.value = data[i].schedule_id;
+            arr.push(obj);
+          }
+          return arr;
+        },
+        // 获取id
+        getCompetitionId () {
+          this.competition_id = this.$route.query.competition_id;
         }
       },
       // 当dom一创建时
       created () {
         this.is_competition = localStorage.is_competition;
-        this.$global.func.getWxProjectCategory()
-          .then((data) => {
-            return this.getWxProjectCategory();
-          });
+//        this.$global.func.getWxProjectCategory()
+//          .then((data) => {
+//            return this.getWxProjectCategory();
+//          });
+        this.getCompetitionId();
+        this.getAllNode();
       },
       watch: {
         scheduleid: function (e) {
