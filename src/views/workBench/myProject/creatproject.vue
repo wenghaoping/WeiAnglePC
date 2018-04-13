@@ -856,7 +856,7 @@
             type: 'success',
             message: '继续完善'
           });
-          this.$router.push({name: 'editproject', query: {project_id: this.project.project_id, competition_id: this.competition_id}});
+          this.$router.push({name: 'editproject', query: {project_id: this.project.project_id, competition_id: this.competition_id, enter: this.enter}});
         }).catch(() => {
           if (+this.enter === 0) {
             this.$router.push({name: 'myProject', query: {activeTo: 0}});
