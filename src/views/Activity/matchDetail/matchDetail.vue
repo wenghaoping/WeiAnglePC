@@ -19,7 +19,7 @@
           <div class="title_main">地点：{{competition.competition_address === '' ? '暂未编辑' : competition.competition_address}}</div>
         </div>
       </div>
-        <div class="main_center" v-if="competition.has_many_details.length !== 0">
+        <div class="main_center" v-if="competition.has_many_details !== 0">
           <div class="center_title">详情</div>
           <div class="main_for" v-for="(has_many_detail, index) in competition.has_many_details" :key="index">
             <div class="center_main">
@@ -128,13 +128,24 @@
     computed: {
       ...mapState({
         matchData: state => state.myActivity.matchData || {}
-      })
+      }),
+      hasManyDetailsLength () {
+        let data = this.competition.has_many_details;
+        let check = false;
+        data.forEach((item) => {
+          if (item.detail_description !== '' || item.belongs_to_many_images.length !== 0) {
+            check = true;
+          } else {
+            check = false;
+          }
+        });
+        return check;
+      }
     },
     created () {
       this.getCompetitionId();
       this.getOneCompetition();
-    },
-    watch: {}
+    }
   };
 </script>
 
@@ -189,7 +200,7 @@
     margin-bottom: 35px;
     margin-top: 24px;
     img{
-      width: 880px;
+      max-width: 880px;
       height: 100%;
       border-radius: 4px;
     }

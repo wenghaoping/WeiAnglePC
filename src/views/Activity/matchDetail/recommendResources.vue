@@ -44,6 +44,9 @@
 
 <style lang="less">
 .recommendResources{
+  .el-tabs{
+    height: 64px;
+  }
   .el-tabs__active-bar{
     display: none;
   }
