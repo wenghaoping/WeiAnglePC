@@ -179,7 +179,6 @@
                       <el-col :span="24">
                         <el-form-item
                           :prop="'has_many_details.' + index + '.detail_description'"
-                          :rules="[{max:500, message: '最大500个字符', trigger: 'blur'}]"
                           label="活动详情">
                           <el-input
                             type="textarea"
