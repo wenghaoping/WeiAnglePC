@@ -11,8 +11,8 @@ if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = 'https://pc.dev.weitianshi.cn';
   // axios.defaults.baseURL = 'https://wts.weitianshi.cn';
 } else {
-  // axios.defaults.baseURL = 'https://wts.weitianshi.cn';
-  axios.defaults.baseURL = 'https://pc.dev.weitianshi.cn';
+  axios.defaults.baseURL = 'https://wts.weitianshi.cn';
+  // axios.defaults.baseURL = 'https://pc.dev.weitianshi.cn';
 }
 // POST传参序列化 http request 拦截器
 axios.interceptors.request.use((config) => {

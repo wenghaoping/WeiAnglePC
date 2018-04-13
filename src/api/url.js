@@ -11,10 +11,10 @@ if (process.env.NODE_ENV === 'development') {
   weitianshi = 'https://pc.dev.weitianshi.cn/';
   weitianshiLine = 'https://pc.dev.weitianshi.cn/';
 } else {
-  // weitianshi = 'https://wts.weitianshi.cn/';
-  // weitianshiLine = 'https://wts.weitianshi.cn/';
-  weitianshi = 'https://pc.dev.weitianshi.cn/';
-  weitianshiLine = 'https://pc.dev.weitianshi.cn/';
+  weitianshi = 'https://wts.weitianshi.cn/';
+  weitianshiLine = 'https://wts.weitianshi.cn/';
+  // weitianshi = 'https://pc.dev.weitianshi.cn/';
+  // weitianshiLine = 'https://pc.dev.weitianshi.cn/';
 }
 export default
 {
@@ -248,6 +248,7 @@ export default
   getSignQrCode: 'api/activity/getSignQrCode', // 获取签到二维码
   getActivityQrCode: 'api/activity/getActivityQrCode', // 获取报名二维码
   downloadQrCode: 'api/activity/downloadQrCode', // 下载签到二维码
+  downloadActivityQrCode: 'api/activity/downloadActivityQrCode', // 下载报名二维码
 
   // 手机端入口
   checkUserByInteInvestorId: 'api/user/checkUserByInteInvestorId', // 获取相关信息investor_id

@@ -56,7 +56,12 @@
         this.$store.dispatch('qrCodeActivityControl', false);
       },
       downloadIng () {
-        const url = this.URL.weitianshi + this.URL.downloadQrCode + '?user_id=' + localStorage.user_id + '&activity_id=' + this.activityId; //  + '&is_sign=' + this.isSign
+        let url = '';
+        if (+this.isSign === 1) {
+          url = this.URL.weitianshi + this.URL.downloadQrCode + '?user_id=' + localStorage.user_id + '&activity_id=' + this.activityId; //  + '&is_sign=' + this.isSign
+        } else {
+          url = this.URL.weitianshi + this.URL.downloadActivityQrCode + '?user_id=' + localStorage.user_id + '&activity_id=' + this.activityId;
+        }
         window.open(url);
       },
       // 获取二维码
