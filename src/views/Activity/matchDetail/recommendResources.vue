@@ -9,6 +9,7 @@
         <recommend-investor></recommend-investor>
       </el-tab-pane>
     </el-tabs>
+    <div class="recommendTips">微天使会以短信的方式通知项目方参加大赛报名（可免费邀请100次）</div>
   </div>
 </template>
 
@@ -70,6 +71,10 @@
   }
   .center_title{
     margin-top:24px;
+  }
+  .recommendTips{
+    font-size: 14px;
+    padding:22px 24px 22px 881px;
   }
 }
 
