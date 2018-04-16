@@ -545,7 +545,7 @@
                 .then(res => {
                   if (res.data.status_code === 2000000) {
                     this.saveControl = true;
-                    this.$router.push({name: 'successActivity', query: {activity_title: allData.activity_title, type: this.type, competition_id: this.competition_id}});
+                    this.$router.push({name: 'successActivity', query: {activity_title: allData.activity_title, type: this.type, competition_id: this.competition_id, url: res.data.activity_qr}});
                   }
                   this.loading = false;
                 })

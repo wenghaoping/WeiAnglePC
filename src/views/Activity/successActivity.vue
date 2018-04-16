@@ -9,7 +9,9 @@
           {{activityTitle}}
         </div>
         <div class="img innImg relative position_center_auto">
-          <img src="../../assets/images/weixin.jpg">
+          <!--<img src="../../assets/images/weixin.jpg">-->
+          <img v-if="url === '' || url === null" src="../../assets/images/morenIMG.png">
+          <img :src="url" v-else>
         </div>
 
         <div class="title relative position_center_auto">
@@ -38,6 +40,7 @@
     methods: {
       // 获取id
       getActivityId () {
+        this.url = this.$route.query.url;
         this.activityTitle = this.$route.query.activity_title;
         this.type = this.$route.query.type || '';
         this.competition_id = this.$route.query.competition_id || '';
