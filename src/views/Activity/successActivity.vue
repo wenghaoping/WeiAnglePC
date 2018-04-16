@@ -12,10 +12,11 @@
           <!--<img src="../../assets/images/weixin.jpg">-->
           <img v-if="url === '' || url === null" src="../../assets/images/morenIMG.png">
           <img :src="url" v-else>
+
         </div>
 
-        <div class="title relative position_center_auto">
-          <p>微信扫一扫，体验微天使乐投平台小程序</p>
+        <div class="title relative position_center_text">
+          <p>扫码分享</p>
         </div>
 
         <div  class="btn relative position_center_auto">
@@ -96,6 +97,9 @@
     }
     .message{
       top: 120px;
+    }
+    .position_center_text{
+      text-align: center;
     }
   }
 </style>
