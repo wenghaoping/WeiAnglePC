@@ -415,7 +415,7 @@
       handleSelect (row, event, column) {
         if (column.label !== '重置') {
           this.zgClick('查看项目详情');
-          this.$router.push({name: 'projectDetails', query: {project_id: row.project_id, show: 'detail', competition_id: row.competition_id}});
+          this.$router.push({name: 'projectDetails', query: {project_id: row.project_id, show: 'detail', competition_id: row.competition_id, enter: 0}});
           this.setRouterData();
         }
       },

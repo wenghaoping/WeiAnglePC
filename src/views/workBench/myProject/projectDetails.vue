@@ -1085,11 +1085,12 @@
         this.competition_id = this.$route.query.competition_id;
         this.activeFrom = this.$route.query.activeTo || 0;
         this.show = this.$route.query.show || 'detail';
+        this.enter = +this.$route.query.enter || 0;
       },
       // 编辑项目
       toEdit () {
         this.zgClick('编辑项目');
-        this.$router.push({name: 'editproject', query: {project_id: this.project.project_id, competition_id: this.competition_id}});
+        this.$router.push({name: 'editproject', query: {project_id: this.project.project_id, competition_id: this.competition_id, enter: this.enter}});
       },
       // 打开人脉详情弹窗
       toDetail (data) {
