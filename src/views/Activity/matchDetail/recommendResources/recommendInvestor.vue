@@ -192,7 +192,7 @@
 
 <style lang="less">
   @import '../../../../assets/css/myproject';
-  .recommendProjects{
+  .recommendInvestor{
     .el-table{
       margin-top: 30px!important;
     }

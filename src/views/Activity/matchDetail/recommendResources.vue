@@ -3,7 +3,9 @@
   <div class="recommendResources" v-loading.fullscreen="loading" element-loading-text="拼命加载中">
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="推荐项目" name="recommendProjects">
-        <recommend-projects></recommend-projects>
+        <recommend-projects>
+          <div class="recommendTips">微天使会以短信的方式通知项目方参加大赛报名（可免费邀请100次）</div>
+        </recommend-projects>
       </el-tab-pane>
       <el-tab-pane label="推荐投资人" name="recommendInvestor">
         <recommend-investor></recommend-investor>
@@ -44,7 +46,7 @@
 <style lang="less">
 .recommendResources{
   .el-tabs{
-    height: 64px;
+    height: 104px;
   }
   .el-tabs__active-bar{
     display: none;
@@ -74,8 +76,13 @@
   }
   .recommendTips{
     font-size: 14px;
-    padding:22px 24px 22px 881px;
+    width:431px;
+    height:80px;
+    line-height: 80px;
+    position: absolute;
+    top: 22px;
+    right:24px;
   }
-}
 
+}
 </style>
